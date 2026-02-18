@@ -10,7 +10,7 @@ import {
    앱 버전 — 코드 변경 시 이 숫자만 올리면
    브라우저 캐시가 자동으로 무효화됩니다
    ────────────────────────────────────────────── */
-const APP_VERSION = '6';
+const APP_VERSION = '7';
 const CACHE_KEY = `ji_news_cache_v${APP_VERSION}`;
 
 // 이전 버전 캐시 자동 삭제
@@ -51,9 +51,10 @@ function extractDescription(descHtml) {
     return text.length > 10 ? text : null;
 }
 
-/** Google News RSS 파싱 (Vite proxy 경유) */
+/** Google News RSS 파싱 (allorigins CORS proxy 경유) */
 async function fetchGoogleNews() {
-    const rssUrl = '/api/gnews/rss?hl=ko&gl=KR&ceid=KR:ko';
+    const target = encodeURIComponent('https://news.google.com/rss?hl=ko&gl=KR&ceid=KR:ko');
+    const rssUrl = `https://api.allorigins.win/raw?url=${target}`;
     const res = await fetch(rssUrl);
     if (!res.ok) throw new Error(`RSS fetch failed: ${res.status}`);
     const xml = await res.text();
