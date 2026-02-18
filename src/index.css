@@ -1,0 +1,231 @@
+@import "tailwindcss";
+
+/* ============================================
+   JUNIOR INSIGHT — APEX Theme (tweakcn)
+   oklch 직접 인라인 · Pretendard · Responsive
+   ============================================ */
+
+/* ── Tailwind v4 theme token ── */
+@theme inline {
+  /* ★ CRITICAL — spacing 기본값 (Tailwind v4 필수) */
+  --spacing: 0.25rem;
+
+  /* semantic colors — 직접 oklch 값 */
+  --color-background: oklch(0.9886 0.0053 272.4788);
+  --color-foreground: oklch(0.1760 0.0804 261.8274);
+  --color-card: oklch(0.9817 0.0043 272.4896);
+  --color-card-foreground: oklch(0.2079 0.0399 265.7275);
+  --color-popover: oklch(0.9603 0.0129 272.3933);
+  --color-popover-foreground: oklch(0.2079 0.0399 265.7275);
+  --color-primary: oklch(0.4570 0.2400 277.0230);
+  --color-primary-foreground: oklch(0.9620 0.0180 272.3140);
+  --color-secondary: oklch(0.6090 0.1260 221.7230);
+  --color-secondary-foreground: oklch(0.9840 0.0190 200.8730);
+  --color-muted: oklch(0.8174 0.0575 209.0830);
+  --color-muted-foreground: oklch(0.3815 0.0486 210.0747);
+  --color-accent: oklch(0.8700 0.0650 274.0390);
+  --color-accent-foreground: oklch(0.2570 0.0900 281.2880);
+  --color-destructive: oklch(0.6061 0.1206 15.3419);
+  --color-destructive-foreground: oklch(0.9777 0.0110 12.3118);
+  --color-border: oklch(0.8690 0.0220 252.8940);
+  --color-input: oklch(0.8690 0.0220 252.8940);
+  --color-ring: oklch(0.4570 0.2400 277.0230);
+  --color-chart-1: oklch(0.7629 0.0477 194.4909);
+  --color-chart-2: oklch(0.7746 0.0622 217.4690);
+  --color-chart-3: oklch(0.6965 0.0591 248.6872);
+  --color-chart-4: oklch(0.5944 0.0772 254.0278);
+  --color-chart-5: oklch(0.5200 0.1050 223.1280);
+
+  /* gradient stops */
+  --color-grad-start: oklch(0.4570 0.2400 277.0230);
+  --color-grad-mid: oklch(0.5850 0.2330 277.1170);
+  --color-grad-end: oklch(0.2570 0.0900 281.2880);
+
+  /* font */
+  --font-sans: 'Pretendard Variable', Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  /* radius */
+  --radius-sm: 0.5rem;
+  --radius-md: 0.7rem;
+  --radius-lg: 0.9rem;
+  --radius-xl: 1.3rem;
+}
+
+/* ── Base (inside @layer base to NOT override utilities) ── */
+@layer base {
+  html {
+    font-size: 16px;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    scroll-behavior: smooth;
+  }
+
+  body {
+    font-family: 'Pretendard Variable', Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif;
+    color: oklch(0.1760 0.0804 261.8274);
+    background: oklch(0.9886 0.0053 272.4788);
+    line-height: 1.6;
+    letter-spacing: -0.01em;
+    word-break: keep-all;
+    overflow-wrap: break-word;
+  }
+
+  ::selection {
+    background: oklch(0.8700 0.0650 274.0390);
+    color: oklch(0.2570 0.0900 281.2880);
+  }
+}
+
+/* ── Scrollbar, Focus, Utilities → @layer base ── */
+@layer base {
+  ::-webkit-scrollbar {
+    width: 5px;
+    height: 5px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: oklch(0.869 0.022 252.894);
+    border-radius: 999px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: oklch(0.3815 0.0486 210.075);
+  }
+
+  *:focus-visible {
+    outline: 2px solid oklch(0.457 0.24 277.023);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+}
+
+/* ── Animations (keyframes are unlayered — they don't compete with utilities) ── */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideRight {
+  from {
+    opacity: 0;
+    transform: translateX(12px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.97);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ── Component classes → @layer components ── */
+@layer components {
+  .line-clamp-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .animate-fade-in {
+    animation: fadeIn 280ms ease-out both;
+  }
+
+  .animate-slide-up {
+    animation: slideUp 280ms ease-out both;
+  }
+
+  .animate-slide-right {
+    animation: slideRight 240ms ease-out both;
+  }
+
+  .animate-scale-in {
+    animation: scaleIn 240ms ease-out both;
+  }
+
+  .toast-wrap {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    z-index: 100;
+    transform: translateX(-50%) translateY(-120px);
+    opacity: 0;
+    transition: transform 320ms cubic-bezier(.34, 1.56, .64, 1), opacity 200ms ease;
+    pointer-events: none;
+  }
+
+  .toast-wrap.show {
+    transform: translateX(-50%) translateY(0);
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .press {
+    transition: transform 120ms ease;
+  }
+
+  .press:active {
+    transform: scale(0.97);
+  }
+
+  .card-lift {
+    transition: box-shadow 200ms ease, border-color 200ms ease, transform 200ms ease;
+  }
+
+  .card-lift:hover {
+    box-shadow: 0 4px 16px -4px oklch(0.457 0.24 277.023 / 0.12);
+    border-color: oklch(0.457 0.24 277.023 / 0.35);
+    transform: translateY(-1px);
+  }
+
+  .progress-fill {
+    transition: width 700ms cubic-bezier(.34, 1.56, .64, 1);
+  }
+
+  .chart-grow {
+    transition: height 500ms cubic-bezier(.34, 1.56, .64, 1);
+  }
+}
