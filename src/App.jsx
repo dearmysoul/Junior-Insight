@@ -10,7 +10,7 @@ import {
    앱 버전 — 코드 변경 시 이 숫자만 올리면
    브라우저 캐시가 자동으로 무효화됩니다
    ────────────────────────────────────────────── */
-const APP_VERSION = '13';
+const APP_VERSION = '14';
 const CACHE_KEY = `ji_news_cache_v${APP_VERSION}`;
 
 // 이전 버전 캐시 자동 삭제
@@ -505,15 +505,10 @@ function NewsFeed({ news, loading, error, entries, onMission }) {
 }
 
 /* ============================================
-   WRITE (MISSION) VIEW — 3개 중 1개 선택
+   WRITE (MISSION) VIEW
+   3개 미션 모두 펼쳐서 표시, 1개 선택 완료 시 성공
    ============================================ */
 function WriteView({ news, form, setForm, submit, goBack, isDone }) {
-    const missions = [
-        { key: 'summary', icon: Brain, color: 'bg-primary', label: '한 문장 요약', desc: '기사의 핵심을 한 문장으로' },
-        { key: 'opinion', icon: PenTool, color: 'bg-grad-mid', label: '나의 의견', desc: '찬성·반대·기타 + 이유 한 줄' },
-        { key: 'word', icon: Highlighter, color: 'bg-secondary', label: '핵심 단어', desc: '기억에 남는 단어 하나' },
-    ];
-
     return (
         <div className="animate-slide-right pb-20 md:pb-0 max-w-lg mx-auto">
             <button onClick={goBack}
@@ -522,11 +517,10 @@ function WriteView({ news, form, setForm, submit, goBack, isDone }) {
                 <ArrowLeft size={15} aria-hidden="true" /> 뉴스 목록으로
             </button>
 
-            {/* 기사 정보 요약 */}
+            {/* 기사 정보 */}
             <div className="bg-card border border-border rounded-lg p-4 mb-4">
                 <div className="flex items-center gap-2 mb-2">
                     <Badge category={news.category} />
-                    <time className="text-[11px] text-muted-foreground">{news.date}</time>
                 </div>
                 <p className="text-[14px] font-bold text-card-foreground leading-snug tracking-tight mb-2">{news.title}</p>
                 <a href={news.url} target="_blank" rel="noreferrer"
@@ -536,99 +530,117 @@ function WriteView({ news, form, setForm, submit, goBack, isDone }) {
             </div>
 
             {/* 미션 안내 */}
-            <div className="bg-primary/8 border border-primary/20 p-3.5 rounded-lg flex items-center gap-3 mb-4">
-                <span className="w-9 h-9 bg-card rounded-lg flex items-center justify-center shadow-sm shrink-0">
-                    <Sparkles size={16} className="text-primary" aria-hidden="true" />
-                </span>
+            <div className="bg-accent border border-border p-3.5 rounded-lg flex items-center gap-3 mb-4">
+                <Sparkles size={18} className="text-primary shrink-0" aria-hidden="true" />
                 <div>
-                    <h3 className="font-bold text-foreground text-[14px] tracking-tight">오늘의 미션</h3>
-                    <p className="text-[11px] text-primary">아래 3가지 중 <span className="font-bold">하나만</span> 골라 완료하면 성공! 🎉</p>
+                    <p className="font-bold text-foreground text-[14px] tracking-tight">오늘의 미션</p>
+                    <p className="text-[12px] text-muted-foreground">아래 3가지 중 <span className="font-bold text-primary">하나만</span> 완료하면 성공! 🎉</p>
                 </div>
             </div>
 
-            {/* 미션 선택 카드 3개 */}
-            <div className="space-y-2 mb-4">
-                {missions.map(({ key, icon: Icon, color, label, desc }) => {
-                    const selected = form.missionType === key;
-                    return (
-                        <button key={key} type="button"
-                            onClick={() => setForm({ ...form, missionType: key })}
-                            className={`w-full text-left p-4 rounded-lg border-2 transition-all duration-200 cursor-pointer
-                                ${selected ? 'border-primary bg-primary/6' : 'border-border bg-card hover:border-ring hover:bg-accent/10'}`}>
-                            <div className="flex items-center gap-3">
-                                <span className={`w-8 h-8 rounded-md ${color} flex items-center justify-center shrink-0`}>
-                                    <Icon size={15} className="text-white" aria-hidden="true" />
-                                </span>
-                                <div className="flex-1">
-                                    <p className="font-bold text-[14px] text-card-foreground tracking-tight">{label}</p>
-                                    <p className="text-[11px] text-muted-foreground">{desc}</p>
-                                </div>
-                                {selected && <CheckCircle size={18} className="text-primary shrink-0" aria-hidden="true" />}
-                            </div>
-                        </button>
-                    );
-                })}
+            {/* 미션 1: 한 문장 요약 */}
+            <div className={`bg-card border-2 rounded-lg p-4 mb-3 transition-colors duration-200
+                ${form.missionType === 'summary' ? 'border-primary' : 'border-border'}`}>
+                <button type="button" className="w-full text-left cursor-pointer"
+                    onClick={() => setForm({ ...form, missionType: form.missionType === 'summary' ? null : 'summary', summary: '' })}>
+                    <div className="flex items-center gap-3 mb-3">
+                        <span className="w-8 h-8 rounded-md bg-primary flex items-center justify-center shrink-0">
+                            <Brain size={15} className="text-white" aria-hidden="true" />
+                        </span>
+                        <div className="flex-1">
+                            <p className="font-bold text-[14px] text-card-foreground tracking-tight">미션 1 · 한 문장 요약</p>
+                            <p className="text-[11px] text-muted-foreground">기사의 핵심을 한 문장으로</p>
+                        </div>
+                        {form.missionType === 'summary'
+                            ? <CheckCircle size={18} className="text-primary shrink-0" />
+                            : <span className="text-[11px] text-muted-foreground border border-border rounded px-2 py-0.5">선택</span>}
+                    </div>
+                </button>
+                <p className="text-[13px] font-semibold text-foreground mb-2">이 기사의 핵심 내용은 무엇인가요?</p>
+                <textarea rows={3}
+                    className="w-full p-3 rounded-md border border-input bg-background text-[14px] leading-relaxed text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent resize-none transition-shadow duration-200"
+                    placeholder="기사의 핵심을 한 문장으로 줄여보세요."
+                    value={form.summary}
+                    onClick={() => form.missionType !== 'summary' && setForm({ ...form, missionType: 'summary' })}
+                    onChange={(e) => setForm({ ...form, missionType: 'summary', summary: e.target.value })}
+                />
             </div>
 
-            {/* 선택된 미션 입력 영역 */}
-            {form.missionType === 'summary' && (
-                <div className="bg-card p-4 rounded-lg border border-primary/30 mb-4">
-                    <StepLabel n="✏️" text="한 문장 요약" color="bg-primary" required />
-                    <textarea rows={3}
-                        className="w-full p-3 rounded-md border border-input bg-background text-[14px] leading-relaxed tracking-tight text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent resize-none transition-shadow duration-200"
-                        placeholder="기사의 핵심을 한 문장으로 줄여보세요."
-                        value={form.summary}
-                        onChange={(e) => setForm({ ...form, summary: e.target.value })}
-                    />
-                </div>
-            )}
-
-            {form.missionType === 'opinion' && (
-                <div className="bg-card p-4 rounded-lg border border-primary/30 mb-4 space-y-3">
-                    <StepLabel n="💬" text="나의 의견 선택" color="bg-grad-mid" required />
-                    <div className="space-y-2" role="radiogroup" aria-label="의견 선택">
-                        {news.opinionOptions.map((opt, i) => {
-                            const on = form.choice === i;
-                            return (
-                                <button key={i} type="button" role="radio" aria-checked={on}
-                                    onClick={() => setForm({ ...form, choice: i })}
-                                    className={`w-full text-left p-3 rounded-md border-2 text-[13px] font-medium flex items-center justify-between cursor-pointer transition-all duration-200 min-h-[44px] tracking-tight
-                                        ${on ? 'border-primary bg-primary/8 text-accent-foreground' : 'border-border text-muted-foreground hover:border-ring hover:bg-accent/15'}`}>
-                                    <span>{opt}</span>
-                                    {on && <CheckCircle size={16} className="text-primary shrink-0 ml-2" aria-hidden="true" />}
-                                </button>
-                            );
-                        })}
+            {/* 미션 2: 나의 의견 */}
+            <div className={`bg-card border-2 rounded-lg p-4 mb-3 transition-colors duration-200
+                ${form.missionType === 'opinion' ? 'border-primary' : 'border-border'}`}>
+                <button type="button" className="w-full text-left cursor-pointer"
+                    onClick={() => setForm({ ...form, missionType: form.missionType === 'opinion' ? null : 'opinion', choice: null, reason: '' })}>
+                    <div className="flex items-center gap-3 mb-3">
+                        <span className="w-8 h-8 rounded-md bg-primary flex items-center justify-center shrink-0">
+                            <PenTool size={15} className="text-white" aria-hidden="true" />
+                        </span>
+                        <div className="flex-1">
+                            <p className="font-bold text-[14px] text-card-foreground tracking-tight">미션 2 · 나의 의견</p>
+                            <p className="text-[11px] text-muted-foreground">찬성·반대·기타 + 이유 한 줄</p>
+                        </div>
+                        {form.missionType === 'opinion'
+                            ? <CheckCircle size={18} className="text-primary shrink-0" />
+                            : <span className="text-[11px] text-muted-foreground border border-border rounded px-2 py-0.5">선택</span>}
                     </div>
-                    <input type="text"
-                        className="w-full p-3 rounded-md border border-input bg-background text-[14px] tracking-tight text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-grad-mid focus:border-transparent transition-shadow duration-200"
-                        placeholder="그 의견을 선택한 이유 한 줄"
-                        value={form.reason}
-                        onChange={(e) => setForm({ ...form, reason: e.target.value })}
-                    />
+                </button>
+                <p className="text-[13px] font-semibold text-foreground mb-2">이 기사에 대해 어떻게 생각하나요?</p>
+                <div className="space-y-2 mb-3" role="radiogroup" aria-label="의견 선택">
+                    {news.opinionOptions.map((opt, i) => {
+                        const on = form.choice === i;
+                        return (
+                            <button key={i} type="button" role="radio" aria-checked={on}
+                                onClick={() => setForm({ ...form, missionType: 'opinion', choice: i })}
+                                className={`w-full text-left p-3 rounded-md border-2 text-[13px] font-medium flex items-center justify-between cursor-pointer transition-all duration-200 min-h-[44px] tracking-tight
+                                    ${on ? 'border-primary bg-primary/8 text-foreground' : 'border-border text-muted-foreground hover:border-ring hover:bg-accent/30'}`}>
+                                <span>{opt}</span>
+                                {on && <CheckCircle size={16} className="text-primary shrink-0 ml-2" aria-hidden="true" />}
+                            </button>
+                        );
+                    })}
                 </div>
-            )}
+                <p className="text-[13px] font-semibold text-foreground mb-2">그 의견을 선택한 이유는?</p>
+                <input type="text"
+                    className="w-full p-3 rounded-md border border-input bg-background text-[14px] tracking-tight text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-shadow duration-200"
+                    placeholder="이유를 한 줄로 적어주세요"
+                    value={form.reason}
+                    onClick={() => form.missionType !== 'opinion' && setForm({ ...form, missionType: 'opinion' })}
+                    onChange={(e) => setForm({ ...form, missionType: 'opinion', reason: e.target.value })}
+                />
+            </div>
 
-            {form.missionType === 'word' && (
-                <div className="bg-card p-4 rounded-lg border border-primary/30 mb-4">
-                    <StepLabel n="🔑" text="핵심 단어" color="bg-secondary" required />
-                    <div className="relative">
-                        <Highlighter size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" aria-hidden="true" />
-                        <input type="text"
-                            className="w-full pl-9 p-3 rounded-md border border-input bg-background text-[14px] tracking-tight text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-secondary focus:border-transparent transition-shadow duration-200"
-                            placeholder="기사에서 가장 중요한 단어 하나"
-                            value={form.word}
-                            onChange={(e) => setForm({ ...form, word: e.target.value })}
-                        />
+            {/* 미션 3: 핵심 단어 */}
+            <div className={`bg-card border-2 rounded-lg p-4 mb-4 transition-colors duration-200
+                ${form.missionType === 'word' ? 'border-primary' : 'border-border'}`}>
+                <button type="button" className="w-full text-left cursor-pointer"
+                    onClick={() => setForm({ ...form, missionType: form.missionType === 'word' ? null : 'word', word: '' })}>
+                    <div className="flex items-center gap-3 mb-3">
+                        <span className="w-8 h-8 rounded-md bg-primary flex items-center justify-center shrink-0">
+                            <Highlighter size={15} className="text-white" aria-hidden="true" />
+                        </span>
+                        <div className="flex-1">
+                            <p className="font-bold text-[14px] text-card-foreground tracking-tight">미션 3 · 핵심 단어</p>
+                            <p className="text-[11px] text-muted-foreground">기억에 남는 단어 하나</p>
+                        </div>
+                        {form.missionType === 'word'
+                            ? <CheckCircle size={18} className="text-primary shrink-0" />
+                            : <span className="text-[11px] text-muted-foreground border border-border rounded px-2 py-0.5">선택</span>}
                     </div>
-                </div>
-            )}
+                </button>
+                <p className="text-[13px] font-semibold text-foreground mb-2">이 기사에서 가장 중요한 단어는?</p>
+                <input type="text"
+                    className="w-full p-3 rounded-md border border-input bg-background text-[14px] tracking-tight text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-shadow duration-200"
+                    placeholder="핵심 단어를 하나 적어주세요"
+                    value={form.word}
+                    onClick={() => form.missionType !== 'word' && setForm({ ...form, missionType: 'word' })}
+                    onChange={(e) => setForm({ ...form, missionType: 'word', word: e.target.value })}
+                />
+            </div>
 
-            {/* Submit */}
+            {/* Submit — 섀도우 없음 */}
             <button type="button" onClick={submit}
                 className={`w-full py-3.5 rounded-lg font-bold tracking-tight transition-colors duration-200 flex items-center justify-center gap-2 cursor-pointer press min-h-[52px]
-                    ${form.missionType ? 'bg-primary hover:bg-grad-mid text-primary-foreground' : 'bg-muted text-muted-foreground cursor-not-allowed'}`}
-                style={form.missionType ? { boxShadow: '0 4px 14px -4px oklch(0.457 0.24 277 / .35)' } : {}}>
+                    ${form.missionType ? 'bg-primary hover:opacity-90 text-primary-foreground' : 'bg-muted text-muted-foreground cursor-not-allowed'}`}>
                 <Save size={17} aria-hidden="true" />
                 {isDone ? '수정 저장하기' : '미션 완료하기'}
             </button>
