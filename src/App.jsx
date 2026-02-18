@@ -10,15 +10,20 @@ import {
    앱 버전 — 코드 변경 시 이 숫자만 올리면
    브라우저 캐시가 자동으로 무효화됩니다
    ────────────────────────────────────────────── */
-const APP_VERSION = '16';
+const APP_VERSION = '17';
 const CACHE_KEY = `ji_news_cache_v${APP_VERSION}`;
 
-// 이전 버전 캐시 자동 삭제
+// 이전 버전 캐시 자동 삭제 + 임시 stats 초기화
 (() => {
     try {
         Object.keys(localStorage)
             .filter(k => k.startsWith('ji_news_cache') && k !== CACHE_KEY)
             .forEach(k => localStorage.removeItem(k));
+        // 임시 데이터(streak≥5, total≥12) 감지 시 초기화
+        const s = JSON.parse(localStorage.getItem('ji_stats') || 'null');
+        if (s && s.streak >= 5 && s.total >= 12 && s.xp >= 1450) {
+            localStorage.removeItem('ji_stats');
+        }
     } catch { /* 무시 */ }
 })();
 
@@ -227,8 +232,8 @@ export default function App() {
     });
     const [stats, setStats] = useState(() => {
         try {
-            return JSON.parse(localStorage.getItem('ji_stats') || '{"streak":5,"total":12,"xp":1450,"level":3}');
-        } catch { return { streak: 5, total: 12, xp: 1450, level: 3 }; }
+            return JSON.parse(localStorage.getItem('ji_stats') || '{"streak":0,"total":0,"xp":0,"level":1}');
+        } catch { return { streak: 0, total: 0, xp: 0, level: 1 }; }
     });
 
     useEffect(() => {
@@ -295,12 +300,27 @@ export default function App() {
         });
 
         const xp = 10 + (form.summary.length > 20 ? 5 : 2) + (form.reason.length > 15 ? 5 : 2) + 5;
+        // streak: 오늘 날짜와 마지막 완료 날짜 비교
+        const todayStr = new Date().toLocaleDateString('ko-KR');
         setStats((p) => {
             const nx = p.xp + xp;
             const nl = Math.floor(nx / 500) + 1;
             const up = nl > p.level;
+            // 마지막 완료일이 오늘이면 streak 유지, 어제면 +1, 그 외 1로 리셋
+            const lastDate = p.lastDate || '';
+            const yesterday = new Date();
+            yesterday.setDate(yesterday.getDate() - 1);
+            const yesterdayStr = yesterday.toLocaleDateString('ko-KR');
+            let newStreak = p.streak;
+            if (lastDate === todayStr) {
+                newStreak = p.streak; // 오늘 이미 완료 → streak 유지
+            } else if (lastDate === yesterdayStr) {
+                newStreak = p.streak + 1; // 어제 완료 → streak +1
+            } else {
+                newStreak = 1; // 처음이거나 하루 이상 끊김 → 1로 리셋
+            }
             setTimeout(() => flash(up ? `레벨 업! LV.${nl} (+${xp} XP)` : `미션 완료! +${xp} XP`), 100);
-            return { ...p, total: p.total + 1, xp: nx, level: nl };
+            return { ...p, total: p.total + 1, xp: nx, level: nl, streak: newStreak, lastDate: todayStr };
         });
         setForm({ summary: '', choice: null, reason: '', word: '' });
         // 미션 완료 후 뉴스 목록으로
@@ -637,19 +657,33 @@ function WriteView({ news, form, setForm, submit, goBack, isDone }) {
    ============================================ */
 function Dashboard({ stats, entries, lvlTitle }) {
     const [expandedId, setExpandedId] = useState(null);
-    const days = ['월', '화', '수', '목', '금', '토', '일'];
-    const bars = [30, 45, 35, 60, 50, 75, 80];
-    const s1 = Math.min(85 + entries.length * 2, 100);
-    const s2 = Math.min(70 + entries.length * 3, 100);
-    const s3 = Math.min(92 + entries.length, 100);
+
+    // 최근 7일 요일별 활동 차트 — 실제 entries 기반
+    const days = ['일', '월', '화', '수', '목', '금', '토'];
+    const bars = Array.from({ length: 7 }, (_, i) => {
+        const d = new Date();
+        d.setDate(d.getDate() - (6 - i));
+        const label = d.toLocaleDateString('ko-KR');
+        const count = entries.filter(e => e.date === label).length;
+        return { day: days[d.getDay()], count };
+    });
+    const maxCount = Math.max(...bars.map(b => b.count), 1);
+
+    // 영역별 점수 — 실제 입력 품질 기반
+    const summaryEntries = entries.filter(e => e.summary && e.summary.length > 0);
+    const reasonEntries  = entries.filter(e => e.reason && e.reason.length > 0);
+    const wordEntries    = entries.filter(e => e.word && e.word.length > 0);
+    const s1 = summaryEntries.length === 0 ? 0 : Math.min(Math.round((summaryEntries.filter(e => e.summary.length >= 20).length / summaryEntries.length) * 100), 100);
+    const s2 = reasonEntries.length  === 0 ? 0 : Math.min(Math.round((reasonEntries.filter(e => e.reason.length >= 15).length  / reasonEntries.length)  * 100), 100);
+    const s3 = entries.length === 0 ? 0 : Math.min(Math.round((wordEntries.length / entries.length) * 100), 100);
 
     return (
         <div className="animate-scale-in space-y-5">
             {/* Stats */}
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
-                <Stat icon={Flame} label="Streak" value={stats.streak} unit="Days" color="bg-destructive" />
-                <Stat icon={BookMarked} label="Articles" value={stats.total} unit="건" color="bg-primary" />
-                <Stat icon={Star} label="Level" value={`LV.${stats.level}`} unit={lvlTitle} color="bg-grad-mid" />
+                <Stat icon={Flame} label="Streak" value={stats.streak} unit="일 연속" color="bg-destructive" />
+                <Stat icon={BookMarked} label="완료 기사" value={entries.length} unit="건" color="bg-primary" />
+                <Stat icon={Star} label="레벨" value={`LV.${stats.level}`} unit={lvlTitle} color="bg-grad-mid" />
                 <Stat icon={Zap} label="Total XP" value={stats.xp} unit="XP" color="bg-secondary" />
             </div>
 
@@ -660,15 +694,19 @@ function Dashboard({ stats, entries, lvlTitle }) {
                         <TrendingUp size={16} className="text-primary" aria-hidden="true" /> 일일 활동 성취도
                     </h3>
                     <div className="h-40 flex items-end gap-2" role="img" aria-label="주간 활동 차트">
-                        {bars.map((h, i) => (
-                            <div key={i} className="flex-1 flex flex-col items-center gap-1 group cursor-default">
-                                <span className="text-[10px] text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity font-semibold tabular-nums">{h}</span>
-                                <div className="chart-grow w-full rounded-t-md bg-accent/30" style={{ height: `${h}%` }}>
-                                    <div className="w-full h-full rounded-t-md bg-primary/50" />
+                        {bars.map((b, i) => {
+                            const h = Math.round((b.count / maxCount) * 100);
+                            const isToday = i === 6;
+                            return (
+                                <div key={i} className="flex-1 flex flex-col items-center gap-1 group cursor-default">
+                                    <span className="text-[10px] text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity font-semibold tabular-nums">{b.count}건</span>
+                                    <div className="chart-grow w-full rounded-t-md bg-accent/40" style={{ height: `${Math.max(h, b.count > 0 ? 10 : 4)}%` }}>
+                                        <div className={`w-full h-full rounded-t-md ${isToday ? 'bg-primary' : 'bg-primary/40'}`} />
+                                    </div>
+                                    <span className={`text-[10px] font-medium ${isToday ? 'text-primary font-bold' : 'text-muted-foreground'}`}>{b.day}</span>
                                 </div>
-                                <span className="text-[10px] text-muted-foreground font-medium">{days[i]}</span>
-                            </div>
-                        ))}
+                            );
+                        })}
                     </div>
                 </div>
 
