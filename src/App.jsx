@@ -17,7 +17,7 @@ function detectCategory(title) {
     if (/ai|인공지능|기술|반도체|it|로봇|챗gpt|소프트웨어|테크|디지털|플랫폼|앱|스타트업|빅테크|메타|구글|애플|삼성|네이버|카카오/.test(t)) return 'Tech & Economy';
     if (/기후|환경|탄소|해수면|온난화|재활용|에너지|태풍|홍수|가뭄|미세먼지|오염|생태|날씨|기상|폭염|한파|원전|신재생|풍력|태양광/.test(t)) return 'Environment';
     if (/경제|금리|주가|환율|무역|gdp|물가|부동산|투자|주식|채권|증시|코스피|코스닥|원화|달러|수출|수입|관세|대출|금융|은행|보험|펀드|임대|가격|집값|전세|월세|세금|재정|예산|적자|흑자|성장률|소비|경기|인플레|디플레|산업|기업|매출|영업이익|ipo|상장|합병|인수/.test(t)) return 'Economy';
-    if (/사회|교육|인구|복지|안전|노동|건강|의료|출산|저출산|육아|학교|대학|입시|청년|노인|고령|장애|빈곤|범죄|사고|재난|소방|경찰|법원|재판|판결|선거|투표|정치|정부|국회|대통령|장관|행정|공무원|이민|난민|차별|인권|여성|아동|가족/.test(t)) return 'Society';
+    if (/사회|교육|인구|복지|안전|노동|건강|의료|출산|저출산|육아|학교|대학|입시|청년|노인|고령|장애|빈곤|범죄|사고|재난|소방|경찰|법원|재판|판결|선고|구형|헌재|헌법재판소|선거|투표|정치|정부|국회|대통령|장관|행정|공무원|이민|난민|차별|인권|여성|아동|가족/.test(t)) return 'Society';
     return 'World';
 }
 
@@ -289,7 +289,7 @@ export default function App() {
         // 오늘 오전 6시 타임스탬프 계산
         const now = new Date();
         const todaySix = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 6, 0, 0, 0);
-        const cacheKey = 'ji_news_cache';
+        const cacheKey = 'ji_news_cache_v2';
 
         try {
             const cached = JSON.parse(localStorage.getItem(cacheKey) || 'null');
