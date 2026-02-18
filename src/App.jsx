@@ -10,7 +10,7 @@ import {
    앱 버전 — 코드 변경 시 이 숫자만 올리면
    브라우저 캐시가 자동으로 무효화됩니다
    ────────────────────────────────────────────── */
-const APP_VERSION = '18';
+const APP_VERSION = '19';
 const CACHE_KEY = `ji_news_cache_v${APP_VERSION}`;
 
 // 이전 버전 캐시 자동 삭제 + 임시 stats 초기화
@@ -19,9 +19,7 @@ const CACHE_KEY = `ji_news_cache_v${APP_VERSION}`;
         Object.keys(localStorage)
             .filter(k => k.startsWith('ji_news_cache') && k !== CACHE_KEY)
             .forEach(k => localStorage.removeItem(k));
-        // v18: 테스트 데이터 전체 초기화
-        localStorage.removeItem('ji_stats');
-        localStorage.removeItem('ji_entries');
+        // 이전 버전 캐시만 삭제 (stats/entries는 유지)
     } catch { /* 무시 */ }
 })();
 
@@ -34,7 +32,7 @@ const CATEGORIES = ['Tech & Economy', 'Environment', 'Economy', 'Society', 'Worl
 function detectCategory(title) {
     const t = title.toLowerCase();
     // Environment: 날씨·기상 최우선 — 단어가 짧아 부분 매칭 필요
-    if (/날씨|기상|기온|강수|강우|강설|호우|대설|태풍|장마|폭염|한파|황사|미세먼지|폭우|홍수|가뭄|흐리|맑음|구름|소나기|안개|천둥|번개|눈비|눈 예보|비 예보|전국.*비|전국.*눈|비.*전국|기후|환경|탄소|온난화|재활용|에너지|원전|신재생|풍력|태양광|탄소중립|해수면|오염|생태/.test(t)) return 'Environment';
+    if (/날씨|기상|기온|강수|강우|강설|호우|대설|태풍|장마|폭염|한파|황사|미세먼지|폭우|홍수|가뭄|흐리|맑음|구름|소나기|안개|천둥|번개|눈비|눈 예보|비 예보|전국.*비|전국.*눈|비.*전국|최고.*도|최저.*도|낮 최고|밤 최저|아침 기온|나들이|나들이 날씨|주말 날씨|오늘 날씨|내일 날씨|이번 주 날씨|기후|환경|탄소|온난화|재활용|에너지|원전|신재생|풍력|태양광|탄소중립|해수면|오염|생태/.test(t)) return 'Environment';
     // Tech: IT·AI·플랫폼·서비스
     if (/ai|인공지능|반도체|로봇|챗gpt|gpt|소프트웨어|테크|디지털|플랫폼|스타트업|빅테크|메타|구글|애플|네이버|카카오|유튜브|먹통|서비스장애|스트리밍|넷플릭스|틱톡|인스타그램|트위터|오픈ai|클라우드|사이버|해킹/.test(t)) return 'Tech & Economy';
     // Economy: 경제·금융·시장
@@ -79,8 +77,10 @@ async function fetchGoogleNews() {
     const items = doc.querySelectorAll('item');
     const articles = [];
 
+    // 상위 20개 파싱 (World 보장을 위해 여유 있게 수집)
+    const pool = [];
     items.forEach((item, i) => {
-        if (i >= 6) return;
+        if (i >= 20) return;
         const rawTitle = item.querySelector('title')?.textContent || '';
         const dashIdx = rawTitle.lastIndexOf(' - ');
         const title = dashIdx > 0 ? rawTitle.slice(0, dashIdx).trim() : rawTitle.trim();
@@ -91,12 +91,33 @@ async function fetchGoogleNews() {
         const date = pubDate ? new Date(pubDate).toISOString().slice(0, 10) : new Date().toISOString().slice(0, 10);
         const category = detectCategory(title);
         const detail = extractDescription(descHtml) || title;
+        pool.push({ i, date, title, source, category, url: link, detail });
+    });
 
+    // 상위 5개 우선 선택
+    const top5 = pool.slice(0, 5);
+    const hasWorld = top5.some(a => a.category === 'World');
+
+    // World가 없으면 pool[5..] 에서 World 후보 1개를 찾아 추가, 없으면 pool[5]로 대체
+    let selected6;
+    if (hasWorld) {
+        selected6 = pool.slice(0, 6);
+    } else {
+        const worldCandidate = pool.slice(5).find(a => a.category === 'World');
+        if (worldCandidate) {
+            selected6 = [...top5, worldCandidate];
+        } else {
+            // World 후보가 없으면 그냥 6번째 기사
+            selected6 = pool.slice(0, 6);
+        }
+    }
+
+    selected6.forEach((a, idx) => {
         articles.push({
-            id: i + 1, date, title, source, category, url: link,
-            detail,
+            id: idx + 1, date: a.date, title: a.title, source: a.source,
+            category: a.category, url: a.url, detail: a.detail,
             opinionOptions: makeOpinionOptions(),
-            importance: Math.max(60, 100 - i * 5),
+            importance: Math.max(60, 100 - idx * 5),
         });
     });
 
