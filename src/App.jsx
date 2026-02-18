@@ -7,6 +7,22 @@ import {
 } from 'lucide-react';
 
 /* ──────────────────────────────────────────────
+   앱 버전 — 코드 변경 시 이 숫자만 올리면
+   브라우저 캐시가 자동으로 무효화됩니다
+   ────────────────────────────────────────────── */
+const APP_VERSION = '4';
+const CACHE_KEY = `ji_news_cache_v${APP_VERSION}`;
+
+// 이전 버전 캐시 자동 삭제
+(() => {
+    try {
+        Object.keys(localStorage)
+            .filter(k => k.startsWith('ji_news_cache') && k !== CACHE_KEY)
+            .forEach(k => localStorage.removeItem(k));
+    } catch { /* 무시 */ }
+})();
+
+/* ──────────────────────────────────────────────
    Google News RSS → 뉴스 데이터
    ────────────────────────────────────────────── */
 const CATEGORIES = ['Tech & Economy', 'Environment', 'Economy', 'Society', 'World'];
@@ -165,10 +181,8 @@ export default function App() {
         // 오늘 오전 6시 타임스탬프 계산
         const now = new Date();
         const todaySix = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 6, 0, 0, 0);
-        const cacheKey = 'ji_news_cache_v3';
-
         try {
-            const cached = JSON.parse(localStorage.getItem(cacheKey) || 'null');
+            const cached = JSON.parse(localStorage.getItem(CACHE_KEY) || 'null');
             // 캐시가 있고, 오늘 6시 이후에 저장된 경우 재사용
             if (cached && cached.fetchedAt >= todaySix.getTime() && cached.articles?.length > 0) {
                 if (!cancelled) {
@@ -188,7 +202,7 @@ export default function App() {
                     // 오늘 6시 이후라면 캐시 저장, 아직 6시 이전이면 저장하지 않음
                     if (now >= todaySix) {
                         try {
-                            localStorage.setItem(cacheKey, JSON.stringify({ fetchedAt: Date.now(), articles }));
+                            localStorage.setItem(CACHE_KEY, JSON.stringify({ fetchedAt: Date.now(), articles }));
                         } catch { /* localStorage 용량 초과 시 캐시 저장 실패 — 활동 기록에는 영향 없음 */ }
                     }
                 }
