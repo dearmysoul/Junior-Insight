@@ -10,7 +10,7 @@ import {
    앱 버전 — 코드 변경 시 이 숫자만 올리면
    브라우저 캐시가 자동으로 무효화됩니다
    ────────────────────────────────────────────── */
-const APP_VERSION = '21';
+const APP_VERSION = '22';
 const CACHE_KEY = `ji_news_cache_v${APP_VERSION}`;
 
 // 이전 버전 캐시 자동 삭제 + 임시 stats 초기화
@@ -417,7 +417,8 @@ export default function App() {
                         <p className="text-muted-foreground text-[12px] sm:text-[13px] mt-0.5 tracking-tight">세상을 보는 눈을 키우는 문해력 성장소</p>
                     </div>
                     <div className="flex items-center gap-2 bg-card px-3 py-1.5 rounded-full border border-border">
-                        <div className="w-7 h-7 rounded-full bg-primary shrink-0" aria-hidden="true" />
+                        <img src={`${import.meta.env.BASE_URL}avatar.png`} alt="지율이 아바타"
+                            className="w-7 h-7 rounded-full shrink-0 object-cover bg-accent" />
                         <span className="text-[13px] font-bold text-card-foreground tracking-tight hidden sm:inline">지율이</span>
                     </div>
                 </header>
