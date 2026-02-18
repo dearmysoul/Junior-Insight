@@ -257,7 +257,9 @@ export default function App() {
                     setNewsError(null);
                     // 오늘 6시 이후라면 캐시 저장, 아직 6시 이전이면 저장하지 않음
                     if (now >= todaySix) {
-                        localStorage.setItem(cacheKey, JSON.stringify({ fetchedAt: Date.now(), articles }));
+                        try {
+                            localStorage.setItem(cacheKey, JSON.stringify({ fetchedAt: Date.now(), articles }));
+                        } catch { /* localStorage 용량 초과 시 캐시 저장 실패 — 활동 기록에는 영향 없음 */ }
                     }
                 }
             })
@@ -275,8 +277,12 @@ export default function App() {
         } catch { return { streak: 5, total: 12, xp: 1450, level: 3 }; }
     });
 
-    useEffect(() => { localStorage.setItem('ji_entries', JSON.stringify(entries)); }, [entries]);
-    useEffect(() => { localStorage.setItem('ji_stats', JSON.stringify(stats)); }, [stats]);
+    useEffect(() => {
+        try { localStorage.setItem('ji_entries', JSON.stringify(entries)); } catch { /* 저장 실패 무시 */ }
+    }, [entries]);
+    useEffect(() => {
+        try { localStorage.setItem('ji_stats', JSON.stringify(stats)); } catch { /* 저장 실패 무시 */ }
+    }, [stats]);
 
     const flash = useCallback((msg) => {
         setToast({ show: true, msg });
