@@ -10,7 +10,7 @@ import {
    앱 버전 — 코드 변경 시 이 숫자만 올리면
    브라우저 캐시가 자동으로 무효화됩니다
    ────────────────────────────────────────────── */
-const APP_VERSION = '10';
+const APP_VERSION = '11';
 const CACHE_KEY = `ji_news_cache_v${APP_VERSION}`;
 
 // 이전 버전 캐시 자동 삭제
@@ -30,14 +30,14 @@ const CATEGORIES = ['Tech & Economy', 'Environment', 'Economy', 'Society', 'Worl
 /** 카테고리 키워드 매핑 */
 function detectCategory(title) {
     const t = title.toLowerCase();
-    // Society: 국내 정치·사회·범죄·의료·교육 — 가장 넓은 범주, 먼저 검사
-    if (/사회|교육|인구|복지|안전|노동|건강|의료|급여|비급여|본인부담|건강보험|병원|수술|약값|출산|저출산|육아|학교|대학|입시|수능|청년|노인|고령|장애|빈곤|범죄|절도|강도|검거|체포|구속|탈주|마약|살인|폭행|성범죄|사고|화재|재난|소방|경찰|법원|재판|판결|선고|구형|징역|집행유예|무죄|유죄|사형|벌금|항소|상고|헌재|헌법재판소|선거|투표|정치|정부|국회|대통령|대선|총선|장관|의원|여야|탄핵|내란|계엄|특검|수사|기소|행정|공무원|이민|난민|차별|인권|여성|아동|가족|복지관|주민|시민|서울|부산|경기|인천|대구|광주|대전|울산|세종|민주당|국민의힘|더불어|국민당|정당|오세훈|이재명|윤석열|한동훈|국무|시장|도지사|구청|국방|외교|통일|북한|남북|한국|우리나라/.test(t)) return 'Society';
-    // Tech: IT·AI·플랫폼·서비스
-    if (/ai|인공지능|기술|반도체|it|로봇|챗gpt|gpt|소프트웨어|테크|디지털|플랫폼|앱|스타트업|빅테크|메타|구글|애플|삼성|네이버|카카오|유튜브|먹통|서비스장애|인터넷|스트리밍|넷플릭스|틱톡|인스타|트위터|엑스|오픈ai|클라우드|데이터|사이버|해킹|보안/.test(t)) return 'Tech & Economy';
-    // Environment: 기후·환경·에너지
-    if (/기후|환경|탄소|해수면|온난화|재활용|에너지|태풍|홍수|가뭄|미세먼지|오염|생태|날씨|기상|폭염|한파|원전|신재생|풍력|태양광|녹색|탄소중립/.test(t)) return 'Environment';
+    // Tech: IT·AI·플랫폼·서비스 (먼저: 유튜브/앱 등이 Society보다 우선)
+    if (/ai|인공지능|반도체|로봇|챗gpt|gpt|소프트웨어|테크|디지털|플랫폼|스타트업|빅테크|메타|구글|애플|네이버|카카오|유튜브|먹통|서비스장애|스트리밍|넷플릭스|틱톡|인스타그램|트위터|오픈ai|클라우드|사이버|해킹|보안취약/.test(t)) return 'Tech & Economy';
+    // Environment: 기후·날씨·환경·에너지
+    if (/기후|환경|탄소|해수면|온난화|재활용|태풍|홍수|가뭄|미세먼지|오염|생태|날씨|기상|폭염|한파|원전|신재생|풍력|태양광|녹색|탄소중립|황사|강수|기온|호우|대설|한파|장마/.test(t)) return 'Environment';
     // Economy: 경제·금융·시장
-    if (/경제|금리|주가|환율|무역|gdp|물가|부동산|투자|주식|채권|증시|코스피|코스닥|원화|달러|수출|수입|관세|대출|금융|은행|보험|펀드|임대|집값|전세|월세|세금|재정|예산|적자|흑자|성장률|소비|경기|인플레|디플레|기업|매출|영업이익|ipo|상장|합병|인수|무역전쟁|관세|수출규제/.test(t)) return 'Economy';
+    if (/경제|금리|주가|환율|무역|gdp|물가|부동산|투자|주식|채권|증시|코스피|코스닥|원화|달러|수출|수입|관세|대출|금융|은행|보험|펀드|집값|전세|월세|세금|재정|예산|적자|흑자|성장률|소비|인플레|디플레|매출|영업이익|ipo|상장|합병|인수|무역전쟁|수출규제/.test(t)) return 'Economy';
+    // Society: 국내 정치·사회·범죄·의료·교육·입법·날씨 이외 나머지
+    if (/사회|교육|복지|안전|노동|건강|의료|급여|비급여|본인부담|건강보험|병원|수술|약값|출산|저출산|육아|학교|대학|입시|수능|청년|노인|고령|장애|빈곤|범죄|절도|강도|검거|체포|구속|탈주|마약|살인|폭행|성범죄|사고|화재|재난|소방|경찰|법원|재판|판결|선고|구형|징역|집행유예|무죄|유죄|벌금|항소|상고|헌재|헌법재판소|선거|투표|정치|정부|국회|대통령|대선|총선|장관|의원|여야|탄핵|내란|계엄|특검|수사|기소|행정|공무원|이민|난민|차별|인권|여성|아동|가족|주민|시민|서울|부산|경기|인천|대구|광주|대전|울산|세종|민주당|국민의힘|정당|국무|시장|도지사|구청|국방|외교|통일|북한|남북|입법|법안|개정|시행|조례|규정|지자체|지방/.test(t)) return 'Society';
     return 'World';
 }
 
@@ -110,15 +110,16 @@ const LEVEL_TITLES = [
    ────────────────────────────────────────────── */
 function Badge({ category }) {
     const map = {
-        'Tech & Economy': { Icon: Zap, cls: 'bg-primary/10 text-primary border-primary/25' },
-        'Environment': { Icon: Target, cls: 'bg-secondary/10 text-secondary border-secondary/25' },
-        'Economy': { Icon: TrendingUp, cls: 'bg-chart-5/10 text-chart-5 border-chart-5/25' },
-        'Society': { Icon: BookOpen, cls: 'bg-chart-3/10 text-chart-3 border-chart-3/25' },
-        'World': { Icon: Clock, cls: 'bg-muted/60 text-muted-foreground border-border' },
+        'Tech & Economy': { Icon: Zap,        bg: '#fff7ed', text: '#c2410c', border: '#fed7aa' },
+        'Environment':    { Icon: Target,      bg: '#f0fdf4', text: '#15803d', border: '#bbf7d0' },
+        'Economy':        { Icon: TrendingUp,  bg: '#eff6ff', text: '#1d4ed8', border: '#bfdbfe' },
+        'Society':        { Icon: BookOpen,    bg: '#f5f3ff', text: '#6d28d9', border: '#ddd6fe' },
+        'World':          { Icon: Clock,       bg: '#f9fafb', text: '#4b5563', border: '#e5e7eb' },
     };
-    const { Icon, cls } = map[category] ?? map['World'];
+    const { Icon, bg, text, border } = map[category] ?? map['World'];
     return (
-        <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[11px] font-semibold tracking-tight border ${cls}`}>
+        <span style={{ backgroundColor: bg, color: text, borderColor: border }}
+            className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[11px] font-semibold tracking-tight border">
             <Icon size={11} aria-hidden="true" />
             {category}
         </span>
@@ -161,7 +162,7 @@ function SkillRow({ label, score, from, to }) {
                 <span className="font-bold text-card-foreground tabular-nums">{score}/100</span>
             </div>
             <div className="w-full h-2 bg-accent/40 rounded-full overflow-hidden">
-                <div className={`h-full rounded-full progress-fill bg-gradient-to-r ${from} ${to}`} style={{ width: `${score}%` }} />
+                <div className={`h-full rounded-full progress-fill ${from}`} style={{ width: `${score}%` }} />
             </div>
         </div>
     );
@@ -360,7 +361,7 @@ export default function App() {
                         <p className="text-muted-foreground text-[12px] sm:text-[13px] mt-0.5 tracking-tight">세상을 보는 눈을 키우는 문해력 성장소</p>
                     </div>
                     <div className="flex items-center gap-2 bg-card px-3 py-1.5 rounded-full border border-border">
-                        <div className="w-7 h-7 rounded-full bg-gradient-to-tr from-primary to-grad-mid shrink-0" aria-hidden="true" />
+                        <div className="w-7 h-7 rounded-full bg-primary shrink-0" aria-hidden="true" />
                         <span className="text-[13px] font-bold text-card-foreground tracking-tight hidden sm:inline">지율이</span>
                     </div>
                 </header>
@@ -402,9 +403,8 @@ function NewsFeed({ news, loading, error, entries, onMission }) {
     return (
         <div className="animate-fade-in space-y-4">
             {/* Hero */}
-            <div className="relative bg-gradient-to-br from-grad-start via-grad-mid to-grad-end text-primary-foreground p-5 sm:p-6 rounded-xl overflow-hidden">
-                <div className="absolute inset-0 bg-[radial-gradient(circle_at_80%_20%,rgba(255,255,255,.08)_0%,transparent_60%)]" aria-hidden="true" />
-                <div className="relative flex flex-col sm:flex-row justify-between items-start gap-3">
+            <div className="bg-primary text-primary-foreground p-5 sm:p-6 rounded-xl">
+                <div className="flex flex-col sm:flex-row justify-between items-start gap-3">
                     <div>
                         <div className="flex items-center gap-2 mb-1">
                             <BookOpen size={18} aria-hidden="true" className="opacity-80" />
@@ -660,7 +660,7 @@ function Dashboard({ stats, entries, lvlTitle }) {
                             <div key={i} className="flex-1 flex flex-col items-center gap-1 group cursor-default">
                                 <span className="text-[10px] text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity font-semibold tabular-nums">{h}</span>
                                 <div className="chart-grow w-full rounded-t-md bg-accent/30" style={{ height: `${h}%` }}>
-                                    <div className="w-full h-full rounded-t-md bg-gradient-to-t from-primary/30 to-primary/60" />
+                                    <div className="w-full h-full rounded-t-md bg-primary/50" />
                                 </div>
                                 <span className="text-[10px] text-muted-foreground font-medium">{days[i]}</span>
                             </div>
@@ -674,11 +674,11 @@ function Dashboard({ stats, entries, lvlTitle }) {
                         <Award size={16} className="text-grad-mid" aria-hidden="true" /> 영역별 활동 점수
                     </h3>
                     <p className="text-[11px] text-muted-foreground mb-4">미션을 완료할수록 점수가 올라갑니다.</p>
-                    <SkillRow label="요약 능력 (Summary)" score={s1} from="from-primary" to="to-grad-mid" />
+                    <SkillRow label="요약 능력 (Summary)" score={s1} from="bg-primary" to="" />
                     <p className="text-[11px] text-muted-foreground -mt-2 mb-4 pl-0.5">기사를 <span className="font-semibold text-foreground">20자 이상</span>으로 요약하면 +5 XP</p>
-                    <SkillRow label="비판적 사고 (Reasoning)" score={s2} from="from-secondary" to="to-chart-5" />
+                    <SkillRow label="비판적 사고 (Reasoning)" score={s2} from="bg-secondary" to="" />
                     <p className="text-[11px] text-muted-foreground -mt-2 mb-4 pl-0.5">이유를 <span className="font-semibold text-foreground">15자 이상</span> 작성하면 +5 XP</p>
-                    <SkillRow label="어휘 습득 (Vocabulary)" score={s3} from="from-chart-3" to="to-chart-4" />
+                    <SkillRow label="어휘 습득 (Vocabulary)" score={s3} from="bg-chart-4" to="" />
                     <p className="text-[11px] text-muted-foreground -mt-2 pl-0.5">단어를 <span className="font-semibold text-foreground">1개 이상</span> 수집하면 +5 XP</p>
                 </div>
             </div>
