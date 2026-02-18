@@ -10,7 +10,7 @@ import {
    앱 버전 — 코드 변경 시 이 숫자만 올리면
    브라우저 캐시가 자동으로 무효화됩니다
    ────────────────────────────────────────────── */
-const APP_VERSION = '19';
+const APP_VERSION = '20';
 const CACHE_KEY = `ji_news_cache_v${APP_VERSION}`;
 
 // 이전 버전 캐시 자동 삭제 + 임시 stats 초기화
@@ -19,6 +19,12 @@ const CACHE_KEY = `ji_news_cache_v${APP_VERSION}`;
         Object.keys(localStorage)
             .filter(k => k.startsWith('ji_news_cache') && k !== CACHE_KEY)
             .forEach(k => localStorage.removeItem(k));
+        // v20: entries의 newsId가 숫자였던 구버전 데이터 초기화 (URL 기반으로 전환)
+        const entries = JSON.parse(localStorage.getItem('ji_entries') || '[]');
+        if (entries.length > 0 && typeof entries[0].newsId === 'number') {
+            localStorage.removeItem('ji_entries');
+            localStorage.removeItem('ji_stats');
+        }
         // 이전 버전 캐시만 삭제 (stats/entries는 유지)
     } catch { /* 무시 */ }
 })();
@@ -114,7 +120,9 @@ async function fetchGoogleNews() {
 
     selected6.forEach((a, idx) => {
         articles.push({
-            id: idx + 1, date: a.date, title: a.title, source: a.source,
+            // id = URL 기반 고유 식별자 (날마다 같은 숫자가 다른 기사에 재사용되는 버그 방지)
+            id: a.url || `${a.title}_${a.date}`,
+            date: a.date, title: a.title, source: a.source,
             category: a.category, url: a.url, detail: a.detail,
             opinionOptions: makeOpinionOptions(),
             importance: Math.max(60, 100 - idx * 5),
@@ -446,7 +454,9 @@ export default function App() {
    ============================================ */
 function NewsFeed({ news, loading, error, entries, onMission }) {
     const today = new Date().toISOString().slice(0, 10);
-    const doneIds = new Set(entries.map(e => e.newsId));
+    const todayKr = new Date().toLocaleDateString('ko-KR');
+    // 오늘 완료한 기사 ID만 추적 (다른 날 완료한 기사가 오늘 카드에 완료 표시되는 버그 방지)
+    const doneIds = new Set(entries.filter(e => e.date === todayKr).map(e => e.newsId));
 
     return (
         <div className="animate-fade-in space-y-4">
