@@ -1,0 +1,8 @@
+{
+  "rewrites": [
+    {
+      "source": "/api/gnews/:path*",
+      "destination": "https://news.google.com/:path*"
+    }
+  ]
+}
