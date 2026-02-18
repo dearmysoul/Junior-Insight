@@ -10,7 +10,7 @@ import {
    앱 버전 — 코드 변경 시 이 숫자만 올리면
    브라우저 캐시가 자동으로 무효화됩니다
    ────────────────────────────────────────────── */
-const APP_VERSION = '17';
+const APP_VERSION = '18';
 const CACHE_KEY = `ji_news_cache_v${APP_VERSION}`;
 
 // 이전 버전 캐시 자동 삭제 + 임시 stats 초기화
@@ -19,11 +19,9 @@ const CACHE_KEY = `ji_news_cache_v${APP_VERSION}`;
         Object.keys(localStorage)
             .filter(k => k.startsWith('ji_news_cache') && k !== CACHE_KEY)
             .forEach(k => localStorage.removeItem(k));
-        // 임시 데이터(streak≥5, total≥12) 감지 시 초기화
-        const s = JSON.parse(localStorage.getItem('ji_stats') || 'null');
-        if (s && s.streak >= 5 && s.total >= 12 && s.xp >= 1450) {
-            localStorage.removeItem('ji_stats');
-        }
+        // v18: 테스트 데이터 전체 초기화
+        localStorage.removeItem('ji_stats');
+        localStorage.removeItem('ji_entries');
     } catch { /* 무시 */ }
 })();
 
@@ -299,7 +297,17 @@ export default function App() {
             return [newEntry, ...p];
         });
 
-        const xp = 10 + (form.summary.length > 20 ? 5 : 2) + (form.reason.length > 15 ? 5 : 2) + 5;
+        // XP 계산:
+        // 요약: 입력만 해도 +1, 20자 이상이면 추가 +4 (합계 최대 +5)
+        // 이유: 입력만 해도 +1, 15자 이상이면 추가 +4 (합계 최대 +5)
+        // 단어: 고정 +5
+        const summaryXp = form.summary.trim().length > 0
+            ? (form.summary.trim().length >= 20 ? 5 : 1)
+            : 0;
+        const reasonXp = form.reason.trim().length > 0
+            ? (form.reason.trim().length >= 15 ? 5 : 1)
+            : 0;
+        const xp = summaryXp + reasonXp + 5;
         // streak: 오늘 날짜와 마지막 완료 날짜 비교
         const todayStr = new Date().toLocaleDateString('ko-KR');
         setStats((p) => {
@@ -717,9 +725,9 @@ function Dashboard({ stats, entries, lvlTitle }) {
                     </h3>
                     <p className="text-[11px] text-muted-foreground mb-4">미션을 완료할수록 점수가 올라갑니다.</p>
                     <SkillRow label="요약 능력 (Summary)" score={s1} from="bg-primary" to="" />
-                    <p className="text-[11px] text-muted-foreground -mt-2 mb-4 pl-0.5">기사를 <span className="font-semibold text-foreground">20자 이상</span>으로 요약하면 +5 XP</p>
+                    <p className="text-[11px] text-muted-foreground -mt-2 mb-4 pl-0.5">입력 시 <span className="font-semibold text-foreground">+1 XP</span> · <span className="font-semibold text-foreground">20자 이상</span> 요약 시 +5 XP</p>
                     <SkillRow label="비판적 사고 (Reasoning)" score={s2} from="bg-secondary" to="" />
-                    <p className="text-[11px] text-muted-foreground -mt-2 mb-4 pl-0.5">이유를 <span className="font-semibold text-foreground">15자 이상</span> 작성하면 +5 XP</p>
+                    <p className="text-[11px] text-muted-foreground -mt-2 mb-4 pl-0.5">입력 시 <span className="font-semibold text-foreground">+1 XP</span> · <span className="font-semibold text-foreground">15자 이상</span> 작성 시 +5 XP</p>
                     <SkillRow label="어휘 습득 (Vocabulary)" score={s3} from="bg-chart-4" to="" />
                     <p className="text-[11px] text-muted-foreground -mt-2 pl-0.5">단어를 <span className="font-semibold text-foreground">1개 이상</span> 수집하면 +5 XP</p>
                 </div>
