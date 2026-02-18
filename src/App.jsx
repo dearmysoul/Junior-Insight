@@ -10,7 +10,7 @@ import {
    앱 버전 — 코드 변경 시 이 숫자만 올리면
    브라우저 캐시가 자동으로 무효화됩니다
    ────────────────────────────────────────────── */
-const APP_VERSION = '7';
+const APP_VERSION = '8';
 const CACHE_KEY = `ji_news_cache_v${APP_VERSION}`;
 
 // 이전 버전 캐시 자동 삭제
@@ -51,12 +51,22 @@ function extractDescription(descHtml) {
     return text.length > 10 ? text : null;
 }
 
-/** Google News RSS 파싱 (allorigins CORS proxy 경유) */
+/** Google News RSS 파싱 (CORS proxy 순차 시도) */
 async function fetchGoogleNews() {
-    const target = encodeURIComponent('https://news.google.com/rss?hl=ko&gl=KR&ceid=KR:ko');
-    const rssUrl = `https://api.allorigins.win/raw?url=${target}`;
-    const res = await fetch(rssUrl);
-    if (!res.ok) throw new Error(`RSS fetch failed: ${res.status}`);
+    const gnews = 'https://news.google.com/rss?hl=ko&gl=KR&ceid=KR:ko';
+    const proxies = [
+        `https://corsproxy.io/?url=${encodeURIComponent(gnews)}`,
+        `https://api.allorigins.win/raw?url=${encodeURIComponent(gnews)}`,
+        `https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(gnews)}`,
+    ];
+    let res, lastErr;
+    for (const rssUrl of proxies) {
+        try {
+            res = await fetch(rssUrl);
+            if (res.ok) break;
+        } catch (e) { lastErr = e; }
+    }
+    if (!res || !res.ok) throw new Error(`RSS fetch failed: ${lastErr?.message || 'all proxies failed'}`);
     const xml = await res.text();
     const doc = new DOMParser().parseFromString(xml, 'text/xml');
     const items = doc.querySelectorAll('item');
