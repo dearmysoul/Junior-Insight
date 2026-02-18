@@ -231,9 +231,36 @@ export default function App() {
 
     useEffect(() => {
         let cancelled = false;
+
+        // 오늘 오전 6시 타임스탬프 계산
+        const now = new Date();
+        const todaySix = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 6, 0, 0, 0);
+        const cacheKey = 'ji_news_cache';
+
+        try {
+            const cached = JSON.parse(localStorage.getItem(cacheKey) || 'null');
+            // 캐시가 있고, 오늘 6시 이후에 저장된 경우 재사용
+            if (cached && cached.fetchedAt >= todaySix.getTime() && cached.articles?.length > 0) {
+                if (!cancelled) {
+                    setNews(cached.articles);
+                    setNewsLoading(false);
+                    return;
+                }
+            }
+        } catch { /* 캐시 파싱 실패 시 무시 */ }
+
         setNewsLoading(true);
         fetchGoogleNews()
-            .then((articles) => { if (!cancelled) { setNews(articles); setNewsError(null); } })
+            .then((articles) => {
+                if (!cancelled) {
+                    setNews(articles);
+                    setNewsError(null);
+                    // 오늘 6시 이후라면 캐시 저장, 아직 6시 이전이면 저장하지 않음
+                    if (now >= todaySix) {
+                        localStorage.setItem(cacheKey, JSON.stringify({ fetchedAt: Date.now(), articles }));
+                    }
+                }
+            })
             .catch((err) => { if (!cancelled) setNewsError(err.message); })
             .finally(() => { if (!cancelled) setNewsLoading(false); });
         return () => { cancelled = true; };
