@@ -10,7 +10,7 @@ import {
    앱 버전 — 코드 변경 시 이 숫자만 올리면
    브라우저 캐시가 자동으로 무효화됩니다
    ────────────────────────────────────────────── */
-const APP_VERSION = '15';
+const APP_VERSION = '16';
 const CACHE_KEY = `ji_news_cache_v${APP_VERSION}`;
 
 // 이전 버전 캐시 자동 삭제
@@ -403,35 +403,44 @@ function NewsFeed({ news, loading, error, entries, onMission }) {
         <div className="animate-fade-in space-y-4">
             {/* Hero */}
             <div className="bg-primary text-primary-foreground p-5 sm:p-6 rounded-xl">
-                <div className="flex flex-col sm:flex-row justify-between items-start gap-3">
-                    <div>
-                        <div className="flex items-center gap-2 mb-1">
-                            <BookOpen size={18} aria-hidden="true" className="opacity-80" />
-                            <h2 className="text-[17px] sm:text-xl font-bold tracking-tight">오늘의 뉴스</h2>
+                {/* 상단: 타이틀 + 날짜 + 툴팁 */}
+                <div className="flex items-center justify-between mb-4">
+                    <div className="flex items-center gap-2">
+                        <BookOpen size={18} aria-hidden="true" className="opacity-80" />
+                        <h2 className="text-[17px] sm:text-xl font-bold tracking-tight">오늘의 뉴스</h2>
+                        <time className="text-[15px] sm:text-[17px] font-semibold tabular-nums opacity-80 ml-1">{today}</time>
+                    </div>
+                    {/* 툴팁 */}
+                    <div className="relative group cursor-default">
+                        <span className="text-[12px] text-primary-foreground/60 border border-primary-foreground/30 rounded-full px-2 py-0.5 hover:text-primary-foreground transition-colors">?</span>
+                        <div className="absolute right-0 top-7 z-50 hidden group-hover:block w-64 bg-foreground text-background text-[11px] leading-relaxed p-3 rounded-lg shadow-lg pointer-events-none">
+                            <p className="font-bold mb-1">📰 뉴스 제공 안내</p>
+                            <p>· Google 뉴스 RSS에서 한국 최신 기사 6개를 가져옵니다.</p>
+                            <p>· 매일 오전 6시 이후 첫 접속 시 새 뉴스로 업데이트됩니다.</p>
+                            <p>· 뉴스 클릭 시 원문 기사로 이동합니다.</p>
                         </div>
-                        <div className="relative group inline-flex items-center gap-1 cursor-default">
-                            <p className="text-primary-foreground/60 text-[12px] flex items-center gap-1">
-                                <Clock size={12} aria-hidden="true" />실시간 · Google 뉴스 기반
-                                <span className="underline decoration-dotted opacity-60 text-[11px]">(?)</span>
-                            </p>
-                            {/* 툴팁 */}
-                            <div className="absolute left-0 top-6 z-50 hidden group-hover:block w-64 bg-foreground text-background text-[11px] leading-relaxed p-3 rounded-lg shadow-lg pointer-events-none">
-                                <p className="font-bold mb-1">📰 뉴스 제공 안내</p>
-                                <p>· Google 뉴스 RSS에서 한국 최신 기사 6개를 가져옵니다.</p>
-                                <p>· 매일 오전 6시 이후 첫 접속 시 새 뉴스로 업데이트됩니다.</p>
-                                <p>· 뉴스 클릭 시 원문 기사로 이동합니다.</p>
+                    </div>
+                </div>
+
+                {/* 하단: 미션 안내 영역 */}
+                <div className={`rounded-lg p-3 flex items-center gap-3 ${doneIds.size > 0 ? 'bg-white/15' : 'bg-white/10'}`}>
+                    {doneIds.size > 0 ? (
+                        <>
+                            <CheckCircle size={22} className="shrink-0 text-white" aria-hidden="true" />
+                            <div>
+                                <p className="font-bold text-[14px] tracking-tight">오늘 미션 완료! 🎉</p>
+                                <p className="text-[11px] text-primary-foreground/70">훌륭해요! 내일도 도전해보세요.</p>
                             </div>
-                        </div>
-                    </div>
-                    <div className="sm:text-right">
-                        <time className="text-xl sm:text-2xl font-bold tabular-nums opacity-90">{today}</time>
-                        <p className="text-[11px] mt-0.5">
-                            {doneIds.size > 0
-                                ? <span className="inline-flex items-center gap-1 bg-white/20 text-white px-2 py-0.5 rounded-full font-bold"><CheckCircle size={11} aria-hidden="true" /> 오늘 미션 완료</span>
-                                : <span className="text-primary-foreground/50">오늘 미션을 완료해보세요</span>
-                            }
-                        </p>
-                    </div>
+                        </>
+                    ) : (
+                        <>
+                            <Target size={22} className="shrink-0 opacity-90" aria-hidden="true" />
+                            <div>
+                                <p className="font-bold text-[14px] tracking-tight">오늘의 미션을 완료하세요</p>
+                                <p className="text-[11px] text-primary-foreground/70">뉴스 1개를 읽고 · 요약 · 의견 · 핵심단어를 작성하면 완료!</p>
+                            </div>
+                        </>
+                    )}
                 </div>
             </div>
 
