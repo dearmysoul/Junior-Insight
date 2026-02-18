@@ -10,7 +10,7 @@ import {
    앱 버전 — 코드 변경 시 이 숫자만 올리면
    브라우저 캐시가 자동으로 무효화됩니다
    ────────────────────────────────────────────── */
-const APP_VERSION = '9';
+const APP_VERSION = '10';
 const CACHE_KEY = `ji_news_cache_v${APP_VERSION}`;
 
 // 이전 버전 캐시 자동 삭제
@@ -31,7 +31,7 @@ const CATEGORIES = ['Tech & Economy', 'Environment', 'Economy', 'Society', 'Worl
 function detectCategory(title) {
     const t = title.toLowerCase();
     // Society: 국내 정치·사회·범죄·의료·교육 — 가장 넓은 범주, 먼저 검사
-    if (/사회|교육|인구|복지|안전|노동|건강|의료|급여|비급여|본인부담|건강보험|병원|수술|약값|출산|저출산|육아|학교|대학|입시|수능|청년|노인|고령|장애|빈곤|범죄|절도|강도|검거|체포|구속|탈주|마약|살인|폭행|성범죄|사고|화재|재난|소방|경찰|법원|재판|판결|선고|구형|징역|집행유예|무죄|유죄|사형|벌금|항소|상고|헌재|헌법재판소|선거|투표|정치|정부|국회|대통령|대선|총선|장관|의원|여야|탄핵|내란|계엄|특검|수사|기소|행정|공무원|이민|난민|차별|인권|여성|아동|가족|복지관|주민|시민|서울|부산|경기|인천|대구|광주|대전|울산|세종/.test(t)) return 'Society';
+    if (/사회|교육|인구|복지|안전|노동|건강|의료|급여|비급여|본인부담|건강보험|병원|수술|약값|출산|저출산|육아|학교|대학|입시|수능|청년|노인|고령|장애|빈곤|범죄|절도|강도|검거|체포|구속|탈주|마약|살인|폭행|성범죄|사고|화재|재난|소방|경찰|법원|재판|판결|선고|구형|징역|집행유예|무죄|유죄|사형|벌금|항소|상고|헌재|헌법재판소|선거|투표|정치|정부|국회|대통령|대선|총선|장관|의원|여야|탄핵|내란|계엄|특검|수사|기소|행정|공무원|이민|난민|차별|인권|여성|아동|가족|복지관|주민|시민|서울|부산|경기|인천|대구|광주|대전|울산|세종|민주당|국민의힘|더불어|국민당|정당|오세훈|이재명|윤석열|한동훈|국무|시장|도지사|구청|국방|외교|통일|북한|남북|한국|우리나라/.test(t)) return 'Society';
     // Tech: IT·AI·플랫폼·서비스
     if (/ai|인공지능|기술|반도체|it|로봇|챗gpt|gpt|소프트웨어|테크|디지털|플랫폼|앱|스타트업|빅테크|메타|구글|애플|삼성|네이버|카카오|유튜브|먹통|서비스장애|인터넷|스트리밍|넷플릭스|틱톡|인스타|트위터|엑스|오픈ai|클라우드|데이터|사이버|해킹|보안/.test(t)) return 'Tech & Economy';
     // Environment: 기후·환경·에너지
@@ -361,7 +361,7 @@ export default function App() {
                     </div>
                     <div className="flex items-center gap-2 bg-card px-3 py-1.5 rounded-full border border-border">
                         <div className="w-7 h-7 rounded-full bg-gradient-to-tr from-primary to-grad-mid shrink-0" aria-hidden="true" />
-                        <span className="text-[13px] font-bold text-card-foreground tracking-tight hidden sm:inline">김학생님</span>
+                        <span className="text-[13px] font-bold text-card-foreground tracking-tight hidden sm:inline">지율이</span>
                     </div>
                 </header>
 
@@ -416,8 +416,11 @@ function NewsFeed({ news, loading, error, entries, onMission }) {
                     </div>
                     <div className="sm:text-right">
                         <time className="text-xl sm:text-2xl font-bold tabular-nums opacity-90">{today}</time>
-                        <p className="text-[11px] text-primary-foreground/50 mt-0.5">
-                            {news.length > 0 ? `${doneIds.size}/${news.length}개 미션 완료` : '불러오는 중...'}
+                        <p className="text-[11px] mt-0.5">
+                            {doneIds.size > 0
+                                ? <span className="inline-flex items-center gap-1 bg-white/20 text-white px-2 py-0.5 rounded-full font-bold"><CheckCircle size={11} aria-hidden="true" /> 오늘 미션 완료</span>
+                                : <span className="text-primary-foreground/50">오늘 미션을 완료해보세요</span>
+                            }
                         </p>
                     </div>
                 </div>
