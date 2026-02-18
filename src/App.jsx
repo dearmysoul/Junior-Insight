@@ -10,7 +10,7 @@ import {
    앱 버전 — 코드 변경 시 이 숫자만 올리면
    브라우저 캐시가 자동으로 무효화됩니다
    ────────────────────────────────────────────── */
-const APP_VERSION = '14';
+const APP_VERSION = '15';
 const CACHE_KEY = `ji_news_cache_v${APP_VERSION}`;
 
 // 이전 버전 캐시 자동 삭제
@@ -187,8 +187,8 @@ export default function App() {
     const [tab, setTab] = useState('news');
     const [selected, setSelected] = useState(null);
     const [toast, setToast] = useState({ show: false, msg: '' });
-    // mission: 'summary' | 'opinion' | 'word' (3가지 중 1개 선택)
-    const [form, setForm] = useState({ missionType: null, summary: '', choice: null, reason: '', word: '' });
+    // 3가지 입력 모두 필수
+    const [form, setForm] = useState({ summary: '', choice: null, reason: '', word: '' });
 
     /* ── Google News 실시간 fetch ── */
     const [news, setNews] = useState([]);
@@ -255,25 +255,24 @@ export default function App() {
         const existing = entries.find(e => e.newsId === n.id);
         if (existing) {
             setForm({
-                missionType: existing.missionType || null,
                 summary: existing.summary,
                 choice: existing.choice,
                 reason: existing.reason,
                 word: existing.word,
             });
         } else {
-            setForm({ missionType: null, summary: '', choice: null, reason: '', word: '' });
+            setForm({ summary: '', choice: null, reason: '', word: '' });
         }
         setTab('write');
         window.scrollTo({ top: 0, behavior: 'smooth' });
     }, [entries]);
 
     const submit = useCallback(() => {
-        if (!form.missionType) { flash('미션을 하나 선택해주세요'); return; }
-        if (form.missionType === 'summary' && !form.summary.trim()) { flash('요약을 작성해주세요'); return; }
-        if (form.missionType === 'opinion' && form.choice === null) { flash('의견을 선택해주세요'); return; }
-        if (form.missionType === 'opinion' && !form.reason.trim()) { flash('이유를 적어주세요'); return; }
-        if (form.missionType === 'word' && !form.word.trim()) { flash('단어를 적어주세요'); return; }
+        // 3개 미션 입력값 모두 필수
+        if (!form.summary.trim()) { flash('① 한 문장 요약을 작성해주세요'); return; }
+        if (form.choice === null) { flash('② 나의 의견을 선택해주세요'); return; }
+        if (!form.reason.trim()) { flash('② 의견의 이유를 적어주세요'); return; }
+        if (!form.word.trim()) { flash('③ 핵심 단어를 입력해주세요'); return; }
 
         const newEntry = {
             id: Date.now(), date: new Date().toLocaleDateString('ko-KR'),
@@ -303,7 +302,7 @@ export default function App() {
             setTimeout(() => flash(up ? `레벨 업! LV.${nl} (+${xp} XP)` : `미션 완료! +${xp} XP`), 100);
             return { ...p, total: p.total + 1, xp: nx, level: nl };
         });
-        setForm({ missionType: null, summary: '', choice: null, reason: '', word: '' });
+        setForm({ summary: '', choice: null, reason: '', word: '' });
         // 미션 완료 후 뉴스 목록으로
         setTab('news');
         window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -506,9 +505,10 @@ function NewsFeed({ news, loading, error, entries, onMission }) {
 
 /* ============================================
    WRITE (MISSION) VIEW
-   3개 미션 모두 펼쳐서 표시, 1개 선택 완료 시 성공
+   3개 미션 모두 필수 입력, 6개 뉴스 중 1개 완료 = 오늘 미션 완료
    ============================================ */
 function WriteView({ news, form, setForm, submit, goBack, isDone }) {
+    const allFilled = form.summary.trim() && form.choice !== null && form.reason.trim() && form.word.trim();
     return (
         <div className="animate-slide-right pb-20 md:pb-0 max-w-lg mx-auto">
             <button onClick={goBack}
@@ -534,63 +534,48 @@ function WriteView({ news, form, setForm, submit, goBack, isDone }) {
                 <Sparkles size={18} className="text-primary shrink-0" aria-hidden="true" />
                 <div>
                     <p className="font-bold text-foreground text-[14px] tracking-tight">오늘의 미션</p>
-                    <p className="text-[12px] text-muted-foreground">아래 3가지 중 <span className="font-bold text-primary">하나만</span> 완료하면 성공! 🎉</p>
+                    <p className="text-[12px] text-muted-foreground">원문을 읽고 아래 3가지를 모두 작성하면 완료! 🎉</p>
                 </div>
             </div>
 
             {/* 미션 1: 한 문장 요약 */}
-            <div className={`bg-card border-2 rounded-lg p-4 mb-3 transition-colors duration-200
-                ${form.missionType === 'summary' ? 'border-primary' : 'border-border'}`}>
-                <button type="button" className="w-full text-left cursor-pointer"
-                    onClick={() => setForm({ ...form, missionType: form.missionType === 'summary' ? null : 'summary', summary: '' })}>
-                    <div className="flex items-center gap-3 mb-3">
-                        <span className="w-8 h-8 rounded-md bg-primary flex items-center justify-center shrink-0">
-                            <Brain size={15} className="text-white" aria-hidden="true" />
-                        </span>
-                        <div className="flex-1">
-                            <p className="font-bold text-[14px] text-card-foreground tracking-tight">미션 1 · 한 문장 요약</p>
-                            <p className="text-[11px] text-muted-foreground">기사의 핵심을 한 문장으로</p>
-                        </div>
-                        {form.missionType === 'summary'
-                            ? <CheckCircle size={18} className="text-primary shrink-0" />
-                            : <span className="text-[11px] text-muted-foreground border border-border rounded px-2 py-0.5">선택</span>}
+            <div className="bg-card border border-border rounded-lg p-4 mb-3">
+                <div className="flex items-center gap-3 mb-3">
+                    <span className="w-8 h-8 rounded-md bg-primary flex items-center justify-center shrink-0">
+                        <Brain size={15} className="text-white" aria-hidden="true" />
+                    </span>
+                    <div className="flex-1">
+                        <p className="font-bold text-[14px] text-card-foreground tracking-tight">미션 1 · 한 문장 요약</p>
                     </div>
-                </button>
-                <p className="text-[13px] font-semibold text-foreground mb-2">이 기사의 핵심 내용은 무엇인가요?</p>
+                    {form.summary.trim() && <CheckCircle size={18} className="text-primary shrink-0" />}
+                </div>
+                <p className="text-[13px] font-semibold text-foreground mb-2">이 기사의 핵심 내용은 무엇인가요? <span className="text-destructive">*</span></p>
                 <textarea rows={3}
-                    className="w-full p-3 rounded-md border border-input bg-background text-[14px] leading-relaxed text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent resize-none transition-shadow duration-200"
+                    className="w-full p-3 rounded-md border border-input bg-background text-[14px] leading-relaxed text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent resize-none"
                     placeholder="기사의 핵심을 한 문장으로 줄여보세요."
                     value={form.summary}
-                    onClick={() => form.missionType !== 'summary' && setForm({ ...form, missionType: 'summary' })}
-                    onChange={(e) => setForm({ ...form, missionType: 'summary', summary: e.target.value })}
+                    onChange={(e) => setForm({ ...form, summary: e.target.value })}
                 />
             </div>
 
             {/* 미션 2: 나의 의견 */}
-            <div className={`bg-card border-2 rounded-lg p-4 mb-3 transition-colors duration-200
-                ${form.missionType === 'opinion' ? 'border-primary' : 'border-border'}`}>
-                <button type="button" className="w-full text-left cursor-pointer"
-                    onClick={() => setForm({ ...form, missionType: form.missionType === 'opinion' ? null : 'opinion', choice: null, reason: '' })}>
-                    <div className="flex items-center gap-3 mb-3">
-                        <span className="w-8 h-8 rounded-md bg-primary flex items-center justify-center shrink-0">
-                            <PenTool size={15} className="text-white" aria-hidden="true" />
-                        </span>
-                        <div className="flex-1">
-                            <p className="font-bold text-[14px] text-card-foreground tracking-tight">미션 2 · 나의 의견</p>
-                            <p className="text-[11px] text-muted-foreground">찬성·반대·기타 + 이유 한 줄</p>
-                        </div>
-                        {form.missionType === 'opinion'
-                            ? <CheckCircle size={18} className="text-primary shrink-0" />
-                            : <span className="text-[11px] text-muted-foreground border border-border rounded px-2 py-0.5">선택</span>}
+            <div className="bg-card border border-border rounded-lg p-4 mb-3">
+                <div className="flex items-center gap-3 mb-3">
+                    <span className="w-8 h-8 rounded-md bg-primary flex items-center justify-center shrink-0">
+                        <PenTool size={15} className="text-white" aria-hidden="true" />
+                    </span>
+                    <div className="flex-1">
+                        <p className="font-bold text-[14px] text-card-foreground tracking-tight">미션 2 · 나의 의견</p>
                     </div>
-                </button>
-                <p className="text-[13px] font-semibold text-foreground mb-2">이 기사에 대해 어떻게 생각하나요?</p>
+                    {form.choice !== null && form.reason.trim() && <CheckCircle size={18} className="text-primary shrink-0" />}
+                </div>
+                <p className="text-[13px] font-semibold text-foreground mb-2">이 기사에 대해 어떻게 생각하나요? <span className="text-destructive">*</span></p>
                 <div className="space-y-2 mb-3" role="radiogroup" aria-label="의견 선택">
                     {news.opinionOptions.map((opt, i) => {
                         const on = form.choice === i;
                         return (
                             <button key={i} type="button" role="radio" aria-checked={on}
-                                onClick={() => setForm({ ...form, missionType: 'opinion', choice: i })}
+                                onClick={() => setForm({ ...form, choice: i })}
                                 className={`w-full text-left p-3 rounded-md border-2 text-[13px] font-medium flex items-center justify-between cursor-pointer transition-all duration-200 min-h-[44px] tracking-tight
                                     ${on ? 'border-primary bg-primary/8 text-foreground' : 'border-border text-muted-foreground hover:border-ring hover:bg-accent/30'}`}>
                                 <span>{opt}</span>
@@ -599,48 +584,38 @@ function WriteView({ news, form, setForm, submit, goBack, isDone }) {
                         );
                     })}
                 </div>
-                <p className="text-[13px] font-semibold text-foreground mb-2">그 의견을 선택한 이유는?</p>
+                <p className="text-[13px] font-semibold text-foreground mb-2">그 의견을 선택한 이유는? <span className="text-destructive">*</span></p>
                 <input type="text"
-                    className="w-full p-3 rounded-md border border-input bg-background text-[14px] tracking-tight text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-shadow duration-200"
+                    className="w-full p-3 rounded-md border border-input bg-background text-[14px] tracking-tight text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
                     placeholder="이유를 한 줄로 적어주세요"
                     value={form.reason}
-                    onClick={() => form.missionType !== 'opinion' && setForm({ ...form, missionType: 'opinion' })}
-                    onChange={(e) => setForm({ ...form, missionType: 'opinion', reason: e.target.value })}
+                    onChange={(e) => setForm({ ...form, reason: e.target.value })}
                 />
             </div>
 
             {/* 미션 3: 핵심 단어 */}
-            <div className={`bg-card border-2 rounded-lg p-4 mb-4 transition-colors duration-200
-                ${form.missionType === 'word' ? 'border-primary' : 'border-border'}`}>
-                <button type="button" className="w-full text-left cursor-pointer"
-                    onClick={() => setForm({ ...form, missionType: form.missionType === 'word' ? null : 'word', word: '' })}>
-                    <div className="flex items-center gap-3 mb-3">
-                        <span className="w-8 h-8 rounded-md bg-primary flex items-center justify-center shrink-0">
-                            <Highlighter size={15} className="text-white" aria-hidden="true" />
-                        </span>
-                        <div className="flex-1">
-                            <p className="font-bold text-[14px] text-card-foreground tracking-tight">미션 3 · 핵심 단어</p>
-                            <p className="text-[11px] text-muted-foreground">기억에 남는 단어 하나</p>
-                        </div>
-                        {form.missionType === 'word'
-                            ? <CheckCircle size={18} className="text-primary shrink-0" />
-                            : <span className="text-[11px] text-muted-foreground border border-border rounded px-2 py-0.5">선택</span>}
+            <div className="bg-card border border-border rounded-lg p-4 mb-4">
+                <div className="flex items-center gap-3 mb-3">
+                    <span className="w-8 h-8 rounded-md bg-primary flex items-center justify-center shrink-0">
+                        <Highlighter size={15} className="text-white" aria-hidden="true" />
+                    </span>
+                    <div className="flex-1">
+                        <p className="font-bold text-[14px] text-card-foreground tracking-tight">미션 3 · 핵심 단어</p>
                     </div>
-                </button>
-                <p className="text-[13px] font-semibold text-foreground mb-2">이 기사에서 가장 중요한 단어는?</p>
+                    {form.word.trim() && <CheckCircle size={18} className="text-primary shrink-0" />}
+                </div>
+                <p className="text-[13px] font-semibold text-foreground mb-2">이 기사에서 가장 중요한 단어는? <span className="text-destructive">*</span></p>
                 <input type="text"
-                    className="w-full p-3 rounded-md border border-input bg-background text-[14px] tracking-tight text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-shadow duration-200"
+                    className="w-full p-3 rounded-md border border-input bg-background text-[14px] tracking-tight text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
                     placeholder="핵심 단어를 하나 적어주세요"
                     value={form.word}
-                    onClick={() => form.missionType !== 'word' && setForm({ ...form, missionType: 'word' })}
-                    onChange={(e) => setForm({ ...form, missionType: 'word', word: e.target.value })}
+                    onChange={(e) => setForm({ ...form, word: e.target.value })}
                 />
             </div>
 
-            {/* Submit — 섀도우 없음 */}
+            {/* Submit */}
             <button type="button" onClick={submit}
-                className={`w-full py-3.5 rounded-lg font-bold tracking-tight transition-colors duration-200 flex items-center justify-center gap-2 cursor-pointer press min-h-[52px]
-                    ${form.missionType ? 'bg-primary hover:opacity-90 text-primary-foreground' : 'bg-muted text-muted-foreground cursor-not-allowed'}`}>
+                className="w-full py-3.5 rounded-lg font-bold tracking-tight transition-opacity duration-200 flex items-center justify-center gap-2 cursor-pointer press min-h-[52px] bg-primary text-primary-foreground hover:opacity-90">
                 <Save size={17} aria-hidden="true" />
                 {isDone ? '수정 저장하기' : '미션 완료하기'}
             </button>
