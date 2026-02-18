@@ -3,14 +3,14 @@ import {
     BookOpen, PenTool, BarChart2, TrendingUp, Award,
     CheckCircle, Brain, Save, ExternalLink, Highlighter,
     Flame, BookMarked, Star, Sparkles, ArrowLeft,
-    Zap, Target, Trophy, Clock,
+    Zap, Target, Trophy, Clock, ChevronDown, ChevronUp,
 } from 'lucide-react';
 
 /* ──────────────────────────────────────────────
    앱 버전 — 코드 변경 시 이 숫자만 올리면
    브라우저 캐시가 자동으로 무효화됩니다
    ────────────────────────────────────────────── */
-const APP_VERSION = '5';
+const APP_VERSION = '6';
 const CACHE_KEY = `ji_news_cache_v${APP_VERSION}`;
 
 // 이전 버전 캐시 자동 삭제
@@ -46,7 +46,6 @@ function makeOpinionOptions() {
 function extractDescription(descHtml) {
     const tmp = document.createElement('div');
     tmp.innerHTML = descHtml;
-    // <ul> 목록(관련기사 링크)은 제거하고 순수 텍스트만 추출
     tmp.querySelectorAll('ul, li').forEach(el => el.remove());
     const text = tmp.textContent.trim();
     return text.length > 10 ? text : null;
@@ -99,8 +98,10 @@ function Badge({ category }) {
         'Tech & Economy': { Icon: Zap, cls: 'bg-primary/10 text-primary border-primary/25' },
         'Environment': { Icon: Target, cls: 'bg-secondary/10 text-secondary border-secondary/25' },
         'Economy': { Icon: TrendingUp, cls: 'bg-chart-5/10 text-chart-5 border-chart-5/25' },
+        'Society': { Icon: BookOpen, cls: 'bg-chart-3/10 text-chart-3 border-chart-3/25' },
+        'World': { Icon: Clock, cls: 'bg-muted/60 text-muted-foreground border-border' },
     };
-    const { Icon, cls } = map[category] ?? map['Tech & Economy'];
+    const { Icon, cls } = map[category] ?? map['World'];
     return (
         <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[11px] font-semibold tracking-tight border ${cls}`}>
             <Icon size={11} aria-hidden="true" />
@@ -177,21 +178,14 @@ export default function App() {
 
     useEffect(() => {
         let cancelled = false;
-
-        // 오늘 오전 6시 타임스탬프 계산
         const now = new Date();
         const todaySix = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 6, 0, 0, 0);
         try {
             const cached = JSON.parse(localStorage.getItem(CACHE_KEY) || 'null');
-            // 캐시가 있고, 오늘 6시 이후에 저장된 경우 재사용
             if (cached && cached.fetchedAt >= todaySix.getTime() && cached.articles?.length > 0) {
-                if (!cancelled) {
-                    setNews(cached.articles);
-                    setNewsLoading(false);
-                    return;
-                }
+                if (!cancelled) { setNews(cached.articles); setNewsLoading(false); return; }
             }
-        } catch { /* 캐시 파싱 실패 시 무시 */ }
+        } catch { /* 무시 */ }
 
         setNewsLoading(true);
         fetchGoogleNews()
@@ -199,11 +193,8 @@ export default function App() {
                 if (!cancelled) {
                     setNews(articles);
                     setNewsError(null);
-                    // 오늘 6시 이후라면 캐시 저장, 아직 6시 이전이면 저장하지 않음
                     if (now >= todaySix) {
-                        try {
-                            localStorage.setItem(CACHE_KEY, JSON.stringify({ fetchedAt: Date.now(), articles }));
-                        } catch { /* localStorage 용량 초과 시 캐시 저장 실패 — 활동 기록에는 영향 없음 */ }
+                        try { localStorage.setItem(CACHE_KEY, JSON.stringify({ fetchedAt: Date.now(), articles })); } catch { /* 무시 */ }
                     }
                 }
             })
@@ -222,10 +213,10 @@ export default function App() {
     });
 
     useEffect(() => {
-        try { localStorage.setItem('ji_entries', JSON.stringify(entries)); } catch { /* 저장 실패 무시 */ }
+        try { localStorage.setItem('ji_entries', JSON.stringify(entries)); } catch { /* 무시 */ }
     }, [entries]);
     useEffect(() => {
-        try { localStorage.setItem('ji_stats', JSON.stringify(stats)); } catch { /* 저장 실패 무시 */ }
+        try { localStorage.setItem('ji_stats', JSON.stringify(stats)); } catch { /* 무시 */ }
     }, [stats]);
 
     const flash = useCallback((msg) => {
@@ -233,18 +224,29 @@ export default function App() {
         setTimeout(() => setToast((p) => ({ ...p, show: false })), 2800);
     }, []);
 
-    const go = useCallback((t) => {
-        if (t === 'write' && !selected) { flash('먼저 뉴스를 선택해주세요'); return; }
+    const goTab = useCallback((t) => {
         setTab(t);
         window.scrollTo({ top: 0, behavior: 'smooth' });
-    }, [selected, flash]);
+    }, []);
 
-    const pick = useCallback((n) => {
+    // 미션하기 버튼 클릭
+    const startMission = useCallback((n) => {
         setSelected(n);
-        setForm({ summary: '', choice: null, reason: '', word: '' });
+        // 이미 완료한 기사면 기존 입력값 불러오기
+        const existing = entries.find(e => e.newsId === n.id);
+        if (existing) {
+            setForm({
+                summary: existing.summary,
+                choice: existing.choice,
+                reason: existing.reason,
+                word: existing.word,
+            });
+        } else {
+            setForm({ summary: '', choice: null, reason: '', word: '' });
+        }
         setTab('write');
         window.scrollTo({ top: 0, behavior: 'smooth' });
-    }, []);
+    }, [entries]);
 
     const submit = useCallback(() => {
         if (!form.summary.trim()) { flash('기사를 요약해주세요'); return; }
@@ -252,11 +254,24 @@ export default function App() {
         if (!form.reason.trim()) { flash('이유를 적어주세요'); return; }
         if (!form.word.trim()) { flash('단어를 적어주세요'); return; }
 
-        setEntries((p) => [{
+        const newEntry = {
             id: Date.now(), date: new Date().toLocaleDateString('ko-KR'),
             newsId: selected.id, newsTitle: selected.title, newsCategory: selected.category,
-            summary: form.summary.trim(), choice: form.choice, reason: form.reason.trim(), word: form.word.trim(),
-        }, ...p]);
+            summary: form.summary.trim(), choice: form.choice,
+            reason: form.reason.trim(), word: form.word.trim(),
+            opinionOptions: selected.opinionOptions,
+        };
+
+        // 기존 항목이 있으면 업데이트, 없으면 추가
+        setEntries((p) => {
+            const existing = p.findIndex(e => e.newsId === selected.id);
+            if (existing >= 0) {
+                const updated = [...p];
+                updated[existing] = newEntry;
+                return updated;
+            }
+            return [newEntry, ...p];
+        });
 
         const xp = 10 + (form.summary.length > 20 ? 5 : 2) + (form.reason.length > 15 ? 5 : 2) + 5;
         setStats((p) => {
@@ -267,15 +282,15 @@ export default function App() {
             return { ...p, total: p.total + 1, xp: nx, level: nl };
         });
         setForm({ summary: '', choice: null, reason: '', word: '' });
-        setTab('dashboard');
+        // 미션 완료 후 뉴스 목록으로
+        setTab('news');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
     }, [form, selected, flash]);
 
     const lvlTitle = LEVEL_TITLES[Math.min(stats.level, LEVEL_TITLES.length - 1)] || '미디어 리더';
 
-    /* ---- NAV ---- */
     const navItems = [
         { id: 'news', Icon: BookOpen, label: '뉴스' },
-        { id: 'write', Icon: PenTool, label: '미션' },
         { id: 'dashboard', Icon: BarChart2, label: '성장' },
     ];
 
@@ -283,7 +298,6 @@ export default function App() {
         <div className="min-h-screen bg-background text-foreground">
             <Toast message={toast.msg} show={toast.show} />
 
-            {/* ─── Bottom-nav (mobile) / Left-sidebar (≥768) ─── */}
             <nav className="
         fixed z-40
         bottom-0 left-0 right-0 h-14
@@ -292,14 +306,11 @@ export default function App() {
         border-t border-border md:border-t-0 md:border-r
         flex md:flex-col items-center justify-around md:justify-start md:pt-6 md:gap-2
       " role="navigation" aria-label="메인 내비게이션">
-
-                {/* Logo — desktop only */}
                 <span className="hidden md:flex items-center justify-center w-9 h-9 rounded-lg bg-primary text-primary-foreground font-black text-base mb-6">J</span>
-
                 {navItems.map(({ id, Icon, label }) => {
-                    const active = tab === id;
+                    const active = tab === id || (id === 'news' && tab === 'write');
                     return (
-                        <button key={id} onClick={() => go(id)}
+                        <button key={id} onClick={() => goTab(id)}
                             className={`
                 flex flex-col items-center justify-center gap-0.5 rounded-lg cursor-pointer
                 w-14 h-11 md:w-12 md:h-11 transition-colors duration-200
@@ -314,13 +325,11 @@ export default function App() {
                 })}
             </nav>
 
-            {/* ─── MAIN CONTENT ─── */}
             <main className="
         pb-20 md:pb-8 md:ml-16
         px-4 pt-4 sm:px-6 sm:pt-6 md:px-8 md:pt-8
-        max-w-5xl mx-auto
+        max-w-3xl mx-auto
       ">
-                {/* Header */}
                 <header className="flex items-center justify-between mb-6 md:mb-8">
                     <div>
                         <h1 className="text-[18px] sm:text-xl md:text-2xl font-extrabold tracking-tight text-foreground flex items-center gap-2">
@@ -335,10 +344,28 @@ export default function App() {
                     </div>
                 </header>
 
-                {/* Views */}
-                {tab === 'news' && <NewsFeed pick={pick} news={news} loading={newsLoading} error={newsError} />}
-                {tab === 'write' && selected && <WriteView news={selected} form={form} setForm={setForm} submit={submit} goBack={() => setTab('news')} />}
-                {tab === 'dashboard' && <Dashboard stats={stats} entries={entries} lvlTitle={lvlTitle} />}
+                {tab === 'news' && (
+                    <NewsFeed
+                        news={news}
+                        loading={newsLoading}
+                        error={newsError}
+                        entries={entries}
+                        onMission={startMission}
+                    />
+                )}
+                {tab === 'write' && selected && (
+                    <WriteView
+                        news={selected}
+                        form={form}
+                        setForm={setForm}
+                        submit={submit}
+                        goBack={() => goTab('news')}
+                        isDone={entries.some(e => e.newsId === selected.id)}
+                    />
+                )}
+                {tab === 'dashboard' && (
+                    <Dashboard stats={stats} entries={entries} lvlTitle={lvlTitle} />
+                )}
             </main>
         </div>
     );
@@ -347,40 +374,42 @@ export default function App() {
 /* ============================================
    NEWS FEED
    ============================================ */
-function NewsFeed({ pick, news, loading, error }) {
+function NewsFeed({ news, loading, error, entries, onMission }) {
     const today = new Date().toISOString().slice(0, 10);
+    const doneIds = new Set(entries.map(e => e.newsId));
 
     return (
-        <div className="animate-fade-in space-y-5">
+        <div className="animate-fade-in space-y-4">
             {/* Hero */}
-            <div className="relative bg-gradient-to-br from-grad-start via-grad-mid to-grad-end text-primary-foreground p-5 sm:p-7 rounded-xl overflow-hidden">
+            <div className="relative bg-gradient-to-br from-grad-start via-grad-mid to-grad-end text-primary-foreground p-5 sm:p-6 rounded-xl overflow-hidden">
                 <div className="absolute inset-0 bg-[radial-gradient(circle_at_80%_20%,rgba(255,255,255,.08)_0%,transparent_60%)]" aria-hidden="true" />
                 <div className="relative flex flex-col sm:flex-row justify-between items-start gap-3">
                     <div>
                         <div className="flex items-center gap-2 mb-1">
                             <BookOpen size={18} aria-hidden="true" className="opacity-80" />
-                            <h2 className="text-[17px] sm:text-xl font-bold tracking-tight">오늘의 브리핑</h2>
+                            <h2 className="text-[17px] sm:text-xl font-bold tracking-tight">오늘의 뉴스</h2>
                         </div>
-                        <p className="text-primary-foreground/50 text-[12px] flex items-center gap-1">
+                        <p className="text-primary-foreground/60 text-[12px] flex items-center gap-1">
                             <Clock size={12} aria-hidden="true" />실시간 · Google 뉴스 기반
                         </p>
                     </div>
                     <div className="sm:text-right">
                         <time className="text-xl sm:text-2xl font-bold tabular-nums opacity-90">{today}</time>
-                        <p className="text-[11px] text-primary-foreground/40 mt-0.5">{news.length > 0 ? `${news.length}개 기사 로드 완료` : '뉴스 불러오는 중...'}</p>
+                        <p className="text-[11px] text-primary-foreground/50 mt-0.5">
+                            {news.length > 0 ? `${doneIds.size}/${news.length}개 미션 완료` : '불러오는 중...'}
+                        </p>
                     </div>
                 </div>
             </div>
 
             {/* Loading */}
             {loading && (
-                <div className="space-y-4">
+                <div className="space-y-3">
                     {[1, 2, 3].map(i => (
-                        <div key={i} className="bg-card border border-border p-5 rounded-lg animate-pulse">
+                        <div key={i} className="bg-card border border-border p-4 rounded-lg animate-pulse">
                             <div className="h-3 bg-accent/40 rounded w-20 mb-3" />
                             <div className="h-5 bg-accent/40 rounded w-3/4 mb-2" />
-                            <div className="h-3 bg-accent/30 rounded w-full mb-1" />
-                            <div className="h-3 bg-accent/30 rounded w-5/6" />
+                            <div className="h-8 bg-accent/20 rounded w-24 mt-3" />
                         </div>
                     ))}
                 </div>
@@ -394,151 +423,154 @@ function NewsFeed({ pick, news, loading, error }) {
             )}
 
             {/* Cards */}
-            {!loading && news.map((n, i) => (
-                <article key={n.id}
-                    className="group bg-card border border-border p-4 sm:p-5 rounded-lg card-lift press cursor-pointer animate-slide-up"
-                    style={{ animationDelay: `${i * 70}ms` }}
-                    onClick={() => pick(n)}
-                    role="button" tabIndex={0}
-                    onKeyDown={(e) => e.key === 'Enter' && pick(n)}
-                    aria-label={`${n.title} 읽기`}
-                >
-                    <div className="flex flex-wrap justify-between items-center gap-2 mb-2">
-                        <Badge category={n.category} />
-                        <span className="text-[11px] text-muted-foreground">{n.source}</span>
-                    </div>
-                    <h3 className="text-[15px] sm:text-[17px] font-bold text-card-foreground mb-1.5 leading-snug tracking-tight group-hover:text-primary transition-colors duration-200">
-                        {n.title}
-                    </h3>
-                    <p className="text-muted-foreground text-[13px] leading-[1.75] mb-3 line-clamp-2">{Array.isArray(n.detail) ? n.detail.join(' ') : n.detail}</p>
-                    <div className="flex items-center justify-between text-[11px] text-muted-foreground">
-                        <div className="flex items-center gap-1.5">
-                            <time>{n.date}</time>
-                            <span className="w-0.5 h-0.5 bg-border rounded-full" aria-hidden="true" />
-                            <span>{n.source}</span>
+            {!loading && news.map((n, i) => {
+                const done = doneIds.has(n.id);
+                return (
+                    <article key={n.id}
+                        className={`bg-card border rounded-lg p-4 sm:p-5 animate-slide-up transition-colors duration-200
+                            ${done ? 'border-secondary/40 bg-secondary/5' : 'border-border'}`}
+                        style={{ animationDelay: `${i * 60}ms` }}
+                    >
+                        {/* 상단: 뱃지 + 출처 + 완료표시 */}
+                        <div className="flex flex-wrap items-center gap-2 mb-2">
+                            <Badge category={n.category} />
+                            <span className="text-[11px] text-muted-foreground">{n.source}</span>
+                            {done && (
+                                <span className="ml-auto inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] font-semibold bg-secondary/15 text-secondary border border-secondary/30">
+                                    <CheckCircle size={11} aria-hidden="true" /> 완료
+                                </span>
+                            )}
                         </div>
-                        <span className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity duration-200 text-primary font-semibold text-[12px]">
-                            읽고 미션하기 <ArrowLeft size={11} className="rotate-180" aria-hidden="true" />
-                        </span>
-                    </div>
-                </article>
-            ))}
+
+                        {/* 제목 → 원문 링크 */}
+                        <a href={n.url} target="_blank" rel="noreferrer"
+                            className="block text-[15px] sm:text-[16px] font-bold text-card-foreground leading-snug tracking-tight hover:text-primary transition-colors duration-200 mb-3 group"
+                            aria-label={`${n.title} 원문 보기`}>
+                            {n.title}
+                            <ExternalLink size={12} className="inline ml-1.5 opacity-0 group-hover:opacity-60 transition-opacity" aria-hidden="true" />
+                        </a>
+
+                        {/* 하단: 날짜 + 미션 버튼 */}
+                        <div className="flex items-center justify-between">
+                            <time className="text-[11px] text-muted-foreground">{n.date}</time>
+                            <button
+                                onClick={() => onMission(n)}
+                                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[12px] font-bold transition-colors duration-200 cursor-pointer
+                                    ${done
+                                        ? 'bg-secondary/15 text-secondary hover:bg-secondary/25'
+                                        : 'bg-primary text-primary-foreground hover:bg-grad-mid'}`}
+                                style={!done ? { boxShadow: '0 2px 8px -2px oklch(0.457 0.24 277 / .35)' } : {}}
+                            >
+                                <PenTool size={12} aria-hidden="true" />
+                                {done ? '수정하기' : '미션하기'}
+                            </button>
+                        </div>
+                    </article>
+                );
+            })}
         </div>
     );
 }
 
 /* ============================================
-   WRITE (MISSION) VIEW
+   WRITE (MISSION) VIEW — 미션 입력만
    ============================================ */
-function WriteView({ news, form, setForm, submit, goBack }) {
+function WriteView({ news, form, setForm, submit, goBack, isDone }) {
     return (
-        <div className="animate-slide-right pb-20 md:pb-0">
+        <div className="animate-slide-right pb-20 md:pb-0 max-w-lg mx-auto">
             <button onClick={goBack}
                 className="flex items-center gap-1 text-[13px] font-medium text-muted-foreground hover:text-foreground transition-colors duration-200 mb-4 cursor-pointer h-11"
                 aria-label="뉴스 목록으로 돌아가기">
                 <ArrowLeft size={15} aria-hidden="true" /> 뉴스 목록으로
             </button>
 
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 lg:gap-7">
-                {/* ── Article ── */}
-                <article className="bg-card p-5 sm:p-6 rounded-lg border border-border">
-                    <div className="flex items-center gap-2 mb-3">
-                        <Badge category={news.category} />
-                        <time className="text-[11px] text-muted-foreground">{news.date}</time>
-                    </div>
-                    <h2 className="text-[17px] sm:text-xl font-bold text-card-foreground leading-snug tracking-tight mb-2">{news.title}</h2>
-                    <div className="flex flex-wrap justify-between text-[11px] text-muted-foreground mb-5 pb-4 border-b border-border">
-                        <span>{news.source}</span>
-                        <a href={news.url} target="_blank" rel="noreferrer"
-                            className="flex items-center gap-1 text-primary hover:underline cursor-pointer font-medium">
-                            <ExternalLink size={11} aria-hidden="true" /> 원문보기
-                        </a>
-                    </div>
-                    <div>
-                        <p className="text-[14px] text-card-foreground/80 leading-[1.85] tracking-tight">{Array.isArray(news.detail) ? news.detail.join(' ') : news.detail}</p>
-                    </div>
-                    <div className="mt-6 bg-accent/30 p-4 rounded-lg border border-accent/50">
-                        <div className="flex items-center gap-2 font-bold text-accent-foreground mb-1 text-[14px]">
-                            <Brain size={16} className="text-primary" aria-hidden="true" /> 생각해보기
-                        </div>
-                        <p className="text-[13px] text-muted-foreground leading-relaxed">이 기사의 핵심은 무엇일까요? 오른쪽 미션칸에 정리해보세요.</p>
-                    </div>
-                </article>
-
-                {/* ── Mission ── */}
-                <div className="space-y-4">
-                    <div className="bg-primary/8 border border-primary/20 p-3.5 rounded-lg flex items-center gap-3">
-                        <span className="w-9 h-9 bg-card rounded-lg flex items-center justify-center shadow-sm shrink-0">
-                            <PenTool size={16} className="text-primary" aria-hidden="true" />
-                        </span>
-                        <div>
-                            <h3 className="font-bold text-foreground text-[14px] tracking-tight">문해력 탐구 미션</h3>
-                            <p className="text-[11px] text-primary">4가지 항목을 모두 완성해주세요</p>
-                        </div>
-                    </div>
-
-                    {/* Step 1 */}
-                    <div className="bg-card p-4 sm:p-5 rounded-lg border border-border">
-                        <StepLabel n={1} text="한 문장 요약" color="bg-primary" />
-                        <textarea rows={3}
-                            className="w-full p-3 rounded-md border border-input bg-background text-[14px] leading-relaxed tracking-tight text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent resize-none transition-shadow duration-200"
-                            placeholder="기사의 핵심을 한 문장으로 줄여보세요."
-                            value={form.summary}
-                            onChange={(e) => setForm({ ...form, summary: e.target.value })}
-                        />
-                    </div>
-
-                    {/* Step 2 */}
-                    <div className="bg-card p-4 sm:p-5 rounded-lg border border-border">
-                        <StepLabel n={2} text="나의 의견 선택" color="bg-grad-mid" />
-                        <div className="space-y-2" role="radiogroup" aria-label="의견 선택">
-                            {news.opinionOptions.map((opt, i) => {
-                                const on = form.choice === i;
-                                return (
-                                    <button key={i} type="button" role="radio" aria-checked={on}
-                                        onClick={() => setForm({ ...form, choice: i })}
-                                        className={`w-full text-left p-3 rounded-md border-2 text-[13px] font-medium flex items-center justify-between cursor-pointer transition-all duration-200 min-h-[44px] tracking-tight
-                      ${on ? 'border-primary bg-primary/8 text-accent-foreground' : 'border-border text-muted-foreground hover:border-ring hover:bg-accent/15'}`}>
-                                        <span>{opt}</span>
-                                        {on && <CheckCircle size={16} className="text-primary shrink-0 ml-2" aria-hidden="true" />}
-                                    </button>
-                                );
-                            })}
-                        </div>
-                    </div>
-
-                    {/* Step 3 */}
-                    <div className="bg-card p-4 sm:p-5 rounded-lg border border-border">
-                        <StepLabel n={3} text="이유 한 문장" color="bg-secondary" />
-                        <input type="text"
-                            className="w-full p-3 rounded-md border border-input bg-background text-[14px] tracking-tight text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-secondary focus:border-transparent transition-shadow duration-200"
-                            placeholder="위에서 그 의견을 선택한 이유는?"
-                            value={form.reason}
-                            onChange={(e) => setForm({ ...form, reason: e.target.value })}
-                        />
-                    </div>
-
-                    {/* Step 4 */}
-                    <div className="bg-card p-4 sm:p-5 rounded-lg border border-border">
-                        <StepLabel n={4} text="기억에 남는 단어" color="bg-chart-5" />
-                        <div className="relative">
-                            <Highlighter size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" aria-hidden="true" />
-                            <input type="text"
-                                className="w-full pl-9 p-3 rounded-md border border-input bg-background text-[14px] tracking-tight text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-chart-5 focus:border-transparent transition-shadow duration-200"
-                                placeholder="핵심이라고 생각되는 단어를 적어주세요"
-                                value={form.word}
-                                onChange={(e) => setForm({ ...form, word: e.target.value })}
-                            />
-                        </div>
-                    </div>
-
-                    {/* Submit */}
-                    <button type="button" onClick={submit}
-                        className="w-full bg-primary hover:bg-grad-mid text-primary-foreground py-3.5 rounded-lg font-bold tracking-tight transition-colors duration-200 flex items-center justify-center gap-2 cursor-pointer press min-h-[52px]"
-                        style={{ boxShadow: '0 4px 14px -4px oklch(0.457 0.24 277 / .35)' }}>
-                        <Save size={17} aria-hidden="true" /> 오늘의 미션 완료하기
-                    </button>
+            {/* 기사 정보 요약 */}
+            <div className="bg-card border border-border rounded-lg p-4 mb-4">
+                <div className="flex items-center gap-2 mb-2">
+                    <Badge category={news.category} />
+                    <time className="text-[11px] text-muted-foreground">{news.date}</time>
                 </div>
+                <p className="text-[14px] font-bold text-card-foreground leading-snug tracking-tight mb-2">{news.title}</p>
+                <a href={news.url} target="_blank" rel="noreferrer"
+                    className="inline-flex items-center gap-1 text-[12px] text-primary hover:underline font-medium">
+                    <ExternalLink size={11} aria-hidden="true" /> 원문 읽기
+                </a>
+            </div>
+
+            {/* 미션 안내 */}
+            <div className="bg-primary/8 border border-primary/20 p-3.5 rounded-lg flex items-center gap-3 mb-4">
+                <span className="w-9 h-9 bg-card rounded-lg flex items-center justify-center shadow-sm shrink-0">
+                    <PenTool size={16} className="text-primary" aria-hidden="true" />
+                </span>
+                <div>
+                    <h3 className="font-bold text-foreground text-[14px] tracking-tight">문해력 탐구 미션</h3>
+                    <p className="text-[11px] text-primary">원문을 읽고 4가지를 작성해주세요</p>
+                </div>
+            </div>
+
+            <div className="space-y-3">
+                {/* Step 1 */}
+                <div className="bg-card p-4 rounded-lg border border-border">
+                    <StepLabel n={1} text="한 문장 요약" color="bg-primary" />
+                    <textarea rows={3}
+                        className="w-full p-3 rounded-md border border-input bg-background text-[14px] leading-relaxed tracking-tight text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent resize-none transition-shadow duration-200"
+                        placeholder="기사의 핵심을 한 문장으로 줄여보세요."
+                        value={form.summary}
+                        onChange={(e) => setForm({ ...form, summary: e.target.value })}
+                    />
+                </div>
+
+                {/* Step 2 */}
+                <div className="bg-card p-4 rounded-lg border border-border">
+                    <StepLabel n={2} text="나의 의견 선택" color="bg-grad-mid" />
+                    <div className="space-y-2" role="radiogroup" aria-label="의견 선택">
+                        {news.opinionOptions.map((opt, i) => {
+                            const on = form.choice === i;
+                            return (
+                                <button key={i} type="button" role="radio" aria-checked={on}
+                                    onClick={() => setForm({ ...form, choice: i })}
+                                    className={`w-full text-left p-3 rounded-md border-2 text-[13px] font-medium flex items-center justify-between cursor-pointer transition-all duration-200 min-h-[44px] tracking-tight
+                      ${on ? 'border-primary bg-primary/8 text-accent-foreground' : 'border-border text-muted-foreground hover:border-ring hover:bg-accent/15'}`}>
+                                    <span>{opt}</span>
+                                    {on && <CheckCircle size={16} className="text-primary shrink-0 ml-2" aria-hidden="true" />}
+                                </button>
+                            );
+                        })}
+                    </div>
+                </div>
+
+                {/* Step 3 */}
+                <div className="bg-card p-4 rounded-lg border border-border">
+                    <StepLabel n={3} text="이유 한 문장" color="bg-secondary" />
+                    <input type="text"
+                        className="w-full p-3 rounded-md border border-input bg-background text-[14px] tracking-tight text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-secondary focus:border-transparent transition-shadow duration-200"
+                        placeholder="위에서 그 의견을 선택한 이유는?"
+                        value={form.reason}
+                        onChange={(e) => setForm({ ...form, reason: e.target.value })}
+                    />
+                </div>
+
+                {/* Step 4 */}
+                <div className="bg-card p-4 rounded-lg border border-border">
+                    <StepLabel n={4} text="기억에 남는 단어" color="bg-chart-5" />
+                    <div className="relative">
+                        <Highlighter size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" aria-hidden="true" />
+                        <input type="text"
+                            className="w-full pl-9 p-3 rounded-md border border-input bg-background text-[14px] tracking-tight text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-chart-5 focus:border-transparent transition-shadow duration-200"
+                            placeholder="핵심이라고 생각되는 단어를 적어주세요"
+                            value={form.word}
+                            onChange={(e) => setForm({ ...form, word: e.target.value })}
+                        />
+                    </div>
+                </div>
+
+                {/* Submit */}
+                <button type="button" onClick={submit}
+                    className="w-full bg-primary hover:bg-grad-mid text-primary-foreground py-3.5 rounded-lg font-bold tracking-tight transition-colors duration-200 flex items-center justify-center gap-2 cursor-pointer press min-h-[52px]"
+                    style={{ boxShadow: '0 4px 14px -4px oklch(0.457 0.24 277 / .35)' }}>
+                    <Save size={17} aria-hidden="true" />
+                    {isDone ? '수정 저장하기' : '미션 완료하기'}
+                </button>
             </div>
         </div>
     );
@@ -548,6 +580,7 @@ function WriteView({ news, form, setForm, submit, goBack }) {
    DASHBOARD
    ============================================ */
 function Dashboard({ stats, entries, lvlTitle }) {
+    const [expandedId, setExpandedId] = useState(null);
     const days = ['월', '화', '수', '목', '금', '토', '일'];
     const bars = [30, 45, 35, 60, 50, 75, 80];
     const s1 = Math.min(85 + entries.length * 2, 100);
@@ -574,8 +607,7 @@ function Dashboard({ stats, entries, lvlTitle }) {
                         {bars.map((h, i) => (
                             <div key={i} className="flex-1 flex flex-col items-center gap-1 group cursor-default">
                                 <span className="text-[10px] text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity font-semibold tabular-nums">{h}</span>
-                                <div className="chart-grow w-full rounded-t-md bg-accent/30"
-                                    style={{ height: `${h}%` }}>
+                                <div className="chart-grow w-full rounded-t-md bg-accent/30" style={{ height: `${h}%` }}>
                                     <div className="w-full h-full rounded-t-md bg-gradient-to-t from-primary/30 to-primary/60" />
                                 </div>
                                 <span className="text-[10px] text-muted-foreground font-medium">{days[i]}</span>
@@ -591,18 +623,18 @@ function Dashboard({ stats, entries, lvlTitle }) {
                     </h3>
                     <p className="text-[11px] text-muted-foreground mb-4">미션을 완료할수록 점수가 올라갑니다.</p>
                     <SkillRow label="요약 능력 (Summary)" score={s1} from="from-primary" to="to-grad-mid" />
-                    <p className="text-[11px] text-muted-foreground -mt-2 mb-4 pl-0.5">기사를 <span className="font-semibold text-foreground">20자 이상</span>으로 요약하면 +5 XP · 미만이면 +2 XP</p>
+                    <p className="text-[11px] text-muted-foreground -mt-2 mb-4 pl-0.5">기사를 <span className="font-semibold text-foreground">20자 이상</span>으로 요약하면 +5 XP</p>
                     <SkillRow label="비판적 사고 (Reasoning)" score={s2} from="from-secondary" to="to-chart-5" />
-                    <p className="text-[11px] text-muted-foreground -mt-2 mb-4 pl-0.5">의견 선택 이유를 <span className="font-semibold text-foreground">15자 이상</span> 작성하면 +5 XP · 미만이면 +2 XP</p>
+                    <p className="text-[11px] text-muted-foreground -mt-2 mb-4 pl-0.5">이유를 <span className="font-semibold text-foreground">15자 이상</span> 작성하면 +5 XP</p>
                     <SkillRow label="어휘 습득 (Vocabulary)" score={s3} from="from-chart-3" to="to-chart-4" />
-                    <p className="text-[11px] text-muted-foreground -mt-2 pl-0.5">기억에 남는 단어를 <span className="font-semibold text-foreground">1개 이상</span> 수집하면 +5 XP</p>
+                    <p className="text-[11px] text-muted-foreground -mt-2 pl-0.5">단어를 <span className="font-semibold text-foreground">1개 이상</span> 수집하면 +5 XP</p>
                 </div>
             </div>
 
             {/* History */}
             <section className="bg-card p-4 sm:p-5 rounded-lg border border-border">
                 <h3 className="font-bold text-[14px] tracking-tight mb-4 flex items-center gap-2 text-card-foreground">
-                    <Trophy size={16} className="text-chart-1" aria-hidden="true" /> 최근 활동 기록
+                    <Trophy size={16} className="text-chart-1" aria-hidden="true" /> 활동 기록
                 </h3>
                 {entries.length === 0 ? (
                     <div className="text-center py-10 text-muted-foreground bg-background rounded-lg border border-dashed border-border">
@@ -611,37 +643,53 @@ function Dashboard({ stats, entries, lvlTitle }) {
                         <p className="text-[12px] mt-0.5">뉴스를 읽고 미션을 완료해보세요</p>
                     </div>
                 ) : entries.map((e) => {
-                    const n = MOCK_NEWS.find((x) => x.id === e.newsId);
-                    const opText = n ? n.opinionOptions[e.choice] : '—';
+                    const opText = e.opinionOptions ? e.opinionOptions[e.choice] : ['찬성한다', '반대한다', '기타 의견이 있다'][e.choice] ?? '—';
+                    const isOpen = expandedId === e.id;
                     return (
-                        <div key={e.id} className="p-4 bg-background rounded-lg border border-border mb-3 last:mb-0 hover:bg-accent/10 transition-colors duration-200">
-                            <div className="flex flex-wrap justify-between items-start gap-2 mb-2">
-                                <div>
+                        <div key={e.id} className="mb-3 last:mb-0 rounded-lg border border-border overflow-hidden">
+                            {/* 헤더 — 클릭으로 펼치기 */}
+                            <button
+                                className="w-full flex items-center justify-between p-4 bg-background hover:bg-accent/10 transition-colors duration-200 cursor-pointer text-left"
+                                onClick={() => setExpandedId(isOpen ? null : e.id)}
+                                aria-expanded={isOpen}
+                            >
+                                <div className="flex-1 min-w-0 pr-3">
                                     <div className="flex items-center gap-1.5 text-[11px] text-muted-foreground mb-0.5">
                                         <time>{e.date}</time>
                                         <span className="w-0.5 h-0.5 bg-border rounded-full" aria-hidden="true" />
                                         <span>{e.newsCategory}</span>
                                     </div>
-                                    <h4 className="font-bold text-card-foreground text-[13px] tracking-tight">{e.newsTitle}</h4>
+                                    <p className="font-bold text-card-foreground text-[13px] tracking-tight truncate">{e.newsTitle}</p>
                                 </div>
-                                <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[11px] font-semibold bg-secondary/10 text-secondary border border-secondary/25">
-                                    <CheckCircle size={11} aria-hidden="true" /> 완료
-                                </span>
-                            </div>
-                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-[13px]">
-                                <div className="bg-card p-3 rounded-md border border-border">
-                                    <span className="text-[11px] text-muted-foreground font-medium block mb-0.5">요약</span>
-                                    <span className="text-card-foreground tracking-tight">{e.summary}</span>
+                                <div className="flex items-center gap-2 shrink-0">
+                                    <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] font-semibold bg-secondary/15 text-secondary border border-secondary/30">
+                                        <CheckCircle size={10} aria-hidden="true" /> 완료
+                                    </span>
+                                    {isOpen
+                                        ? <ChevronUp size={15} className="text-muted-foreground" />
+                                        : <ChevronDown size={15} className="text-muted-foreground" />}
                                 </div>
-                                <div className="bg-card p-3 rounded-md border border-border">
-                                    <span className="text-[11px] text-muted-foreground font-medium block mb-0.5">의견 & 이유</span>
-                                    <span className="font-semibold text-primary block tracking-tight">{opText}</span>
-                                    <span className="text-muted-foreground block mt-0.5 tracking-tight">{e.reason}</span>
+                            </button>
+
+                            {/* 상세 내용 — 펼쳐질 때 */}
+                            {isOpen && (
+                                <div className="px-4 pb-4 bg-background border-t border-border">
+                                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 mt-3 text-[13px]">
+                                        <div className="bg-card p-3 rounded-md border border-border">
+                                            <span className="text-[11px] text-muted-foreground font-medium block mb-1">📝 요약</span>
+                                            <span className="text-card-foreground tracking-tight">{e.summary}</span>
+                                        </div>
+                                        <div className="bg-card p-3 rounded-md border border-border">
+                                            <span className="text-[11px] text-muted-foreground font-medium block mb-1">💬 의견</span>
+                                            <span className="font-semibold text-primary block tracking-tight">{opText}</span>
+                                            <span className="text-muted-foreground block mt-1 tracking-tight text-[12px]">{e.reason}</span>
+                                        </div>
+                                    </div>
+                                    <div className="mt-2 text-[12px] text-muted-foreground">
+                                        🔑 수집 단어: <span className="text-card-foreground font-semibold bg-accent/40 px-1.5 py-0.5 rounded">{e.word}</span>
+                                    </div>
                                 </div>
-                            </div>
-                            <div className="mt-2 text-[11px] text-right text-muted-foreground">
-                                수집 단어: <span className="text-card-foreground font-semibold bg-accent/40 px-1.5 py-0.5 rounded">{e.word}</span>
-                            </div>
+                            )}
                         </div>
                     );
                 })}
