@@ -10,7 +10,7 @@ import {
    앱 버전 — 코드 변경 시 이 숫자만 올리면
    브라우저 캐시가 자동으로 무효화됩니다
    ────────────────────────────────────────────── */
-const APP_VERSION = '8';
+const APP_VERSION = '9';
 const CACHE_KEY = `ji_news_cache_v${APP_VERSION}`;
 
 // 이전 버전 캐시 자동 삭제
@@ -30,10 +30,14 @@ const CATEGORIES = ['Tech & Economy', 'Environment', 'Economy', 'Society', 'Worl
 /** 카테고리 키워드 매핑 */
 function detectCategory(title) {
     const t = title.toLowerCase();
-    if (/ai|인공지능|기술|반도체|it|로봇|챗gpt|소프트웨어|테크|디지털|플랫폼|앱|스타트업|빅테크|메타|구글|애플|삼성|네이버|카카오|유튜브|먹통|서비스장애|인터넷|스트리밍|넷플릭스|틱톡|인스타|트위터|엑스/.test(t)) return 'Tech & Economy';
-    if (/기후|환경|탄소|해수면|온난화|재활용|에너지|태풍|홍수|가뭄|미세먼지|오염|생태|날씨|기상|폭염|한파|원전|신재생|풍력|태양광/.test(t)) return 'Environment';
-    if (/경제|금리|주가|환율|무역|gdp|물가|부동산|투자|주식|채권|증시|코스피|코스닥|원화|달러|수출|수입|관세|대출|금융|은행|보험|펀드|임대|가격|집값|전세|월세|세금|재정|예산|적자|흑자|성장률|소비|경기|인플레|디플레|산업|기업|매출|영업이익|ipo|상장|합병|인수/.test(t)) return 'Economy';
-    if (/사회|교육|인구|복지|안전|노동|건강|의료|급여|비급여|본인부담|건강보험|병원|수술|약값|출산|저출산|육아|학교|대학|입시|청년|노인|고령|장애|빈곤|범죄|절도|강도|검거|체포|구속|탈주|마약|살인|폭행|성범죄|사고|재난|소방|경찰|법원|재판|판결|선고|구형|징역|집행유예|무죄|유죄|사형|벌금|항소|상고|헌재|헌법재판소|선거|투표|정치|정부|국회|대통령|장관|의원|여야|탄핵|내란|계엄|특검|수사|기소|행정|공무원|이민|난민|차별|인권|여성|아동|가족/.test(t)) return 'Society';
+    // Society: 국내 정치·사회·범죄·의료·교육 — 가장 넓은 범주, 먼저 검사
+    if (/사회|교육|인구|복지|안전|노동|건강|의료|급여|비급여|본인부담|건강보험|병원|수술|약값|출산|저출산|육아|학교|대학|입시|수능|청년|노인|고령|장애|빈곤|범죄|절도|강도|검거|체포|구속|탈주|마약|살인|폭행|성범죄|사고|화재|재난|소방|경찰|법원|재판|판결|선고|구형|징역|집행유예|무죄|유죄|사형|벌금|항소|상고|헌재|헌법재판소|선거|투표|정치|정부|국회|대통령|대선|총선|장관|의원|여야|탄핵|내란|계엄|특검|수사|기소|행정|공무원|이민|난민|차별|인권|여성|아동|가족|복지관|주민|시민|서울|부산|경기|인천|대구|광주|대전|울산|세종/.test(t)) return 'Society';
+    // Tech: IT·AI·플랫폼·서비스
+    if (/ai|인공지능|기술|반도체|it|로봇|챗gpt|gpt|소프트웨어|테크|디지털|플랫폼|앱|스타트업|빅테크|메타|구글|애플|삼성|네이버|카카오|유튜브|먹통|서비스장애|인터넷|스트리밍|넷플릭스|틱톡|인스타|트위터|엑스|오픈ai|클라우드|데이터|사이버|해킹|보안/.test(t)) return 'Tech & Economy';
+    // Environment: 기후·환경·에너지
+    if (/기후|환경|탄소|해수면|온난화|재활용|에너지|태풍|홍수|가뭄|미세먼지|오염|생태|날씨|기상|폭염|한파|원전|신재생|풍력|태양광|녹색|탄소중립/.test(t)) return 'Environment';
+    // Economy: 경제·금융·시장
+    if (/경제|금리|주가|환율|무역|gdp|물가|부동산|투자|주식|채권|증시|코스피|코스닥|원화|달러|수출|수입|관세|대출|금융|은행|보험|펀드|임대|집값|전세|월세|세금|재정|예산|적자|흑자|성장률|소비|경기|인플레|디플레|기업|매출|영업이익|ipo|상장|합병|인수|무역전쟁|관세|수출규제/.test(t)) return 'Economy';
     return 'World';
 }
 
@@ -163,12 +167,14 @@ function SkillRow({ label, score, from, to }) {
     );
 }
 
-function StepLabel({ n, text, color }) {
+function StepLabel({ n, text, color, required }) {
     return (
         <div className="flex items-center gap-2 mb-2">
             <span className={`w-6 h-6 rounded-md ${color} text-white flex items-center justify-center text-[11px] font-bold shrink-0`}>{n}</span>
             <span className="font-bold text-card-foreground text-[14px] tracking-tight">{text}</span>
-            <span className="text-destructive text-[11px] font-semibold">필수</span>
+            {required
+                ? <span className="text-destructive text-[11px] font-semibold">필수</span>
+                : <span className="text-muted-foreground text-[11px]">선택</span>}
         </div>
     );
 }
@@ -180,7 +186,8 @@ export default function App() {
     const [tab, setTab] = useState('news');
     const [selected, setSelected] = useState(null);
     const [toast, setToast] = useState({ show: false, msg: '' });
-    const [form, setForm] = useState({ summary: '', choice: null, reason: '', word: '' });
+    // mission: 'summary' | 'opinion' | 'word' (3가지 중 1개 선택)
+    const [form, setForm] = useState({ missionType: null, summary: '', choice: null, reason: '', word: '' });
 
     /* ── Google News 실시간 fetch ── */
     const [news, setNews] = useState([]);
@@ -247,27 +254,30 @@ export default function App() {
         const existing = entries.find(e => e.newsId === n.id);
         if (existing) {
             setForm({
+                missionType: existing.missionType || null,
                 summary: existing.summary,
                 choice: existing.choice,
                 reason: existing.reason,
                 word: existing.word,
             });
         } else {
-            setForm({ summary: '', choice: null, reason: '', word: '' });
+            setForm({ missionType: null, summary: '', choice: null, reason: '', word: '' });
         }
         setTab('write');
         window.scrollTo({ top: 0, behavior: 'smooth' });
     }, [entries]);
 
     const submit = useCallback(() => {
-        if (!form.summary.trim()) { flash('기사를 요약해주세요'); return; }
-        if (form.choice === null) { flash('의견을 선택해주세요'); return; }
-        if (!form.reason.trim()) { flash('이유를 적어주세요'); return; }
-        if (!form.word.trim()) { flash('단어를 적어주세요'); return; }
+        if (!form.missionType) { flash('미션을 하나 선택해주세요'); return; }
+        if (form.missionType === 'summary' && !form.summary.trim()) { flash('요약을 작성해주세요'); return; }
+        if (form.missionType === 'opinion' && form.choice === null) { flash('의견을 선택해주세요'); return; }
+        if (form.missionType === 'opinion' && !form.reason.trim()) { flash('이유를 적어주세요'); return; }
+        if (form.missionType === 'word' && !form.word.trim()) { flash('단어를 적어주세요'); return; }
 
         const newEntry = {
             id: Date.now(), date: new Date().toLocaleDateString('ko-KR'),
             newsId: selected.id, newsTitle: selected.title, newsCategory: selected.category,
+            missionType: form.missionType,
             summary: form.summary.trim(), choice: form.choice,
             reason: form.reason.trim(), word: form.word.trim(),
             opinionOptions: selected.opinionOptions,
@@ -292,7 +302,7 @@ export default function App() {
             setTimeout(() => flash(up ? `레벨 업! LV.${nl} (+${xp} XP)` : `미션 완료! +${xp} XP`), 100);
             return { ...p, total: p.total + 1, xp: nx, level: nl };
         });
-        setForm({ summary: '', choice: null, reason: '', word: '' });
+        setForm({ missionType: null, summary: '', choice: null, reason: '', word: '' });
         // 미션 완료 후 뉴스 목록으로
         setTab('news');
         window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -484,9 +494,15 @@ function NewsFeed({ news, loading, error, entries, onMission }) {
 }
 
 /* ============================================
-   WRITE (MISSION) VIEW — 미션 입력만
+   WRITE (MISSION) VIEW — 3개 중 1개 선택
    ============================================ */
 function WriteView({ news, form, setForm, submit, goBack, isDone }) {
+    const missions = [
+        { key: 'summary', icon: Brain, color: 'bg-primary', label: '한 문장 요약', desc: '기사의 핵심을 한 문장으로' },
+        { key: 'opinion', icon: PenTool, color: 'bg-grad-mid', label: '나의 의견', desc: '찬성·반대·기타 + 이유 한 줄' },
+        { key: 'word', icon: Highlighter, color: 'bg-secondary', label: '핵심 단어', desc: '기억에 남는 단어 하나' },
+    ];
+
     return (
         <div className="animate-slide-right pb-20 md:pb-0 max-w-lg mx-auto">
             <button onClick={goBack}
@@ -511,18 +527,42 @@ function WriteView({ news, form, setForm, submit, goBack, isDone }) {
             {/* 미션 안내 */}
             <div className="bg-primary/8 border border-primary/20 p-3.5 rounded-lg flex items-center gap-3 mb-4">
                 <span className="w-9 h-9 bg-card rounded-lg flex items-center justify-center shadow-sm shrink-0">
-                    <PenTool size={16} className="text-primary" aria-hidden="true" />
+                    <Sparkles size={16} className="text-primary" aria-hidden="true" />
                 </span>
                 <div>
-                    <h3 className="font-bold text-foreground text-[14px] tracking-tight">문해력 탐구 미션</h3>
-                    <p className="text-[11px] text-primary">원문을 읽고 4가지를 작성해주세요</p>
+                    <h3 className="font-bold text-foreground text-[14px] tracking-tight">오늘의 미션</h3>
+                    <p className="text-[11px] text-primary">아래 3가지 중 <span className="font-bold">하나만</span> 골라 완료하면 성공! 🎉</p>
                 </div>
             </div>
 
-            <div className="space-y-3">
-                {/* Step 1 */}
-                <div className="bg-card p-4 rounded-lg border border-border">
-                    <StepLabel n={1} text="한 문장 요약" color="bg-primary" />
+            {/* 미션 선택 카드 3개 */}
+            <div className="space-y-2 mb-4">
+                {missions.map(({ key, icon: Icon, color, label, desc }) => {
+                    const selected = form.missionType === key;
+                    return (
+                        <button key={key} type="button"
+                            onClick={() => setForm({ ...form, missionType: key })}
+                            className={`w-full text-left p-4 rounded-lg border-2 transition-all duration-200 cursor-pointer
+                                ${selected ? 'border-primary bg-primary/6' : 'border-border bg-card hover:border-ring hover:bg-accent/10'}`}>
+                            <div className="flex items-center gap-3">
+                                <span className={`w-8 h-8 rounded-md ${color} flex items-center justify-center shrink-0`}>
+                                    <Icon size={15} className="text-white" aria-hidden="true" />
+                                </span>
+                                <div className="flex-1">
+                                    <p className="font-bold text-[14px] text-card-foreground tracking-tight">{label}</p>
+                                    <p className="text-[11px] text-muted-foreground">{desc}</p>
+                                </div>
+                                {selected && <CheckCircle size={18} className="text-primary shrink-0" aria-hidden="true" />}
+                            </div>
+                        </button>
+                    );
+                })}
+            </div>
+
+            {/* 선택된 미션 입력 영역 */}
+            {form.missionType === 'summary' && (
+                <div className="bg-card p-4 rounded-lg border border-primary/30 mb-4">
+                    <StepLabel n="✏️" text="한 문장 요약" color="bg-primary" required />
                     <textarea rows={3}
                         className="w-full p-3 rounded-md border border-input bg-background text-[14px] leading-relaxed tracking-tight text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent resize-none transition-shadow duration-200"
                         placeholder="기사의 핵심을 한 문장으로 줄여보세요."
@@ -530,10 +570,11 @@ function WriteView({ news, form, setForm, submit, goBack, isDone }) {
                         onChange={(e) => setForm({ ...form, summary: e.target.value })}
                     />
                 </div>
+            )}
 
-                {/* Step 2 */}
-                <div className="bg-card p-4 rounded-lg border border-border">
-                    <StepLabel n={2} text="나의 의견 선택" color="bg-grad-mid" />
+            {form.missionType === 'opinion' && (
+                <div className="bg-card p-4 rounded-lg border border-primary/30 mb-4 space-y-3">
+                    <StepLabel n="💬" text="나의 의견 선택" color="bg-grad-mid" required />
                     <div className="space-y-2" role="radiogroup" aria-label="의견 선택">
                         {news.opinionOptions.map((opt, i) => {
                             const on = form.choice === i;
@@ -541,48 +582,45 @@ function WriteView({ news, form, setForm, submit, goBack, isDone }) {
                                 <button key={i} type="button" role="radio" aria-checked={on}
                                     onClick={() => setForm({ ...form, choice: i })}
                                     className={`w-full text-left p-3 rounded-md border-2 text-[13px] font-medium flex items-center justify-between cursor-pointer transition-all duration-200 min-h-[44px] tracking-tight
-                      ${on ? 'border-primary bg-primary/8 text-accent-foreground' : 'border-border text-muted-foreground hover:border-ring hover:bg-accent/15'}`}>
+                                        ${on ? 'border-primary bg-primary/8 text-accent-foreground' : 'border-border text-muted-foreground hover:border-ring hover:bg-accent/15'}`}>
                                     <span>{opt}</span>
                                     {on && <CheckCircle size={16} className="text-primary shrink-0 ml-2" aria-hidden="true" />}
                                 </button>
                             );
                         })}
                     </div>
-                </div>
-
-                {/* Step 3 */}
-                <div className="bg-card p-4 rounded-lg border border-border">
-                    <StepLabel n={3} text="이유 한 문장" color="bg-secondary" />
                     <input type="text"
-                        className="w-full p-3 rounded-md border border-input bg-background text-[14px] tracking-tight text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-secondary focus:border-transparent transition-shadow duration-200"
-                        placeholder="위에서 그 의견을 선택한 이유는?"
+                        className="w-full p-3 rounded-md border border-input bg-background text-[14px] tracking-tight text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-grad-mid focus:border-transparent transition-shadow duration-200"
+                        placeholder="그 의견을 선택한 이유 한 줄"
                         value={form.reason}
                         onChange={(e) => setForm({ ...form, reason: e.target.value })}
                     />
                 </div>
+            )}
 
-                {/* Step 4 */}
-                <div className="bg-card p-4 rounded-lg border border-border">
-                    <StepLabel n={4} text="기억에 남는 단어" color="bg-chart-5" />
+            {form.missionType === 'word' && (
+                <div className="bg-card p-4 rounded-lg border border-primary/30 mb-4">
+                    <StepLabel n="🔑" text="핵심 단어" color="bg-secondary" required />
                     <div className="relative">
                         <Highlighter size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" aria-hidden="true" />
                         <input type="text"
-                            className="w-full pl-9 p-3 rounded-md border border-input bg-background text-[14px] tracking-tight text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-chart-5 focus:border-transparent transition-shadow duration-200"
-                            placeholder="핵심이라고 생각되는 단어를 적어주세요"
+                            className="w-full pl-9 p-3 rounded-md border border-input bg-background text-[14px] tracking-tight text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-secondary focus:border-transparent transition-shadow duration-200"
+                            placeholder="기사에서 가장 중요한 단어 하나"
                             value={form.word}
                             onChange={(e) => setForm({ ...form, word: e.target.value })}
                         />
                     </div>
                 </div>
+            )}
 
-                {/* Submit */}
-                <button type="button" onClick={submit}
-                    className="w-full bg-primary hover:bg-grad-mid text-primary-foreground py-3.5 rounded-lg font-bold tracking-tight transition-colors duration-200 flex items-center justify-center gap-2 cursor-pointer press min-h-[52px]"
-                    style={{ boxShadow: '0 4px 14px -4px oklch(0.457 0.24 277 / .35)' }}>
-                    <Save size={17} aria-hidden="true" />
-                    {isDone ? '수정 저장하기' : '미션 완료하기'}
-                </button>
-            </div>
+            {/* Submit */}
+            <button type="button" onClick={submit}
+                className={`w-full py-3.5 rounded-lg font-bold tracking-tight transition-colors duration-200 flex items-center justify-center gap-2 cursor-pointer press min-h-[52px]
+                    ${form.missionType ? 'bg-primary hover:bg-grad-mid text-primary-foreground' : 'bg-muted text-muted-foreground cursor-not-allowed'}`}
+                style={form.missionType ? { boxShadow: '0 4px 14px -4px oklch(0.457 0.24 277 / .35)' } : {}}>
+                <Save size={17} aria-hidden="true" />
+                {isDone ? '수정 저장하기' : '미션 완료하기'}
+            </button>
         </div>
     );
 }
