@@ -10,7 +10,7 @@ import {
    앱 버전 — 코드 변경 시 이 숫자만 올리면
    브라우저 캐시가 자동으로 무효화됩니다
    ────────────────────────────────────────────── */
-const APP_VERSION = '12';
+const APP_VERSION = '13';
 const CACHE_KEY = `ji_news_cache_v${APP_VERSION}`;
 
 // 이전 버전 캐시 자동 삭제
@@ -30,8 +30,8 @@ const CATEGORIES = ['Tech & Economy', 'Environment', 'Economy', 'Society', 'Worl
 /** 카테고리 키워드 매핑 */
 function detectCategory(title) {
     const t = title.toLowerCase();
-    // Environment: 날씨·기상 최우선 (날씨 관련 기사가 World로 빠지지 않도록)
-    if (/날씨|기상|기온|강수|강우|강설|호우|대설|태풍|장마|폭염|한파|황사|미세먼지|폭우|홍수|가뭄|기후|환경|탄소|온난화|재활용|에너지|원전|신재생|풍력|태양광|탄소중립|해수면|오염|생태/.test(t)) return 'Environment';
+    // Environment: 날씨·기상 최우선 — 단어가 짧아 부분 매칭 필요
+    if (/날씨|기상|기온|강수|강우|강설|호우|대설|태풍|장마|폭염|한파|황사|미세먼지|폭우|홍수|가뭄|흐리|맑음|구름|소나기|안개|천둥|번개|눈비|눈 예보|비 예보|전국.*비|전국.*눈|비.*전국|기후|환경|탄소|온난화|재활용|에너지|원전|신재생|풍력|태양광|탄소중립|해수면|오염|생태/.test(t)) return 'Environment';
     // Tech: IT·AI·플랫폼·서비스
     if (/ai|인공지능|반도체|로봇|챗gpt|gpt|소프트웨어|테크|디지털|플랫폼|스타트업|빅테크|메타|구글|애플|네이버|카카오|유튜브|먹통|서비스장애|스트리밍|넷플릭스|틱톡|인스타그램|트위터|오픈ai|클라우드|사이버|해킹/.test(t)) return 'Tech & Economy';
     // Economy: 경제·금융·시장
@@ -410,9 +410,19 @@ function NewsFeed({ news, loading, error, entries, onMission }) {
                             <BookOpen size={18} aria-hidden="true" className="opacity-80" />
                             <h2 className="text-[17px] sm:text-xl font-bold tracking-tight">오늘의 뉴스</h2>
                         </div>
-                        <p className="text-primary-foreground/60 text-[12px] flex items-center gap-1">
-                            <Clock size={12} aria-hidden="true" />실시간 · Google 뉴스 기반
-                        </p>
+                        <div className="relative group inline-flex items-center gap-1 cursor-default">
+                            <p className="text-primary-foreground/60 text-[12px] flex items-center gap-1">
+                                <Clock size={12} aria-hidden="true" />실시간 · Google 뉴스 기반
+                                <span className="underline decoration-dotted opacity-60 text-[11px]">(?)</span>
+                            </p>
+                            {/* 툴팁 */}
+                            <div className="absolute left-0 top-6 z-50 hidden group-hover:block w-64 bg-foreground text-background text-[11px] leading-relaxed p-3 rounded-lg shadow-lg pointer-events-none">
+                                <p className="font-bold mb-1">📰 뉴스 제공 안내</p>
+                                <p>· Google 뉴스 RSS에서 한국 최신 기사 6개를 가져옵니다.</p>
+                                <p>· 매일 오전 6시 이후 첫 접속 시 새 뉴스로 업데이트됩니다.</p>
+                                <p>· 뉴스 클릭 시 원문 기사로 이동합니다.</p>
+                            </div>
+                        </div>
                     </div>
                     <div className="sm:text-right">
                         <time className="text-xl sm:text-2xl font-bold tabular-nums opacity-90">{today}</time>
@@ -455,10 +465,9 @@ function NewsFeed({ news, loading, error, entries, onMission }) {
                             ${done ? 'border-secondary/40 bg-secondary/5' : 'border-border'}`}
                         style={{ animationDelay: `${i * 60}ms` }}
                     >
-                        {/* 상단: 뱃지 + 출처 + 완료표시 */}
+                        {/* 상단: 뱃지 + 완료표시 */}
                         <div className="flex flex-wrap items-center gap-2 mb-2">
                             <Badge category={n.category} />
-                            <span className="text-[11px] text-muted-foreground">{n.source}</span>
                             {done && (
                                 <span className="ml-auto inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] font-semibold bg-secondary/15 text-secondary border border-secondary/30">
                                     <CheckCircle size={11} aria-hidden="true" /> 완료
@@ -474,16 +483,15 @@ function NewsFeed({ news, loading, error, entries, onMission }) {
                             <ExternalLink size={12} className="inline ml-1.5 opacity-0 group-hover:opacity-60 transition-opacity" aria-hidden="true" />
                         </a>
 
-                        {/* 하단: 날짜 + 미션 버튼 */}
+                        {/* 하단: 출처 + 미션 버튼 */}
                         <div className="flex items-center justify-between">
-                            <time className="text-[11px] text-muted-foreground">{n.date}</time>
+                            <span className="text-[11px] text-muted-foreground">{n.source}</span>
                             <button
                                 onClick={() => onMission(n)}
                                 className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[12px] font-bold transition-colors duration-200 cursor-pointer
                                     ${done
                                         ? 'bg-secondary/15 text-secondary hover:bg-secondary/25'
-                                        : 'bg-primary text-primary-foreground hover:bg-grad-mid'}`}
-                                style={!done ? { boxShadow: '0 2px 8px -2px oklch(0.457 0.24 277 / .35)' } : {}}
+                                        : 'bg-primary text-primary-foreground hover:opacity-90'}`}
                             >
                                 <PenTool size={12} aria-hidden="true" />
                                 {done ? '수정하기' : '미션하기'}
