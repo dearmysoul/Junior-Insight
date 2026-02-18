@@ -21,142 +21,19 @@ function detectCategory(title) {
     return 'World';
 }
 
-/** 기사 제목 키워드 기반 의견 3지선다 동적 생성 */
-function makeOpinionOptions(category, title) {
-    const t = title.toLowerCase();
-
-    // ── Tech & Economy ──
-    if (category === 'Tech & Economy') {
-        if (/ai|인공지능|챗gpt|생성형/.test(t))
-            return ['AI는 인간의 삶을 전반적으로 개선할 것이다', 'AI의 부작용과 규제 마련이 먼저 필요하다', 'AI 활용 방식에 따라 결과가 달라질 것이다'];
-        if (/반도체|칩|chip/.test(t))
-            return ['반도체 자급화를 위한 국가 지원이 필요하다', '시장 자율에 맡기는 것이 더 효율적이다', '글로벌 협력을 통해 공급망을 안정시켜야 한다'];
-        if (/일자리|고용|실업|노동/.test(t))
-            return ['기술 발전으로 새로운 일자리가 더 많이 생길 것이다', '기존 일자리 보호를 위한 규제가 필요하다', '교육과 재훈련 지원이 핵심 해결책이다'];
-        if (/로봇|자동화|automation/.test(t))
-            return ['자동화는 생산성 향상을 위해 적극 도입해야 한다', '자동화로 인한 일자리 감소 대책이 먼저다', '단계적·신중한 자동화 도입이 필요하다'];
-        return ['기술 발전은 사회에 긍정적 영향을 줄 것이다', '기술 발전의 부작용에 더 주의해야 한다', '기술을 어떻게 활용하느냐가 가장 중요하다'];
-    }
-
-    // ── Environment ──
-    if (category === 'Environment') {
-        if (/해수면|침수|홍수|태풍|기후|온난화/.test(t))
-            return ['지금 당장 탄소 배출 감축에 집중해야 한다', '피해 지역 대응 인프라 구축이 더 시급하다', '감축과 적응 두 전략을 동시에 추진해야 한다'];
-        if (/재활용|플라스틱|쓰레기|폐기물/.test(t))
-            return ['기업에 엄격한 폐기물 규제를 부과해야 한다', '개인의 분리수거와 소비 습관 변화가 핵심이다', '재활용 기술 개발에 더 투자해야 한다'];
-        if (/에너지|원전|태양광|풍력|신재생/.test(t))
-            return ['신재생에너지로 빠르게 전환해야 한다', '안정적 전력 공급을 위해 원전을 유지해야 한다', '다양한 에너지원을 균형 있게 활용해야 한다'];
-        return ['지금 당장 강력한 환경 규제가 필요하다', '경제 발전과 환경 보호의 균형이 중요하다', '과학 기술로 환경 문제를 해결할 수 있다'];
-    }
-
-    // ── Economy ──
-    if (category === 'Economy') {
-        if (/금리|기준금리|한국은행|연준|fed/.test(t))
-            return ['경기 부양을 위해 금리를 내려야 한다', '물가 안정을 위해 금리를 유지해야 한다', '경제 지표를 더 지켜본 후 판단해야 한다'];
-        if (/부동산|집값|전세|주택/.test(t))
-            return ['공급 확대로 집값을 안정시켜야 한다', '투기 수요 억제 정책이 먼저 필요하다', '실수요자 중심의 맞춤형 대책이 필요하다'];
-        if (/물가|인플레|환율|달러/.test(t))
-            return ['정부가 적극적으로 물가 안정에 개입해야 한다', '시장 원리에 따라 물가가 조정되도록 해야 한다', '가계 지원을 통해 구매력을 보전해야 한다'];
-        if (/무역|수출|관세|통상/.test(t))
-            return ['자유무역 확대로 경제 성장을 도모해야 한다', '자국 산업 보호를 위한 관세 정책이 필요하다', '전략 분야는 보호하고 나머지는 개방해야 한다'];
-        return ['경기 부양을 위한 적극적 정책이 필요하다', '재정 건전성을 지키는 것이 더 중요하다', '단기 부양보다 구조 개혁이 먼저다'];
-    }
-
-    // ── Society ──
-    if (category === 'Society') {
-        if (/저출산|출생|출산|인구/.test(t))
-            return ['출산 장려금 등 직접 지원을 대폭 늘려야 한다', '양육·주거 환경 개선이 근본 해결책이다', '이민 정책 등 다양한 방안을 함께 검토해야 한다'];
-        if (/교육|학교|입시|대학/.test(t))
-            return ['입시 제도를 전면 개편해야 한다', '교육 현장 자율성을 더 보장해야 한다', '사교육 부담 완화가 먼저 이루어져야 한다'];
-        if (/복지|의료|건강보험|노인/.test(t))
-            return ['보편적 복지 확대를 위해 재원을 더 투입해야 한다', '선별 복지로 실질적 도움이 필요한 곳에 집중해야 한다', '복지 재정 지속 가능성을 먼저 점검해야 한다'];
-        if (/안전|사고|범죄|재난/.test(t))
-            return ['안전 규제와 처벌을 대폭 강화해야 한다', '예방 교육과 안전 문화 확산이 더 중요하다', '피해자 지원 체계를 먼저 정비해야 한다'];
-        return ['정부의 적극적인 개입이 필요하다', '민간과 시민 사회가 함께 해결해야 한다', '법·제도 정비가 선행되어야 한다'];
-    }
-
-    // ── World ──
-    if (category === 'World') {
-        if (/미국|중국|미중|무역전쟁|관세/.test(t))
-            return ['미·중 갈등에서 한국은 균형 외교를 유지해야 한다', '한국은 동맹국(미국)과의 협력을 강화해야 한다', '경제 실익에 따라 유연하게 대응해야 한다'];
-        if (/전쟁|분쟁|갈등|러시아|우크라이나|이스라엘|중동/.test(t))
-            return ['국제 사회의 강력한 제재와 개입이 필요하다', '외교적 대화와 협상으로 해결해야 한다', '인도주의적 지원에 우선 집중해야 한다'];
-        if (/북한|핵|미사일|한반도/.test(t))
-            return ['강력한 억지력과 대북 제재를 유지해야 한다', '대화와 협력으로 관계를 개선해야 한다', '한·미 동맹을 바탕으로 신중하게 대응해야 한다'];
-        if (/유엔|un|국제|외교/.test(t))
-            return ['다자 국제 협력 체계를 강화해야 한다', '각국의 자국 이익 우선 외교는 불가피하다', '의제에 따라 협력과 경쟁을 병행해야 한다'];
-        return ['국제 협력을 통해 해결해야 한다', '자국 이익을 지키는 실리 외교가 필요하다', '상황에 따라 전략적으로 접근해야 한다'];
-    }
-
-    return ['찬성한다', '반대한다', '더 많은 정보가 필요하다'];
+/** 의견 선택지: 모든 기사에 찬성/반대/기타 고정 */
+function makeOpinionOptions() {
+    return ['찬성한다', '반대한다', '기타 의견이 있다'];
 }
 
-/** RSS description에서 관련 기사 제목·출처 추출 (태그 완전 제거) */
-function extractRelated(descHtml) {
+/** RSS description에서 본문 텍스트 추출 (HTML 태그 제거) */
+function extractDescription(descHtml) {
     const tmp = document.createElement('div');
     tmp.innerHTML = descHtml;
-    const anchors = tmp.querySelectorAll('a');
-    const related = [];
-    anchors.forEach((a) => {
-        const txt = a.textContent.trim();
-        if (txt && txt.length > 4) related.push(txt);
-    });
-    return related;
-}
-
-/** 제목 + 관련기사로 구조화된 브리핑 생성 (6~10문장) */
-function buildBrief(title, source, category, relatedHeadlines) {
-    const related = relatedHeadlines.length > 0
-        ? relatedHeadlines.slice(0, 3).map(h => {
-            const d = h.lastIndexOf(' - ');
-            return d > 0 ? h.slice(0, d).trim() : h.trim();
-        })
-        : [];
-
-    // ① 기사 배경 설명
-    const bg = `${source}에서 보도한 이 기사는 "${title}"을(를) 주제로 다루고 있습니다.`;
-
-    // ② 현재 상황 구체적 설명
-    const situation = related.length > 0
-        ? `현재 "${related[0]}" 등 연관 사안이 잇따라 보도되며, 이 문제가 단발성이 아닌 지속적 흐름임을 보여 주고 있습니다.`
-        : `현재 이 사안은 국내외 주요 언론이 집중 조명할 만큼 광범위한 관심을 받고 있습니다.`;
-
-    // ③ 추가 현황 맥락
-    const context = related.length > 1
-        ? `또한 "${related[1]}"과(와) 같은 후속 보도도 이어지고 있어, 이슈의 파급력이 여러 분야로 확산되는 양상입니다.`
-        : `이 주제는 다양한 이해관계자들 사이에서 활발한 논의가 이루어지고 있는 현안입니다.`;
-
-    // ④⑤⑥ 제목 키워드 기반 원인·영향·전망 동적 생성
-    const kw = title.toLowerCase();
-    let det;
-    if (/대출|임대|금융당국|은행|금리|부동산|집값|전세|월세/.test(kw)) {
-        det = { cause: '저금리 기조 장기화와 유동성 확대로 부동산·대출 시장이 과열된 것이 주된 배경으로, 금융당국이 관리 강화에 나선 상황입니다.', impact: '대출 규제가 강화되면 실수요자의 자금 조달이 어려워지고, 임대 시장의 공급·수요 불균형이 심화될 수 있습니다.', outlook: '향후 금리 방향과 정책 변화에 따라 주택 시장 안정 여부가 갈릴 것이며, 실수요자 중심의 맞춤형 대책 마련이 핵심 과제가 될 것입니다.' };
-    } else if (/날씨|기상|폭염|한파|태풍|강수|황사|미세먼지/.test(kw)) {
-        det = { cause: '기후 변화의 영향으로 계절별 기온 편차가 커지고 이상 기상 현상이 빈번해지면서 일상생활에 직접적인 영향을 주고 있습니다.', impact: '극단적 기상 조건은 농업 생산성 저하, 에너지 수요 급증, 야외 활동 제한 등 사회 전반에 걸쳐 광범위한 영향을 미칩니다.', outlook: '기상 예측 시스템 고도화와 기후 적응 인프라 확충이 시급하며, 시민 개개인의 대비 요령 숙지도 중요해지고 있습니다.' };
-    } else if (/주가|증시|코스피|코스닥|주식|상장|ipo/.test(kw)) {
-        det = { cause: '글로벌 통화 정책 변화와 기업 실적 기대감이 맞물려 증시 변동성이 높아지고 있으며, 외국인 자금 흐름도 주요 변수로 작용하고 있습니다.', impact: '주가 변동은 개인 투자자의 자산 가치에 직접 영향을 주며, 기업의 자금 조달 환경과 투자 심리에도 연쇄 파급 효과를 미칩니다.', outlook: '단기 변동성보다 기업의 펀더멘털과 장기 성장성을 중심으로 투자 전략을 재점검하는 것이 중요해질 것입니다.' };
-    } else if (/수출|무역|관세|통상|수입/.test(kw)) {
-        det = { cause: '주요 교역국의 보호무역 기조 강화와 공급망 재편이 수출입 구조에 변화를 일으키며, 한국 경제의 대외 의존도가 높은 만큼 민감하게 반응하고 있습니다.', impact: '수출 감소는 제조업 고용·생산에 영향을 주고, 무역 적자 확대는 경상수지와 원화 가치에도 압력을 가할 수 있습니다.', outlook: '수출 시장 다변화와 고부가가치 품목 경쟁력 강화가 중장기 핵심 과제로, 통상 외교 역량 확보도 병행되어야 합니다.' };
-    } else if (/선거|투표|대통령|국회|정치|정부|여당|야당|장관/.test(kw)) {
-        det = { cause: '정치 환경 변화와 정책 방향에 대한 사회적 갈등이 맞물리면서 이 사안이 공론화되고 있으며, 유권자들의 관심도 높아지고 있습니다.', impact: '정치적 결정은 경제 정책, 사회 복지, 외교 방향 등 국민 생활 전반에 영향을 미치며, 국정 신뢰도와 사회 통합에도 중요한 변수가 됩니다.', outlook: '향후 정책 추진 과정에서 여야 간 협력 여부와 시민 사회의 참여가 결과를 좌우할 핵심 요인이 될 것입니다.' };
-    } else if (/사고|재난|화재|지진|홍수|침수|구조|사망|부상/.test(kw)) {
-        det = { cause: '안전 관리 체계의 미비와 예기치 못한 자연·인재(人災) 요인이 복합적으로 작용하여 이번 사고가 발생한 것으로 분석됩니다.', impact: '인명 피해와 재산 손실은 물론, 지역 주민의 심리적 충격과 일상 회복에도 상당한 시간이 필요할 것으로 우려됩니다.', outlook: '재발 방지를 위한 안전 규정 강화와 피해자 지원 체계 정비가 시급하며, 유사 상황에 대한 매뉴얼 재검토도 요구됩니다.' };
-    } else if (category === 'Tech & Economy') {
-        det = { cause: '급속한 기술 발전과 디지털 전환 가속화가 산업 구조 전반을 바꾸는 배경으로 작용하고 있습니다.', impact: '기업과 근로자 모두 빠른 적응을 요구받고 있으며, 기술 격차에 따른 산업 재편이 노동 시장에 영향을 주고 있습니다.', outlook: '앞으로는 기술 활용 역량이 개인과 기업의 경쟁력을 가르는 핵심 지표가 될 것이며, 교육·정책의 선제적 대응이 필요합니다.' };
-    } else if (category === 'Environment') {
-        det = { cause: '기후 변화와 산업화에 따른 환경 부하 누적이 이번 사안의 근본 원인으로, 장기적 환경 정책의 부재도 복합적으로 작용하고 있습니다.', impact: '생태계 교란, 시민 건강 위협, 농업·수산업 피해 등 다방면의 영향이 예상되며 취약 계층의 피해가 집중될 수 있습니다.', outlook: '탄소 중립 이행 가속화와 친환경 기술 투자 확대를 통해 장기적 해결책을 마련해 나가는 것이 관건입니다.' };
-    } else if (category === 'Economy') {
-        det = { cause: '글로벌 경기 변동과 정책 불확실성이 맞물리며 이 같은 경제적 변화가 나타나고 있습니다.', impact: '가계 소비, 기업 투자, 고용 시장 등 실물 경제 전반에 연쇄적인 파급 효과가 예상됩니다.', outlook: '전문가들은 구조적 체질 개선과 새로운 성장 동력 발굴이 중장기 안정의 핵심 열쇠라고 조언합니다.' };
-    } else if (category === 'Society') {
-        det = { cause: '인구 구조 변화, 사회적 양극화, 제도적 한계가 복합적으로 작용해 이 문제가 사회적 의제로 부상하게 되었습니다.', impact: '취약 계층부터 일반 시민까지 광범위한 영향을 미치며, 사회 안전망과 공동체 신뢰에도 균열이 생길 수 있습니다.', outlook: '법·제도 정비와 시민 사회의 자발적 참여가 결합된 종합적 접근이 필요하며, 정책 입안자의 현실적 대응이 요구됩니다.' };
-    } else {
-        det = { cause: '국제 정세의 변화와 각국의 이해관계 충돌이 이 사안의 핵심 배경으로 작용하고 있습니다.', impact: '외교·경제·안보 등 다층적 차원에서 한국을 포함한 국제 사회 전반에 파급 효과를 미치고 있습니다.', outlook: '다자 협력 체계 복원과 전략적 외교 역량 강화가 앞으로의 핵심 과제가 될 것으로 전망됩니다.' };
-    }
-
-    // ⑦ 마무리
-    const closing = `이 기사는 ${source}에서 원문을 확인할 수 있으며, 이 사안이 앞으로 어떻게 전개되는지 지속적으로 살펴볼 필요가 있습니다.`;
-
-    return [bg, situation, context, det.cause, det.impact, det.outlook, closing];
+    // <ul> 목록(관련기사 링크)은 제거하고 순수 텍스트만 추출
+    tmp.querySelectorAll('ul, li').forEach(el => el.remove());
+    const text = tmp.textContent.trim();
+    return text.length > 10 ? text : null;
 }
 
 /** Google News RSS 파싱 (Vite proxy 경유) */
@@ -180,13 +57,12 @@ async function fetchGoogleNews() {
         const descHtml = item.querySelector('description')?.textContent || '';
         const date = pubDate ? new Date(pubDate).toISOString().slice(0, 10) : new Date().toISOString().slice(0, 10);
         const category = detectCategory(title);
-        const relatedHeadlines = extractRelated(descHtml);
-        const detail = buildBrief(title, source, category, relatedHeadlines);
+        const detail = extractDescription(descHtml) || title;
 
         articles.push({
             id: i + 1, date, title, source, category, url: link,
             detail,
-            opinionOptions: makeOpinionOptions(category, title),
+            opinionOptions: makeOpinionOptions(),
             importance: Math.max(60, 100 - i * 5),
         });
     });
@@ -289,7 +165,7 @@ export default function App() {
         // 오늘 오전 6시 타임스탬프 계산
         const now = new Date();
         const todaySix = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 6, 0, 0, 0);
-        const cacheKey = 'ji_news_cache_v2';
+        const cacheKey = 'ji_news_cache_v3';
 
         try {
             const cached = JSON.parse(localStorage.getItem(cacheKey) || 'null');
@@ -520,7 +396,7 @@ function NewsFeed({ pick, news, loading, error }) {
                     <h3 className="text-[15px] sm:text-[17px] font-bold text-card-foreground mb-1.5 leading-snug tracking-tight group-hover:text-primary transition-colors duration-200">
                         {n.title}
                     </h3>
-                    <p className="text-muted-foreground text-[13px] leading-[1.75] mb-3 line-clamp-2">{Array.isArray(n.detail) ? n.detail[0] : n.detail}</p>
+                    <p className="text-muted-foreground text-[13px] leading-[1.75] mb-3 line-clamp-2">{Array.isArray(n.detail) ? n.detail.join(' ') : n.detail}</p>
                     <div className="flex items-center justify-between text-[11px] text-muted-foreground">
                         <div className="flex items-center gap-1.5">
                             <time>{n.date}</time>
@@ -564,10 +440,8 @@ function WriteView({ news, form, setForm, submit, goBack }) {
                             <ExternalLink size={11} aria-hidden="true" /> 원문보기
                         </a>
                     </div>
-                    <div className="space-y-3">
-                        {(Array.isArray(news.detail) ? news.detail : [news.detail]).map((sentence, i) => (
-                            <p key={i} className="text-[14px] text-card-foreground/80 leading-[1.85] tracking-tight">{sentence}</p>
-                        ))}
+                    <div>
+                        <p className="text-[14px] text-card-foreground/80 leading-[1.85] tracking-tight">{Array.isArray(news.detail) ? news.detail.join(' ') : news.detail}</p>
                     </div>
                     <div className="mt-6 bg-accent/30 p-4 rounded-lg border border-accent/50">
                         <div className="flex items-center gap-2 font-bold text-accent-foreground mb-1 text-[14px]">
