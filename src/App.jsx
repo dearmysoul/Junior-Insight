@@ -5,12 +5,13 @@ import {
     Flame, BookMarked, Star, Sparkles, ArrowLeft,
     Zap, Target, Trophy, Clock, ChevronDown, ChevronUp,
 } from 'lucide-react';
+import { loadEntries, loadStats, saveEntry, saveStats } from './supabase.js';
 
 /* ──────────────────────────────────────────────
    앱 버전 — 코드 변경 시 이 숫자만 올리면
    브라우저 캐시가 자동으로 무효화됩니다
    ────────────────────────────────────────────── */
-const APP_VERSION = '33';
+const APP_VERSION = '34';
 const CACHE_KEY = `ji_news_cache_v${APP_VERSION}`;
 
 // 이전 버전 캐시 자동 삭제
@@ -313,21 +314,18 @@ export default function App() {
         return () => { cancelled = true; };
     }, []);
 
-    const [entries, setEntries] = useState(() => {
-        try { return JSON.parse(localStorage.getItem('ji_entries') || '[]'); } catch { return []; }
-    });
-    const [stats, setStats] = useState(() => {
-        try {
-            return JSON.parse(localStorage.getItem('ji_stats') || '{"streak":0,"total":0,"xp":0,"level":1}');
-        } catch { return { streak: 0, total: 0, xp: 0, level: 1 }; }
-    });
+    const [entries, setEntries] = useState([]);
+    const [stats, setStats] = useState({ streak: 0, total: 0, xp: 0, level: 1, lastDate: '' });
+    const [dbLoading, setDbLoading] = useState(true);
 
+    // Supabase에서 초기 데이터 로드
     useEffect(() => {
-        try { localStorage.setItem('ji_entries', JSON.stringify(entries)); } catch { /* 무시 */ }
-    }, [entries]);
-    useEffect(() => {
-        try { localStorage.setItem('ji_stats', JSON.stringify(stats)); } catch { /* 무시 */ }
-    }, [stats]);
+        Promise.all([loadEntries(), loadStats()]).then(([e, s]) => {
+            setEntries(e);
+            if (s) setStats(s);
+            setDbLoading(false);
+        });
+    }, []);
 
     const flash = useCallback((msg) => {
         setToast({ show: true, msg });
@@ -365,16 +363,19 @@ export default function App() {
         if (!form.reason.trim()) { flash('② 의견의 이유를 적어주세요'); return; }
         if (!form.word.trim()) { flash('③ 핵심 단어를 입력해주세요'); return; }
 
+        const todayStr = new Date().toLocaleDateString('ko-KR');
         const newEntry = {
-            id: Date.now(), date: new Date().toLocaleDateString('ko-KR'),
+            id: Date.now(), date: todayStr,
             newsId: selected.id, newsTitle: selected.title, newsCategory: selected.category,
-            missionType: form.missionType,
             summary: form.summary.trim(), choice: form.choice,
             reason: form.reason.trim(), word: form.word.trim(),
             opinionOptions: selected.opinionOptions,
         };
 
-        // 기존 항목이 있으면 업데이트, 없으면 추가
+        // Supabase에 저장 (upsert)
+        saveEntry(newEntry);
+
+        // 로컬 state 업데이트
         setEntries((p) => {
             const existing = p.findIndex(e => e.newsId === selected.id);
             if (existing >= 0) {
@@ -385,38 +386,27 @@ export default function App() {
             return [newEntry, ...p];
         });
 
-        // XP 계산:
-        // 요약: 입력만 해도 +1, 20자 이상이면 추가 +4 (합계 최대 +5)
-        // 이유: 입력만 해도 +1, 15자 이상이면 추가 +4 (합계 최대 +5)
-        // 단어: 고정 +5
-        const summaryXp = form.summary.trim().length > 0
-            ? (form.summary.trim().length >= 20 ? 5 : 1)
-            : 0;
-        const reasonXp = form.reason.trim().length > 0
-            ? (form.reason.trim().length >= 15 ? 5 : 1)
-            : 0;
+        // XP 계산
+        const summaryXp = form.summary.trim().length >= 20 ? 5 : form.summary.trim().length > 0 ? 1 : 0;
+        const reasonXp  = form.reason.trim().length >= 15  ? 5 : form.reason.trim().length > 0  ? 1 : 0;
         const xp = summaryXp + reasonXp + 5;
-        // streak: 오늘 날짜와 마지막 완료 날짜 비교
-        const todayStr = new Date().toLocaleDateString('ko-KR');
+
         setStats((p) => {
             const nx = p.xp + xp;
             const nl = Math.floor(nx / 500) + 1;
             const up = nl > p.level;
-            // 마지막 완료일이 오늘이면 streak 유지, 어제면 +1, 그 외 1로 리셋
             const lastDate = p.lastDate || '';
             const yesterday = new Date();
             yesterday.setDate(yesterday.getDate() - 1);
             const yesterdayStr = yesterday.toLocaleDateString('ko-KR');
-            let newStreak = p.streak;
-            if (lastDate === todayStr) {
-                newStreak = p.streak; // 오늘 이미 완료 → streak 유지
-            } else if (lastDate === yesterdayStr) {
-                newStreak = p.streak + 1; // 어제 완료 → streak +1
-            } else {
-                newStreak = 1; // 처음이거나 하루 이상 끊김 → 1로 리셋
-            }
+            let newStreak = lastDate === todayStr ? p.streak
+                : lastDate === yesterdayStr     ? p.streak + 1
+                : 1;
+            const next = { ...p, total: p.total + 1, xp: nx, level: nl, streak: newStreak, lastDate: todayStr };
+            // Supabase에 stats 저장
+            saveStats(next);
             setTimeout(() => flash(up ? `레벨 업! LV.${nl} (+${xp} XP)` : `미션 완료! +${xp} XP`), 100);
-            return { ...p, total: p.total + 1, xp: nx, level: nl, streak: newStreak, lastDate: todayStr };
+            return next;
         });
         setForm({ summary: '', choice: null, reason: '', word: '' });
         // 미션 완료 후 뉴스 목록으로
