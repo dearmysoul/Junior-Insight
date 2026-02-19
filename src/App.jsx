@@ -10,7 +10,7 @@ import {
    앱 버전 — 코드 변경 시 이 숫자만 올리면
    브라우저 캐시가 자동으로 무효화됩니다
    ────────────────────────────────────────────── */
-const APP_VERSION = '25';
+const APP_VERSION = '26';
 const CACHE_KEY = `ji_news_cache_v${APP_VERSION}`;
 
 // 이전 버전 캐시 자동 삭제 + 임시 stats 초기화
@@ -577,7 +577,7 @@ function NewsFeed({ news, loading, error, entries, onMission }) {
                 return (
                     <article key={n.id}
                         className={`bg-card border rounded-lg p-4 sm:p-5 animate-slide-up transition-colors duration-200
-                            ${done ? 'border-secondary/40 bg-secondary/5' : 'border-border'}`}
+                            ${done ? 'border-secondary/40 bg-secondary/5' : 'border-border hover:border-primary/30'}`}
                         style={{ animationDelay: `${i * 60}ms` }}
                     >
                         {/* 상단: 뱃지 + 완료표시 */}
@@ -590,47 +590,24 @@ function NewsFeed({ news, loading, error, entries, onMission }) {
                             )}
                         </div>
 
-                        {/* 제목 → 원문 링크 */}
-                        <a href={n.url} target="_blank" rel="noreferrer"
-                            className="block text-[15px] sm:text-[16px] font-bold text-card-foreground leading-snug tracking-tight hover:text-primary transition-colors duration-200 mb-2 group"
-                            aria-label={`${n.title} 원문 보기`}>
+                        {/* 제목 → 클릭 시 상세(요약+미션) 화면으로 이동 */}
+                        <button
+                            onClick={() => onMission(n)}
+                            className="block w-full text-left text-[15px] sm:text-[16px] font-bold text-card-foreground leading-snug tracking-tight hover:text-primary transition-colors duration-200 mb-3 cursor-pointer"
+                            aria-label={`${n.title} 읽기 및 미션`}
+                        >
                             {n.title}
-                            <ExternalLink size={12} className="inline ml-1.5 opacity-0 group-hover:opacity-60 transition-opacity" aria-hidden="true" />
-                        </a>
+                        </button>
 
-                        {/* ChatGPT 요약 (summary_kor 있을 때만) */}
-                        {n.summary_kor && (
-                            <p className="text-[12px] text-muted-foreground leading-relaxed mb-2 line-clamp-3">
-                                {n.summary_kor}
-                            </p>
-                        )}
-
-                        {/* 키워드 태그 */}
-                        {n.keywords?.length > 0 && (
-                            <div className="flex flex-wrap gap-1 mb-3">
-                                {n.keywords.map((kw, ki) => (
-                                    <span key={ki} className="text-[10px] px-1.5 py-0.5 rounded bg-muted text-muted-foreground font-medium">
-                                        #{kw}
-                                    </span>
-                                ))}
-                            </div>
-                        )}
-
-                        {/* 하단: 출처 + 미션 버튼 */}
+                        {/* 하단: 출처 */}
                         <div className="flex items-center justify-between">
                             <span className="text-[11px] text-muted-foreground">
                                 {n.source}{n.country ? ` · ${n.country}` : ''}
                             </span>
-                            <button
-                                onClick={() => onMission(n)}
-                                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[12px] font-bold transition-colors duration-200 cursor-pointer
-                                    ${done
-                                        ? 'bg-secondary/15 text-secondary hover:bg-secondary/25'
-                                        : 'bg-primary text-primary-foreground hover:opacity-90'}`}
-                            >
-                                <PenTool size={12} aria-hidden="true" />
+                            <span className="text-[11px] text-primary/70 font-medium flex items-center gap-1">
+                                <PenTool size={11} aria-hidden="true" />
                                 {done ? '수정하기' : '미션하기'}
-                            </button>
+                            </span>
                         </div>
                     </article>
                 );
@@ -661,21 +638,34 @@ function WriteView({ news, form, setForm, submit, goBack, isDone }) {
                         <span className="text-[11px] text-muted-foreground">· {news.country}</span>
                     )}
                 </div>
-                <p className="text-[14px] font-bold text-card-foreground leading-snug tracking-tight mb-2">{news.title}</p>
-                {/* ChatGPT 요약 — 미션 전 참고용 */}
-                {news.summary_kor && (
-                    <p className="text-[12px] text-muted-foreground leading-relaxed mb-3 p-2.5 bg-muted/40 rounded-md border border-border">
-                        📄 {news.summary_kor}
-                    </p>
+                <p className="text-[15px] font-bold text-card-foreground leading-snug tracking-tight mb-3">{news.title}</p>
+
+                {/* ChatGPT 요약 — 미션 전 참고용 (핵심 내용 강조) */}
+                {news.summary_kor ? (
+                    <div className="mb-3 p-3 bg-primary/6 rounded-lg border border-primary/20">
+                        <p className="text-[11px] font-bold text-primary mb-1.5 uppercase tracking-wider flex items-center gap-1">
+                            <BookOpen size={11} aria-hidden="true" /> 기사 요약
+                        </p>
+                        <p className="text-[13px] text-foreground leading-relaxed">{news.summary_kor}</p>
+                    </div>
+                ) : (
+                    news.detail && news.detail !== news.title && (
+                        <p className="text-[13px] text-muted-foreground leading-relaxed mb-3 p-3 bg-muted/40 rounded-lg border border-border">
+                            {news.detail}
+                        </p>
+                    )
                 )}
+
                 {/* 키워드 */}
                 {news.keywords?.length > 0 && (
                     <div className="flex flex-wrap gap-1 mb-3">
+                        <span className="text-[10px] text-muted-foreground font-medium self-center mr-0.5">핵심어:</span>
                         {news.keywords.map((kw, ki) => (
-                            <span key={ki} className="text-[10px] px-1.5 py-0.5 rounded bg-muted text-muted-foreground font-medium">#{kw}</span>
+                            <span key={ki} className="text-[10px] px-2 py-0.5 rounded-full bg-primary/10 text-primary font-semibold border border-primary/20">#{kw}</span>
                         ))}
                     </div>
                 )}
+
                 <a href={news.url} target="_blank" rel="noreferrer"
                     className="inline-flex items-center gap-1 text-[12px] text-primary hover:underline font-medium">
                     <ExternalLink size={11} aria-hidden="true" /> 원문 읽기
