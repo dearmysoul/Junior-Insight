@@ -10,7 +10,7 @@ import {
    앱 버전 — 코드 변경 시 이 숫자만 올리면
    브라우저 캐시가 자동으로 무효화됩니다
    ────────────────────────────────────────────── */
-const APP_VERSION = '28';
+const APP_VERSION = '29';
 const CACHE_KEY = `ji_news_cache_v${APP_VERSION}`;
 
 // 이전 버전 캐시 자동 삭제 + 임시 stats 초기화
@@ -656,9 +656,11 @@ function WriteView({ news, form, setForm, submit, goBack, isDone }) {
                                 <p className="text-[11px] font-bold text-primary mb-2 uppercase tracking-wider flex items-center gap-1">
                                     <BookOpen size={11} aria-hidden="true" /> 기사 요약
                                 </p>
-                                <p className="text-[14px] text-foreground leading-[1.8] tracking-tight">
-                                    {news.summary_kor}
-                                </p>
+                                <div className="text-[14px] text-foreground leading-[1.8] tracking-tight space-y-3">
+                                    {news.summary_kor.split('\n').filter(p => p.trim()).map((para, pi) => (
+                                        <p key={pi}>{para.trim()}</p>
+                                    ))}
+                                </div>
                             </div>
                         ) : (
                             news.detail && news.detail !== news.title && (
