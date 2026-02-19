@@ -10,22 +10,22 @@ import {
    앱 버전 — 코드 변경 시 이 숫자만 올리면
    브라우저 캐시가 자동으로 무효화됩니다
    ────────────────────────────────────────────── */
-const APP_VERSION = '32';
+const APP_VERSION = '33';
 const CACHE_KEY = `ji_news_cache_v${APP_VERSION}`;
 
-// 이전 버전 캐시 자동 삭제 + 임시 stats 초기화
+// 이전 버전 캐시 자동 삭제
 (() => {
     try {
+        // 뉴스 캐시: 현재 버전 외 모두 삭제
         Object.keys(localStorage)
             .filter(k => k.startsWith('ji_news_cache') && k !== CACHE_KEY)
             .forEach(k => localStorage.removeItem(k));
-        // v20: entries의 newsId가 숫자였던 구버전 데이터 초기화 (URL 기반으로 전환)
+        // entries의 newsId가 숫자였던 구버전 데이터 초기화
         const entries = JSON.parse(localStorage.getItem('ji_entries') || '[]');
         if (entries.length > 0 && typeof entries[0].newsId === 'number') {
             localStorage.removeItem('ji_entries');
             localStorage.removeItem('ji_stats');
         }
-        // 이전 버전 캐시만 삭제 (stats/entries는 유지)
     } catch { /* 무시 */ }
 })();
 
