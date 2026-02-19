@@ -10,7 +10,7 @@ import {
    앱 버전 — 코드 변경 시 이 숫자만 올리면
    브라우저 캐시가 자동으로 무효화됩니다
    ────────────────────────────────────────────── */
-const APP_VERSION = '24';
+const APP_VERSION = '25';
 const CACHE_KEY = `ji_news_cache_v${APP_VERSION}`;
 
 // 이전 버전 캐시 자동 삭제 + 임시 stats 초기화
@@ -74,8 +74,21 @@ async function fetchNewsJson() {
         const today = new Date().toISOString().slice(0, 10);
         // 오늘 날짜 기사이면 사용, 아니면 RSS fallback
         if (data?.date === today && Array.isArray(data.articles) && data.articles.length > 0) {
-            return data.articles.map(a => ({
-                ...a,
+            return data.articles.map((a, idx) => ({
+                // ChatGPT 필드 → 앱 내부 필드 정규화
+                id: a.id || a.url || `${a.title}_${a.date}`,
+                title: a.title_kor || a.title,           // 한국어 제목 우선
+                title_orig: a.title,                      // 원문 제목 보존
+                source: a.source,
+                country: a.country || '',
+                category: a.category || 'World',
+                detail: a.summary_kor || a.detail || a.title, // ChatGPT 요약 우선
+                summary_kor: a.summary_kor || null,
+                keywords: a.keywords || [],
+                difficulty: a.difficulty || 1,
+                url: a.url,
+                date: a.date || today,
+                importance: a.importance || Math.max(60, 100 - idx * 5),
                 opinionOptions: makeOpinionOptions(),
             }));
         }
@@ -579,15 +592,35 @@ function NewsFeed({ news, loading, error, entries, onMission }) {
 
                         {/* 제목 → 원문 링크 */}
                         <a href={n.url} target="_blank" rel="noreferrer"
-                            className="block text-[15px] sm:text-[16px] font-bold text-card-foreground leading-snug tracking-tight hover:text-primary transition-colors duration-200 mb-3 group"
+                            className="block text-[15px] sm:text-[16px] font-bold text-card-foreground leading-snug tracking-tight hover:text-primary transition-colors duration-200 mb-2 group"
                             aria-label={`${n.title} 원문 보기`}>
                             {n.title}
                             <ExternalLink size={12} className="inline ml-1.5 opacity-0 group-hover:opacity-60 transition-opacity" aria-hidden="true" />
                         </a>
 
+                        {/* ChatGPT 요약 (summary_kor 있을 때만) */}
+                        {n.summary_kor && (
+                            <p className="text-[12px] text-muted-foreground leading-relaxed mb-2 line-clamp-3">
+                                {n.summary_kor}
+                            </p>
+                        )}
+
+                        {/* 키워드 태그 */}
+                        {n.keywords?.length > 0 && (
+                            <div className="flex flex-wrap gap-1 mb-3">
+                                {n.keywords.map((kw, ki) => (
+                                    <span key={ki} className="text-[10px] px-1.5 py-0.5 rounded bg-muted text-muted-foreground font-medium">
+                                        #{kw}
+                                    </span>
+                                ))}
+                            </div>
+                        )}
+
                         {/* 하단: 출처 + 미션 버튼 */}
                         <div className="flex items-center justify-between">
-                            <span className="text-[11px] text-muted-foreground">{n.source}</span>
+                            <span className="text-[11px] text-muted-foreground">
+                                {n.source}{n.country ? ` · ${n.country}` : ''}
+                            </span>
                             <button
                                 onClick={() => onMission(n)}
                                 className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[12px] font-bold transition-colors duration-200 cursor-pointer
@@ -624,8 +657,25 @@ function WriteView({ news, form, setForm, submit, goBack, isDone }) {
             <div className="bg-card border border-border rounded-lg p-4 mb-4">
                 <div className="flex items-center gap-2 mb-2">
                     <Badge category={news.category} />
+                    {news.country && (
+                        <span className="text-[11px] text-muted-foreground">· {news.country}</span>
+                    )}
                 </div>
                 <p className="text-[14px] font-bold text-card-foreground leading-snug tracking-tight mb-2">{news.title}</p>
+                {/* ChatGPT 요약 — 미션 전 참고용 */}
+                {news.summary_kor && (
+                    <p className="text-[12px] text-muted-foreground leading-relaxed mb-3 p-2.5 bg-muted/40 rounded-md border border-border">
+                        📄 {news.summary_kor}
+                    </p>
+                )}
+                {/* 키워드 */}
+                {news.keywords?.length > 0 && (
+                    <div className="flex flex-wrap gap-1 mb-3">
+                        {news.keywords.map((kw, ki) => (
+                            <span key={ki} className="text-[10px] px-1.5 py-0.5 rounded bg-muted text-muted-foreground font-medium">#{kw}</span>
+                        ))}
+                    </div>
+                )}
                 <a href={news.url} target="_blank" rel="noreferrer"
                     className="inline-flex items-center gap-1 text-[12px] text-primary hover:underline font-medium">
                     <ExternalLink size={11} aria-hidden="true" /> 원문 읽기

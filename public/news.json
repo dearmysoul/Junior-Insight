@@ -1,66 +1,22 @@
 {
-  "fetchedAt": "2026-02-19T01:53:23.169Z",
+  "fetchedAt": "2026-02-19T00:00:00.000Z",
   "date": "2026-02-19",
+  "source": "chatgpt",
   "articles": [
     {
-      "id": "https://news.google.com/rss/articles/CBMiWkFVX3lxTFA1SWdQNlREZ1RjWGFsT245ZndMR25QTDBNSGNGS2ZKN3loRmRlbEpzYXNodmlhRUl3UUlMQVJVSnNpT1NyT2FaT2JoZHlfRXRma3A4SmFDQTIyQdIBX0FVX3lxTE0wcHVrdjRaOXFMQnFtY1hlVk5jVS1HMXE2R1FUelk5RWRDdXlCS0JPZlJPel9DMW90MlRyMmhJVDlyRjFVc280ZEk1Sk01RnEyYjNQSm9zeVBLOHRHVTN3?oc=5",
-      "title": "[단독]12·3 계엄 당일 “국회 한번 더 간다” 계엄군 추가 투입하려 했다…‘계엄군 헬기 교신’ 전문 입수",
-      "source": "경향신문",
-      "category": "Society",
-      "url": "https://news.google.com/rss/articles/CBMiWkFVX3lxTFA1SWdQNlREZ1RjWGFsT245ZndMR25QTDBNSGNGS2ZKN3loRmRlbEpzYXNodmlhRUl3UUlMQVJVSnNpT1NyT2FaT2JoZHlfRXRma3A4SmFDQTIyQdIBX0FVX3lxTE0wcHVrdjRaOXFMQnFtY1hlVk5jVS1HMXE2R1FUelk5RWRDdXlCS0JPZlJPel9DMW90MlRyMmhJVDlyRjFVc280ZEk1Sk01RnEyYjNQSm9zeVBLOHRHVTN3?oc=5",
-      "detail": "[단독]12·3 계엄 당일 “국회 한번 더 간다” 계엄군 추가 투입하려 했다…‘계엄군 헬기 교신’ 전문 입수&nbsp;&nbsp;경향신문",
+      "rank": 1,
+      "id": "nasa-feb-2026-skywatching",
+      "title": "What's Up: February 2026 Skywatching Tips from NASA",
+      "title_kor": "NASA, 2026년 2월 밤하늘 관측 팁 공개",
+      "source": "NASA Science",
+      "country": "United States",
+      "category": "World",
+      "summary_kor": "NASA는 2026년 2월에 관측할 수 있는 밤하늘의 주요 볼거리와 관측 팁을 안내했다. 이런 자료는 일반인이 별자리나 행성 관측을 더 쉽게 즐길 수 있도록, 그달에 눈에 띄는 천문 현상을 정리해 제공하는 성격이다. 현재 상황은 '2월 하늘에서 무엇을 보면 좋은지'를 설명하는 안내가 공개된 것이다. 배경에는 맑은 밤하늘 관측에 대한 대중의 관심이 꾸준하고, 우주 과학 기관이 교육·대중 소통을 위해 정보를 제공해 온 흐름이 있다. 원인은 계절과 천문 조건에 따라 관측하기 좋은 대상이 달라지기 때문에, 시기별로 안내가 필요하다는 점이다. 영향으로는 학교나 가족 단위 관측 활동에 활용될 수 있고, 천문 교육 자료로도 쓰일 수 있다.",
+      "url": "https://science.nasa.gov/solar-system/whats-up-february-2026-skywatching-tips-from-nasa/",
+      "keywords": ["밤하늘관측", "NASA", "천문현상", "별자리", "과학교육"],
+      "difficulty": 1,
       "date": "2026-02-19",
       "importance": 100
-    },
-    {
-      "id": "https://news.google.com/rss/articles/CBMiiwFBVV95cUxQWUFKcTZtVHo5ZXhtNVJIb2NaSHBSR1BaaE5TQWdLbEtUdm9nVUQxeDQyYkdabm15RmlVUnNibEFKSEw2WEVLQUhNN1lpVS1pMlpVLUpKRVRCdWJCdXlnVnVBcmhXOFJTYm9Ob1pySmV5cUptZ0c3djIzN1pfaTdBVEhzU0N4WmJJM1Vn0gGfAUFVX3lxTE5QNl96RXcxdjdDdTF3S19LX18tQ3kzdjJmdmVaMTdrbmo0X0lvNkllR0duR1dRZXViVkpJdkpYYzJwemxCdld3UWJCVThCVU9CcDdSNlItb0VoMWlNMERkR0drU3B1VzNmajhQNVFFajNnWkxLUXl6VEVhcXN2YkhGS2E3VTFRQjQ1TlBOZzRaSmppUU9qRXlXWEZGT2hlcw?oc=5",
-      "title": "추격자 최민정, 끝내준 김길리... 쇼트트랙 女계주 역전 금메달",
-      "source": "조선일보",
-      "category": "World",
-      "url": "https://news.google.com/rss/articles/CBMiiwFBVV95cUxQWUFKcTZtVHo5ZXhtNVJIb2NaSHBSR1BaaE5TQWdLbEtUdm9nVUQxeDQyYkdabm15RmlVUnNibEFKSEw2WEVLQUhNN1lpVS1pMlpVLUpKRVRCdWJCdXlnVnVBcmhXOFJTYm9Ob1pySmV5cUptZ0c3djIzN1pfaTdBVEhzU0N4WmJJM1Vn0gGfAUFVX3lxTE5QNl96RXcxdjdDdTF3S19LX18tQ3kzdjJmdmVaMTdrbmo0X0lvNkllR0duR1dRZXViVkpJdkpYYzJwemxCdld3UWJCVThCVU9CcDdSNlItb0VoMWlNMERkR0drU3B1VzNmajhQNVFFajNnWkxLUXl6VEVhcXN2YkhGS2E3VTFRQjQ1TlBOZzRaSmppUU9qRXlXWEZGT2hlcw?oc=5",
-      "detail": "추격자 최민정, 끝내준 김길리... 쇼트트랙 女계주 역전 금메달&nbsp;&nbsp;조선일보8년의 앙금 털어버린 ‘금빛 질주’… 심석희 밀고, 최민정 달렸다&nbsp;&nbsp;조선일보묵묵히 버틴 노도희 \"잘 이끌어준 팀원들 덕\" [지금 올림픽]&nbsp;&nbsp;v.daum.net한국 여자 쇼트트랙, 3000m 계주서 8년 만에 정상 탈환 ···최민정 ",
-      "date": "2026-02-18",
-      "importance": 95
-    },
-    {
-      "id": "https://news.google.com/rss/articles/CBMickFVX3lxTE5oTER2WjlHdE1mbDd6R3E0aXEtcmdRUDJ6R2FEdDNlbXZpQjJUM0tPLXQ1dDJvckxjSEZONVdsS1BBVWUwbzRKR1FhTHpSVFVfVGpWbTh4V0ptYjRCWno5WEd6dHlQc25BZjN5VlFuLXMwQQ?oc=5",
-      "title": "[속보] 설 연휴 뒤 코스피 5600선…삼성전자 장중 19만원 돌파",
-      "source": "한겨레",
-      "category": "Economy",
-      "url": "https://news.google.com/rss/articles/CBMickFVX3lxTE5oTER2WjlHdE1mbDd6R3E0aXEtcmdRUDJ6R2FEdDNlbXZpQjJUM0tPLXQ1dDJvckxjSEZONVdsS1BBVWUwbzRKR1FhTHpSVFVfVGpWbTh4V0ptYjRCWno5WEd6dHlQc25BZjN5VlFuLXMwQQ?oc=5",
-      "detail": "[속보] 설 연휴 뒤 코스피 5600선…삼성전자 장중 19만원 돌파&nbsp;&nbsp;한겨레연휴 이후 첫 거래일...코스피 5600 돌파&nbsp;&nbsp;조선일보실적 개선 기대감에 증권주 강세…미래에셋, 52주 신고가&nbsp;&nbsp;뉴시스[특징주]증권주 일제히 강세…현대차증권·한화투자증권 20%대↑&nbsp;&nbsp;v.daum.net미·이란 ",
-      "date": "2026-02-19",
-      "importance": 90
-    },
-    {
-      "id": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE1Ucnd4TTVnZTh6MkFzUEd5YmhOcjRfejRjR1hEUXdTTjZ5Nk5NUXBYRmdDcEZxR1VZd2cxWXlYbUdLZTJiRGlNMTJaUjQyUDlBX0k3NlhpMGpzZ9IBX0FVX3lxTE9sY2hGYXZlTXB5Tm1QdEZtbEVFTTJFNUpZeU1Ca1dRSTNnNG5ZNEVBbnhOamZLbjhMY3FfREM2VUZxM1AxTnY2S1F4OWdSZ09scVZxYjNDVzYzRUVncEpR?oc=5",
-      "title": "“도수치료 실손 믿고 ‘무제한’ 받다간 낭패”···가격 내리고 문턱 높인 ‘관리급여’ 시행",
-      "source": "경향신문",
-      "category": "Society",
-      "url": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE1Ucnd4TTVnZTh6MkFzUEd5YmhOcjRfejRjR1hEUXdTTjZ5Nk5NUXBYRmdDcEZxR1VZd2cxWXlYbUdLZTJiRGlNMTJaUjQyUDlBX0k3NlhpMGpzZ9IBX0FVX3lxTE9sY2hGYXZlTXB5Tm1QdEZtbEVFTTJFNUpZeU1Ca1dRSTNnNG5ZNEVBbnhOamZLbjhMY3FfREM2VUZxM1AxTnY2S1F4OWdSZ09scVZxYjNDVzYzRUVncEpR?oc=5",
-      "detail": "“도수치료 실손 믿고 ‘무제한’ 받다간 낭패”···가격 내리고 문턱 높인 ‘관리급여’ 시행&nbsp;&nbsp;경향신문Google 뉴스에서 전체 콘텐츠 보기",
-      "date": "2026-02-18",
-      "importance": 85
-    },
-    {
-      "id": "https://news.google.com/rss/articles/CBMickFVX3lxTE9WbGdwR1FTel9CYlU4OTZqNTIyczNiNWhGNWR6d3RwTFpzVDAxWk5tTjRhdlNUOGJzZE1HeDRUbFd0amhqTElxZ1ZJZktoNGNFOXkwWmloWlNmVVVTM3JsSzhXS2RlU0xRaW9mNkFxZHBrZw?oc=5",
-      "title": "설 귀경길 정체 다소 풀렸다…18일 새벽께 해소 전망",
-      "source": "한겨레",
-      "category": "Society",
-      "url": "https://news.google.com/rss/articles/CBMickFVX3lxTE9WbGdwR1FTel9CYlU4OTZqNTIyczNiNWhGNWR6d3RwTFpzVDAxWk5tTjRhdlNUOGJzZE1HeDRUbFd0amhqTElxZ1ZJZktoNGNFOXkwWmloWlNmVVVTM3JsSzhXS2RlU0xRaW9mNkFxZHBrZw?oc=5",
-      "detail": "설 귀경길 정체 다소 풀렸다…18일 새벽께 해소 전망&nbsp;&nbsp;한겨레귀경길 정체 상황은?…'고속도로 통행료 면제' 자정까지&nbsp;&nbsp;v.daum.net설 연휴 마무리…가족의 정 느끼며 다시 일상으로&nbsp;&nbsp;KBS 뉴스[속보] '모텔 연쇄 사망' 피의자 구속송치…살인 혐의 적용&nbsp;&nbsp;경기일보[포토뉴스]그리운 얼",
-      "date": "2026-02-17",
-      "importance": 80
-    },
-    {
-      "id": "https://news.google.com/rss/articles/CBMiggFBVV95cUxNSEt2Ym9qOFZlVkpQdVVkYnhpTWdHSEVQdXF0dkdtZVR4UjRjdG1Jc3pfbE1hTTJIdmV6RzhxbzBXVm84S0pnWlM4RTBJbmVrWFc0OVBtQzZtMkVXeUo0UFR0MnEtZ2VxdWY5VEk2ZzlyNjFVZnFkM1EzYUZObEo0d0pn?oc=5",
-      "title": "힘겹게 총리 올랐던 다카이치, 이번엔 압도적 득표…집권 2기 돌입",
-      "source": "한겨레",
-      "category": "World",
-      "url": "https://news.google.com/rss/articles/CBMiggFBVV95cUxNSEt2Ym9qOFZlVkpQdVVkYnhpTWdHSEVQdXF0dkdtZVR4UjRjdG1Jc3pfbE1hTTJIdmV6RzhxbzBXVm84S0pnWlM4RTBJbmVrWFc0OVBtQzZtMkVXeUo0UFR0MnEtZ2VxdWY5VEk2ZzlyNjFVZnFkM1EzYUZObEo0d0pn?oc=5",
-      "detail": "힘겹게 총리 올랐던 다카이치, 이번엔 압도적 득표…집권 2기 돌입&nbsp;&nbsp;한겨레‘강한 일본’ 닻 올린 다카이치 “국민 사이서도 개헌 논의 깊어지길”&nbsp;&nbsp;v.daum.net日다카이치, 20일 시정연설…개헌안 의회 논의 독려 예정&nbsp;&nbsp;뉴스1다카이치, 총리로 재선출…중의원 투표서 압승&nbsp;&nbsp;국제신문일본 ",
-      "date": "2026-02-18",
-      "importance": 75
     }
   ]
 }
