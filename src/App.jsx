@@ -10,7 +10,7 @@ import {
    앱 버전 — 코드 변경 시 이 숫자만 올리면
    브라우저 캐시가 자동으로 무효화됩니다
    ────────────────────────────────────────────── */
-const APP_VERSION = '23';
+const APP_VERSION = '24';
 const CACHE_KEY = `ji_news_cache_v${APP_VERSION}`;
 
 // 이전 버전 캐시 자동 삭제 + 임시 stats 초기화
@@ -60,6 +60,29 @@ function extractDescription(descHtml) {
     tmp.querySelectorAll('ul, li').forEach(el => el.remove());
     const text = tmp.textContent.trim();
     return text.length > 10 ? text : null;
+}
+
+/**
+ * news.json 우선 로드 → 오늘 날짜와 일치하면 바로 반환
+ * 없거나 날짜 불일치 시 RSS fallback
+ */
+async function fetchNewsJson() {
+    try {
+        const res = await fetch(`${import.meta.env.BASE_URL}news.json?t=${Date.now()}`);
+        if (!res.ok) return null;
+        const data = await res.json();
+        const today = new Date().toISOString().slice(0, 10);
+        // 오늘 날짜 기사이면 사용, 아니면 RSS fallback
+        if (data?.date === today && Array.isArray(data.articles) && data.articles.length > 0) {
+            return data.articles.map(a => ({
+                ...a,
+                opinionOptions: makeOpinionOptions(),
+            }));
+        }
+        return null;
+    } catch {
+        return null;
+    }
 }
 
 /** Google News RSS 파싱 (CORS proxy 순차 시도) */
@@ -231,6 +254,8 @@ export default function App() {
         let cancelled = false;
         const now = new Date();
         const todaySix = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 6, 0, 0, 0);
+
+        // 로컬 캐시 확인
         try {
             const cached = JSON.parse(localStorage.getItem(CACHE_KEY) || 'null');
             if (cached && cached.fetchedAt >= todaySix.getTime() && cached.articles?.length > 0) {
@@ -239,7 +264,16 @@ export default function App() {
         } catch { /* 무시 */ }
 
         setNewsLoading(true);
-        fetchGoogleNews()
+
+        // ① news.json 우선 시도 (GitHub Actions가 매일 생성)
+        // ② 없거나 날짜 불일치 시 RSS proxy fallback
+        const loadNews = async () => {
+            const jsonArticles = await fetchNewsJson();
+            if (jsonArticles) return jsonArticles;
+            return fetchGoogleNews();
+        };
+
+        loadNews()
             .then((articles) => {
                 if (!cancelled) {
                     setNews(articles);
