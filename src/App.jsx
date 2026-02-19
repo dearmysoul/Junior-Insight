@@ -55,8 +55,8 @@ function normalizeCategory(raw) {
     if (['tech & economy', 'tech', 'technology', 'science', 'it', 'ai', '기술', '과학'].includes(r)) return 'Tech & Economy';
     if (['environment', 'climate', 'nature', '환경', '기후'].includes(r)) return 'Environment';
     if (['economy', 'business', 'finance', 'market', '경제', '금융', '비즈니스'].includes(r)) return 'Economy';
-    if (['society', 'social', 'culture', 'education', 'health', 'sports', '사회', '문화', '교육', '건강', '스포츠'].includes(r)) return 'Society';
-    // Politics, International, World, 국제, 정치 → World
+    if (['society', 'social', 'culture', 'education', 'health', 'sports', '사회', '문화', '교육', '건강', '스포츠', '정치', 'politics'].includes(r)) return 'Society';
+    // International, World, 국제 → World
     return 'World';
 }
 
