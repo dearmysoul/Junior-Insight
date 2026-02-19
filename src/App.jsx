@@ -10,7 +10,7 @@ import {
    앱 버전 — 코드 변경 시 이 숫자만 올리면
    브라우저 캐시가 자동으로 무효화됩니다
    ────────────────────────────────────────────── */
-const APP_VERSION = '29';
+const APP_VERSION = '30';
 const CACHE_KEY = `ji_news_cache_v${APP_VERSION}`;
 
 // 이전 버전 캐시 자동 삭제 + 임시 stats 초기화
@@ -48,6 +48,18 @@ function detectCategory(title) {
     return 'World';
 }
 
+/** news.json의 다양한 category 값을 앱 내부 카테고리로 정규화 */
+function normalizeCategory(raw) {
+    if (!raw) return 'World';
+    const r = raw.toLowerCase();
+    if (['tech & economy', 'tech', 'technology', 'science', 'it', 'ai', '기술', '과학'].includes(r)) return 'Tech & Economy';
+    if (['environment', 'climate', 'nature', '환경', '기후'].includes(r)) return 'Environment';
+    if (['economy', 'business', 'finance', 'market', '경제', '금융', '비즈니스'].includes(r)) return 'Economy';
+    if (['society', 'social', 'culture', 'education', 'health', 'sports', '사회', '문화', '교육', '건강', '스포츠'].includes(r)) return 'Society';
+    // Politics, International, World, 국제, 정치 → World
+    return 'World';
+}
+
 /** 의견 선택지: 모든 기사에 찬성/반대/기타 고정 */
 function makeOpinionOptions() {
     return ['찬성한다', '반대한다', '기타 의견이 있다'];
@@ -81,7 +93,7 @@ async function fetchNewsJson() {
                 title_orig: a.title,                      // 원문 제목 보존
                 source: a.source,
                 country: a.country || '',
-                category: a.category || 'World',
+                category: normalizeCategory(a.category),
                 detail: a.summary_kor || a.detail || a.title, // ChatGPT 요약 우선
                 summary_kor: a.summary_kor || null,
                 keywords: a.keywords || [],
