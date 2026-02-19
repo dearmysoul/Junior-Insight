@@ -10,7 +10,7 @@ import {
    앱 버전 — 코드 변경 시 이 숫자만 올리면
    브라우저 캐시가 자동으로 무효화됩니다
    ────────────────────────────────────────────── */
-const APP_VERSION = '31';
+const APP_VERSION = '32';
 const CACHE_KEY = `ji_news_cache_v${APP_VERSION}`;
 
 // 이전 버전 캐시 자동 삭제 + 임시 stats 초기화
@@ -516,8 +516,12 @@ export default function App() {
 function NewsFeed({ news, loading, error, entries, onMission }) {
     const today = new Date().toISOString().slice(0, 10);
     const todayKr = new Date().toLocaleDateString('ko-KR');
-    // 오늘 완료한 기사 ID만 추적 (다른 날 완료한 기사가 오늘 카드에 완료 표시되는 버그 방지)
-    const doneIds = new Set(entries.filter(e => e.date === todayKr).map(e => e.newsId));
+    // 오늘 완료한 모든 entries
+    const todayEntries = entries.filter(e => e.date === todayKr);
+    // 카드 완료 표시: 오늘 날짜 + newsId 매칭
+    const doneIds = new Set(todayEntries.map(e => e.newsId));
+    // 배너 완료 여부: 오늘 완료한 항목이 1개라도 있으면 true
+    const isTodayDone = todayEntries.length > 0;
 
     return (
         <div className="animate-fade-in space-y-4">
@@ -543,8 +547,8 @@ function NewsFeed({ news, loading, error, entries, onMission }) {
                 </div>
 
                 {/* 하단: 미션 안내 영역 */}
-                <div className={`rounded-lg p-3 flex items-center gap-3 ${doneIds.size > 0 ? 'bg-white/15' : 'bg-white/10'}`}>
-                    {doneIds.size > 0 ? (
+                <div className={`rounded-lg p-3 flex items-center gap-3 ${isTodayDone ? 'bg-white/15' : 'bg-white/10'}`}>
+                    {isTodayDone ? (
                         <>
                             <CheckCircle size={22} className="shrink-0 text-white" aria-hidden="true" />
                             <div>
