@@ -86,7 +86,7 @@ async function fetchNewsJson() {
         const data = await res.json();
         const today = new Date().toISOString().slice(0, 10);
         // 오늘 날짜 기사이면 사용, 아니면 RSS fallback
-        if (data?.date === today && Array.isArray(data.articles) && data.articles.length > 0) {
+        if (data?.date?.slice(0, 10) === today && Array.isArray(data.articles) && data.articles.length > 0) {
             return data.articles.map((a, idx) => ({
                 // ChatGPT 필드 → 앱 내부 필드 정규화
                 id: a.id || a.url || `${a.title}_${a.date}`,
