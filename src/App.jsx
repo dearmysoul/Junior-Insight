@@ -96,7 +96,9 @@ async function fetchNewsJson() {
                 country: a.country || '',
                 category: normalizeCategory(a.category),
                 detail: a.summary_kor || a.detail || a.title, // ChatGPT 요약 우선
-                summary_kor: a.summary_kor || null,
+                summary_kor: a.summary_kor
+                    ? a.summary_kor.replace(/:contentReference\[oaicite:\d+\]\{index=\d+\}/g, '').trim()
+                    : null,
                 keywords: a.keywords || [],
                 difficulty: a.difficulty || 1,
                 url: a.url,
@@ -281,30 +283,33 @@ export default function App() {
         const now = new Date();
         const todaySix = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 6, 0, 0, 0);
 
-        // 로컬 캐시 확인
-        try {
-            const cached = JSON.parse(localStorage.getItem(CACHE_KEY) || 'null');
-            if (cached && cached.fetchedAt >= todaySix.getTime() && cached.articles?.length > 0) {
-                if (!cancelled) { setNews(cached.articles); setNewsLoading(false); return; }
-            }
-        } catch { /* 무시 */ }
-
         setNewsLoading(true);
 
-        // ① news.json 우선 시도 (GitHub Actions가 매일 생성)
-        // ② 없거나 날짜 불일치 시 RSS proxy fallback
+        // ① news.json 항상 우선 시도 (summary_kor 포함, 매일 갱신)
+        // ② news.json 실패 시 로컬 캐시 확인 (RSS fallback 캐시)
+        // ③ 캐시도 없으면 RSS proxy fallback
         const loadNews = async () => {
             const jsonArticles = await fetchNewsJson();
-            if (jsonArticles) return jsonArticles;
-            return fetchGoogleNews();
+            if (jsonArticles) return { articles: jsonArticles, source: 'json' };
+
+            // 로컬 캐시 확인 (RSS 결과만 캐시됨)
+            try {
+                const cached = JSON.parse(localStorage.getItem(CACHE_KEY) || 'null');
+                if (cached && cached.fetchedAt >= todaySix.getTime() && cached.articles?.length > 0) {
+                    return { articles: cached.articles, source: 'cache' };
+                }
+            } catch { /* 무시 */ }
+
+            return { articles: await fetchGoogleNews(), source: 'rss' };
         };
 
         loadNews()
-            .then((articles) => {
+            .then(({ articles, source }) => {
                 if (!cancelled) {
                     setNews(articles);
                     setNewsError(null);
-                    if (now >= todaySix) {
+                    // RSS 결과만 캐시 저장 (news.json은 항상 새로 가져옴)
+                    if (source === 'rss' && now >= todaySix) {
                         try { localStorage.setItem(CACHE_KEY, JSON.stringify({ fetchedAt: Date.now(), articles })); } catch { /* 무시 */ }
                     }
                 }
