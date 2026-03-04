@@ -1,66 +1,32 @@
 {
-  "fetchedAt": "2026-03-04T22:19:31.329Z",
-  "date": "2026-03-04",
+  "fetchedAt": "2026-03-05 (Korea Standard Time)T06:15:29.000Z",
+  "date": "2026-03-05 (Korea Standard Time)",
+  "source": "chatgpt",
   "articles": [
     {
-      "id": "https://news.google.com/rss/articles/CBMic0FVX3lxTE1yN2NnSUNDeUhISDVKSzZxYVo3ZXdmVTdNOTZJWWpONUFxRWhWU2ZnM0tVU2d5NFU0alRIckFUQ0R0N3pLUGJiTzExakRtcmhITUpyb0w3OWljYlRLdUtBYXdpQ0l0ZDRWeEZNenV3b1NnbHM?oc=5",
-      "title": "이란 ‘에너지 인질’ 작전에…국제유가, 5일새 16% 뛰었다",
-      "source": "한겨레",
-      "category": "Environment",
-      "url": "https://news.google.com/rss/articles/CBMic0FVX3lxTE1yN2NnSUNDeUhISDVKSzZxYVo3ZXdmVTdNOTZJWWpONUFxRWhWU2ZnM0tVU2d5NFU0alRIckFUQ0R0N3pLUGJiTzExakRtcmhITUpyb0w3OWljYlRLdUtBYXdpQ0l0ZDRWeEZNenV3b1NnbHM?oc=5",
-      "detail": "이란 ‘에너지 인질’ 작전에…국제유가, 5일새 16% 뛰었다&nbsp;&nbsp;한겨레중동 쇼크 반영 전인데 휘발유 1800원…정부 '유류세·비축유' 카드 고심&nbsp;&nbsp;v.daum.net호르무즈 봉쇄, 한국은 끄떡없을까…석유 비축량 세계 6위&nbsp;&nbsp;연합뉴스천연가스값 68% 폭등... 유가보다 4배 더 뛰어&nbsp;&nbsp;조선",
-      "date": "2026-03-04",
+      "rank": 1,
+      "id": "20260305-001",
+      "title": "US‑Israel strikes escalate Iran conflict, widening Middle East crisis (미국·이스라엘 공습으로 이란 분쟁 확대)",
+      "title_kor": "미국·이스라엘 공습으로 이란 분쟁 확대",
+      "source": "Reuters",
+      "country": "International",
+      "category": "World",
+      "summary_kor": "중동 지역에서 미국과 이스라엘이 이란을 상대로 군사 공습을 이어가면서 분쟁이 빠르게 확대되고 있다. 최근 공습으로 이란의 주요 군사 시설과 정부 관련 시설이 타격을 입었으며, 수도 테헤란에서도 폭발이 보고됐다. 이 사건은 중동 전체 안보 상황을 크게 흔드는 사건으로 평가된다.\n\n이번 충돌은 이란 핵 프로그램과 군사 활동을 둘러싼 갈등이 장기간 누적된 가운데 발생했다. 이란은 미사일과 드론 공격으로 대응하며 보복 의지를 보이고 있다. 중동 여러 국가들도 군사 대비 태세를 강화하면서 지역 긴장이 더욱 높아졌다. :contentReference[oaicite:0]{index=0}\n\n전문가들은 이번 사태가 장기화될 경우 세계 에너지 공급과 국제 금융시장에도 영향을 미칠 수 있다고 분석한다. 유엔과 주요 국가들은 긴장 완화를 위한 외교적 협상을 촉구하고 있으며, 국제사회는 분쟁 확산 가능성을 예의주시하고 있다.",
+      "url": "https://www.reuters.com/world/",
+      "keywords": ["이란분쟁", "중동위기", "미국공습", "이스라엘", "국제안보"],
+      "difficulty": 4,
+      "date": "2026-03-05",
       "importance": 100
     },
     {
-      "id": "https://news.google.com/rss/articles/CBMic0FVX3lxTE1neUJkdHJVeS1BWGFpR01VWW5ia1ZLeXdidVFMNVNiRkxTUkZCWGhrZnQ2UjNSbXRQWlV2UEJWalZoMnhFOVlYMkZJd0pERko5SjM3RjZCWTVEVThxcUdFXzFxOFU3YWtIQlRnbEtMWnQ5RmM?oc=5",
-      "title": "‘순교자’ 하메네이에 ‘허 찔린’ 트럼프…확전·장기전 압박 커져",
-      "source": "한겨레",
-      "category": "World",
-      "url": "https://news.google.com/rss/articles/CBMic0FVX3lxTE1neUJkdHJVeS1BWGFpR01VWW5ia1ZLeXdidVFMNVNiRkxTUkZCWGhrZnQ2UjNSbXRQWlV2UEJWalZoMnhFOVlYMkZJd0pERko5SjM3RjZCWTVEVThxcUdFXzFxOFU3YWtIQlRnbEtMWnQ5RmM?oc=5",
-      "detail": "‘순교자’ 하메네이에 ‘허 찔린’ 트럼프…확전·장기전 압박 커져&nbsp;&nbsp;한겨레이란 '창' VS 걸프 '방패'…요격기 부족에 방공망 뚫리나&nbsp;&nbsp;v.daum.net“100발 중 1발만 뚫려도”…이란식 ‘섞어쏘기’ 노리는 북&nbsp;&nbsp;KBS 뉴스‘죽음의 백조’ B-1, ‘침묵의 암살자’ B-2, ‘하늘의 요새’ B-52… ",
-      "date": "2026-03-04",
-      "importance": 95
-    },
-    {
-      "id": "https://news.google.com/rss/articles/CBMibkFVX3lxTE5MRUxLMHIwTW12QlZPcnhiZF95V25sLXJISWl1RjFoajNwQWduVXBzSDExQ0ZkY2tIYkVadF92bjZDR2tyV2kweXpDNEV3NlRzRmJmN01iOWdIYUl0cnVidUFoT1Rja2p3ZnVyb19B?oc=5",
-      "title": "한-필리핀 정상회담 결과, 국민께 보고드립니다 - 전체 | 카드/한컷 | 멀티미디어",
-      "source": "대한민국 정책브리핑",
-      "category": "World",
-      "url": "https://news.google.com/rss/articles/CBMibkFVX3lxTE5MRUxLMHIwTW12QlZPcnhiZF95V25sLXJISWl1RjFoajNwQWduVXBzSDExQ0ZkY2tIYkVadF92bjZDR2tyV2kweXpDNEV3NlRzRmJmN01iOWdIYUl0cnVidUFoT1Rja2p3ZnVyb19B?oc=5",
-      "detail": "한-필리핀 정상회담 결과, 국민께 보고드립니다 - 전체 | 카드/한컷 | 멀티미디어&nbsp;&nbsp;대한민국 정책브리핑이 대통령, 필리핀 동포 간담회…\"재외국민 보호 각별히 부탁\"&nbsp;&nbsp;대한민국 정책브리핑李 “조선업 협력 ‘제2 마닐라 갈레온’ 만들자”&nbsp;&nbsp;동아일보대한민국 청와대&nbsp;&nbsp;대한민국 청와대[이 대통",
-      "date": "2026-03-04",
-      "importance": 90
-    },
-    {
-      "id": "https://news.google.com/rss/articles/CBMiW0FVX3lxTE0zZk1FQWljSjdzM0tRZmc3MGdBbjZVOFNpYlY3VUNJczZJbk84NDZyaTlIN0Z0eVVCRWVSY0lYcWh4Mi0zNnJBZ29QdWNnMXJQTVpVRW5VODJ0YmM?oc=5",
-      "title": "국민의힘, 청와대 앞 ‘항의성’ 현장 의총…“‘사법파괴 3법’ 거부권 촉구”",
-      "source": "KBS 뉴스",
-      "category": "Society",
-      "url": "https://news.google.com/rss/articles/CBMiW0FVX3lxTE0zZk1FQWljSjdzM0tRZmc3MGdBbjZVOFNpYlY3VUNJczZJbk84NDZyaTlIN0Z0eVVCRWVSY0lYcWh4Mi0zNnJBZ29QdWNnMXJQTVpVRW5VODJ0YmM?oc=5",
-      "detail": "국민의힘, 청와대 앞 ‘항의성’ 현장 의총…“‘사법파괴 3법’ 거부권 촉구”&nbsp;&nbsp;KBS 뉴스법조계 원로 14인 “사법 3법은 사법파괴…거부권 행사해야”&nbsp;&nbsp;segye.com국힘, 청와대 찾아 '사법파괴 3법' 거부권 촉구 기자회견&nbsp;&nbsp;뉴스1국힘, 내일 또 여의도~청와대 도보 행진... 송언석 “의지 보여야 할",
-      "date": "2026-03-04",
-      "importance": 85
-    },
-    {
-      "id": "https://news.google.com/rss/articles/CBMiREFVX3lxTE53b2pKRmF2SXdoVEg1RTd2UlVMY1V2cVN2REUzLXpRMVRrdVJZeS1xaWxrMmdjQURfT0VsZ2g3LVlqMG5J?oc=5",
-      "title": "김용욱 강남세브란스병원장…“‘NExT 강남’으로 Top 5 병원 도약”",
-      "source": "후생신보",
-      "category": "Society",
-      "url": "https://news.google.com/rss/articles/CBMiREFVX3lxTE53b2pKRmF2SXdoVEg1RTd2UlVMY1V2cVN2REUzLXpRMVRrdVJZeS1xaWxrMmdjQURfT0VsZ2g3LVlqMG5J?oc=5",
-      "detail": "김용욱 강남세브란스병원장…“‘NExT 강남’으로 Top 5 병원 도약”&nbsp;&nbsp;후생신보\"AI 중심으로 전환\"…강남세브란스, 김용욱 병원장 취임&nbsp;&nbsp;뉴시스[인사] 연세대학교의료원&nbsp;&nbsp;지디넷코리아김용욱 강남세브란스병원장 취임…\"새병원 건립 추진\"&nbsp;&nbsp;뉴스1강남세브란스, 김용욱 신임 병원장 취임 \"진료",
-      "date": "2026-03-04",
-      "importance": 80
-    },
-    {
-      "id": "https://news.google.com/rss/articles/CBMibEFVX3lxTE9Mb2pBRVp3cXg5ei1XNV9uVU91djNhRnltNHFxcElMRFpXZDhKcWlBUUx5TjNoUEI5WHVuQU8yNlJ1dm5ieXVqY3VDVUoxdS1LeEdHUzRxcW9qNkJnRk43TjZvVG9OeXY1ZVhvRQ?oc=5",
-      "title": "지역에서 중증·고난도 치료…권역책임의료기관에 742억 원 지원",
-      "source": "대한민국 정책브리핑",
-      "category": "Society",
-      "url": "https://news.google.com/rss/articles/CBMibEFVX3lxTE9Mb2pBRVp3cXg5ei1XNV9uVU91djNhRnltNHFxcElMRFpXZDhKcWlBUUx5TjNoUEI5WHVuQU8yNlJ1dm5ieXVqY3VDVUoxdS1LeEdHUzRxcW9qNkJnRk43TjZvVG9OeXY1ZVhvRQ?oc=5",
-      "detail": "지역에서 중증·고난도 치료…권역책임의료기관에 742억 원 지원&nbsp;&nbsp;대한민국 정책브리핑수도권 원정진료 없도록 권역별 17곳 742억 지원&nbsp;&nbsp;국제신문지역 국립대병원 치료역량 강화…시설·장비비 742억 지원&nbsp;&nbsp;KBS 뉴스복지부 “모든 비급여 항목 ‘선제적 관리’ 추진”&nbsp;&nbsp;데일리메디칠곡경북대병원",
-      "date": "2026-03-04",
-      "importance": 75
-    }
-  ]
-}
+      "rank": 2,
+      "id": "20260305-002",
+      "title": "Global markets react to Middle East tensions (중동 긴장 속 글로벌 금융시장 변동)",
+      "title_kor": "중동 긴장 속 글로벌 금융시장 변동 확대",
+      "source": "Bloomberg",
+      "country": "United States",
+      "category": "Economy",
+      "summary_kor": "중동 군사 충돌이 확대되면서 세계 금융시장이 크게 흔들리고 있다. 투자자들은 위험을 피하기 위해 주식 대신 안전자산으로 자금을 이동시키는 움직임을 보이고 있다. 이에 따라 주요 증시가 하락하고 시장 변동성이 커졌다.\n\n특히 에너지 가격 상승과 공급 불안이 금융시장 불안의 주요 요인으로 지목된다. 중동은 세계 석유 생산의 핵심 지역이기 때문에 분쟁이 발생할 경우 원유 공급 차질 가능성이 커진다. 이러한 상황은 세계 경제에 부담을 줄 수 있다.\n\n전문가들은 향후 중동 분쟁의 확산 여부가 글로벌 금융시장 흐름을 결정할 중요한 변수라고 평가한다. 국제 유가와 환율 변동이 이어질 가능성이 있어 각국 경제 정책에도 영향을 줄 전망이다.",
+      "url": "https://www.bloomberg.com/markets",
+      "keywords": ["글로벌증시", "금융시장", "
+::contentReference[oaicite:1]{index=1}
