@@ -1,0 +1,32 @@
+{
+  "fetchedAt": "2026-03-05 (Korea Standard Time)T06:15:29.000Z",
+  "date": "2026-03-05 (Korea Standard Time)",
+  "source": "chatgpt",
+  "articles": [
+    {
+      "rank": 1,
+      "id": "20260305-001",
+      "title": "US‑Israel strikes escalate Iran conflict, widening Middle East crisis (미국·이스라엘 공습으로 이란 분쟁 확대)",
+      "title_kor": "미국·이스라엘 공습으로 이란 분쟁 확대",
+      "source": "Reuters",
+      "country": "International",
+      "category": "World",
+      "summary_kor": "중동 지역에서 미국과 이스라엘이 이란을 상대로 군사 공습을 이어가면서 분쟁이 빠르게 확대되고 있다. 최근 공습으로 이란의 주요 군사 시설과 정부 관련 시설이 타격을 입었으며, 수도 테헤란에서도 폭발이 보고됐다. 이 사건은 중동 전체 안보 상황을 크게 흔드는 사건으로 평가된다.\n\n이번 충돌은 이란 핵 프로그램과 군사 활동을 둘러싼 갈등이 장기간 누적된 가운데 발생했다. 이란은 미사일과 드론 공격으로 대응하며 보복 의지를 보이고 있다. 중동 여러 국가들도 군사 대비 태세를 강화하면서 지역 긴장이 더욱 높아졌다. :contentReference[oaicite:0]{index=0}\n\n전문가들은 이번 사태가 장기화될 경우 세계 에너지 공급과 국제 금융시장에도 영향을 미칠 수 있다고 분석한다. 유엔과 주요 국가들은 긴장 완화를 위한 외교적 협상을 촉구하고 있으며, 국제사회는 분쟁 확산 가능성을 예의주시하고 있다.",
+      "url": "https://www.reuters.com/world/",
+      "keywords": ["이란분쟁", "중동위기", "미국공습", "이스라엘", "국제안보"],
+      "difficulty": 4,
+      "date": "2026-03-05",
+      "importance": 100
+    },
+    {
+      "rank": 2,
+      "id": "20260305-002",
+      "title": "Global markets react to Middle East tensions (중동 긴장 속 글로벌 금융시장 변동)",
+      "title_kor": "중동 긴장 속 글로벌 금융시장 변동 확대",
+      "source": "Bloomberg",
+      "country": "United States",
+      "category": "Economy",
+      "summary_kor": "중동 군사 충돌이 확대되면서 세계 금융시장이 크게 흔들리고 있다. 투자자들은 위험을 피하기 위해 주식 대신 안전자산으로 자금을 이동시키는 움직임을 보이고 있다. 이에 따라 주요 증시가 하락하고 시장 변동성이 커졌다.\n\n특히 에너지 가격 상승과 공급 불안이 금융시장 불안의 주요 요인으로 지목된다. 중동은 세계 석유 생산의 핵심 지역이기 때문에 분쟁이 발생할 경우 원유 공급 차질 가능성이 커진다. 이러한 상황은 세계 경제에 부담을 줄 수 있다.\n\n전문가들은 향후 중동 분쟁의 확산 여부가 글로벌 금융시장 흐름을 결정할 중요한 변수라고 평가한다. 국제 유가와 환율 변동이 이어질 가능성이 있어 각국 경제 정책에도 영향을 줄 전망이다.",
+      "url": "https://www.bloomberg.com/markets",
+      "keywords": ["글로벌증시", "금융시장", "
+::contentReference[oaicite:1]{index=1}
