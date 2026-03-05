@@ -1,32 +1,66 @@
 {
-  "fetchedAt": "2026-03-05 (Korea Standard Time)T06:15:29.000Z",
-  "date": "2026-03-05 (Korea Standard Time)",
-  "source": "chatgpt",
+  "fetchedAt": "2026-03-05T22:18:57.783Z",
+  "date": "2026-03-05",
   "articles": [
     {
-      "rank": 1,
-      "id": "20260305-001",
-      "title": "US‑Israel strikes escalate Iran conflict, widening Middle East crisis (미국·이스라엘 공습으로 이란 분쟁 확대)",
-      "title_kor": "미국·이스라엘 공습으로 이란 분쟁 확대",
-      "source": "Reuters",
-      "country": "International",
+      "id": "https://news.google.com/rss/articles/CBMiW0FVX3lxTE5lczdxeXlab2R0TkhNeHBNVFhoaDZsdGQ3VHBLMmZVUGkybWJzYXdERzlaRmZKRFFxbDM2UnpSZm9oNkRxX3hTZGVIazA5RU5Mbi1nYmgwZWVvRnM?oc=5",
+      "title": "비축유 208일 버틴다지만…지역 중소기업은 '오늘'이 고비",
+      "source": "경기일보",
       "category": "World",
-      "summary_kor": "중동 지역에서 미국과 이스라엘이 이란을 상대로 군사 공습을 이어가면서 분쟁이 빠르게 확대되고 있다. 최근 공습으로 이란의 주요 군사 시설과 정부 관련 시설이 타격을 입었으며, 수도 테헤란에서도 폭발이 보고됐다. 이 사건은 중동 전체 안보 상황을 크게 흔드는 사건으로 평가된다.\n\n이번 충돌은 이란 핵 프로그램과 군사 활동을 둘러싼 갈등이 장기간 누적된 가운데 발생했다. 이란은 미사일과 드론 공격으로 대응하며 보복 의지를 보이고 있다. 중동 여러 국가들도 군사 대비 태세를 강화하면서 지역 긴장이 더욱 높아졌다. :contentReference[oaicite:0]{index=0}\n\n전문가들은 이번 사태가 장기화될 경우 세계 에너지 공급과 국제 금융시장에도 영향을 미칠 수 있다고 분석한다. 유엔과 주요 국가들은 긴장 완화를 위한 외교적 협상을 촉구하고 있으며, 국제사회는 분쟁 확산 가능성을 예의주시하고 있다.",
-      "url": "https://www.reuters.com/world/",
-      "keywords": ["이란분쟁", "중동위기", "미국공습", "이스라엘", "국제안보"],
-      "difficulty": 4,
+      "url": "https://news.google.com/rss/articles/CBMiW0FVX3lxTE5lczdxeXlab2R0TkhNeHBNVFhoaDZsdGQ3VHBLMmZVUGkybWJzYXdERzlaRmZKRFFxbDM2UnpSZm9oNkRxX3hTZGVIazA5RU5Mbi1nYmgwZWVvRnM?oc=5",
+      "detail": "비축유 208일 버틴다지만…지역 중소기업은 '오늘'이 고비&nbsp;&nbsp;경기일보커지는 물가 불안, ‘이란발 인플레’에 유의할 때다&nbsp;&nbsp;마켓인\"중동사태 대응\" 대전시, 비상경제대책본부 구성&nbsp;&nbsp;연합뉴스이선호 시장 예비후보 ‘울산형 위기관리’ 촉구&nbsp;&nbsp;v.daum.net부천시, 중동발 ‘민생 위기’ 대응…",
       "date": "2026-03-05",
       "importance": 100
     },
     {
-      "rank": 2,
-      "id": "20260305-002",
-      "title": "Global markets react to Middle East tensions (중동 긴장 속 글로벌 금융시장 변동)",
-      "title_kor": "중동 긴장 속 글로벌 금융시장 변동 확대",
-      "source": "Bloomberg",
-      "country": "United States",
+      "id": "https://news.google.com/rss/articles/CBMirwFBVV95cUxPVlQ1dENGNWdPdkN6cXJIaENPb192cklJNkJsSENZOVhWUEF0cEdzX2RnNTBwMGhYQ1hZdFVwNjVRS19JUm5ySmdGWTNSeTZKVHdWZmpxZjB0NzlzcjJoU18tTm9aV1VGUGRqY0xhX3YyMGdfblZ6UDVYZUlLaHh1M3hSQ2dMMXJmaUU5WEtaeGVXalBVMG5WZnJsSUJ2eHkzRlRrV2RRY2pCU3BBXzEw0gGyAUFVX3lxTE1GMWpkbFZyb0pOWmtIM1pVSEVndk53bGUwaGY1dW52eGhxYVBnVHpySnFwbFZLOEs1Sl9ZWExFRENiRVdmWGxaVXZtTmtjRC1Dbk9ydW5fZUc4eWxPdW5PV1JSUWNYVzBsci1heHZDN0xaVnBqZzc5MlJTVVZ4emJ1T21EQTN0VmxrdVNKWEVRZDhEWkJqYmVDcTZqT3lRaDJXc05oeFpqTEVLb28yZFVtUVE?oc=5",
+      "title": "미국, 중동 체류 시민 철수 위한 ‘항공편 대폭 확대'",
+      "source": "VOA 한국어 홈페이지",
+      "category": "Society",
+      "url": "https://news.google.com/rss/articles/CBMirwFBVV95cUxPVlQ1dENGNWdPdkN6cXJIaENPb192cklJNkJsSENZOVhWUEF0cEdzX2RnNTBwMGhYQ1hZdFVwNjVRS19JUm5ySmdGWTNSeTZKVHdWZmpxZjB0NzlzcjJoU18tTm9aV1VGUGRqY0xhX3YyMGdfblZ6UDVYZUlLaHh1M3hSQ2dMMXJmaUU5WEtaeGVXalBVMG5WZnJsSUJ2eHkzRlRrV2RRY2pCU3BBXzEw0gGyAUFVX3lxTE1GMWpkbFZyb0pOWmtIM1pVSEVndk53bGUwaGY1dW52eGhxYVBnVHpySnFwbFZLOEs1Sl9ZWExFRENiRVdmWGxaVXZtTmtjRC1Dbk9ydW5fZUc4eWxPdW5PV1JSUWNYVzBsci1heHZDN0xaVnBqZzc5MlJTVVZ4emJ1T21EQTN0VmxrdVNKWEVRZDhEWkJqYmVDcTZqT3lRaDJXc05oeFpqTEVLb28yZFVtUVE?oc=5",
+      "detail": "미국, 중동 체류 시민 철수 위한 ‘항공편 대폭 확대'&nbsp;&nbsp;VOA 한국어 홈페이지중동 상황 악화로 이란 전역 여행금지 발령&nbsp;&nbsp;조선일보정부, 이란 전역에 ‘여행금지’ 발령…체류 한국인 대피도 계속&nbsp;&nbsp;경향신문이란 전역 오후 6시부터 '여행금지' 발령…\"신변 안전 심각하게 우려\"&nbsp;&nbsp;뉴시스[이란",
+      "date": "2026-03-05",
+      "importance": 95
+    },
+    {
+      "id": "https://news.google.com/rss/articles/CBMiYkFVX3lxTE9pU1RWcXdSWjhFaXM5M3FYUTMxMXVPMERSZFYwN2NBU1JyVENwSmw1NzQ5THlER0hBcjQ1V3pKRDc2RFRoUzNQTHo1ZGJMaVIyRzV2cE53WGM1QWl0aGJVSExn?oc=5",
+      "title": "[돼지와사람] 일선 현장 수의사 'ASF 초기 의심 판단 능력' 높인다",
+      "source": "pigpeople.net",
+      "category": "World",
+      "url": "https://news.google.com/rss/articles/CBMiYkFVX3lxTE9pU1RWcXdSWjhFaXM5M3FYUTMxMXVPMERSZFYwN2NBU1JyVENwSmw1NzQ5THlER0hBcjQ1V3pKRDc2RFRoUzNQTHo1ZGJMaVIyRzV2cE53WGM1QWl0aGJVSExn?oc=5",
+      "detail": "[돼지와사람] 일선 현장 수의사 'ASF 초기 의심 판단 능력' 높인다&nbsp;&nbsp;pigpeople.netASF 초동 대응 속도 높인다…현장 수의사 병리진단 교육 실시&nbsp;&nbsp;뉴시스‘아프리카돼지열병’ 확산…‘사료 감염’ 가능성에 혼란&nbsp;&nbsp;KBS 뉴스경북 경산시, 드론으로 아프리카돼지열병 방역 활동 시행&nbsp;&nbs",
+      "date": "2026-03-05",
+      "importance": 90
+    },
+    {
+      "id": "https://news.google.com/rss/articles/CBMiW0FVX3lxTE82SWZXeGsxNjVsczYxaS1hSWo5NWE1SVJmWTY0NDRManJOOVZ4X0JTYVYzb3B4d19IZHQzb2k5NE5tTi1CS2hCRkNvWVcwekhfZF9aa1NiQmdiNTg?oc=5",
+      "title": "국회 외통위, ‘중동 사태’ 관련 긴급 현안질의",
+      "source": "KBS 뉴스",
+      "category": "Society",
+      "url": "https://news.google.com/rss/articles/CBMiW0FVX3lxTE82SWZXeGsxNjVsczYxaS1hSWo5NWE1SVJmWTY0NDRManJOOVZ4X0JTYVYzb3B4d19IZHQzb2k5NE5tTi1CS2hCRkNvWVcwekhfZF9aa1NiQmdiNTg?oc=5",
+      "detail": "국회 외통위, ‘중동 사태’ 관련 긴급 현안질의&nbsp;&nbsp;KBS 뉴스국회 외통위, 중동 상황 긴급 현안질의…교민안전·유가대책 등 논의&nbsp;&nbsp;뉴시스외통위, '중동 사태' 현안질의…유가 대응·교민 대피 점검&nbsp;&nbsp;v.daum.net\"밤낮 공습, 통신은 어쩌다 한번씩\" 이란에 남아있는 한인들&nbsp;&nbsp;연합뉴스경찰",
+      "date": "2026-03-05",
+      "importance": 85
+    },
+    {
+      "id": "https://news.google.com/rss/articles/CBMijwFBVV95cUxNeVRsNWlWVVZLRV9Ka1o3Y2cyY1NmdG9seS02Sm9SM2VsN1dpZEFGNURTYTN6bU51WmMxQWgydVdVejJoc2RkRHktaE1ILXhaT05WQTZhQVhvRUFIbEhIYXloaTE1bjRhY0ZmZHBBSmUxRlMzSGRaeUJXWl9ONE13WklUNmJrTGZDaHpDZjh3d9IBowFBVV95cUxOUC1XZ3piaFNRTUxJZThQWUw4N2xJam14TE42bk02YnBVTjF3TjM0VnQ0bHdoRkdaMGFkb05pN3B4b0ctRENuQXdFZmFzUFMyR1Q3azI1blhjeUJGeUpFd3IzZ19yVDFEYXB5NnBXSnJHR3pyazJiU2xGT0RlVVBKTzNzWi05RVoxVEk5VzlkMDdhS0o5UGlYdVU3MDU0MGdzelc4?oc=5",
+      "title": "美법원, 트럼프 상호 관세 납부액 “재계산해 돌려줘라”",
+      "source": "조선일보",
       "category": "Economy",
-      "summary_kor": "중동 군사 충돌이 확대되면서 세계 금융시장이 크게 흔들리고 있다. 투자자들은 위험을 피하기 위해 주식 대신 안전자산으로 자금을 이동시키는 움직임을 보이고 있다. 이에 따라 주요 증시가 하락하고 시장 변동성이 커졌다.\n\n특히 에너지 가격 상승과 공급 불안이 금융시장 불안의 주요 요인으로 지목된다. 중동은 세계 석유 생산의 핵심 지역이기 때문에 분쟁이 발생할 경우 원유 공급 차질 가능성이 커진다. 이러한 상황은 세계 경제에 부담을 줄 수 있다.\n\n전문가들은 향후 중동 분쟁의 확산 여부가 글로벌 금융시장 흐름을 결정할 중요한 변수라고 평가한다. 국제 유가와 환율 변동이 이어질 가능성이 있어 각국 경제 정책에도 영향을 줄 전망이다.",
-      "url": "https://www.bloomberg.com/markets",
-      "keywords": ["글로벌증시", "금융시장", "
-::contentReference[oaicite:1]{index=1}
+      "url": "https://news.google.com/rss/articles/CBMijwFBVV95cUxNeVRsNWlWVVZLRV9Ka1o3Y2cyY1NmdG9seS02Sm9SM2VsN1dpZEFGNURTYTN6bU51WmMxQWgydVdVejJoc2RkRHktaE1ILXhaT05WQTZhQVhvRUFIbEhIYXloaTE1bjRhY0ZmZHBBSmUxRlMzSGRaeUJXWl9ONE13WklUNmJrTGZDaHpDZjh3d9IBowFBVV95cUxOUC1XZ3piaFNRTUxJZThQWUw4N2xJam14TE42bk02YnBVTjF3TjM0VnQ0bHdoRkdaMGFkb05pN3B4b0ctRENuQXdFZmFzUFMyR1Q3azI1blhjeUJGeUpFd3IzZ19yVDFEYXB5NnBXSnJHR3pyazJiU2xGT0RlVVBKTzNzWi05RVoxVEk5VzlkMDdhS0o5UGlYdVU3MDU0MGdzelc4?oc=5",
+      "detail": "美법원, 트럼프 상호 관세 납부액 “재계산해 돌려줘라”&nbsp;&nbsp;조선일보美 주정부, '상호관세' 이어 '글로벌 관세'에도 무효 소송&nbsp;&nbsp;v.daum.net발언하는 여한구 통상교섭본부장&nbsp;&nbsp;뉴시스\"트럼프 '대체관세'도 위법\"…미국 24개주 무효소송 제기&nbsp;&nbsp;연합뉴스트럼프의 '새로운 관세'도 결국 '무",
+      "date": "2026-03-05",
+      "importance": 80
+    },
+    {
+      "id": "https://news.google.com/rss/articles/CBMibEFVX3lxTE5PbE1qOWtyb0tPZGdqak13WU44YmdtQUtDdFhmRGZkNXY4NHdUVTBpRHNZUHBCall5V2RTMDZ2djd1cXJnRFZWNkNORFF5NFdqNXBEWkZjU3J5SjU5c2d5cFpXTTE1SHZ1RTJKYg?oc=5",
+      "title": "강원도에 눈 이만큼 쌓였는데, 또 온다…오늘내일 전국에 비나 눈",
+      "source": "한겨레",
+      "category": "Environment",
+      "url": "https://news.google.com/rss/articles/CBMibEFVX3lxTE5PbE1qOWtyb0tPZGdqak13WU44YmdtQUtDdFhmRGZkNXY4NHdUVTBpRHNZUHBCall5V2RTMDZ2djd1cXJnRFZWNkNORFF5NFdqNXBEWkZjU3J5SjU5c2d5cFpXTTE1SHZ1RTJKYg?oc=5",
+      "detail": "강원도에 눈 이만큼 쌓였는데, 또 온다…오늘내일 전국에 비나 눈&nbsp;&nbsp;한겨레[더 한장] 봄철에도 강원도는 아직 눈꽃 세상&nbsp;&nbsp;v.daum.net[출근길 날씨] 곳곳에 비·눈…낮 기온 어제보다 크게 낮아져&nbsp;&nbsp;KBS 뉴스눈비 뒤 추운 주말… 토요일 최저 영하7도&nbsp;&nbsp;동아일보중부 중심 눈·비 내리고",
+      "date": "2026-03-05",
+      "importance": 75
+    }
+  ]
+}
