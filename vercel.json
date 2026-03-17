@@ -1,11 +1,15 @@
 {
+  "buildCommand": "npm run build",
+  "outputDirectory": "dist",
+  "installCommand": "npm install",
+  "framework": "vite",
   "rewrites": [
     {
       "source": "/api/gnews/:path*",
       "destination": "https://news.google.com/:path*"
     },
     {
-      "source": "/((?!api/).*)",
+      "source": "/((?!assets|api).*)",
       "destination": "/index.html"
     }
   ]
