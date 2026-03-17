@@ -3,6 +3,10 @@
     {
       "source": "/api/gnews/:path*",
       "destination": "https://news.google.com/:path*"
+    },
+    {
+      "source": "/((?!api/).*)",
+      "destination": "/index.html"
     }
   ]
 }
