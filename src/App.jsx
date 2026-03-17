@@ -11,7 +11,7 @@ import { loadEntries, loadStats, saveEntry, saveStats } from './supabase.js';
    앱 버전 — 코드 변경 시 이 숫자만 올리면
    브라우저 캐시가 자동으로 무효화됩니다
    ────────────────────────────────────────────── */
-const APP_VERSION = '34';
+const APP_VERSION = '35';
 const CACHE_KEY = `ji_news_cache_v${APP_VERSION}`;
 
 // 이전 버전 캐시 자동 삭제
@@ -185,10 +185,78 @@ async function fetchGoogleNews() {
     return articles;
 }
 
-const LEVEL_TITLES = [
-    '', '견습생', '탐구자', '주니어 분석가', '성장하는 독자',
-    '시니어 분석가', '논객', '칼럼니스트', '사설위원', '편집장', '미디어 리더',
+const LEVEL_TITLES = ['', '새싹 시작', '탐험가', '기자', '논설가', '편집장'];
+
+/** 5단계 레벨 설정 — 조건(AND) + 디지털 보상 */
+const LEVEL_CONFIG = [
+    {
+        level: 1,
+        title: '새싹 시작',
+        period: '시작',
+        color: '#6b7280',
+        bg: '#f9fafb',
+        border: '#e5e7eb',
+        conditionLabel: '가입 즉시 (XP 0 / 출석 0일)',
+        rewards: ['기본 프로필 뱃지', '미션 화면 기본 테마'],
+    },
+    {
+        level: 2,
+        title: '탐험가',
+        period: '7일',
+        color: '#059669',
+        bg: '#f0fdf4',
+        border: '#a7f3d0',
+        conditionLabel: 'XP 200+ AND 7일 연속 출석',
+        xpRequired: 200,
+        streakRequired: 7,
+        rewards: ['Lv.2 전용 뱃지', '프로필 테마 1종 해금', 'AI 피드백 상세 버전'],
+    },
+    {
+        level: 3,
+        title: '기자',
+        period: '30일',
+        color: '#2563eb',
+        bg: '#eff6ff',
+        border: '#bfdbfe',
+        conditionLabel: 'XP 1,000+ AND 30일 중 25일 이상 출석',
+        xpRequired: 1000,
+        daysRequired: 25,
+        rewards: ['Lv.3 전용 뱃지', '내 단어장 기능 해금', '30일 요약 리포트'],
+    },
+    {
+        level: 4,
+        title: '논설가',
+        period: '60일',
+        color: '#7c3aed',
+        bg: '#f5f3ff',
+        border: '#ddd6fe',
+        conditionLabel: 'XP 2,500+ AND 60일 중 50일 이상 출석',
+        xpRequired: 2500,
+        daysRequired: 50,
+        rewards: ['Lv.4 골드 뱃지', '의견 히스토리 공유', 'AI 심층 피드백 해금'],
+    },
+    {
+        level: 5,
+        title: '편집장',
+        period: '100일',
+        color: '#d97706',
+        bg: '#fffbeb',
+        border: '#fde68a',
+        conditionLabel: 'XP 4,000+ AND 100일 중 85일 이상 출석',
+        xpRequired: 4000,
+        daysRequired: 85,
+        rewards: ['졸업 인증서 (PDF)', '100일 회고 리포트', '"편집장" 영구 칭호', '스페셜 프로필 테마'],
+    },
 ];
+
+/** XP + 출석 조건으로 레벨 계산 */
+function calcLevel(xp, streak, attendanceDays) {
+    if (xp >= 4000 && attendanceDays >= 85) return 5;
+    if (xp >= 2500 && attendanceDays >= 50) return 4;
+    if (xp >= 1000 && attendanceDays >= 25) return 3;
+    if (xp >= 200  && streak >= 7)          return 2;
+    return 1;
+}
 
 /* ──────────────────────────────────────────────
    SMALL COMPONENTS
@@ -398,10 +466,11 @@ export default function App() {
         const reasonXp  = form.reason.trim().length >= 15  ? 5 : form.reason.trim().length > 0  ? 1 : 0;
         const xp = summaryXp + reasonXp + 5;
 
+        // 출석 일수 계산 — entries(기존) + 오늘 날짜 합산 고유 일수
+        const attendanceDays = new Set([...entries.map(e => e.date), todayStr]).size;
+
         setStats((p) => {
             const nx = p.xp + xp;
-            const nl = Math.floor(nx / 500) + 1;
-            const up = nl > p.level;
             const lastDate = p.lastDate || '';
             const yesterday = new Date();
             yesterday.setDate(yesterday.getDate() - 1);
@@ -409,19 +478,22 @@ export default function App() {
             let newStreak = lastDate === todayStr ? p.streak
                 : lastDate === yesterdayStr     ? p.streak + 1
                 : 1;
+            // 레벨 = 이전 레벨과 새로 계산된 레벨 중 높은 값 (레벨 하락 방지)
+            const nl = Math.max(p.level, calcLevel(nx, newStreak, attendanceDays));
+            const up = nl > p.level;
             const next = { ...p, total: p.total + 1, xp: nx, level: nl, streak: newStreak, lastDate: todayStr };
             // Supabase에 stats 저장
             saveStats(next);
-            setTimeout(() => flash(up ? `레벨 업! LV.${nl} (+${xp} XP)` : `미션 완료! +${xp} XP`), 100);
+            setTimeout(() => flash(up ? `레벨 업! LV.${nl} ${LEVEL_TITLES[nl]} (+${xp} XP)` : `미션 완료! +${xp} XP`), 100);
             return next;
         });
         setForm({ summary: '', choice: null, reason: '', word: '' });
         // 미션 완료 후 뉴스 목록으로
         setTab('news');
         window.scrollTo({ top: 0, behavior: 'smooth' });
-    }, [form, selected, flash]);
+    }, [form, selected, flash, entries]);
 
-    const lvlTitle = LEVEL_TITLES[Math.min(stats.level, LEVEL_TITLES.length - 1)] || '미디어 리더';
+    const lvlTitle = LEVEL_TITLES[Math.min(stats.level, LEVEL_TITLES.length - 1)] || '편집장';
 
     const navItems = [
         { id: 'news', Icon: BookOpen, label: '뉴스' },
@@ -797,10 +869,169 @@ function WriteView({ news, form, setForm, submit, goBack, isDone }) {
 }
 
 /* ============================================
+   LEVEL ROADMAP
+   ============================================ */
+function LevelRoadmap({ stats, attendanceDays }) {
+    const currentLevel = stats.level;
+    const currentConfig = LEVEL_CONFIG.find(c => c.level === currentLevel);
+    const nextConfig    = LEVEL_CONFIG.find(c => c.level === currentLevel + 1);
+
+    return (
+        <section className="bg-card p-4 sm:p-5 rounded-lg border border-border">
+            <h3 className="font-bold text-[14px] tracking-tight mb-1 flex items-center gap-2 text-card-foreground">
+                <Star size={16} className="text-chart-1" aria-hidden="true" /> 레벨 미션 현황
+            </h3>
+            <p className="text-[11px] text-muted-foreground mb-4">매일 미션을 완료하면 XP와 출석 일수가 쌓여 레벨이 올라갑니다.</p>
+
+            {/* 다음 레벨 진행 현황 */}
+            {nextConfig && (
+                <div className="mb-5 p-3 rounded-lg border" style={{ borderColor: nextConfig.border, backgroundColor: nextConfig.bg }}>
+                    <p className="text-[12px] font-bold mb-2" style={{ color: nextConfig.color }}>
+                        다음 목표 · Lv.{nextConfig.level} {nextConfig.title}
+                    </p>
+                    {/* XP 진행 */}
+                    <div className="mb-2">
+                        <div className="flex justify-between text-[11px] mb-1">
+                            <span className="text-muted-foreground">XP</span>
+                            <span className="font-semibold tabular-nums text-card-foreground">
+                                {stats.xp.toLocaleString()} / {nextConfig.xpRequired?.toLocaleString()}
+                            </span>
+                        </div>
+                        <div className="w-full h-1.5 bg-accent/40 rounded-full overflow-hidden">
+                            <div
+                                className="h-full rounded-full transition-all duration-500"
+                                style={{
+                                    width: `${Math.min((stats.xp / nextConfig.xpRequired) * 100, 100)}%`,
+                                    backgroundColor: nextConfig.color,
+                                }}
+                            />
+                        </div>
+                    </div>
+                    {/* 출석 / 연속 출석 진행 */}
+                    {nextConfig.streakRequired ? (
+                        <div>
+                            <div className="flex justify-between text-[11px] mb-1">
+                                <span className="text-muted-foreground">연속 출석</span>
+                                <span className="font-semibold tabular-nums text-card-foreground">
+                                    {stats.streak} / {nextConfig.streakRequired}일
+                                </span>
+                            </div>
+                            <div className="w-full h-1.5 bg-accent/40 rounded-full overflow-hidden">
+                                <div
+                                    className="h-full rounded-full transition-all duration-500"
+                                    style={{
+                                        width: `${Math.min((stats.streak / nextConfig.streakRequired) * 100, 100)}%`,
+                                        backgroundColor: nextConfig.color,
+                                    }}
+                                />
+                            </div>
+                        </div>
+                    ) : nextConfig.daysRequired ? (
+                        <div>
+                            <div className="flex justify-between text-[11px] mb-1">
+                                <span className="text-muted-foreground">출석 일수</span>
+                                <span className="font-semibold tabular-nums text-card-foreground">
+                                    {attendanceDays} / {nextConfig.daysRequired}일
+                                </span>
+                            </div>
+                            <div className="w-full h-1.5 bg-accent/40 rounded-full overflow-hidden">
+                                <div
+                                    className="h-full rounded-full transition-all duration-500"
+                                    style={{
+                                        width: `${Math.min((attendanceDays / nextConfig.daysRequired) * 100, 100)}%`,
+                                        backgroundColor: nextConfig.color,
+                                    }}
+                                />
+                            </div>
+                        </div>
+                    ) : null}
+                </div>
+            )}
+            {currentLevel >= 5 && (
+                <div className="mb-5 p-3 rounded-lg border border-amber-200 bg-amber-50 text-center">
+                    <p className="text-[13px] font-bold text-amber-700">🎉 최고 레벨 달성! 편집장</p>
+                    <p className="text-[11px] text-amber-600 mt-0.5">100일 졸업 조건을 모두 충족했습니다.</p>
+                </div>
+            )}
+
+            {/* 5단계 레벨 목록 */}
+            <div className="space-y-2">
+                {LEVEL_CONFIG.map((cfg) => {
+                    const isUnlocked = currentLevel >= cfg.level;
+                    const isCurrent  = currentLevel === cfg.level;
+                    return (
+                        <div
+                            key={cfg.level}
+                            className="flex items-start gap-3 p-3 rounded-lg border transition-colors"
+                            style={{
+                                borderColor: isCurrent ? cfg.color : isUnlocked ? cfg.border : '#e5e7eb',
+                                backgroundColor: isCurrent ? cfg.bg : isUnlocked ? cfg.bg : '#fafafa',
+                                opacity: isUnlocked ? 1 : 0.55,
+                            }}
+                        >
+                            {/* 레벨 배지 */}
+                            <div
+                                className="shrink-0 w-12 h-12 rounded-lg flex flex-col items-center justify-center text-center"
+                                style={{ backgroundColor: isUnlocked ? cfg.color : '#d1d5db' }}
+                            >
+                                <span className="text-white text-[10px] font-bold leading-none">Lv.{cfg.level}</span>
+                                <span className="text-white text-[9px] leading-none mt-0.5 opacity-90">{cfg.period}</span>
+                            </div>
+
+                            {/* 내용 */}
+                            <div className="flex-1 min-w-0">
+                                <div className="flex items-center gap-1.5 mb-0.5">
+                                    <span className="font-bold text-[13px]" style={{ color: isUnlocked ? cfg.color : '#6b7280' }}>
+                                        {cfg.title}
+                                    </span>
+                                    {isCurrent && (
+                                        <span className="text-[9px] font-bold px-1.5 py-0.5 rounded-full text-white" style={{ backgroundColor: cfg.color }}>
+                                            현재
+                                        </span>
+                                    )}
+                                    {isUnlocked && !isCurrent && (
+                                        <CheckCircle size={12} style={{ color: cfg.color }} aria-hidden="true" />
+                                    )}
+                                </div>
+                                <p className="text-[11px] text-muted-foreground mb-1.5">{cfg.conditionLabel}</p>
+                                <div className="flex flex-wrap gap-1">
+                                    {cfg.rewards.map((r) => (
+                                        <span
+                                            key={r}
+                                            className="text-[10px] px-1.5 py-0.5 rounded font-medium"
+                                            style={{
+                                                backgroundColor: isUnlocked ? cfg.bg : '#f3f4f6',
+                                                color: isUnlocked ? cfg.color : '#9ca3af',
+                                                border: `1px solid ${isUnlocked ? cfg.border : '#e5e7eb'}`,
+                                            }}
+                                        >
+                                            {r}
+                                        </span>
+                                    ))}
+                                </div>
+                            </div>
+                        </div>
+                    );
+                })}
+            </div>
+
+            {/* 일 최대 XP 안내 */}
+            <p className="text-[11px] text-muted-foreground mt-4 text-center border-t border-border pt-3">
+                일 최대 15 XP · 매일 하면 100일에 약 1,500 XP 획득 가능
+                <br />완충 출석일은 불가피한 상황(아프거나 학교 행사 등)을 위한 여유분
+            </p>
+        </section>
+    );
+}
+
+/* ============================================
    DASHBOARD
    ============================================ */
 function Dashboard({ stats, entries, lvlTitle }) {
     const [expandedId, setExpandedId] = useState(null);
+
+    // 고유 출석 일수 (entries 기반)
+    const attendanceDays = new Set(entries.map(e => e.date)).size;
 
     // 최근 7일 요일별 활동 차트 — 실제 entries 기반
     const days = ['일', '월', '화', '수', '목', '금', '토'];
@@ -868,6 +1099,9 @@ function Dashboard({ stats, entries, lvlTitle }) {
                     <p className="text-[11px] text-muted-foreground -mt-2 pl-0.5">단어를 <span className="font-semibold text-foreground">1개 이상</span> 수집하면 +5 XP</p>
                 </div>
             </div>
+
+            {/* Level Roadmap */}
+            <LevelRoadmap stats={stats} attendanceDays={attendanceDays} />
 
             {/* History */}
             <section className="bg-card p-4 sm:p-5 rounded-lg border border-border">
