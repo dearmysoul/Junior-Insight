@@ -85,10 +85,8 @@ async function fetchNewsJson() {
         if (!res.ok) return null;
         const data = await res.json();
         const today = new Date().toISOString().slice(0, 10);
-        const yesterday = new Date(Date.now() - 86400000).toISOString().slice(0, 10);
-        const dataDate = data?.date?.slice(0, 10);
-        // 오늘 또는 어제 날짜 기사이면 사용 (자정 이후 생성, 시차 등 고려)
-        if ((dataDate === today || dataDate === yesterday) && Array.isArray(data.articles) && data.articles.length > 0) {
+        // 오늘 날짜 기사이면 사용, 아니면 RSS fallback
+        if (data?.date === today && Array.isArray(data.articles) && data.articles.length > 0) {
             return data.articles.map((a, idx) => ({
                 // ChatGPT 필드 → 앱 내부 필드 정규화
                 id: a.id || a.url || `${a.title}_${a.date}`,
@@ -98,9 +96,7 @@ async function fetchNewsJson() {
                 country: a.country || '',
                 category: normalizeCategory(a.category),
                 detail: a.summary_kor || a.detail || a.title, // ChatGPT 요약 우선
-                summary_kor: a.summary_kor
-                    ? a.summary_kor.replace(/:contentReference\[oaicite:\d+\]\{index=\d+\}/g, '').trim()
-                    : null,
+                summary_kor: a.summary_kor || null,
                 keywords: a.keywords || [],
                 difficulty: a.difficulty || 1,
                 url: a.url,
@@ -185,78 +181,10 @@ async function fetchGoogleNews() {
     return articles;
 }
 
-const LEVEL_TITLES = ['', '새싹 시작', '탐험가', '기자', '논설가', '편집장'];
-
-/** 5단계 레벨 설정 — 조건(AND) + 디지털 보상 */
-const LEVEL_CONFIG = [
-    {
-        level: 1,
-        title: '새싹 시작',
-        period: '시작',
-        color: '#6b7280',
-        bg: '#f9fafb',
-        border: '#e5e7eb',
-        conditionLabel: '가입 즉시 (XP 0 / 출석 0일)',
-        rewards: ['기본 프로필 뱃지', '미션 화면 기본 테마'],
-    },
-    {
-        level: 2,
-        title: '탐험가',
-        period: '7일',
-        color: '#059669',
-        bg: '#f0fdf4',
-        border: '#a7f3d0',
-        conditionLabel: 'XP 200+ AND 7일 연속 출석',
-        xpRequired: 200,
-        streakRequired: 7,
-        rewards: ['Lv.2 전용 뱃지', '프로필 테마 1종 해금', 'AI 피드백 상세 버전'],
-    },
-    {
-        level: 3,
-        title: '기자',
-        period: '30일',
-        color: '#2563eb',
-        bg: '#eff6ff',
-        border: '#bfdbfe',
-        conditionLabel: 'XP 1,000+ AND 30일 중 25일 이상 출석',
-        xpRequired: 1000,
-        daysRequired: 25,
-        rewards: ['Lv.3 전용 뱃지', '내 단어장 기능 해금', '30일 요약 리포트'],
-    },
-    {
-        level: 4,
-        title: '논설가',
-        period: '60일',
-        color: '#7c3aed',
-        bg: '#f5f3ff',
-        border: '#ddd6fe',
-        conditionLabel: 'XP 2,500+ AND 60일 중 50일 이상 출석',
-        xpRequired: 2500,
-        daysRequired: 50,
-        rewards: ['Lv.4 골드 뱃지', '의견 히스토리 공유', 'AI 심층 피드백 해금'],
-    },
-    {
-        level: 5,
-        title: '편집장',
-        period: '100일',
-        color: '#d97706',
-        bg: '#fffbeb',
-        border: '#fde68a',
-        conditionLabel: 'XP 4,000+ AND 100일 중 85일 이상 출석',
-        xpRequired: 4000,
-        daysRequired: 85,
-        rewards: ['졸업 인증서 (PDF)', '100일 회고 리포트', '"편집장" 영구 칭호', '스페셜 프로필 테마'],
-    },
-];
-
-/** XP + 출석 조건으로 레벨 계산 */
-function calcLevel(xp, streak, attendanceDays) {
-    if (xp >= 4000 && attendanceDays >= 85) return 5;
-    if (xp >= 2500 && attendanceDays >= 50) return 4;
-    if (xp >= 1000 && attendanceDays >= 25) return 3;
-    if (xp >= 200  && streak >= 7)          return 2;
-    return 1;
-}
+// 레벨 칭호 (SVG 기획 기반 5단계)
+// Lv.1 새싹: 가입즉시 | Lv.2 탐험가: XP 200+, 7일 연속 | Lv.3 기자: XP 1000+, 25일+
+// Lv.4 논설가: XP 2500+, 50일+ | Lv.5 편집장: XP 4000+, 85일+
+const LEVEL_TITLES = ['', '새싹', '탐험가', '기자', '논설가', '편집장'];
 
 /* ──────────────────────────────────────────────
    SMALL COMPONENTS
@@ -307,12 +235,14 @@ function Stat({ icon: Icon, label, value, unit, color }) {
     );
 }
 
-function SkillRow({ label, score, from, to }) {
+function SkillRow({ label, score, xp, from }) {
     return (
         <div className="mb-4 last:mb-0">
             <div className="flex justify-between text-[13px] mb-1.5">
                 <span className="text-muted-foreground font-medium tracking-tight">{label}</span>
-                <span className="font-bold text-card-foreground tabular-nums">{score}/100</span>
+                <span className="font-bold text-card-foreground tabular-nums">
+                    {xp !== undefined ? `${xp} XP` : `${score}%`}
+                </span>
             </div>
             <div className="w-full h-2 bg-accent/40 rounded-full overflow-hidden">
                 <div className={`h-full rounded-full progress-fill ${from}`} style={{ width: `${score}%` }} />
@@ -353,33 +283,30 @@ export default function App() {
         const now = new Date();
         const todaySix = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 6, 0, 0, 0);
 
+        // 로컬 캐시 확인
+        try {
+            const cached = JSON.parse(localStorage.getItem(CACHE_KEY) || 'null');
+            if (cached && cached.fetchedAt >= todaySix.getTime() && cached.articles?.length > 0) {
+                if (!cancelled) { setNews(cached.articles); setNewsLoading(false); return; }
+            }
+        } catch { /* 무시 */ }
+
         setNewsLoading(true);
 
-        // ① news.json 항상 우선 시도 (summary_kor 포함, 매일 갱신)
-        // ② news.json 실패 시 로컬 캐시 확인 (RSS fallback 캐시)
-        // ③ 캐시도 없으면 RSS proxy fallback
+        // ① news.json 우선 시도 (GitHub Actions가 매일 생성)
+        // ② 없거나 날짜 불일치 시 RSS proxy fallback
         const loadNews = async () => {
             const jsonArticles = await fetchNewsJson();
-            if (jsonArticles) return { articles: jsonArticles, source: 'json' };
-
-            // 로컬 캐시 확인 (RSS 결과만 캐시됨)
-            try {
-                const cached = JSON.parse(localStorage.getItem(CACHE_KEY) || 'null');
-                if (cached && cached.fetchedAt >= todaySix.getTime() && cached.articles?.length > 0) {
-                    return { articles: cached.articles, source: 'cache' };
-                }
-            } catch { /* 무시 */ }
-
-            return { articles: await fetchGoogleNews(), source: 'rss' };
+            if (jsonArticles) return jsonArticles;
+            return fetchGoogleNews();
         };
 
         loadNews()
-            .then(({ articles, source }) => {
+            .then((articles) => {
                 if (!cancelled) {
                     setNews(articles);
                     setNewsError(null);
-                    // RSS 결과만 캐시 저장 (news.json은 항상 새로 가져옴)
-                    if (source === 'rss' && now >= todaySix) {
+                    if (now >= todaySix) {
                         try { localStorage.setItem(CACHE_KEY, JSON.stringify({ fetchedAt: Date.now(), articles })); } catch { /* 무시 */ }
                     }
                 }
@@ -397,7 +324,15 @@ export default function App() {
     useEffect(() => {
         Promise.all([loadEntries(), loadStats()]).then(([e, s]) => {
             setEntries(e);
-            if (s) setStats(s);
+            if (s) {
+                // 마지막 활동일이 어제/오늘이 아니면 streak 초기화
+                const todayKr = new Date().toLocaleDateString('ko-KR');
+                const yd = new Date(); yd.setDate(yd.getDate() - 1);
+                const yesterdayKr = yd.toLocaleDateString('ko-KR');
+                const last = s.lastDate || '';
+                const correctedStreak = (last === todayKr || last === yesterdayKr) ? s.streak : 0;
+                setStats({ ...s, streak: correctedStreak });
+            }
             setDbLoading(false);
         });
     }, []);
@@ -466,8 +401,9 @@ export default function App() {
         const reasonXp  = form.reason.trim().length >= 15  ? 5 : form.reason.trim().length > 0  ? 1 : 0;
         const xp = summaryXp + reasonXp + 5;
 
-        // 출석 일수 계산 — entries(기존) + 오늘 날짜 합산 고유 일수
-        const attendanceDays = new Set([...entries.map(e => e.date), todayStr]).size;
+        // 유일 활동일 수 (오늘 포함) — 레벨 계산에 사용
+        const activeDates = new Set([...entries.map(e => e.date), todayStr]);
+        const uniqueDays = activeDates.size;
 
         setStats((p) => {
             const nx = p.xp + xp;
@@ -478,22 +414,27 @@ export default function App() {
             let newStreak = lastDate === todayStr ? p.streak
                 : lastDate === yesterdayStr     ? p.streak + 1
                 : 1;
-            // 레벨 = 이전 레벨과 새로 계산된 레벨 중 높은 값 (레벨 하락 방지)
-            const nl = Math.max(p.level, calcLevel(nx, newStreak, attendanceDays));
+            // SVG 기획 기반 레벨 계산 (XP + 출석일 조건)
+            let nl = 1;
+            if      (nx >= 4000 && uniqueDays >= 85) nl = 5; // 편집장
+            else if (nx >= 2500 && uniqueDays >= 50) nl = 4; // 논설가
+            else if (nx >= 1000 && uniqueDays >= 25) nl = 3; // 기자
+            else if (nx >= 200  && newStreak  >= 7 ) nl = 2; // 탐험가
             const up = nl > p.level;
             const next = { ...p, total: p.total + 1, xp: nx, level: nl, streak: newStreak, lastDate: todayStr };
             // Supabase에 stats 저장
             saveStats(next);
-            setTimeout(() => flash(up ? `레벨 업! LV.${nl} ${LEVEL_TITLES[nl]} (+${xp} XP)` : `미션 완료! +${xp} XP`), 100);
+            const title = LEVEL_TITLES[nl] || '';
+            setTimeout(() => flash(up ? `레벨 업! LV.${nl} ${title} (+${xp} XP)` : `미션 완료! +${xp} XP`), 100);
             return next;
         });
         setForm({ summary: '', choice: null, reason: '', word: '' });
         // 미션 완료 후 뉴스 목록으로
         setTab('news');
         window.scrollTo({ top: 0, behavior: 'smooth' });
-    }, [form, selected, flash, entries]);
+    }, [form, selected, flash]);
 
-    const lvlTitle = LEVEL_TITLES[Math.min(stats.level, LEVEL_TITLES.length - 1)] || '편집장';
+    const lvlTitle = LEVEL_TITLES[Math.min(stats.level, LEVEL_TITLES.length - 1)] || '미디어 리더';
 
     const navItems = [
         { id: 'news', Icon: BookOpen, label: '뉴스' },
@@ -869,188 +810,27 @@ function WriteView({ news, form, setForm, submit, goBack, isDone }) {
 }
 
 /* ============================================
-   LEVEL ROADMAP
-   ============================================ */
-function LevelRoadmap({ stats, attendanceDays }) {
-    const currentLevel = stats.level;
-    const currentConfig = LEVEL_CONFIG.find(c => c.level === currentLevel);
-    const nextConfig    = LEVEL_CONFIG.find(c => c.level === currentLevel + 1);
-
-    return (
-        <section className="bg-card p-4 sm:p-5 rounded-lg border border-border">
-            <h3 className="font-bold text-[14px] tracking-tight mb-1 flex items-center gap-2 text-card-foreground">
-                <Star size={16} className="text-chart-1" aria-hidden="true" /> 레벨 미션 현황
-            </h3>
-            <p className="text-[11px] text-muted-foreground mb-4">매일 미션을 완료하면 XP와 출석 일수가 쌓여 레벨이 올라갑니다.</p>
-
-            {/* 다음 레벨 진행 현황 */}
-            {nextConfig && (
-                <div className="mb-5 p-3 rounded-lg border" style={{ borderColor: nextConfig.border, backgroundColor: nextConfig.bg }}>
-                    <p className="text-[12px] font-bold mb-2" style={{ color: nextConfig.color }}>
-                        다음 목표 · Lv.{nextConfig.level} {nextConfig.title}
-                    </p>
-                    {/* XP 진행 */}
-                    <div className="mb-2">
-                        <div className="flex justify-between text-[11px] mb-1">
-                            <span className="text-muted-foreground">XP</span>
-                            <span className="font-semibold tabular-nums text-card-foreground">
-                                {stats.xp.toLocaleString()} / {nextConfig.xpRequired?.toLocaleString()}
-                            </span>
-                        </div>
-                        <div className="w-full h-1.5 bg-accent/40 rounded-full overflow-hidden">
-                            <div
-                                className="h-full rounded-full transition-all duration-500"
-                                style={{
-                                    width: `${Math.min((stats.xp / nextConfig.xpRequired) * 100, 100)}%`,
-                                    backgroundColor: nextConfig.color,
-                                }}
-                            />
-                        </div>
-                    </div>
-                    {/* 출석 / 연속 출석 진행 */}
-                    {nextConfig.streakRequired ? (
-                        <div>
-                            <div className="flex justify-between text-[11px] mb-1">
-                                <span className="text-muted-foreground">연속 출석</span>
-                                <span className="font-semibold tabular-nums text-card-foreground">
-                                    {stats.streak} / {nextConfig.streakRequired}일
-                                </span>
-                            </div>
-                            <div className="w-full h-1.5 bg-accent/40 rounded-full overflow-hidden">
-                                <div
-                                    className="h-full rounded-full transition-all duration-500"
-                                    style={{
-                                        width: `${Math.min((stats.streak / nextConfig.streakRequired) * 100, 100)}%`,
-                                        backgroundColor: nextConfig.color,
-                                    }}
-                                />
-                            </div>
-                        </div>
-                    ) : nextConfig.daysRequired ? (
-                        <div>
-                            <div className="flex justify-between text-[11px] mb-1">
-                                <span className="text-muted-foreground">출석 일수</span>
-                                <span className="font-semibold tabular-nums text-card-foreground">
-                                    {attendanceDays} / {nextConfig.daysRequired}일
-                                </span>
-                            </div>
-                            <div className="w-full h-1.5 bg-accent/40 rounded-full overflow-hidden">
-                                <div
-                                    className="h-full rounded-full transition-all duration-500"
-                                    style={{
-                                        width: `${Math.min((attendanceDays / nextConfig.daysRequired) * 100, 100)}%`,
-                                        backgroundColor: nextConfig.color,
-                                    }}
-                                />
-                            </div>
-                        </div>
-                    ) : null}
-                </div>
-            )}
-            {currentLevel >= 5 && (
-                <div className="mb-5 p-3 rounded-lg border border-amber-200 bg-amber-50 text-center">
-                    <p className="text-[13px] font-bold text-amber-700">🎉 최고 레벨 달성! 편집장</p>
-                    <p className="text-[11px] text-amber-600 mt-0.5">100일 졸업 조건을 모두 충족했습니다.</p>
-                </div>
-            )}
-
-            {/* 5단계 레벨 목록 */}
-            <div className="space-y-2">
-                {LEVEL_CONFIG.map((cfg) => {
-                    const isUnlocked = currentLevel >= cfg.level;
-                    const isCurrent  = currentLevel === cfg.level;
-                    return (
-                        <div
-                            key={cfg.level}
-                            className="flex items-start gap-3 p-3 rounded-lg border transition-colors"
-                            style={{
-                                borderColor: isCurrent ? cfg.color : isUnlocked ? cfg.border : '#e5e7eb',
-                                backgroundColor: isCurrent ? cfg.bg : isUnlocked ? cfg.bg : '#fafafa',
-                                opacity: isUnlocked ? 1 : 0.55,
-                            }}
-                        >
-                            {/* 레벨 배지 */}
-                            <div
-                                className="shrink-0 w-12 h-12 rounded-lg flex flex-col items-center justify-center text-center"
-                                style={{ backgroundColor: isUnlocked ? cfg.color : '#d1d5db' }}
-                            >
-                                <span className="text-white text-[10px] font-bold leading-none">Lv.{cfg.level}</span>
-                                <span className="text-white text-[9px] leading-none mt-0.5 opacity-90">{cfg.period}</span>
-                            </div>
-
-                            {/* 내용 */}
-                            <div className="flex-1 min-w-0">
-                                <div className="flex items-center gap-1.5 mb-0.5">
-                                    <span className="font-bold text-[13px]" style={{ color: isUnlocked ? cfg.color : '#6b7280' }}>
-                                        {cfg.title}
-                                    </span>
-                                    {isCurrent && (
-                                        <span className="text-[9px] font-bold px-1.5 py-0.5 rounded-full text-white" style={{ backgroundColor: cfg.color }}>
-                                            현재
-                                        </span>
-                                    )}
-                                    {isUnlocked && !isCurrent && (
-                                        <CheckCircle size={12} style={{ color: cfg.color }} aria-hidden="true" />
-                                    )}
-                                </div>
-                                <p className="text-[11px] text-muted-foreground mb-1.5">{cfg.conditionLabel}</p>
-                                <div className="flex flex-wrap gap-1">
-                                    {cfg.rewards.map((r) => (
-                                        <span
-                                            key={r}
-                                            className="text-[10px] px-1.5 py-0.5 rounded font-medium"
-                                            style={{
-                                                backgroundColor: isUnlocked ? cfg.bg : '#f3f4f6',
-                                                color: isUnlocked ? cfg.color : '#9ca3af',
-                                                border: `1px solid ${isUnlocked ? cfg.border : '#e5e7eb'}`,
-                                            }}
-                                        >
-                                            {r}
-                                        </span>
-                                    ))}
-                                </div>
-                            </div>
-                        </div>
-                    );
-                })}
-            </div>
-
-            {/* 일 최대 XP 안내 */}
-            <p className="text-[11px] text-muted-foreground mt-4 text-center border-t border-border pt-3">
-                일 최대 15 XP · 매일 하면 100일에 약 1,500 XP 획득 가능
-                <br />완충 출석일은 불가피한 상황(아프거나 학교 행사 등)을 위한 여유분
-            </p>
-        </section>
-    );
-}
-
-/* ============================================
    DASHBOARD
    ============================================ */
 function Dashboard({ stats, entries, lvlTitle }) {
     const [expandedId, setExpandedId] = useState(null);
 
-    // 고유 출석 일수 (entries 기반)
-    const attendanceDays = new Set(entries.map(e => e.date)).size;
-
-    // 최근 7일 요일별 활동 차트 — 실제 entries 기반
-    const days = ['일', '월', '화', '수', '목', '금', '토'];
-    const bars = Array.from({ length: 7 }, (_, i) => {
-        const d = new Date();
-        d.setDate(d.getDate() - (6 - i));
-        const label = d.toLocaleDateString('ko-KR');
-        const count = entries.filter(e => e.date === label).length;
-        return { day: days[d.getDay()], count };
-    });
-    const maxCount = Math.max(...bars.map(b => b.count), 1);
-
-    // 영역별 점수 — 실제 입력 품질 기반
-    const summaryEntries = entries.filter(e => e.summary && e.summary.length > 0);
-    const reasonEntries  = entries.filter(e => e.reason && e.reason.length > 0);
-    const wordEntries    = entries.filter(e => e.word && e.word.length > 0);
-    const s1 = summaryEntries.length === 0 ? 0 : Math.min(Math.round((summaryEntries.filter(e => e.summary.length >= 20).length / summaryEntries.length) * 100), 100);
-    const s2 = reasonEntries.length  === 0 ? 0 : Math.min(Math.round((reasonEntries.filter(e => e.reason.length >= 15).length  / reasonEntries.length)  * 100), 100);
-    const s3 = entries.length === 0 ? 0 : Math.min(Math.round((wordEntries.length / entries.length) * 100), 100);
+    // 영역별 XP 계산 — 실제 누적 XP 기반
+    const summaryXpTotal = entries.reduce((acc, e) => {
+        const len = (e.summary || '').trim().length;
+        return acc + (len >= 20 ? 5 : len > 0 ? 1 : 0);
+    }, 0);
+    const reasonXpTotal = entries.reduce((acc, e) => {
+        const len = (e.reason || '').trim().length;
+        return acc + (len >= 15 ? 5 : len > 0 ? 1 : 0);
+    }, 0);
+    const wordXpTotal = entries.reduce((acc, e) => {
+        return acc + ((e.word || '').trim().length > 0 ? 5 : 0);
+    }, 0);
+    const maxXpPerSkill = Math.max(entries.length * 5, 1);
+    const s1 = Math.min(Math.round(summaryXpTotal / maxXpPerSkill * 100), 100);
+    const s2 = Math.min(Math.round(reasonXpTotal  / maxXpPerSkill * 100), 100);
+    const s3 = Math.min(Math.round(wordXpTotal    / maxXpPerSkill * 100), 100);
 
     return (
         <div className="animate-scale-in space-y-5">
@@ -1062,46 +842,19 @@ function Dashboard({ stats, entries, lvlTitle }) {
                 <Stat icon={Zap} label="Total XP" value={stats.xp} unit="XP" color="bg-secondary" />
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {/* Chart */}
-                <div className="bg-card p-4 sm:p-5 rounded-lg border border-border">
-                    <h3 className="font-bold text-[14px] tracking-tight mb-4 flex items-center gap-2 text-card-foreground">
-                        <TrendingUp size={16} className="text-primary" aria-hidden="true" /> 일일 활동 성취도
-                    </h3>
-                    <div className="h-40 flex items-end gap-2" role="img" aria-label="주간 활동 차트">
-                        {bars.map((b, i) => {
-                            const h = Math.round((b.count / maxCount) * 100);
-                            const isToday = i === 6;
-                            return (
-                                <div key={i} className="flex-1 flex flex-col items-center gap-1 group cursor-default">
-                                    <span className="text-[10px] text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity font-semibold tabular-nums">{b.count}건</span>
-                                    <div className="chart-grow w-full rounded-t-md bg-accent/40" style={{ height: `${Math.max(h, b.count > 0 ? 10 : 4)}%` }}>
-                                        <div className={`w-full h-full rounded-t-md ${isToday ? 'bg-primary' : 'bg-primary/40'}`} />
-                                    </div>
-                                    <span className={`text-[10px] font-medium ${isToday ? 'text-primary font-bold' : 'text-muted-foreground'}`}>{b.day}</span>
-                                </div>
-                            );
-                        })}
-                    </div>
-                </div>
-
-                {/* Skills */}
-                <div className="bg-card p-4 sm:p-5 rounded-lg border border-border">
-                    <h3 className="font-bold text-[14px] tracking-tight mb-1 flex items-center gap-2 text-card-foreground">
-                        <Award size={16} className="text-grad-mid" aria-hidden="true" /> 영역별 활동 점수
-                    </h3>
-                    <p className="text-[11px] text-muted-foreground mb-4">미션을 완료할수록 점수가 올라갑니다.</p>
-                    <SkillRow label="요약 능력 (Summary)" score={s1} from="bg-primary" to="" />
-                    <p className="text-[11px] text-muted-foreground -mt-2 mb-4 pl-0.5">입력 시 <span className="font-semibold text-foreground">+1 XP</span> · <span className="font-semibold text-foreground">20자 이상</span> 요약 시 +5 XP</p>
-                    <SkillRow label="비판적 사고 (Reasoning)" score={s2} from="bg-secondary" to="" />
-                    <p className="text-[11px] text-muted-foreground -mt-2 mb-4 pl-0.5">입력 시 <span className="font-semibold text-foreground">+1 XP</span> · <span className="font-semibold text-foreground">15자 이상</span> 작성 시 +5 XP</p>
-                    <SkillRow label="어휘 습득 (Vocabulary)" score={s3} from="bg-chart-4" to="" />
-                    <p className="text-[11px] text-muted-foreground -mt-2 pl-0.5">단어를 <span className="font-semibold text-foreground">1개 이상</span> 수집하면 +5 XP</p>
-                </div>
+            {/* Skills */}
+            <div className="bg-card p-4 sm:p-5 rounded-lg border border-border">
+                <h3 className="font-bold text-[14px] tracking-tight mb-1 flex items-center gap-2 text-card-foreground">
+                    <Award size={16} className="text-grad-mid" aria-hidden="true" /> 영역별 활동 점수
+                </h3>
+                <p className="text-[11px] text-muted-foreground mb-4">미션을 완료할수록 XP가 누적됩니다.</p>
+                <SkillRow label="요약 능력 (Summary)" score={s1} xp={summaryXpTotal} from="bg-primary" />
+                <p className="text-[11px] text-muted-foreground -mt-2 mb-4 pl-0.5">입력 시 <span className="font-semibold text-foreground">+1 XP</span> · <span className="font-semibold text-foreground">20자 이상</span> 요약 시 +5 XP</p>
+                <SkillRow label="비판적 사고 (Reasoning)" score={s2} xp={reasonXpTotal} from="bg-secondary" />
+                <p className="text-[11px] text-muted-foreground -mt-2 mb-4 pl-0.5">입력 시 <span className="font-semibold text-foreground">+1 XP</span> · <span className="font-semibold text-foreground">15자 이상</span> 작성 시 +5 XP</p>
+                <SkillRow label="어휘 습득 (Vocabulary)" score={s3} xp={wordXpTotal} from="bg-chart-4" />
+                <p className="text-[11px] text-muted-foreground -mt-2 pl-0.5">단어를 <span className="font-semibold text-foreground">1개 이상</span> 수집하면 +5 XP</p>
             </div>
-
-            {/* Level Roadmap */}
-            <LevelRoadmap stats={stats} attendanceDays={attendanceDays} />
 
             {/* History */}
             <section className="bg-card p-4 sm:p-5 rounded-lg border border-border">
