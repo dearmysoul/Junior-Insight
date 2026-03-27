@@ -11,7 +11,7 @@ import { loadEntries, loadStats, saveEntry, saveStats } from './supabase.js';
    앱 버전 — 코드 변경 시 이 숫자만 올리면
    브라우저 캐시가 자동으로 무효화됩니다
    ────────────────────────────────────────────── */
-const APP_VERSION = '36';
+const APP_VERSION = '37';
 const CACHE_KEY = `ji_news_cache_v${APP_VERSION}`;
 
 // 이전 버전 캐시 자동 삭제
@@ -293,20 +293,23 @@ export default function App() {
 
         setNewsLoading(true);
 
-        // ① news.json 우선 시도 (GitHub Actions가 매일 생성)
-        // ② 없거나 날짜 불일치 시 RSS proxy fallback
+        // ① news.json 우선 시도 (Cowork가 매일 생성 — summary_kor 포함)
+        // ② news.json 날짜 불일치 시에만 RSS proxy fallback
+        // ※ news.json 성공 시 RSS를 시도하지 않아 캐시 오염 방지
         const loadNews = async () => {
             const jsonArticles = await fetchNewsJson();
-            if (jsonArticles) return jsonArticles;
-            return fetchGoogleNews();
+            if (jsonArticles) return { articles: jsonArticles, fromJson: true };
+            const rssArticles = await fetchGoogleNews();
+            return { articles: rssArticles, fromJson: false };
         };
 
         loadNews()
-            .then((articles) => {
+            .then(({ articles, fromJson }) => {
                 if (!cancelled) {
                     setNews(articles);
                     setNewsError(null);
-                    if (now >= todaySix) {
+                    // news.json 출처인 경우에만 캐시 저장 (RSS는 summary_kor 없어 저장 제외)
+                    if (fromJson && now >= todaySix) {
                         try { localStorage.setItem(CACHE_KEY, JSON.stringify({ fetchedAt: Date.now(), articles })); } catch { /* 무시 */ }
                     }
                 }
