@@ -11,7 +11,7 @@ import { loadEntries, loadStats, saveEntry, saveStats } from './supabase.js';
    앱 버전 — 코드 변경 시 이 숫자만 올리면
    브라우저 캐시가 자동으로 무효화됩니다
    ────────────────────────────────────────────── */
-const APP_VERSION = '35';
+const APP_VERSION = '36';
 const CACHE_KEY = `ji_news_cache_v${APP_VERSION}`;
 
 // 이전 버전 캐시 자동 삭제
@@ -325,12 +325,14 @@ export default function App() {
         Promise.all([loadEntries(), loadStats()]).then(([e, s]) => {
             setEntries(e);
             if (s) {
-                // 마지막 활동일이 어제/오늘이 아니면 streak 초기화
+                // 마지막 활동일이 오늘/어제/이틀 전이 아니면 streak 초기화 (1일 유예기간 적용)
                 const todayKr = new Date().toLocaleDateString('ko-KR');
                 const yd = new Date(); yd.setDate(yd.getDate() - 1);
                 const yesterdayKr = yd.toLocaleDateString('ko-KR');
+                const td = new Date(); td.setDate(td.getDate() - 2);
+                const twoDaysAgoKr = td.toLocaleDateString('ko-KR');
                 const last = s.lastDate || '';
-                const correctedStreak = (last === todayKr || last === yesterdayKr) ? s.streak : 0;
+                const correctedStreak = (last === todayKr || last === yesterdayKr || last === twoDaysAgoKr) ? s.streak : 0;
                 setStats({ ...s, streak: correctedStreak });
             }
             setDbLoading(false);
@@ -411,8 +413,13 @@ export default function App() {
             const yesterday = new Date();
             yesterday.setDate(yesterday.getDate() - 1);
             const yesterdayStr = yesterday.toLocaleDateString('ko-KR');
-            let newStreak = lastDate === todayStr ? p.streak
-                : lastDate === yesterdayStr     ? p.streak + 1
+            const twoDaysAgo = new Date();
+            twoDaysAgo.setDate(twoDaysAgo.getDate() - 2);
+            const twoDaysAgoStr = twoDaysAgo.toLocaleDateString('ko-KR');
+            // 1일 유예기간: 이틀 전까지 활동했으면 streak 유지
+            let newStreak = lastDate === todayStr    ? p.streak
+                : lastDate === yesterdayStr          ? p.streak + 1
+                : lastDate === twoDaysAgoStr         ? p.streak + 1
                 : 1;
             // SVG 기획 기반 레벨 계산 (XP + 출석일 조건)
             let nl = 1;
