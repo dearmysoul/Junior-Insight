@@ -17,6 +17,23 @@ function isWeather(title) {
     return WEATHER_RE.test(title.toLowerCase());
 }
 
+// 날씨 제목 → 배너용 이모지 (학습 카드 아님, 상단 알림 전용)
+function weatherEmoji(title) {
+    const t = (title || '').toLowerCase();
+    if (/눈|대설|한파|영하/.test(t)) return '❄️';
+    if (/태풍/.test(t)) return '🌀';
+    if (/폭우|호우|장마/.test(t)) return '🌧️';
+    if (/비|소나기|강수/.test(t)) return '🌦️';
+    if (/미세먼지|황사/.test(t)) return '😷';
+    if (/구름|흐림|흐리/.test(t)) return '⛅';
+    if (/폭염|무더위|맑음|맑고|더위/.test(t)) return '☀️';
+    return '🌤️';
+}
+function buildWeatherBanner(item) {
+    if (!item) return null;
+    return { emoji: weatherEmoji(item.title), summary: item.title };
+}
+
 // ── 카테고리 분류 ─────────────────────────────────────────────
 // Tech & Economy를 Environment보다 먼저 매칭 → 게임·IT 기사가 날씨/환경 키워드에
 // 우선 매칭되지 않도록 하고, 게임/e스포츠 등 아이 관심 소재를 IT로 편입한다.
@@ -113,8 +130,10 @@ async function main() {
         if (title) pool.push({ title, source, link, date, detail, category, isWeather: isWeather(title) });
     }
 
-    // 날씨 캡·관심 카테고리 보장 선정
-    const selected = selectDaily(pool);
+    // 날씨는 학습 카드에서 완전 제외 → 상단 배너로만
+    const weather = buildWeatherBanner(pool.find(a => a.isWeather));
+    // 관심 카테고리 보장 선정 (날씨 제외한 풀에서)
+    const selected = selectDaily(pool.filter(a => !a.isWeather));
 
     const articles = selected.map((a, idx) => ({
         id: a.link || `${a.title}_${a.date}`,
@@ -129,13 +148,13 @@ async function main() {
 
     const outPath = join(__dirname, '..', 'public', 'news.json');
     mkdirSync(dirname(outPath), { recursive: true });
-    writeFileSync(outPath, JSON.stringify({ fetchedAt: new Date().toISOString(), date: today, articles }, null, 2), 'utf-8');
+    writeFileSync(outPath, JSON.stringify({ fetchedAt: new Date().toISOString(), date: today, weather, articles }, null, 2), 'utf-8');
 
-    console.log(`✅ news.json 저장 완료 — ${articles.length}개 기사 (${today})`);
+    console.log(`✅ news.json 저장 완료 — ${articles.length}개 기사${weather ? ` + 날씨 배너("${weather.summary}")` : ''} (${today})`);
     articles.forEach((a, i) => console.log(`  ${i + 1}. [${a.category}] ${a.title}`));
 }
 
-export { detectCategory, isWeather, selectDaily };
+export { detectCategory, isWeather, selectDaily, weatherEmoji, buildWeatherBanner };
 
 // 직접 실행 시에만 수집 파이프라인 구동 (테스트에서 import할 땐 자동 실행 방지)
 if (import.meta.url === `file://${process.argv[1]}`) {
