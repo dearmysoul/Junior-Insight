@@ -157,6 +157,11 @@ async function fetchNewsJson() {
                     source: a.source,
                     country: a.country || '',
                     category: normalizeCategory(a.category),
+                    // 교과 학습 필드 (있으면 렌더, 없으면 무시 — 뉴스와 하위 호환)
+                    type: a.type || 'news',            // "lesson" | "news"
+                    subject: a.subject || null,        // "국어 · 비문학" 등
+                    unit: a.unit || null,              // 성취 단원
+                    hanjaTerms: a.hanja_terms || [],   // [{word,hanja,gloss}]
                     detail: a.summary_kor || a.detail || a.title, // ChatGPT 요약 우선
                     summary_kor: a.summary_kor || null,
                     keywords: a.keywords || [],
@@ -255,6 +260,26 @@ function Badge({ category }) {
             className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[11px] font-semibold tracking-tight border">
             <Icon size={11} aria-hidden="true" />
             {category}
+        </span>
+    );
+}
+
+/** 교과 배지 — 5교과 색코딩 (lesson 전용). subject 문자열로 분기 */
+function SubjectBadge({ subject }) {
+    const s = subject || '';
+    const cfg =
+        /비문학|독서/.test(s) ? { Icon: BookOpen,   bg: '#f4f2ff', text: '#6d28d9', border: '#ddd6fe' } :
+        /과학/.test(s)        ? { Icon: Sparkles,   bg: '#ecfeff', text: '#0e7490', border: '#a5f3fc' } :
+        /역사/.test(s)        ? { Icon: Clock,      bg: '#fffbeb', text: '#92400e', border: '#fde68a' } :
+        /문학/.test(s)        ? { Icon: PenTool,    bg: '#fff1f2', text: '#be185d', border: '#fbcfe8' } :
+        /사회/.test(s)        ? { Icon: Award,      bg: '#f0fdf4', text: '#15803d', border: '#bbf7d0' } :
+                                { Icon: BookMarked, bg: '#f5f3ff', text: '#6d28d9', border: '#ddd6fe' };
+    const { Icon, bg, text, border } = cfg;
+    return (
+        <span style={{ backgroundColor: bg, color: text, borderColor: border }}
+            className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[11px] font-semibold tracking-tight border">
+            <Icon size={11} aria-hidden="true" />
+            {subject}
         </span>
     );
 }
@@ -598,6 +623,14 @@ function NewsFeed({ news, weather, loading, error, entries, onMission }) {
     // 배너 완료 여부: 오늘 완료한 항목이 1개라도 있으면 true
     const isTodayDone = todayEntries.length > 0;
 
+    // 교과 학습일 판별 — lesson 콘텐츠가 있으면 "오늘의 학습" 히어로로
+    const lesson = news.find(n => n.type === 'lesson' && n.subject);
+    const weekdayKor = ['일', '월', '화', '수', '목', '금', '토'][new Date().getDay()];
+    const heroTitle = lesson ? '오늘의 학습' : '오늘의 뉴스';
+    const heroSub = lesson
+        ? `${weekdayKor}요일 · ${lesson.subject} — 지문 1개를 읽고 · 요약 · 주장 · 핵심단어를 쓰면 완료!`
+        : '뉴스 1개를 읽고 · 요약 · 의견 · 핵심단어를 작성하면 완료!';
+
     return (
         <div className="animate-fade-in space-y-4">
             {/* 날씨 배너 — 학습 아님, 상단 알림 전용 */}
@@ -615,7 +648,7 @@ function NewsFeed({ news, weather, loading, error, entries, onMission }) {
                 <div className="flex items-center justify-between mb-4">
                     <div className="flex items-center gap-2">
                         <BookOpen size={18} aria-hidden="true" className="opacity-80" />
-                        <h2 className="text-[17px] sm:text-xl font-bold tracking-tight">오늘의 뉴스</h2>
+                        <h2 className="text-[17px] sm:text-xl font-bold tracking-tight">{heroTitle}</h2>
                         <time className="text-[15px] sm:text-[17px] font-semibold tabular-nums opacity-80 ml-1">{today}</time>
                     </div>
                     {/* 툴팁 */}
@@ -645,7 +678,7 @@ function NewsFeed({ news, weather, loading, error, entries, onMission }) {
                             <Target size={22} className="shrink-0 opacity-90" aria-hidden="true" />
                             <div>
                                 <p className="font-bold text-[14px] tracking-tight">오늘의 미션을 완료하세요</p>
-                                <p className="text-[11px] text-primary-foreground/70">뉴스 1개를 읽고 · 요약 · 의견 · 핵심단어를 작성하면 완료!</p>
+                                <p className="text-[11px] text-primary-foreground/70">{heroSub}</p>
                             </div>
                         </>
                     )}
@@ -683,7 +716,7 @@ function NewsFeed({ news, weather, loading, error, entries, onMission }) {
                     >
                         {/* 상단: 뱃지 + 완료표시 */}
                         <div className="flex flex-wrap items-center gap-2 mb-2">
-                            <Badge category={n.category} />
+                            {n.subject ? <SubjectBadge subject={n.subject} /> : <Badge category={n.category} />}
                             {done && (
                                 <span className="ml-auto inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] font-semibold bg-secondary/15 text-secondary border border-secondary/30">
                                     <CheckCircle size={11} aria-hidden="true" /> 완료
@@ -738,12 +771,20 @@ function WriteView({ news, form, setForm, submit, goBack, isDone }) {
                 <div className="w-full md:w-[46%] md:sticky md:top-6 flex-shrink-0">
                     <div className="bg-card border border-border rounded-xl p-5">
                         {/* 뱃지 + 국가 */}
-                        <div className="flex items-center gap-2 mb-3">
-                            <Badge category={news.category} />
+                        <div className="flex flex-wrap items-center gap-2 mb-3">
+                            {news.subject ? <SubjectBadge subject={news.subject} /> : <Badge category={news.category} />}
                             {news.country && (
                                 <span className="text-[11px] text-muted-foreground">· {news.country}</span>
                             )}
                         </div>
+
+                        {/* 성취 단원 (lesson 전용) */}
+                        {news.unit && (
+                            <p className="text-[11px] text-muted-foreground mb-2 flex items-start gap-1">
+                                <Target size={12} aria-hidden="true" className="shrink-0 mt-0.5 text-primary/70" />
+                                <span>성취 단원 · {news.unit}</span>
+                            </p>
+                        )}
 
                         {/* 제목 */}
                         <p className="text-[15px] font-bold text-card-foreground leading-snug tracking-tight mb-4">
@@ -782,11 +823,34 @@ function WriteView({ news, form, setForm, submit, goBack, isDone }) {
                             </div>
                         )}
 
-                        {/* 원문 링크 */}
-                        <a href={news.url} target="_blank" rel="noreferrer"
-                            className="inline-flex items-center gap-1 text-[12px] text-primary hover:underline font-medium">
-                            <ExternalLink size={11} aria-hidden="true" /> 원문 읽기
-                        </a>
+                        {/* 한자어 풀이 (lesson 전용) */}
+                        {news.hanjaTerms?.length > 0 && (
+                            <div className="mb-4 bg-accent/40 border border-border rounded-lg p-3">
+                                <p className="text-[11px] font-bold text-primary mb-2 uppercase tracking-wider flex items-center gap-1">
+                                    <span className="inline-flex items-center justify-center w-4 h-4 rounded bg-primary text-white text-[10px] font-black not-italic">漢</span>
+                                    한자어 풀이
+                                </p>
+                                <div className="space-y-2">
+                                    {news.hanjaTerms.map((h, hi) => (
+                                        <div key={hi} className="text-[12.5px] leading-relaxed">
+                                            <span className="font-bold text-card-foreground">{h.word}</span>
+                                            {h.hanja && (
+                                                <span className="ml-1 px-1.5 py-px rounded border border-primary/25 bg-card text-primary font-bold text-[12px]">{h.hanja}</span>
+                                            )}
+                                            {h.gloss && <span className="block text-muted-foreground text-[11.5px] mt-0.5">{h.gloss}</span>}
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        )}
+
+                        {/* 원문 링크 — 교과 콘텐츠(lesson)는 원문 없음 */}
+                        {news.url && news.type !== 'lesson' && (
+                            <a href={news.url} target="_blank" rel="noreferrer"
+                                className="inline-flex items-center gap-1 text-[12px] text-primary hover:underline font-medium">
+                                <ExternalLink size={11} aria-hidden="true" /> 원문 읽기
+                            </a>
+                        )}
                     </div>
                 </div>
 
