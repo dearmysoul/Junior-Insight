@@ -42,6 +42,24 @@ function isWeather(title) {
     return WEATHER_RE.test((title || '').toLowerCase());
 }
 
+/** 날씨 제목 → 배너용 이모지 (학습 카드 아님, 상단 알림 전용) */
+function weatherEmoji(title) {
+    const t = (title || '').toLowerCase();
+    if (/눈|대설|한파|영하/.test(t)) return '❄️';
+    if (/태풍/.test(t)) return '🌀';
+    if (/폭우|호우|장마/.test(t)) return '🌧️';
+    if (/비|소나기|강수/.test(t)) return '🌦️';
+    if (/미세먼지|황사/.test(t)) return '😷';
+    if (/구름|흐림|흐리/.test(t)) return '⛅';
+    if (/폭염|무더위|맑음|맑고|더위/.test(t)) return '☀️';
+    return '🌤️';
+}
+/** RSS 날씨 기사 → 배너 객체 */
+function buildWeatherBanner(item) {
+    if (!item) return null;
+    return { emoji: weatherEmoji(item.title), summary: item.title };
+}
+
 /** 카테고리 키워드 매핑
  *  Tech & Economy를 Environment보다 먼저 매칭 → 게임·IT 기사가 날씨/환경 키워드에
  *  가로채이지 않게 하고, 게임/e스포츠 등 아이 관심 소재를 IT로 편입한다. */
@@ -128,23 +146,29 @@ async function fetchNewsJson() {
         const today = new Date().toISOString().slice(0, 10);
         // 오늘 날짜 기사이면 사용, 아니면 RSS fallback
         if (data?.date === today && Array.isArray(data.articles) && data.articles.length > 0) {
-            return data.articles.map((a, idx) => ({
-                // ChatGPT 필드 → 앱 내부 필드 정규화
-                id: a.id || a.url || `${a.title}_${a.date}`,
-                title: a.title_kor || a.title,           // 한국어 제목 우선
-                title_orig: a.title,                      // 원문 제목 보존
-                source: a.source,
-                country: a.country || '',
-                category: normalizeCategory(a.category),
-                detail: a.summary_kor || a.detail || a.title, // ChatGPT 요약 우선
-                summary_kor: a.summary_kor || null,
-                keywords: a.keywords || [],
-                difficulty: a.difficulty || 1,
-                url: a.url,
-                date: a.date || today,
-                importance: a.importance || Math.max(60, 100 - idx * 5),
-                opinionOptions: makeOpinionOptions(),
-            }));
+            // 날씨는 학습 카드에서 제외 — 상단 배너로만 (구버전 news.json 안전 필터 포함)
+            const articles = data.articles
+                .filter(a => !isWeather(a.title_kor || a.title))
+                .map((a, idx) => ({
+                    // ChatGPT 필드 → 앱 내부 필드 정규화
+                    id: a.id || a.url || `${a.title}_${a.date}`,
+                    title: a.title_kor || a.title,           // 한국어 제목 우선
+                    title_orig: a.title,                      // 원문 제목 보존
+                    source: a.source,
+                    country: a.country || '',
+                    category: normalizeCategory(a.category),
+                    detail: a.summary_kor || a.detail || a.title, // ChatGPT 요약 우선
+                    summary_kor: a.summary_kor || null,
+                    keywords: a.keywords || [],
+                    difficulty: a.difficulty || 1,
+                    url: a.url,
+                    date: a.date || today,
+                    importance: a.importance || Math.max(60, 100 - idx * 5),
+                    opinionOptions: makeOpinionOptions(),
+                }));
+            // 상단 날씨 배너: 최상위 weather 필드 우선, 없으면 null
+            const weather = data.weather && data.weather.summary ? data.weather : null;
+            return { articles, weather };
         }
         return null;
     } catch {
@@ -190,8 +214,10 @@ async function fetchGoogleNews() {
         pool.push({ i, date, title, source, category, url: link, detail, isWeather: isWeather(title) });
     });
 
-    // 날씨 최대 1개 + 관심 카테고리(Tech) 보장 선정
-    const selected6 = selectDaily(pool);
+    // 날씨는 학습 카드에서 완전 제외 → 상단 배너로만
+    const weather = buildWeatherBanner(pool.find(a => a.isWeather));
+    // 관심 카테고리(Tech) 보장 선정 (날씨 제외한 풀에서)
+    const selected6 = selectDaily(pool.filter(a => !a.isWeather));
 
     selected6.forEach((a, idx) => {
         articles.push({
@@ -204,7 +230,7 @@ async function fetchGoogleNews() {
         });
     });
 
-    return articles;
+    return { articles, weather };
 }
 
 // 레벨 칭호 (SVG 기획 기반 5단계)
@@ -301,6 +327,7 @@ export default function App() {
 
     /* ── Google News 실시간 fetch ── */
     const [news, setNews] = useState([]);
+    const [weather, setWeather] = useState(null);   // 상단 날씨 배너 (학습 아님)
     const [newsLoading, setNewsLoading] = useState(true);
     const [newsError, setNewsError] = useState(null);
 
@@ -313,7 +340,7 @@ export default function App() {
         try {
             const cached = JSON.parse(localStorage.getItem(CACHE_KEY) || 'null');
             if (cached && cached.fetchedAt >= todaySix.getTime() && cached.articles?.length > 0) {
-                if (!cancelled) { setNews(cached.articles); setNewsLoading(false); return; }
+                if (!cancelled) { setNews(cached.articles); setWeather(cached.weather || null); setNewsLoading(false); return; }
             }
         } catch { /* 무시 */ }
 
@@ -323,20 +350,21 @@ export default function App() {
         // ② news.json 날짜 불일치 시에만 RSS proxy fallback
         // ※ news.json 성공 시 RSS를 시도하지 않아 캐시 오염 방지
         const loadNews = async () => {
-            const jsonArticles = await fetchNewsJson();
-            if (jsonArticles) return { articles: jsonArticles, fromJson: true };
-            const rssArticles = await fetchGoogleNews();
-            return { articles: rssArticles, fromJson: false };
+            const fromJsonResult = await fetchNewsJson();
+            if (fromJsonResult) return { ...fromJsonResult, fromJson: true };
+            const rssResult = await fetchGoogleNews();
+            return { ...rssResult, fromJson: false };
         };
 
         loadNews()
-            .then(({ articles, fromJson }) => {
+            .then(({ articles, weather: w, fromJson }) => {
                 if (!cancelled) {
                     setNews(articles);
+                    setWeather(w || null);
                     setNewsError(null);
                     // news.json 출처인 경우에만 캐시 저장 (RSS는 summary_kor 없어 저장 제외)
                     if (fromJson && now >= todaySix) {
-                        try { localStorage.setItem(CACHE_KEY, JSON.stringify({ fetchedAt: Date.now(), articles })); } catch { /* 무시 */ }
+                        try { localStorage.setItem(CACHE_KEY, JSON.stringify({ fetchedAt: Date.now(), articles, weather: w || null })); } catch { /* 무시 */ }
                     }
                 }
             })
@@ -532,6 +560,7 @@ export default function App() {
                 {tab === 'news' && (
                     <NewsFeed
                         news={news}
+                        weather={weather}
                         loading={newsLoading}
                         error={newsError}
                         entries={entries}
@@ -559,7 +588,7 @@ export default function App() {
 /* ============================================
    NEWS FEED
    ============================================ */
-function NewsFeed({ news, loading, error, entries, onMission }) {
+function NewsFeed({ news, weather, loading, error, entries, onMission }) {
     const today = new Date().toISOString().slice(0, 10);
     const todayKr = new Date().toLocaleDateString('ko-KR');
     // 오늘 완료한 모든 entries
@@ -571,6 +600,15 @@ function NewsFeed({ news, loading, error, entries, onMission }) {
 
     return (
         <div className="animate-fade-in space-y-4">
+            {/* 날씨 배너 — 학습 아님, 상단 알림 전용 */}
+            {weather && (
+                <div className="flex items-center gap-2.5 bg-card border border-border rounded-xl px-4 py-2.5 text-[13px]" role="status" aria-live="polite">
+                    <span className="text-lg shrink-0" aria-hidden="true">{weather.emoji}</span>
+                    <span className="font-bold text-card-foreground shrink-0">오늘의 날씨</span>
+                    <span className="text-muted-foreground truncate">· {weather.summary}</span>
+                </div>
+            )}
+
             {/* Hero */}
             <div className="bg-primary text-primary-foreground p-5 sm:p-6 rounded-xl">
                 {/* 상단: 타이틀 + 날짜 + 툴팁 */}
