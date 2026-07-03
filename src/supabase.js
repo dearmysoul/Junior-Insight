@@ -26,25 +26,40 @@ export async function loadEntries() {
         reason: r.reason,
         word: r.word,
         opinionOptions: r.opinion_options ?? ['찬성한다', '반대한다', '기타 의견이 있다'],
+        // AI 코치 결과 (마이그레이션 전이면 undefined)
+        feedback: r.feedback ?? null,
+        followup: r.followup ?? null,
+        scoreClarity: r.score_clarity ?? null,
+        scoreEvidence: r.score_evidence ?? null,
+        scoreVocab: r.score_vocab ?? null,
     }));
 }
 
 /** entry 저장 (upsert: 같은 news_id면 덮어쓰기) */
 export async function saveEntry(entry) {
+    const row = {
+        user_id: USER_ID,
+        date: entry.date,
+        news_id: entry.newsId,
+        news_title: entry.newsTitle,
+        news_category: entry.newsCategory,
+        summary: entry.summary,
+        choice: entry.choice,
+        reason: entry.reason,
+        word: entry.word,
+        opinion_options: entry.opinionOptions,
+    };
+    // 코치 컬럼은 값이 있을 때만 포함 — DB 마이그레이션 전엔 보내지 않아 오류 방지
+    if (entry.feedback != null || entry.scoreClarity != null) {
+        row.feedback = entry.feedback ?? null;
+        row.followup = entry.followup ?? null;
+        row.score_clarity = entry.scoreClarity ?? null;
+        row.score_evidence = entry.scoreEvidence ?? null;
+        row.score_vocab = entry.scoreVocab ?? null;
+    }
     const { error } = await supabase
         .from('entries')
-        .upsert({
-            user_id: USER_ID,
-            date: entry.date,
-            news_id: entry.newsId,
-            news_title: entry.newsTitle,
-            news_category: entry.newsCategory,
-            summary: entry.summary,
-            choice: entry.choice,
-            reason: entry.reason,
-            word: entry.word,
-            opinion_options: entry.opinionOptions,
-        }, { onConflict: 'user_id,news_id' });
+        .upsert(row, { onConflict: 'user_id,news_id' });
     if (error) console.error('saveEntry:', error);
 }
 
