@@ -1,5 +1,5 @@
 {
-  "fetchedAt": "2026-07-04T14:03:20.079Z",
+  "fetchedAt": "2026-07-04T14:14:02.860Z",
   "date": "2026-07-04",
   "weekday": "토",
   "weather": {
@@ -8,70 +8,55 @@
   },
   "articles": [
     {
-      "id": "https://news.google.com/rss/articles/CBMidEFVX3lxTFBVWXctbUxOMTRRYm9kdnprNnJ4aWxYcHdTLTlHNFBRT2JuM3UtZ25SN0oxb1I0djR6a2Z1ZmVscXV6TGZKQ0tLSWg1LXQtLTZNNWVTcV83WS1XMEVKckZoWXMxSnlEVjNEYmJSYzMtVGxLeTNf?oc=5",
-      "type": "news",
-      "title": "김민석, ‘반도체 공장 후보지’ 광주 군공항서 6일 전당대회 출마선언 검토",
-      "source": "한겨레",
-      "category": "Tech & Economy",
-      "url": "https://news.google.com/rss/articles/CBMidEFVX3lxTFBVWXctbUxOMTRRYm9kdnprNnJ4aWxYcHdTLTlHNFBRT2JuM3UtZ25SN0oxb1I0djR6a2Z1ZmVscXV6TGZKQ0tLSWg1LXQtLTZNNWVTcV83WS1XMEVKckZoWXMxSnlEVjNEYmJSYzMtVGxLeTNf?oc=5",
-      "detail": "김민석, ‘반도체 공장 후보지’ 광주 군공항서 6일 전당대회 출마선언 검토&nbsp;&nbsp;한겨레김민석, 조만간 '호남 반도체 부지' 광주 군공항서 당대표 출마 선언&nbsp;&nbsp;v.daum.net김민석, 이르면 모레 출마선언...불붙는 당권 레이스&nbsp;&nbsp;YTN김민석, 퇴임 후 첫 주말 익산 방문…\"익산 넘어 전북, 대한민국 도약 ",
+      "id": "lesson-20260704-01",
+      "type": "lesson",
+      "subject": "과학",
+      "unit": "생명체의 구조와 생태계의 상호작용을 이해한다 [과학·생명]",
+      "title_kor": "어? 산불이 지나간 자리에 왜 꽃이 폈지?",
+      "source": "교육과정 학습 · 과학",
+      "country": "KR",
+      "category": "Society",
+      "summary_kor": "1988년 미국 옐로스톤 국립공원에 거대한 산불이 났다. 두 달 넘게 불타면서 공원의 3분의 1이 잿더미가 됐고, 사람들은 \"이 숲은 끝났다\"고 절망했다. 방송은 검게 그을린 나무와 도망치는 동물만 비췄다.\n\n그런데 이듬해 봄, 잿더미 위로 초록 새싹이 돋았다. 놀랍게도 로지폴 소나무는 씨앗을 감싼 솔방울이 뜨거운 열을 받아야 껍질이 벌어져 씨를 퍼뜨린다. 즉 이 나무는 산불을 이용해 번식하도록 진화한 것이다. 불에 탄 나무는 분해되어 토양의 양분이 되었다.\n\n자연재해는 파괴만 하는 게 아니다. 생태계는 교란을 겪은 뒤 새로운 종이 자리 잡는 천이(遷移) 과정을 거쳐 회복한다. 산불로 햇빛이 땅까지 닿자 그늘에 눌려 있던 풀과 꽃이 폭발적으로 자랐다. 재해는 생명체와 환경이 맞물려 순환하는 하나의 고리였다.",
+      "keywords": [
+        "옐로스톤",
+        "산불",
+        "생태계",
+        "천이",
+        "적응",
+        "생물다양성"
+      ],
+      "hanja_terms": [
+        {
+          "word": "교란",
+          "hanja": "攪亂",
+          "gloss": "섞을 교·어지러울 란 → 뒤섞어 어지럽게 함"
+        },
+        {
+          "word": "천이",
+          "hanja": "遷移",
+          "gloss": "옮길 천·옮길 이 → 시간에 따라 생물 군집이 바뀌어 감"
+        },
+        {
+          "word": "번식",
+          "hanja": "繁殖",
+          "gloss": "번성할 번·불릴 식 → 개체 수를 늘려 자손을 퍼뜨림"
+        },
+        {
+          "word": "분해",
+          "hanja": "分解",
+          "gloss": "나눌 분·풀 해 → 물질이 잘게 나뉘어 풀어짐"
+        }
+      ],
+      "check_question": "로지폴 소나무가 하필 산불을 견디는 대신 산불을 '이용'하도록 진화했다면, 이 지역 생태계에서 산불은 없어져야 할 재난일까 아니면 필요한 과정일까? 지문 속 천이 설명에서 근거를 찾아보자.",
+      "factcheck": {
+        "status": "verified",
+        "anchor": "1988년 옐로스톤 국립공원 대화재로 공원의 약 3분의 1(약 36%)이 영향을 받았고, 로지폴 소나무는 열에 반응해 솔방울이 벌어지는 세로티니(serotiny) 특성을 가진다.",
+        "hanja_checked": true
+      },
+      "difficulty": 3,
       "date": "2026-07-04",
       "importance": 100
-    },
-    {
-      "id": "https://news.google.com/rss/articles/CBMia0FVX3lxTE9RUnZFLTFNNWtETVNmeXducm1GTEpOQVFFQnlfR2JkNVAtYkRZVzZBN2dZUjFYbVM4aDBZbmsyNGgyTGdmUU45Sng4SFZIWG1JRGpQQXF2alBfalFlWXlBRmQzU2JQbkV5bzlr?oc=5",
-      "type": "news",
-      "title": "이병태 ‘표현의 자유’ 주장에, 최민희 “5·18 폄훼, 국민모독”",
-      "source": "한겨레",
-      "category": "World",
-      "url": "https://news.google.com/rss/articles/CBMia0FVX3lxTE9RUnZFLTFNNWtETVNmeXducm1GTEpOQVFFQnlfR2JkNVAtYkRZVzZBN2dZUjFYbVM4aDBZbmsyNGgyTGdmUU45Sng4SFZIWG1JRGpQQXF2alBfalFlWXlBRmQzU2JQbkV5bzlr?oc=5",
-      "detail": "이병태 ‘표현의 자유’ 주장에, 최민희 “5·18 폄훼, 국민모독”&nbsp;&nbsp;한겨레이병태 “배재고 구호가 아니라 처벌이 5·18 폄훼”···청와대 “부적절한 처신, 엄중 경고”&nbsp;&nbsp;경향신문청와대, '5·18 성역' 발언 이병태 공개 경고…\"정부 기조와 어긋나\"&nbsp;&nbsp;주간조선[속보]이병태 “5·18이 성역인가”에 최민",
-      "date": "2026-07-04",
-      "importance": 95
-    },
-    {
-      "id": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE8zVDhFX0JRcGZ5Uk1NaXFDeHFoYkZ0VTltQ2pCVVd2dGdVbWRvYlVxeEcyblZKenZuRV9tMEtwT09XcTFWMkpMenR1XzFfaHlHX3V4TjJOQk1HZ9IBX0FVX3lxTE5FcXZnT2t4TmNpcDYxR2V5RG5SVEFsUnpzVjllMXYydjUtMUpqSkxjRGZtYkxjT2RNR3FYd05BTW5kZnZoT1ZrMWxzLWJua2hvamJtQUF6M0htcXF6NWxv?oc=5",
-      "type": "news",
-      "title": "하준경 경제수석 “메가 프로젝트, 박정희 시대 산업화와 비견될 규모”",
-      "source": "경향신문",
-      "category": "Economy",
-      "url": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE8zVDhFX0JRcGZ5Uk1NaXFDeHFoYkZ0VTltQ2pCVVd2dGdVbWRvYlVxeEcyblZKenZuRV9tMEtwT09XcTFWMkpMenR1XzFfaHlHX3V4TjJOQk1HZ9IBX0FVX3lxTE5FcXZnT2t4TmNpcDYxR2V5RG5SVEFsUnpzVjllMXYydjUtMUpqSkxjRGZtYkxjT2RNR3FYd05BTW5kZnZoT1ZrMWxzLWJua2hvamJtQUF6M0htcXF6NWxv?oc=5",
-      "detail": "하준경 경제수석 “메가 프로젝트, 박정희 시대 산업화와 비견될 규모”&nbsp;&nbsp;경향신문이 대통령 \"메가프로젝트, 지지율 수단 아냐‥성과가 지지율 따라오게 할 것\"&nbsp;&nbsp;MBC 뉴스이준석 \"반도체 입지는 기업이 그려야…정부가 민주당 전당대회 달력 위에 그려 걱정\"&nbsp;&nbsp;뉴시스野 \"메가프로젝트, 국정지지율·與전대용\"…與 ",
-      "date": "2026-07-04",
-      "importance": 90
-    },
-    {
-      "id": "https://news.google.com/rss/articles/CBMiakFVX3lxTE5jVHpzNnR1MzY5MjRJa0pzMGJRWGJLa09feHpJR0hYcnJwdHpzQzdkeFZQeXE0eDN6UjU5TXFjT0dsdTRxU0dDZElrUTd3Rm53SkpKNHY4dGhOQ05QV2dZakRlMDE0aGk5WEE?oc=5",
-      "type": "news",
-      "title": "정청래는 DJ 생가, 김민석은 익산 자택…주말 호남서 당심 잡기",
-      "source": "한겨레",
-      "category": "World",
-      "url": "https://news.google.com/rss/articles/CBMiakFVX3lxTE5jVHpzNnR1MzY5MjRJa0pzMGJRWGJLa09feHpJR0hYcnJwdHpzQzdkeFZQeXE0eDN6UjU5TXFjT0dsdTRxU0dDZElrUTd3Rm53SkpKNHY4dGhOQ05QV2dZakRlMDE0aGk5WEE?oc=5",
-      "detail": "정청래는 DJ 생가, 김민석은 익산 자택…주말 호남서 당심 잡기&nbsp;&nbsp;한겨레정청래 “김대중처럼 행동하겠다”…하의도 DJ 생가 방문&nbsp;&nbsp;문화일보與 당권주자들 주말 표심잡기…김민석 익산, 정청래 DJ 생가 방문&nbsp;&nbsp;v.daum.net정청래, 5·18 민주묘지 참배‥\"민주주의 이어달리는 충실한 일꾼 될 것\"&nbsp",
-      "date": "2026-07-04",
-      "importance": 85
-    },
-    {
-      "id": "https://news.google.com/rss/articles/CBMickFVX3lxTE4zWE5QN2xSMGN2d1lERXpfX01QVnAxclJRNTdFY0ZkSmpGY19HRnJTVTUybTQtV2pqRjBLSmt4d1VWVUxRZ0lmc1pfSFgyTS1MMDR1Y1p4cGNRYXVXV0M0MU1ZaEJEeHkzMjNqTkhNNVRNZw?oc=5",
-      "type": "news",
-      "title": "‘올공’ 개표소 2번째 구속…국조특위 진입 막고 경찰 폭행한 60대 남성",
-      "source": "한겨레",
-      "category": "Society",
-      "url": "https://news.google.com/rss/articles/CBMickFVX3lxTE4zWE5QN2xSMGN2d1lERXpfX01QVnAxclJRNTdFY0ZkSmpGY19HRnJTVTUybTQtV2pqRjBLSmt4d1VWVUxRZ0lmc1pfSFgyTS1MMDR1Y1p4cGNRYXVXV0M0MU1ZaEJEeHkzMjNqTkhNNVRNZw?oc=5",
-      "detail": "‘올공’ 개표소 2번째 구속…국조특위 진입 막고 경찰 폭행한 60대 남성&nbsp;&nbsp;한겨레올림픽공원 봉쇄 시위 한 달째‥국조특위 진입방해 60대 남성 구속&nbsp;&nbsp;v.daum.net잠실개표소 국조특위 현장조사 방해한 60대 구속‥\"도주 염려\"&nbsp;&nbsp;MBC 뉴스\"국회의원들에게 하고픈 말 했다\" 올림픽공원 국조특위 막은 60",
-      "date": "2026-07-04",
-      "importance": 80
-    },
-    {
-      "id": "https://news.google.com/rss/articles/CBMingFBVV95cUxOTXNsblMyZXdZTmJBNzNNZ1VaQklNY094U1I5bEtoOEtlMlJsSEJQRmV1ZjFCVlBXdWV6aE1lMzVoR0tkR3NBMWNPdUhaV3RqMkhUSFdhbGxrTHRYNndKNmRnSHVpSEV1bTVnVzJXT2hyY1pQVEt4ZTAyZm1KZlRmZkxXd2QtRlNhNW42ek5RaWZGbTNMbHBOdnFpdzZwUQ?oc=5",
-      "type": "news",
-      "title": "‘대통령 큰바위 얼굴’ 앞에서... 트럼프, 反공산주의 외쳤다",
-      "source": "조선일보",
-      "category": "Society",
-      "url": "https://news.google.com/rss/articles/CBMingFBVV95cUxOTXNsblMyZXdZTmJBNzNNZ1VaQklNY094U1I5bEtoOEtlMlJsSEJQRmV1ZjFCVlBXdWV6aE1lMzVoR0tkR3NBMWNPdUhaV3RqMkhUSFdhbGxrTHRYNndKNmRnSHVpSEV1bTVnVzJXT2hyY1pQVEt4ZTAyZm1KZlRmZkxXd2QtRlNhNW42ek5RaWZGbTNMbHBOdnFpdzZwUQ?oc=5",
-      "detail": "‘대통령 큰바위 얼굴’ 앞에서... 트럼프, 反공산주의 외쳤다&nbsp;&nbsp;조선일보[이슈 인사이드] USA 250&nbsp;&nbsp;KBS 뉴스트럼프, 당파적 분노로 가득한 '정치적 연설'로 민주당 비난(종합)&nbsp;&nbsp;뉴시스트럼프 “공산주의 위협 커지고 있다”…중간선거 앞두고 민주당 겨냥 ‘반공’ 연설&nbsp;&nbsp;문화일보트럼프",
-      "date": "2026-07-04",
-      "importance": 75
     }
-  ]
+  ],
+  "subject_of_day": "과학"
 }
