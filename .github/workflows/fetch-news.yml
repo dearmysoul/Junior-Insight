@@ -4,7 +4,12 @@ on:
   schedule:
     # 매일 오전 7시 (KST) = UTC 22:00 (전날)
     - cron: '0 22 * * *'
-  workflow_dispatch: # 수동 실행 버튼도 유지
+  workflow_dispatch: # 수동 실행 버튼 + 교과 강제 옵션
+    inputs:
+      subject:
+        description: '강제 교과 (비우면 요일 편성). 예: 국어 · 비문학 / 사회 / 과학 / 역사 / 국어 · 문학'
+        required: false
+        default: ''
 
 permissions:
   contents: write
@@ -24,8 +29,10 @@ jobs:
 
       - name: Generate content (요일제 교과/뉴스) → news.json
         # ANTHROPIC_API_KEY 시크릿이 있으면 교과 생성, 없으면 뉴스로 폴백
+        # FORCE_SUBJECT 있으면 요일 무관하게 그 교과 강제(수동 테스트)
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          FORCE_SUBJECT: ${{ inputs.subject }}
         run: node scripts/generate-content.js
 
       - name: Commit news.json if changed
