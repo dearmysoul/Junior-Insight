@@ -13,7 +13,7 @@ import { writeFileSync, mkdirSync } from 'fs';
 import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
 import Anthropic from '@anthropic-ai/sdk';
-import { pickPlan } from './curriculum.js';
+import { pickPlan, planForSubject } from './curriculum.js';
 import { buildNews } from './fetch-news.js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
@@ -148,7 +148,10 @@ ${plan.literaryOriginal
 async function main() {
     const now = new Date();
     const today = now.toISOString().slice(0, 10);
-    const plan = pickPlan(now);
+    // FORCE_SUBJECT 있으면 요일 무관하게 그 교과 강제(수동 테스트). 없거나 미온보딩이면 요일 편성.
+    const forced = (process.env.FORCE_SUBJECT || '').trim();
+    const plan = (forced && planForSubject(forced, now)) || pickPlan(now);
+    if (forced) console.log(`🔧 FORCE_SUBJECT="${forced}" → ${plan.mode}${plan.subject ? ` · ${plan.subject}` : ''}`);
     console.log(`📅 ${today} (${plan.weekday}) → ${plan.mode}${plan.subject ? ` · ${plan.subject}` : ''}`);
 
     // 날씨 배너는 항상 뉴스 파이프라인에서 추출
