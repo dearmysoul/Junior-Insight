@@ -95,7 +95,9 @@ export async function generateLesson(plan, today) {
             content: `[교과] ${plan.subject}
 [성취기준] ${plan.unit.code} · ${plan.unit.statement}
 [소재] ${plan.topic || '자유(아이 관심)'}
-위 성취기준에 맞는 지문 1편을 규칙대로 써라.`,
+${plan.literaryOriginal
+    ? '※ 문학: 실제 작품(시·소설) 인용 절대 금지. 저작권 문제 없는 AI 창작 짧은 지문(시 또는 이야기, 300~400자)을 직접 지어라. hanja_terms는 지문 속 한자어로.'
+    : '위 성취기준에 맞는 지문 1편을 규칙대로 써라.'}`,
         }],
     });
     const d = parse(gen);
@@ -115,8 +117,10 @@ export async function generateLesson(plan, today) {
         }],
     });
     const v = parse(fc);
+    // 문학(창작 지문)은 검증할 '사실'이 없으므로 한자만 검사, 그 외는 사실+한자 모두 검사.
+    const factFail = plan.literaryOriginal ? false : v.ok === false;
     // 검증 실패 시 이 날은 뉴스로 폴백(오답 노출 방지)
-    if (v.ok === false || v.hanja_ok === false) {
+    if (factFail || v.hanja_ok === false) {
         console.warn('⚠️ 팩트체크 실패 → 뉴스 폴백:', (v.issues || []).join('; '));
         return null;
     }
