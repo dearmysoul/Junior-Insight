@@ -97,7 +97,11 @@ function stripHtml(html) {
         .trim();
 }
 
-async function main() {
+/**
+ * Google News RSS → { weather, articles } (뉴스 경로)
+ * 주말·미온보딩 교과일의 폴백으로 generate-content.js에서도 재사용.
+ */
+async function buildNews() {
     const gnewsUrl = 'https://news.google.com/rss?hl=ko&gl=KR&ceid=KR:ko';
     console.log('📡 Google News RSS 수집 중...');
 
@@ -137,6 +141,7 @@ async function main() {
 
     const articles = selected.map((a, idx) => ({
         id: a.link || `${a.title}_${a.date}`,
+        type: 'news',
         title: a.title,
         source: a.source,
         category: a.category,
@@ -146,6 +151,13 @@ async function main() {
         importance: Math.max(60, 100 - idx * 5),
     }));
 
+    return { weather, articles };
+}
+
+async function main() {
+    const today = new Date().toISOString().slice(0, 10);
+    const { weather, articles } = await buildNews();
+
     const outPath = join(__dirname, '..', 'public', 'news.json');
     mkdirSync(dirname(outPath), { recursive: true });
     writeFileSync(outPath, JSON.stringify({ fetchedAt: new Date().toISOString(), date: today, weather, articles }, null, 2), 'utf-8');
@@ -154,7 +166,7 @@ async function main() {
     articles.forEach((a, i) => console.log(`  ${i + 1}. [${a.category}] ${a.title}`));
 }
 
-export { detectCategory, isWeather, selectDaily, weatherEmoji, buildWeatherBanner };
+export { detectCategory, isWeather, selectDaily, weatherEmoji, buildWeatherBanner, buildNews };
 
 // 직접 실행 시에만 수집 파이프라인 구동 (테스트에서 import할 땐 자동 실행 방지)
 if (import.meta.url === `file://${process.argv[1]}`) {
