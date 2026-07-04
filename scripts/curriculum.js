@@ -112,3 +112,22 @@ export function pickPlan(date) {
         topic,
     };
 }
+
+/**
+ * 특정 교과를 요일 무관하게 강제 편성 (수동 테스트/FORCE_SUBJECT용).
+ * 미온보딩/미존재 교과면 null 반환(호출부에서 pickPlan 폴백).
+ */
+export function planForSubject(subject, date) {
+    const cfg = CURRICULUM[subject];
+    if (!cfg || !cfg.active || cfg.units.length === 0) return null;
+    const weekday = WEEKDAY_KOR[date.getDay()];
+    const unit = cfg.units[dayIndex(date) % cfg.units.length];
+    const topic = cfg.topicPool ? cfg.topicPool[dayIndex(date) % cfg.topicPool.length] : null;
+    return {
+        mode: 'lesson', weekday, subject, unit,
+        difficulty: cfg.difficulty,
+        topicCategory: cfg.topicCategory || null,
+        literaryOriginal: cfg.literaryOriginal || false,
+        topic,
+    };
+}
