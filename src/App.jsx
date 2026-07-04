@@ -162,6 +162,7 @@ async function fetchNewsJson() {
                     subject: a.subject || null,        // "국어 · 비문학" 등
                     unit: a.unit || null,              // 성취 단원
                     hanjaTerms: a.hanja_terms || [],   // [{word,hanja,gloss}]
+                    checkQuestion: a.check_question || null, // 코치 되물음 시드
                     detail: a.summary_kor || a.detail || a.title, // ChatGPT 요약 우선
                     summary_kor: a.summary_kor || null,
                     keywords: a.keywords || [],
@@ -349,6 +350,9 @@ export default function App() {
     const [toast, setToast] = useState({ show: false, msg: '' });
     // 3가지 입력 모두 필수
     const [form, setForm] = useState({ summary: '', choice: null, reason: '', word: '' });
+    // AI 코치 — 제출 후 피드백(피드백 있으면 화면 유지, 다시쓰기 가능)
+    const [coach, setCoach] = useState(null);       // { feedback, followup, scores } | null
+    const [coaching, setCoaching] = useState(false); // 코치 호출 중
 
     /* ── Google News 실시간 fetch ── */
     const [news, setNews] = useState([]);
@@ -434,6 +438,7 @@ export default function App() {
     // 미션하기 버튼 클릭
     const startMission = useCallback((n) => {
         setSelected(n);
+        setCoach(null);   // 새 미션 시작 시 이전 코치 피드백 초기화
         // 이미 완료한 기사면 기존 입력값 불러오기
         const existing = entries.find(e => e.newsId === n.id);
         if (existing) {
@@ -450,12 +455,33 @@ export default function App() {
         window.scrollTo({ top: 0, behavior: 'smooth' });
     }, [entries]);
 
-    const submit = useCallback(() => {
+    const submit = useCallback(async () => {
         // 3개 미션 입력값 모두 필수
         if (!form.summary.trim()) { flash('① 한 문장 요약을 작성해주세요'); return; }
         if (form.choice === null) { flash('② 나의 의견을 선택해주세요'); return; }
         if (!form.reason.trim()) { flash('② 의견의 이유를 적어주세요'); return; }
         if (!form.word.trim()) { flash('③ 핵심 단어를 입력해주세요'); return; }
+
+        // ── AI 코치 호출 (키 미등록/실패 시 graceful 폴백) ──
+        setCoaching(true);
+        let coachResult = null;
+        try {
+            const r = await fetch('/api/coach', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    articleTitle: selected.title,
+                    summaryKor: selected.summary_kor,
+                    detail: selected.detail,
+                    checkQuestion: selected.checkQuestion,
+                    summary: form.summary, choice: form.choice,
+                    reason: form.reason, word: form.word,
+                }),
+            }).then(x => (x.ok ? x.json() : null)).catch(() => null);
+            if (r && r.scores) coachResult = r;   // disabled/error/coach_failed는 무시
+        } finally {
+            setCoaching(false);
+        }
 
         const todayStr = new Date().toLocaleDateString('ko-KR');
         const newEntry = {
@@ -464,6 +490,12 @@ export default function App() {
             summary: form.summary.trim(), choice: form.choice,
             reason: form.reason.trim(), word: form.word.trim(),
             opinionOptions: selected.opinionOptions,
+            // 코치 결과 (있을 때만) — 없으면 saveEntry가 컬럼을 보내지 않음
+            feedback: coachResult ? coachResult.feedback : null,
+            followup: coachResult ? coachResult.followup : null,
+            scoreClarity: coachResult ? coachResult.scores.clarity : null,
+            scoreEvidence: coachResult ? coachResult.scores.evidence : null,
+            scoreVocab: coachResult ? coachResult.scores.vocab : null,
         };
 
         // Supabase에 저장 (upsert)
@@ -480,10 +512,10 @@ export default function App() {
             return [newEntry, ...p];
         });
 
-        // XP 계산
-        const summaryXp = form.summary.trim().length >= 20 ? 5 : form.summary.trim().length > 0 ? 1 : 0;
-        const reasonXp  = form.reason.trim().length >= 15  ? 5 : form.reason.trim().length > 0  ? 1 : 0;
-        const xp = summaryXp + reasonXp + 5;
+        // XP 계산 — 코치 있으면 사고 질(점수 합), 없으면 폴백(길이 기반)
+        const xp = coachResult
+            ? coachResult.scores.clarity + coachResult.scores.evidence + coachResult.scores.vocab
+            : (form.summary.trim().length >= 20 ? 5 : 1) + (form.reason.trim().length >= 15 ? 5 : 1) + 5;
 
         // 유일 활동일 수 (오늘 포함) — 레벨 계산에 사용
         const activeDates = new Set([...entries.map(e => e.date), todayStr]);
@@ -517,11 +549,30 @@ export default function App() {
             setTimeout(() => flash(up ? `레벨 업! LV.${nl} ${title} (+${xp} XP)` : `미션 완료! +${xp} XP`), 100);
             return next;
         });
+        if (coachResult) {
+            // 코치 피드백을 인라인으로 — 화면 유지, 아이가 보고 [다시 쓰기] 가능
+            setCoach(coachResult);
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        } else {
+            // 코치 비활성(키 미등록)·실패 → 기존 동작(완료 후 뉴스로)
+            setForm({ summary: '', choice: null, reason: '', word: '' });
+            setTab('news');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    }, [form, selected, entries, flash]);
+
+    // 코치 피드백 보고 다시 도전 (입력값 유지)
+    const redoMission = useCallback(() => {
+        setCoach(null);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }, []);
+    // 완료하고 뉴스 목록으로
+    const finishMission = useCallback(() => {
+        setCoach(null);
         setForm({ summary: '', choice: null, reason: '', word: '' });
-        // 미션 완료 후 뉴스 목록으로
         setTab('news');
         window.scrollTo({ top: 0, behavior: 'smooth' });
-    }, [form, selected, flash]);
+    }, []);
 
     const lvlTitle = LEVEL_TITLES[Math.min(stats.level, LEVEL_TITLES.length - 1)] || '미디어 리더';
 
@@ -598,6 +649,10 @@ export default function App() {
                         form={form}
                         setForm={setForm}
                         submit={submit}
+                        coach={coach}
+                        coaching={coaching}
+                        onRedo={redoMission}
+                        onDone={finishMission}
                         goBack={() => goTab('news')}
                         isDone={entries.some(e => e.newsId === selected.id)}
                     />
@@ -754,7 +809,7 @@ function NewsFeed({ news, weather, loading, error, entries, onMission }) {
    WRITE (MISSION) VIEW
    3개 미션 모두 필수 입력, 6개 뉴스 중 1개 완료 = 오늘 미션 완료
    ============================================ */
-function WriteView({ news, form, setForm, submit, goBack, isDone }) {
+function WriteView({ news, form, setForm, submit, coach, coaching, onRedo, onDone, goBack, isDone }) {
     return (
         <div className="animate-slide-right pb-20 md:pb-0">
             {/* 뒤로가기 */}
@@ -934,12 +989,46 @@ function WriteView({ news, form, setForm, submit, goBack, isDone }) {
                         />
                     </div>
 
-                    {/* Submit */}
-                    <button type="button" onClick={submit}
-                        className="w-full py-3.5 rounded-lg font-bold tracking-tight transition-opacity duration-200 flex items-center justify-center gap-2 cursor-pointer press min-h-[52px] bg-primary text-primary-foreground hover:opacity-90">
-                        <Save size={17} aria-hidden="true" />
-                        {isDone ? '수정 저장하기' : '미션 완료하기'}
-                    </button>
+                    {/* 코치 피드백 (제출 후 등장) */}
+                    {coach ? (
+                        <div className="space-y-3 animate-slide-up">
+                            <div className="bg-accent/40 border border-border rounded-xl p-4 flex gap-3">
+                                <img src={`${import.meta.env.BASE_URL}avatar.png`} alt="코치" className="w-9 h-9 rounded-full shrink-0 object-cover bg-accent" />
+                                <div className="min-w-0">
+                                    <p className="text-[13px] font-bold text-foreground">🤖 코치 형</p>
+                                    {coach.feedback && <p className="text-[13px] text-foreground mt-1 leading-relaxed">{coach.feedback}</p>}
+                                    {coach.followup && <p className="text-[13px] text-primary font-medium mt-2 leading-relaxed">💬 {coach.followup}</p>}
+                                    {coach.scores && (
+                                        <div className="flex gap-2 mt-3">
+                                            {[['요약 명료성', coach.scores.clarity], ['근거 구체성', coach.scores.evidence], ['어휘 정확성', coach.scores.vocab]].map(([lbl, val]) => (
+                                                <div key={lbl} className="flex-1 bg-card border border-border rounded-lg py-2 px-1 text-center">
+                                                    <p className="text-[17px] font-extrabold text-card-foreground tabular-nums leading-none">{val}<span className="text-[11px] text-muted-foreground font-semibold">/5</span></p>
+                                                    <p className="text-[9.5px] text-muted-foreground font-semibold mt-1 tracking-tight">{lbl}</p>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    )}
+                                </div>
+                            </div>
+                            <div className="flex gap-2">
+                                <button type="button" onClick={onRedo}
+                                    className="flex-1 py-3 rounded-lg font-bold text-[14px] border border-border bg-card text-muted-foreground hover:bg-accent/30 cursor-pointer press min-h-[48px]">
+                                    다시 쓰기 ↻
+                                </button>
+                                <button type="button" onClick={onDone}
+                                    className="flex-[1.4] py-3 rounded-lg font-bold text-[14px] bg-primary text-primary-foreground hover:opacity-90 cursor-pointer press min-h-[48px] flex items-center justify-center gap-2">
+                                    <CheckCircle size={16} aria-hidden="true" /> 완료하고 나가기
+                                </button>
+                            </div>
+                        </div>
+                    ) : (
+                        /* 제출 버튼 (코치 호출 중이면 로딩) */
+                        <button type="button" onClick={submit} disabled={coaching}
+                            className="w-full py-3.5 rounded-lg font-bold tracking-tight transition-opacity duration-200 flex items-center justify-center gap-2 cursor-pointer press min-h-[52px] bg-primary text-primary-foreground hover:opacity-90 disabled:opacity-60 disabled:cursor-wait">
+                            <Save size={17} aria-hidden="true" />
+                            {coaching ? '코치가 읽는 중…' : (isDone ? '수정 저장하기' : '제출하기')}
+                        </button>
+                    )}
                 </div>
 
             </div>
