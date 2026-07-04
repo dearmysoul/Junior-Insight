@@ -9,5 +9,5 @@ alter table entries add column if not exists score_clarity  int;
 alter table entries add column if not exists score_evidence int;
 alter table entries add column if not exists score_vocab    int;
 
--- (선택) 향후 스파링 재반박 저장용 — Phase 5
--- alter table entries add column if not exists rebuttal      text;
+-- 스파링 재반박 저장 (Phase 5)
+alter table entries add column if not exists rebuttal       text;

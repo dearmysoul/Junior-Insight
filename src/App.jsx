@@ -353,6 +353,7 @@ export default function App() {
     // AI 코치 — 제출 후 피드백(피드백 있으면 화면 유지, 다시쓰기 가능)
     const [coach, setCoach] = useState(null);       // { feedback, followup, scores } | null
     const [coaching, setCoaching] = useState(false); // 코치 호출 중
+    const [lastEntry, setLastEntry] = useState(null); // 스파링 재반박 저장용 최근 entry
 
     /* ── Google News 실시간 fetch ── */
     const [news, setNews] = useState([]);
@@ -500,6 +501,7 @@ export default function App() {
 
         // Supabase에 저장 (upsert)
         saveEntry(newEntry);
+        setLastEntry(newEntry);   // 스파링 재반박 저장용
 
         // 로컬 state 업데이트
         setEntries((p) => {
@@ -573,6 +575,19 @@ export default function App() {
         setTab('news');
         window.scrollTo({ top: 0, behavior: 'smooth' });
     }, []);
+
+    // 스파링 완료 — 재반박 저장 + 보너스 XP
+    const onSparComplete = useCallback((rebuttal, won) => {
+        setLastEntry((prev) => {
+            if (!prev) return prev;
+            const updated = { ...prev, rebuttal };
+            saveEntry(updated);
+            setEntries((p) => p.map((e) => (e.newsId === updated.newsId ? updated : e)));
+            return updated;
+        });
+        setStats((p) => { const next = { ...p, xp: p.xp + 5 }; saveStats(next); return next; });
+        flash(won ? '🏆 스파링 승리! +5 XP' : '💪 스파링 완료! +5 XP');
+    }, [flash]);
 
     const lvlTitle = LEVEL_TITLES[Math.min(stats.level, LEVEL_TITLES.length - 1)] || '미디어 리더';
 
@@ -653,6 +668,7 @@ export default function App() {
                         coaching={coaching}
                         onRedo={redoMission}
                         onDone={finishMission}
+                        onSparComplete={onSparComplete}
                         goBack={() => goTab('news')}
                         isDone={entries.some(e => e.newsId === selected.id)}
                     />
@@ -809,7 +825,78 @@ function NewsFeed({ news, weather, loading, error, entries, onMission }) {
    WRITE (MISSION) VIEW
    3개 미션 모두 필수 입력, 6개 뉴스 중 1개 완료 = 오늘 미션 완료
    ============================================ */
-function WriteView({ news, form, setForm, submit, coach, coaching, onRedo, onDone, goBack, isDone }) {
+/* AI 스파링 — 반박 → 재반박 → 판정 (코치 확장). 자체 상태 관리 */
+function SparPanel({ news, form, onComplete }) {
+    const [phase, setPhase] = useState('idle');   // idle | challenge | done
+    const [loading, setLoading] = useState(false);
+    const [aiRebuttal, setAiRebuttal] = useState('');
+    const [kidText, setKidText] = useState('');
+    const [verdict, setVerdict] = useState(null);  // { won, reply }
+    const [unavailable, setUnavailable] = useState(false);
+
+    const call = (body) => fetch('/api/spar', {
+        method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body),
+    }).then(x => (x.ok ? x.json() : null)).catch(() => null);
+
+    const startSpar = async () => {
+        setLoading(true);
+        const r = await call({ action: 'challenge', articleTitle: news.title, summaryKor: news.summary_kor, detail: news.detail, choice: form.choice, reason: form.reason });
+        setLoading(false);
+        if (r && r.rebuttal) { setAiRebuttal(r.rebuttal); setPhase('challenge'); }
+        else setUnavailable(true);   // 키 미등록/실패 → 스파링 숨김
+    };
+    const sendRebuttal = async () => {
+        if (!kidText.trim()) return;
+        setLoading(true);
+        const r = await call({ action: 'judge', articleTitle: news.title, aiRebuttal, kidRebuttal: kidText, choice: form.choice, reason: form.reason });
+        setLoading(false);
+        const v = r && typeof r.won === 'boolean' ? r : { won: false, reply: '좋은 시도였어. 다음엔 근거를 하나 더 얹어보자!' };
+        setVerdict(v); setPhase('done');
+        onComplete?.(kidText.trim(), v.won);
+    };
+
+    if (unavailable) return null;
+
+    if (phase === 'idle') {
+        return (
+            <button type="button" onClick={startSpar} disabled={loading}
+                className="w-full py-3 rounded-lg font-bold text-[14px] border-2 border-dashed border-primary/40 text-primary bg-primary/5 hover:bg-primary/10 cursor-pointer press min-h-[48px] flex items-center justify-center gap-2 disabled:opacity-60 disabled:cursor-wait">
+                {loading ? '코치가 벼르는 중… 🥊' : '🥊 코치와 한판 붙기 (스파링)'}
+            </button>
+        );
+    }
+    return (
+        <div className="bg-card border border-border rounded-xl p-4 space-y-3 animate-slide-up">
+            {/* AI 반박 */}
+            <div className="flex gap-3">
+                <span className="w-8 h-8 rounded-full shrink-0 bg-gradient-to-br from-orange-400 to-red-500 flex items-center justify-center text-[15px]">🥊</span>
+                <div>
+                    <p className="text-[12px] font-bold text-foreground">코치의 반박</p>
+                    <p className="text-[13px] text-foreground mt-1 leading-relaxed">{aiRebuttal}</p>
+                </div>
+            </div>
+            {phase === 'challenge' && (
+                <>
+                    <textarea rows={2} value={kidText} onChange={(e) => setKidText(e.target.value)}
+                        placeholder="여기에 재반박! 네 근거로 받아쳐봐."
+                        className="w-full p-3 rounded-md border border-input bg-background text-[13px] leading-relaxed text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary resize-none" />
+                    <button type="button" onClick={sendRebuttal} disabled={loading || !kidText.trim()}
+                        className="w-full py-2.5 rounded-lg font-bold text-[13px] bg-primary text-primary-foreground hover:opacity-90 cursor-pointer press min-h-[44px] disabled:opacity-50 disabled:cursor-not-allowed">
+                        {loading ? '코치가 판정 중…' : '반박 보내기 →'}
+                    </button>
+                </>
+            )}
+            {phase === 'done' && verdict && (
+                <div className={`rounded-lg p-3 ${verdict.won ? 'bg-secondary/15 border border-secondary/30' : 'bg-accent/50 border border-border'}`}>
+                    <p className="text-[14px] font-extrabold tracking-tight">{verdict.won ? '🏆 네가 이겼다!' : '💪 좋은 승부였어'}</p>
+                    <p className="text-[13px] text-foreground mt-1 leading-relaxed">{verdict.reply}</p>
+                </div>
+            )}
+        </div>
+    );
+}
+
+function WriteView({ news, form, setForm, submit, coach, coaching, onRedo, onDone, onSparComplete, goBack, isDone }) {
     return (
         <div className="animate-slide-right pb-20 md:pb-0">
             {/* 뒤로가기 */}
@@ -1010,6 +1097,8 @@ function WriteView({ news, form, setForm, submit, coach, coaching, onRedo, onDon
                                     )}
                                 </div>
                             </div>
+                            {/* 스파링 — 의견 미션이 있는 기사에서 코치 확장 */}
+                            <SparPanel news={news} form={form} onComplete={onSparComplete} />
                             <div className="flex gap-2">
                                 <button type="button" onClick={onRedo}
                                     className="flex-1 py-3 rounded-lg font-bold text-[14px] border border-border bg-card text-muted-foreground hover:bg-accent/30 cursor-pointer press min-h-[48px]">

@@ -32,6 +32,7 @@ export async function loadEntries() {
         scoreClarity: r.score_clarity ?? null,
         scoreEvidence: r.score_evidence ?? null,
         scoreVocab: r.score_vocab ?? null,
+        rebuttal: r.rebuttal ?? null,
     }));
 }
 
@@ -57,6 +58,7 @@ export async function saveEntry(entry) {
         row.score_evidence = entry.scoreEvidence ?? null;
         row.score_vocab = entry.scoreVocab ?? null;
     }
+    if (entry.rebuttal != null) row.rebuttal = entry.rebuttal;   // 스파링 재반박
     const { error } = await supabase
         .from('entries')
         .upsert(row, { onConflict: 'user_id,news_id' });
