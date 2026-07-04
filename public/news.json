@@ -1,62 +1,77 @@
 {
-  "fetchedAt": "2026-07-04T14:14:02.860Z",
+  "fetchedAt": "2026-07-04T22:44:07.010Z",
   "date": "2026-07-04",
   "weekday": "토",
   "weather": {
-    "emoji": "🌧️",
-    "summary": "일요일 전국에 장맛비…전남 남해안·제주 산지 폭우 주의"
+    "emoji": "🌦️",
+    "summary": "전국 비 내리는 일요일…낮 최고 30도 무더위도 계속"
   },
   "articles": [
     {
-      "id": "lesson-20260704-01",
-      "type": "lesson",
-      "subject": "과학",
-      "unit": "생명체의 구조와 생태계의 상호작용을 이해한다 [과학·생명]",
-      "title_kor": "어? 산불이 지나간 자리에 왜 꽃이 폈지?",
-      "source": "교육과정 학습 · 과학",
-      "country": "KR",
-      "category": "Society",
-      "summary_kor": "1988년 미국 옐로스톤 국립공원에 거대한 산불이 났다. 두 달 넘게 불타면서 공원의 3분의 1이 잿더미가 됐고, 사람들은 \"이 숲은 끝났다\"고 절망했다. 방송은 검게 그을린 나무와 도망치는 동물만 비췄다.\n\n그런데 이듬해 봄, 잿더미 위로 초록 새싹이 돋았다. 놀랍게도 로지폴 소나무는 씨앗을 감싼 솔방울이 뜨거운 열을 받아야 껍질이 벌어져 씨를 퍼뜨린다. 즉 이 나무는 산불을 이용해 번식하도록 진화한 것이다. 불에 탄 나무는 분해되어 토양의 양분이 되었다.\n\n자연재해는 파괴만 하는 게 아니다. 생태계는 교란을 겪은 뒤 새로운 종이 자리 잡는 천이(遷移) 과정을 거쳐 회복한다. 산불로 햇빛이 땅까지 닿자 그늘에 눌려 있던 풀과 꽃이 폭발적으로 자랐다. 재해는 생명체와 환경이 맞물려 순환하는 하나의 고리였다.",
-      "keywords": [
-        "옐로스톤",
-        "산불",
-        "생태계",
-        "천이",
-        "적응",
-        "생물다양성"
-      ],
-      "hanja_terms": [
-        {
-          "word": "교란",
-          "hanja": "攪亂",
-          "gloss": "섞을 교·어지러울 란 → 뒤섞어 어지럽게 함"
-        },
-        {
-          "word": "천이",
-          "hanja": "遷移",
-          "gloss": "옮길 천·옮길 이 → 시간에 따라 생물 군집이 바뀌어 감"
-        },
-        {
-          "word": "번식",
-          "hanja": "繁殖",
-          "gloss": "번성할 번·불릴 식 → 개체 수를 늘려 자손을 퍼뜨림"
-        },
-        {
-          "word": "분해",
-          "hanja": "分解",
-          "gloss": "나눌 분·풀 해 → 물질이 잘게 나뉘어 풀어짐"
-        }
-      ],
-      "check_question": "로지폴 소나무가 하필 산불을 견디는 대신 산불을 '이용'하도록 진화했다면, 이 지역 생태계에서 산불은 없어져야 할 재난일까 아니면 필요한 과정일까? 지문 속 천이 설명에서 근거를 찾아보자.",
-      "factcheck": {
-        "status": "verified",
-        "anchor": "1988년 옐로스톤 국립공원 대화재로 공원의 약 3분의 1(약 36%)이 영향을 받았고, 로지폴 소나무는 열에 반응해 솔방울이 벌어지는 세로티니(serotiny) 특성을 가진다.",
-        "hanja_checked": true
-      },
-      "difficulty": 3,
+      "id": "https://news.google.com/rss/articles/CBMia0FVX3lxTE9RUnZFLTFNNWtETVNmeXducm1GTEpOQVFFQnlfR2JkNVAtYkRZVzZBN2dZUjFYbVM4aDBZbmsyNGgyTGdmUU45Sng4SFZIWG1JRGpQQXF2alBfalFlWXlBRmQzU2JQbkV5bzlr?oc=5",
+      "type": "news",
+      "title": "이병태 ‘표현의 자유’ 주장에, 최민희 “5·18 폄훼, 국민모독”",
+      "source": "한겨레",
+      "category": "World",
+      "url": "https://news.google.com/rss/articles/CBMia0FVX3lxTE9RUnZFLTFNNWtETVNmeXducm1GTEpOQVFFQnlfR2JkNVAtYkRZVzZBN2dZUjFYbVM4aDBZbmsyNGgyTGdmUU45Sng4SFZIWG1JRGpQQXF2alBfalFlWXlBRmQzU2JQbkV5bzlr?oc=5",
+      "detail": "이병태 ‘표현의 자유’ 주장에, 최민희 “5·18 폄훼, 국민모독”&nbsp;&nbsp;한겨레이병태 “배재고 구호가 아니라 처벌이 5·18 폄훼”···청와대 “부적절한 처신, 엄중 경고”&nbsp;&nbsp;경향신문\"어른들은 뭐했나\"…배재고 사태에 운동선수 학부모들 '자성론'&nbsp;&nbsp;연합뉴스이병태 “배재고 징계, 5.18 성역인가?”…청와대 “",
       "date": "2026-07-04",
       "importance": 100
+    },
+    {
+      "id": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE1hVFlaN1BYSk14M3pJV0k5NnhWS0N6TGxIU2UyTGxVNEN1TUt2a0RjR0VPcHNYX2JWSUpQa1ItOFJyR2gyZzlUVksxaWhzTGtxVUljeF93azUwQdIBX0FVX3lxTE5jcUNRNndrRVpqN3N5am85bEZYUVdITWVMcW1CUkNGaDNoRkxqcWd3WTEzamkwQmdYR0NoNjU4SW1DaWU1QmtDcjN6V1RldnZPdFNDRG9sQnpuZFd3UlBJ?oc=5",
+      "type": "news",
+      "title": "오세훈 “尹 지지 세력과 관계 유지해야…결별 대상은 그의 잘못된 판단”",
+      "source": "경향신문",
+      "category": "Society",
+      "url": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE1hVFlaN1BYSk14M3pJV0k5NnhWS0N6TGxIU2UyTGxVNEN1TUt2a0RjR0VPcHNYX2JWSUpQa1ItOFJyR2gyZzlUVksxaWhzTGtxVUljeF93azUwQdIBX0FVX3lxTE5jcUNRNndrRVpqN3N5am85bEZYUVdITWVMcW1CUkNGaDNoRkxqcWd3WTEzamkwQmdYR0NoNjU4SW1DaWU1QmtDcjN6V1RldnZPdFNDRG9sQnpuZFd3UlBJ?oc=5",
+      "detail": "오세훈 “尹 지지 세력과 관계 유지해야…결별 대상은 그의 잘못된 판단”&nbsp;&nbsp;경향신문오세훈 “윤석열 전 대통령이 잘못된 판단으로 보수 위기 빠뜨려””&nbsp;&nbsp;v.daum.net오세훈 \"친윤과 관계 유지해야... 한동훈, 이준석과 힘 합칠 것\"&nbsp;&nbsp;한국일보日 요미우리, 오세훈 인터뷰서 \"韓 보수 재건 기대되는 정치인",
+      "date": "2026-07-04",
+      "importance": 95
+    },
+    {
+      "id": "https://news.google.com/rss/articles/CBMiZ0FVX3lxTE11SUNVUDJQYkdlVWRTN2pOMEN2RHdZNVhYdzhDcDR3Y2Y3SnozSnJaUW5yRzRKZXZRN05QV3BFZ0VfRUt5NVpVUUczWHkweTFUcFVMN2xrZUZXbF9JZTlfa0lMSDhIT1U?oc=5",
+      "type": "news",
+      "title": "베네수 강진 사망자 3천명 육박…추가 생존자 아직",
+      "source": "연합뉴스TV",
+      "category": "Society",
+      "url": "https://news.google.com/rss/articles/CBMiZ0FVX3lxTE11SUNVUDJQYkdlVWRTN2pOMEN2RHdZNVhYdzhDcDR3Y2Y3SnozSnJaUW5yRzRKZXZRN05QV3BFZ0VfRUt5NVpVUUczWHkweTFUcFVMN2xrZUZXbF9JZTlfa0lMSDhIT1U?oc=5",
+      "detail": "베네수 강진 사망자 3천명 육박…추가 생존자 아직&nbsp;&nbsp;연합뉴스TV베네수엘라 강진 사망자 3천 명 육박&nbsp;&nbsp;v.daum.net베네수 강진 사망자 3천 명 육박‥생존자 구조소식 이틀째 없어&nbsp;&nbsp;MBC 뉴스베네수 지진 사망자 2645명으로 증가…1만 2666명 부상&nbsp;&nbsp;동아일보[베네수 강진]건물 잔",
+      "date": "2026-07-04",
+      "importance": 90
+    },
+    {
+      "id": "https://news.google.com/rss/articles/CBMiW0FVX3lxTFBtaXYtLXFJWHJFYV92WUZBRUFMM2kxaVFneWxibFhRck10dTJfb2hCQzFGb3hmZGs5MUZsX0pJQ0VyQVdOQ1BXNmxvRDV6RXVnbHNVNDNYZkRxLTA?oc=5",
+      "type": "news",
+      "title": "중학생까지 영업에 동원…5조 3천 억원 불법도박 총책 국내 송환",
+      "source": "KBS 뉴스",
+      "category": "World",
+      "url": "https://news.google.com/rss/articles/CBMiW0FVX3lxTFBtaXYtLXFJWHJFYV92WUZBRUFMM2kxaVFneWxibFhRck10dTJfb2hCQzFGb3hmZGs5MUZsX0pJQ0VyQVdOQ1BXNmxvRDV6RXVnbHNVNDNYZkRxLTA?oc=5",
+      "detail": "중학생까지 영업에 동원…5조 3천 억원 불법도박 총책 국내 송환&nbsp;&nbsp;KBS 뉴스Google 뉴스에서 헤드라인 및 의견 더보기",
+      "date": "2026-07-04",
+      "importance": 85
+    },
+    {
+      "id": "https://news.google.com/rss/articles/CBMi1gFBVV95cUxOaklpY1pDM3dxckpDSVZ4MVFmbUNxc25FTEtDX1ZiTzE4bGlMTzBrcFhMMHg2X3Nkc0pxek40WEVhd0Q0RG0telJ2UmdMaTFfTk1ONGE0azh0ZGM1U0xwY2Zfbk45UkszZ0NuR1MyT3d4TVlpanFDdGpZaFEya1VwZnVpVGdpXy10NXBaTXVDX0d2WXk2ekVNcWlEYWIyT04tZF9RblAtRmk5dDJVdTRncFIzMlFFOHJidGFwRUpfZmpSX1p4Mmh6LXUtaWpkMmFGbGxJU3F3?oc=5",
+      "type": "news",
+      "title": "美 고용지표에 강달러 꺾이고 엔화 반등…환율, 30원 넘게 하락",
+      "source": "한국무역협회-KITA.NET",
+      "category": "Economy",
+      "url": "https://news.google.com/rss/articles/CBMi1gFBVV95cUxOaklpY1pDM3dxckpDSVZ4MVFmbUNxc25FTEtDX1ZiTzE4bGlMTzBrcFhMMHg2X3Nkc0pxek40WEVhd0Q0RG0telJ2UmdMaTFfTk1ONGE0azh0ZGM1U0xwY2Zfbk45UkszZ0NuR1MyT3d4TVlpanFDdGpZaFEya1VwZnVpVGdpXy10NXBaTXVDX0d2WXk2ekVNcWlEYWIyT04tZF9RblAtRmk5dDJVdTRncFIzMlFFOHJidGFwRUpfZmpSX1p4Mmh6LXUtaWpkMmFGbGxJU3F3?oc=5",
+      "detail": "美 고용지표에 강달러 꺾이고 엔화 반등…환율, 30원 넘게 하락&nbsp;&nbsp;한국무역협회-KITA.NET“뉴스엔 1553원, 공항은 1621원?”…‘도깨비’ 환율 [유진아의 금쏭달쏭]&nbsp;&nbsp;v.daum.net원·달러 환율 1560원을 어떻게 읽을 것인가… 그 너머의 수치 - 조선비즈&nbsp;&nbsp;Chosunbiz1500원대 고환",
+      "date": "2026-07-04",
+      "importance": 80
+    },
+    {
+      "id": "https://news.google.com/rss/articles/CBMiiAFBVV95cUxNX2tmTGJMNjBjbmRrY0RYd0pQZDlhVUJNM0JPRGg1Wjc4NFRqeTEwZTZ0QmdnQ2xwZGdOZ2V6aVhEUFRtQVZPZzY3RDlIbzNhSVBQQ2RjbFJzSm9DRnpXa2c5WUNuVmJkUWRwenlzdmotZnJrclMzY1lFRW9GYkZQUGlpR1lPb3Zs0gGcAUFVX3lxTE1oajAyVHR2N0RGWEVqSkppaXh4UHZSeGE2LXU0Yl9FX1gtRFJGUU9HSUtlQWVuM3pyTlhQNS1HTHlMZGcya3hiMkxnc3pzeHByWVpRXzhOVDdNcGFsS1dvSEo3b1B5NnZQQndDbzNMbXgxaDJ2THpRYUFPcm1tc19BX2ROSWlhSzdPN0hVRUc4R1F2bnQ5RkFPVHYwUg?oc=5",
+      "type": "news",
+      "title": "[주간증시전망] 8000선 사수한 코스피, 삼성전자 실적이 반등 ‘신호탄’ 될까 - 조선비즈",
+      "source": "Chosunbiz",
+      "category": "Economy",
+      "url": "https://news.google.com/rss/articles/CBMiiAFBVV95cUxNX2tmTGJMNjBjbmRrY0RYd0pQZDlhVUJNM0JPRGg1Wjc4NFRqeTEwZTZ0QmdnQ2xwZGdOZ2V6aVhEUFRtQVZPZzY3RDlIbzNhSVBQQ2RjbFJzSm9DRnpXa2c5WUNuVmJkUWRwenlzdmotZnJrclMzY1lFRW9GYkZQUGlpR1lPb3Zs0gGcAUFVX3lxTE1oajAyVHR2N0RGWEVqSkppaXh4UHZSeGE2LXU0Yl9FX1gtRFJGUU9HSUtlQWVuM3pyTlhQNS1HTHlMZGcya3hiMkxnc3pzeHByWVpRXzhOVDdNcGFsS1dvSEo3b1B5NnZQQndDbzNMbXgxaDJ2THpRYUFPcm1tc19BX2ROSWlhSzdPN0hVRUc4R1F2bnQ5RkFPVHYwUg?oc=5",
+      "detail": "[주간증시전망] 8000선 사수한 코스피, 삼성전자 실적이 반등 ‘신호탄’ 될까 - 조선비즈&nbsp;&nbsp;Chosunbiz코스피 반등 키 쥔 삼성전자…2분기 잠정 실적 발표에 시선 집중&nbsp;&nbsp;연합뉴스'삼전닉스' 2분기 실적 변수로 떠오른 '성과급'…이익 증가세 꺾일까&nbsp;&nbsp;한국경제삼성전자 2분기 실적 관심...IMF 韓 ",
+      "date": "2026-07-04",
+      "importance": 75
     }
-  ],
-  "subject_of_day": "과학"
+  ]
 }
