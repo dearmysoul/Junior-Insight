@@ -1128,6 +1128,99 @@ function WriteView({ news, form, setForm, submit, coach, coaching, onRedo, onDon
 /* ============================================
    DASHBOARD
    ============================================ */
+/* 성장 미러 — 초기 글 vs 최근 글을 비교해 AI가 성장을 짚어줌 */
+function GrowthMirror({ entries }) {
+    const [state, setState] = useState('idle');   // idle | loading | done | unavailable
+    const [result, setResult] = useState(null);
+
+    const sorted = [...entries].sort((a, b) => (a.id || 0) - (b.id || 0)); // 오래된→최신
+    const n = sorted.length;
+    const enough = n >= 4;
+    const take = Math.min(3, Math.max(1, Math.floor(n / 2)));
+    const earlyEntries = sorted.slice(0, take);
+    const recentEntries = sorted.slice(-take);
+    const avgScore = (list) => {
+        const scored = list.filter((e) => e.scoreClarity != null);
+        if (!scored.length) return null;
+        return Math.round(scored.reduce((a, e) => a + (e.scoreClarity + e.scoreEvidence + e.scoreVocab), 0) / scored.length);
+    };
+    const earlyScore = avgScore(earlyEntries);
+    const recentScore = avgScore(recentEntries);
+    const firstSummary = earlyEntries[0]?.summary || '';
+    const lastSummary = recentEntries[recentEntries.length - 1]?.summary || '';
+
+    const seeGrowth = async () => {
+        setState('loading');
+        const r = await fetch('/api/growth', {
+            method: 'POST', headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                early: earlyEntries.map((e) => e.summary),
+                recent: recentEntries.map((e) => e.summary),
+                earlyScore, recentScore,
+            }),
+        }).then((x) => (x.ok ? x.json() : null)).catch(() => null);
+        if (r && r.comment) { setResult(r); setState('done'); }
+        else setState('unavailable');
+    };
+
+    if (!enough) {
+        return (
+            <div className="bg-card p-4 sm:p-5 rounded-lg border border-border">
+                <h3 className="font-bold text-[14px] tracking-tight mb-1 flex items-center gap-2 text-card-foreground">
+                    <TrendingUp size={16} className="text-secondary" aria-hidden="true" /> 성장 미러
+                </h3>
+                <p className="text-[12px] text-muted-foreground">미션을 <span className="font-semibold text-foreground">{4 - n}개</span> 더 쌓으면, 처음 글과 최근 글을 비교해 얼마나 늘었는지 보여줄게! <span className="tabular-nums">({n}/4)</span></p>
+            </div>
+        );
+    }
+
+    return (
+        <div className="bg-card p-4 sm:p-5 rounded-lg border border-border">
+            <h3 className="font-bold text-[14px] tracking-tight mb-3 flex items-center gap-2 text-card-foreground">
+                <TrendingUp size={16} className="text-secondary" aria-hidden="true" /> 성장 미러
+            </h3>
+
+            {/* 점수 변화 (코치 점수 있을 때) */}
+            {earlyScore != null && recentScore != null && (
+                <div className="flex items-center justify-center gap-3 mb-3 text-center">
+                    <div><p className="text-[10px] text-muted-foreground font-semibold">처음</p><p className="text-xl font-extrabold tabular-nums text-muted-foreground">{earlyScore}<span className="text-[11px]">/15</span></p></div>
+                    <TrendingUp size={20} className={recentScore >= earlyScore ? 'text-secondary' : 'text-muted-foreground'} aria-hidden="true" />
+                    <div><p className="text-[10px] text-primary font-semibold">최근</p><p className="text-xl font-extrabold tabular-nums text-primary">{recentScore}<span className="text-[11px]">/15</span></p></div>
+                    {recentScore > earlyScore && <span className="text-[12px] font-bold text-secondary">+{recentScore - earlyScore} ↑</span>}
+                </div>
+            )}
+
+            {/* 처음 vs 최근 요약 */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 mb-3">
+                <div className="bg-background border border-border rounded-md p-3">
+                    <p className="text-[10px] text-muted-foreground font-bold mb-1">🕐 처음 요약</p>
+                    <p className="text-[12px] text-muted-foreground leading-relaxed line-clamp-4">{firstSummary || '—'}</p>
+                </div>
+                <div className="bg-background border border-secondary/30 rounded-md p-3">
+                    <p className="text-[10px] text-secondary font-bold mb-1">✨ 최근 요약</p>
+                    <p className="text-[12px] text-foreground leading-relaxed line-clamp-4">{lastSummary || '—'}</p>
+                </div>
+            </div>
+
+            {/* AI 성장 코멘트 */}
+            {state === 'done' && result ? (
+                <div className="bg-accent/40 border border-border rounded-lg p-3">
+                    <p className="text-[12px] font-bold text-foreground">🌱 코치 형의 한마디</p>
+                    <p className="text-[13px] text-foreground mt-1 leading-relaxed">{result.comment}</p>
+                    {result.focus && <p className="text-[12px] text-secondary font-semibold mt-2">가장 큰 성장: {result.focus}</p>}
+                </div>
+            ) : state === 'unavailable' ? (
+                <p className="text-[12px] text-muted-foreground text-center">성장 코멘트는 잠시 후에 다시 볼 수 있어. 🌱</p>
+            ) : (
+                <button type="button" onClick={seeGrowth} disabled={state === 'loading'}
+                    className="w-full py-2.5 rounded-lg font-bold text-[13px] bg-secondary/15 text-secondary border border-secondary/30 hover:bg-secondary/25 cursor-pointer press min-h-[44px] disabled:opacity-60 disabled:cursor-wait">
+                    {state === 'loading' ? '코치가 네 글을 훑어보는 중… 🌱' : '🌱 내 성장 보기'}
+                </button>
+            )}
+        </div>
+    );
+}
+
 function Dashboard({ stats, entries, lvlTitle }) {
     const [expandedId, setExpandedId] = useState(null);
 
@@ -1171,6 +1264,9 @@ function Dashboard({ stats, entries, lvlTitle }) {
                 <SkillRow label="어휘 습득 (Vocabulary)" score={s3} xp={wordXpTotal} from="bg-chart-4" />
                 <p className="text-[11px] text-muted-foreground -mt-2 pl-0.5">단어를 <span className="font-semibold text-foreground">1개 이상</span> 수집하면 +5 XP</p>
             </div>
+
+            {/* 성장 미러 */}
+            <GrowthMirror entries={entries} />
 
             {/* History */}
             <section className="bg-card p-4 sm:p-5 rounded-lg border border-border">
