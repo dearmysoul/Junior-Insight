@@ -30,11 +30,52 @@ export const CURRICULUM = {
             { code: '9국02-07', statement: '매체에 드러난 다양한 표현 방법과 의도를 평가하며 읽는다' },
         ],
     },
-    // 아래 교과는 각 온보딩 시점에 성취기준을 조회·확정하여 active:true 로 전환
-    '사회':        { active: false, difficulty: 3, units: [] }, // 다음 온보딩
-    '과학':        { active: false, difficulty: 3, units: [] },
-    '역사':        { active: false, difficulty: 3, units: [] },
-    '국어 · 문학': { active: false, difficulty: 3, units: [] }, // 저작권 소멸 작품·창작 지문만
+    // 사회·과학·역사·문학 — v1 온보딩.
+    // 국어(9국02)는 검증된 성취기준 코드, 나머지는 2022 개정 교육과정 '영역·단원 주제' 기반
+    // (정확한 성취기준 코드는 교과서/NCIC로 확정해 code에 교체 — HANDOFF.md 참조).
+    '사회': {
+        active: true, difficulty: 3, topicCategory: 'Society',
+        topicPool: ['인권·법', '민주주의·정치', '경제생활', '사회문제', '문화·다양성'],
+        units: [
+            { code: '사회·정치', statement: '민주주의와 시민의 참여, 정치 과정을 이해한다' },
+            { code: '사회·경제', statement: '합리적 선택과 시장·소비 생활을 이해한다' },
+            { code: '사회·인권', statement: '인권과 법, 헌법이 보장하는 기본권을 이해한다' },
+            { code: '사회·문화', statement: '문화의 다양성과 사회 변동을 이해한다' },
+            { code: '사회·쟁점', statement: '사회적 쟁점을 다양한 관점에서 분석·평가한다' },
+        ],
+    },
+    '과학': {
+        active: true, difficulty: 3, topicCategory: 'Society',
+        topicPool: ['생활 속 현상', '실험·관찰', '자연재해', '첨단 기술'],
+        units: [
+            { code: '과학·물질', statement: '물질의 상태 변화와 성질을 이해한다' },
+            { code: '과학·에너지', statement: '힘과 운동, 에너지의 전환을 이해한다' },
+            { code: '과학·생명', statement: '생명체의 구조와 생태계의 상호작용을 이해한다' },
+            { code: '과학·지구', statement: '지구와 우주의 변화, 기후 현상을 이해한다' },
+        ],
+    },
+    '역사': {
+        active: true, difficulty: 3, topicCategory: 'Society',
+        topicPool: ['사건의 원인·결과', '인물', '제도·생활', '교류'],
+        units: [
+            { code: '역사·고대', statement: '문명의 형성과 고대 국가의 성립을 이해한다' },
+            { code: '역사·고려조선', statement: '고려·조선의 제도와 사회 변화를 이해한다' },
+            { code: '역사·근현대', statement: '근현대의 격동과 오늘날에 미친 영향을 이해한다' },
+            { code: '역사·세계', statement: '세계사의 교류와 상호 영향을 이해한다' },
+        ],
+    },
+    '국어 · 문학': {
+        active: true, difficulty: 3, topicCategory: 'Society',
+        // 저작권: 실제 작품 인용 금지 → AI 창작 짧은 지문(시·이야기)만 사용
+        literaryOriginal: true,
+        topicPool: ['성장', '우정', '가족', '자연', '용기'],
+        units: [
+            { code: '문학·화자정서', statement: '창작 시를 읽고 화자의 처지와 정서를 파악한다' },
+            { code: '문학·인물갈등', statement: '창작 이야기를 읽고 인물의 마음과 갈등을 파악한다' },
+            { code: '문학·주제', statement: '작품이 전하려는 주제와 의미를 해석한다' },
+            { code: '문학·표현', statement: '비유·상징 등 표현의 효과를 파악한다' },
+        ],
+    },
 };
 
 const WEEKDAY_KOR = ['일', '월', '화', '수', '목', '금', '토'];
@@ -67,6 +108,7 @@ export function pickPlan(date) {
         mode: 'lesson', weekday, subject, unit,
         difficulty: cfg.difficulty,
         topicCategory: cfg.topicCategory || null,
+        literaryOriginal: cfg.literaryOriginal || false,
         topic,
     };
 }
