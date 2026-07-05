@@ -80,9 +80,26 @@ export const CURRICULUM = {
 
 const WEEKDAY_KOR = ['일', '월', '화', '수', '목', '금', '토'];
 
-/** 날짜 기반 결정적 회전 인덱스 (같은 날 = 같은 단원, 날마다 다름) */
+// ── KST(Asia/Seoul) 기준 시각 유틸 ───────────────────────────
+// GitHub Actions는 UTC로 돈다(22:00 UTC cron = 07:00 KST 다음 날).
+// 요일·회전·날짜를 KST로 계산해야 요일제가 KST 요일에 정확히 맞는다.
+const KST_OFFSET = 9 * 3600 * 1000;
+/** 입력 시각을 KST 벽시계로 옮긴 Date (UTC 필드가 KST 값이 됨) */
+function toKst(date) {
+    return new Date(date.getTime() + KST_OFFSET);
+}
+/** KST 기준 요일(0=일~6=토) */
+function kstDow(date) {
+    return toKst(date).getUTCDay();
+}
+/** KST 기준 오늘 날짜 YYYY-MM-DD */
+export function kstDateStr(date = new Date()) {
+    return toKst(date).toISOString().slice(0, 10);
+}
+
+/** KST 날짜 기반 결정적 회전 인덱스 (같은 KST 날 = 같은 단원, 날마다 다름) */
 function dayIndex(date) {
-    return Math.floor(date.getTime() / 86400000);
+    return Math.floor(toKst(date).getTime() / 86400000);
 }
 
 /**
@@ -92,7 +109,7 @@ function dayIndex(date) {
  *  온보딩된 교과 요일 → {mode:'lesson', subject, unit, difficulty, topicPool}
  */
 export function pickPlan(date) {
-    const dow = date.getDay();
+    const dow = kstDow(date);
     const weekday = WEEKDAY_KOR[dow];
     const subject = SUBJECT_BY_WEEKDAY[dow];
     if (!subject) return { mode: 'news', weekday };            // 토·일
@@ -120,7 +137,7 @@ export function pickPlan(date) {
 export function planForSubject(subject, date) {
     const cfg = CURRICULUM[subject];
     if (!cfg || !cfg.active || cfg.units.length === 0) return null;
-    const weekday = WEEKDAY_KOR[date.getDay()];
+    const weekday = WEEKDAY_KOR[kstDow(date)];
     const unit = cfg.units[dayIndex(date) % cfg.units.length];
     const topic = cfg.topicPool ? cfg.topicPool[dayIndex(date) % cfg.topicPool.length] : null;
     return {

@@ -13,7 +13,7 @@ import { writeFileSync, mkdirSync } from 'fs';
 import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
 import Anthropic from '@anthropic-ai/sdk';
-import { pickPlan, planForSubject } from './curriculum.js';
+import { pickPlan, planForSubject, kstDateStr } from './curriculum.js';
 import { buildNews, fetchWeather } from './fetch-news.js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
@@ -165,7 +165,7 @@ ${plan.literaryOriginal
 
 async function main() {
     const now = new Date();
-    const today = now.toISOString().slice(0, 10);
+    const today = kstDateStr(now);   // KST 기준 날짜(요일 편성과 동일 기준)
     // FORCE_SUBJECT 있으면 요일 무관하게 그 교과 강제(수동 테스트). 없거나 미온보딩이면 요일 편성.
     const forced = (process.env.FORCE_SUBJECT || '').trim();
     const plan = (forced && planForSubject(forced, now)) || pickPlan(now);

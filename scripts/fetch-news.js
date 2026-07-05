@@ -7,6 +7,7 @@ import { DOMParser } from '@xmldom/xmldom';
 import { writeFileSync, mkdirSync } from 'fs';
 import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
+import { kstDateStr } from './curriculum.js';   // KST 기준 날짜(요일제와 동일 기준)
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
@@ -153,7 +154,7 @@ async function buildNews() {
     const doc = parser.parseFromString(xml, 'text/xml');
     const items = doc.getElementsByTagName('item');
 
-    const today = new Date().toISOString().slice(0, 10);
+    const today = kstDateStr();
     const pool = [];
 
     for (let i = 0; i < Math.min(items.length, 20); i++) {
@@ -193,7 +194,7 @@ async function buildNews() {
 }
 
 async function main() {
-    const today = new Date().toISOString().slice(0, 10);
+    const today = kstDateStr();
     const { weather, articles } = await buildNews();
 
     const outPath = join(__dirname, '..', 'public', 'news.json');

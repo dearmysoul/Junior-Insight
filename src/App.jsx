@@ -14,6 +14,11 @@ import { loadEntries, loadStats, saveEntry, saveStats } from './supabase.js';
 const APP_VERSION = '38';
 const CACHE_KEY = `ji_news_cache_v${APP_VERSION}`;
 
+/** KST(Asia/Seoul) 기준 오늘 날짜 YYYY-MM-DD.
+ *  콘텐츠 생성기(generate-content.js)도 KST로 날짜를 찍으므로,
+ *  news.json 날짜 매칭·요일 표시를 같은 기준(KST)으로 맞춘다. */
+const kstDateStr = () => new Date(Date.now() + 9 * 3600 * 1000).toISOString().slice(0, 10);
+
 // 이전 버전 캐시 자동 삭제
 (() => {
     try {
@@ -143,7 +148,7 @@ async function fetchNewsJson() {
         const res = await fetch(`${import.meta.env.BASE_URL}news.json?t=${Date.now()}`);
         if (!res.ok) return null;
         const data = await res.json();
-        const today = new Date().toISOString().slice(0, 10);
+        const today = kstDateStr();
         // 오늘 날짜 기사이면 사용, 아니면 RSS fallback
         if (data?.date === today && Array.isArray(data.articles) && data.articles.length > 0) {
             // 날씨는 학습 카드에서 제외 — 상단 배너로만 (구버전 news.json 안전 필터 포함).
@@ -220,7 +225,7 @@ async function fetchGoogleNews() {
         const link = item.querySelector('link')?.textContent || '';
         const pubDate = item.querySelector('pubDate')?.textContent || '';
         const descHtml = item.querySelector('description')?.textContent || '';
-        const date = pubDate ? new Date(pubDate).toISOString().slice(0, 10) : new Date().toISOString().slice(0, 10);
+        const date = pubDate ? new Date(pubDate).toISOString().slice(0, 10) : kstDateStr();
         const category = detectCategory(title);
         const detail = extractDescription(descHtml) || title;
         pool.push({ i, date, title, source, category, url: link, detail, isWeather: isWeather(title) });
@@ -691,7 +696,7 @@ export default function App() {
    NEWS FEED
    ============================================ */
 function NewsFeed({ news, weather, loading, error, entries, onMission }) {
-    const today = new Date().toISOString().slice(0, 10);
+    const today = kstDateStr();
     const todayKr = new Date().toLocaleDateString('ko-KR');
     // 오늘 완료한 모든 entries
     const todayEntries = entries.filter(e => e.date === todayKr);
