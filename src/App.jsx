@@ -11,7 +11,7 @@ import { loadEntries, loadStats, saveEntry, saveStats } from './supabase.js';
    앱 버전 — 코드 변경 시 이 숫자만 올리면
    브라우저 캐시가 자동으로 무효화됩니다
    ────────────────────────────────────────────── */
-const APP_VERSION = '37';
+const APP_VERSION = '38';
 const CACHE_KEY = `ji_news_cache_v${APP_VERSION}`;
 
 // 이전 버전 캐시 자동 삭제
