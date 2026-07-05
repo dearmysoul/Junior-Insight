@@ -146,9 +146,11 @@ async function fetchNewsJson() {
         const today = new Date().toISOString().slice(0, 10);
         // 오늘 날짜 기사이면 사용, 아니면 RSS fallback
         if (data?.date === today && Array.isArray(data.articles) && data.articles.length > 0) {
-            // 날씨는 학습 카드에서 제외 — 상단 배너로만 (구버전 news.json 안전 필터 포함)
+            // 날씨는 학습 카드에서 제외 — 상단 배너로만 (구버전 news.json 안전 필터 포함).
+            // 단, 교과 지문(type:'lesson')은 제목에 '태풍·장마' 등 날씨 단어가 들어가도
+            // 절대 걸러내지 않는다(교과 콘텐츠는 날씨 기사가 아님).
             const articles = data.articles
-                .filter(a => !isWeather(a.title_kor || a.title))
+                .filter(a => a.type === 'lesson' || !isWeather(a.title_kor || a.title))
                 .map((a, idx) => ({
                     // ChatGPT 필드 → 앱 내부 필드 정규화
                     id: a.id || a.url || `${a.title}_${a.date}`,

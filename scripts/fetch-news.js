@@ -34,6 +34,44 @@ function buildWeatherBanner(item) {
     return { emoji: weatherEmoji(item.title), summary: item.title };
 }
 
+// ── 실제 날씨(무료·키 불필요, open-meteo) ─────────────────────
+// 뉴스 헤드라인을 '날씨'로 쓰면 클릭베이트 제목이 배너에 뜨는 문제가 있어,
+// 실제 서울 현재 날씨를 조회해 "서울 맑음, 28°C" 형태의 알림으로 만든다.
+// WMO weather_code → [이모지, 한글 설명]
+function wmoToWeather(code) {
+    const M = {
+        0: ['☀️', '맑음'],
+        1: ['🌤️', '대체로 맑음'], 2: ['⛅', '구름 조금'], 3: ['☁️', '흐림'],
+        45: ['🌫️', '안개'], 48: ['🌫️', '짙은 안개'],
+        51: ['🌦️', '약한 이슬비'], 53: ['🌦️', '이슬비'], 55: ['🌧️', '짙은 이슬비'],
+        56: ['🌧️', '얼어붙는 이슬비'], 57: ['🌧️', '얼어붙는 이슬비'],
+        61: ['🌦️', '약한 비'], 63: ['🌧️', '비'], 65: ['🌧️', '강한 비'],
+        66: ['🌧️', '얼어붙는 비'], 67: ['🌧️', '얼어붙는 비'],
+        71: ['🌨️', '약한 눈'], 73: ['🌨️', '눈'], 75: ['❄️', '강한 눈'], 77: ['🌨️', '싸락눈'],
+        80: ['🌦️', '소나기'], 81: ['🌧️', '소나기'], 82: ['⛈️', '강한 소나기'],
+        85: ['🌨️', '소나기눈'], 86: ['❄️', '강한 소나기눈'],
+        95: ['⛈️', '천둥번개'], 96: ['⛈️', '천둥번개·우박'], 99: ['⛈️', '강한 천둥번개'],
+    };
+    return M[code] || ['🌤️', '오늘의 하늘'];
+}
+
+// 서울 현재 날씨 배너. 실패하면 null(배너 미표시) — 혼란스러운 헤드라인보다 안전.
+async function fetchWeather() {
+    try {
+        const url = 'https://api.open-meteo.com/v1/forecast'
+            + '?latitude=37.57&longitude=126.98&current=temperature_2m,weather_code&timezone=Asia%2FSeoul';
+        const res = await fetch(url, { headers: { 'User-Agent': 'JuniorInsight/1.0' } });
+        if (!res.ok) return null;
+        const j = await res.json();
+        const c = j.current;
+        if (!c || typeof c.temperature_2m !== 'number') return null;
+        const [emoji, cond] = wmoToWeather(c.weather_code);
+        return { emoji, summary: `서울 ${cond}, ${Math.round(c.temperature_2m)}°C` };
+    } catch {
+        return null;
+    }
+}
+
 // ── 카테고리 분류 ─────────────────────────────────────────────
 // Tech & Economy를 Environment보다 먼저 매칭 → 게임·IT 기사가 날씨/환경 키워드에
 // 우선 매칭되지 않도록 하고, 게임/e스포츠 등 아이 관심 소재를 IT로 편입한다.
@@ -134,8 +172,8 @@ async function buildNews() {
         if (title) pool.push({ title, source, link, date, detail, category, isWeather: isWeather(title) });
     }
 
-    // 날씨는 학습 카드에서 완전 제외 → 상단 배너로만
-    const weather = buildWeatherBanner(pool.find(a => a.isWeather));
+    // 날씨 배너는 실제 서울 날씨(open-meteo). 조회 실패 시 null(배너 미표시).
+    const weather = await fetchWeather();
     // 관심 카테고리 보장 선정 (날씨 제외한 풀에서)
     const selected = selectDaily(pool.filter(a => !a.isWeather));
 
@@ -166,7 +204,7 @@ async function main() {
     articles.forEach((a, i) => console.log(`  ${i + 1}. [${a.category}] ${a.title}`));
 }
 
-export { detectCategory, isWeather, selectDaily, weatherEmoji, buildWeatherBanner, buildNews };
+export { detectCategory, isWeather, selectDaily, weatherEmoji, buildWeatherBanner, buildNews, fetchWeather };
 
 // 직접 실행 시에만 수집 파이프라인 구동 (테스트에서 import할 땐 자동 실행 방지)
 if (import.meta.url === `file://${process.argv[1]}`) {
