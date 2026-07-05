@@ -259,12 +259,13 @@ const LEVEL_TITLES = ['', '새싹', '탐험가', '기자', '논설가', '편집�
    SMALL COMPONENTS
    ────────────────────────────────────────────── */
 function Badge({ category }) {
+    // UX Studio 참고 — 어스톤 카테고리 색(틸/블루/옐로/클레이/뉴트럴)
     const map = {
-        'Tech & Economy': { Icon: Zap,        bg: '#fff7ed', text: '#c2410c', border: '#fed7aa' },
-        'Environment':    { Icon: Target,      bg: '#f0fdf4', text: '#15803d', border: '#bbf7d0' },
-        'Economy':        { Icon: TrendingUp,  bg: '#eff6ff', text: '#1d4ed8', border: '#bfdbfe' },
-        'Society':        { Icon: BookOpen,    bg: '#f5f3ff', text: '#6d28d9', border: '#ddd6fe' },
-        'World':          { Icon: Clock,       bg: '#f9fafb', text: '#4b5563', border: '#e5e7eb' },
+        'Tech & Economy': { Icon: Zap,        bg: '#e7eef5', text: '#38618c', border: '#cddcea' },
+        'Environment':    { Icon: Target,      bg: '#e5f0ed', text: '#276b62', border: '#cbe0da' },
+        'Economy':        { Icon: TrendingUp,  bg: '#f4efd9', text: '#8f7a2b', border: '#e6dcb6' },
+        'Society':        { Icon: BookOpen,    bg: '#f0e8e3', text: '#8e624e', border: '#e0d2c8' },
+        'World':          { Icon: Clock,       bg: '#eef1ec', text: '#5b6459', border: '#d9e0d8' },
     };
     const { Icon, bg, text, border } = map[category] ?? map['World'];
     return (
@@ -279,13 +280,14 @@ function Badge({ category }) {
 /** 교과 배지 — 5교과 색코딩 (lesson 전용). subject 문자열로 분기 */
 function SubjectBadge({ subject }) {
     const s = subject || '';
+    // UX Studio 참고 — 5교과 어스톤 색코딩
     const cfg =
-        /비문학|독서/.test(s) ? { Icon: BookOpen,   bg: '#f4f2ff', text: '#6d28d9', border: '#ddd6fe' } :
-        /과학/.test(s)        ? { Icon: Sparkles,   bg: '#ecfeff', text: '#0e7490', border: '#a5f3fc' } :
-        /역사/.test(s)        ? { Icon: Clock,      bg: '#fffbeb', text: '#92400e', border: '#fde68a' } :
-        /문학/.test(s)        ? { Icon: PenTool,    bg: '#fff1f2', text: '#be185d', border: '#fbcfe8' } :
-        /사회/.test(s)        ? { Icon: Award,      bg: '#f0fdf4', text: '#15803d', border: '#bbf7d0' } :
-                                { Icon: BookMarked, bg: '#f5f3ff', text: '#6d28d9', border: '#ddd6fe' };
+        /비문학|독서/.test(s) ? { Icon: BookOpen,   bg: '#e5f0ed', text: '#276b62', border: '#cbe0da' } :  // 틸
+        /과학/.test(s)        ? { Icon: Sparkles,   bg: '#e7eef5', text: '#38618c', border: '#cddcea' } :  // 블루
+        /역사/.test(s)        ? { Icon: Clock,      bg: '#f4efd9', text: '#8f7a2b', border: '#e6dcb6' } :  // 옐로
+        /문학/.test(s)        ? { Icon: PenTool,    bg: '#f0e8e3', text: '#8e624e', border: '#e0d2c8' } :  // 클레이
+        /사회/.test(s)        ? { Icon: Award,      bg: '#eaf2ea', text: '#4f7a5c', border: '#d3e2d5' } :  // 그린
+                                { Icon: BookMarked, bg: '#e5f0ed', text: '#276b62', border: '#cbe0da' };
     const { Icon, bg, text, border } = cfg;
     return (
         <span style={{ backgroundColor: bg, color: text, borderColor: border }}
