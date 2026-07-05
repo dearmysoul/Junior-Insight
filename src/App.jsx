@@ -269,7 +269,7 @@ function Badge({ category }) {
     const { Icon, bg, text, border } = map[category] ?? map['World'];
     return (
         <span style={{ backgroundColor: bg, color: text, borderColor: border }}
-            className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[11px] font-semibold tracking-tight border">
+            className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[13px] font-semibold tracking-tight border">
             <Icon size={11} aria-hidden="true" />
             {category}
         </span>
@@ -289,7 +289,7 @@ function SubjectBadge({ subject }) {
     const { Icon, bg, text, border } = cfg;
     return (
         <span style={{ backgroundColor: bg, color: text, borderColor: border }}
-            className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[11px] font-semibold tracking-tight border">
+            className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[13px] font-semibold tracking-tight border">
             <Icon size={11} aria-hidden="true" />
             {subject}
         </span>
@@ -299,7 +299,7 @@ function SubjectBadge({ subject }) {
 function Toast({ message, show }) {
     return (
         <div className={`toast-wrap ${show ? 'show' : ''}`} role="status" aria-live="polite">
-            <div className="flex items-center gap-2 bg-foreground text-background px-5 py-3 rounded-xl text-[13px] font-semibold tracking-tight"
+            <div className="flex items-center gap-2 bg-foreground text-background px-5 py-3 rounded-xl text-[15px] font-semibold tracking-tight"
                 style={{ boxShadow: '0 8px 30px -6px rgba(0,0,0,.25)' }}>
                 <Sparkles size={15} aria-hidden="true" className="text-chart-1 shrink-0" />
                 {message}
@@ -315,7 +315,7 @@ function Stat({ icon: Icon, label, value, unit, color }) {
                 <span className={`w-7 h-7 rounded-md flex items-center justify-center ${color}`}>
                     <Icon size={14} className="text-white" aria-hidden="true" />
                 </span>
-                <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider">{label}</span>
+                <span className="text-[11.5px] font-bold text-muted-foreground uppercase tracking-wider">{label}</span>
             </div>
             <p className="text-2xl font-extrabold tracking-tight text-card-foreground leading-none">{value}
                 <span className="text-xs font-medium text-muted-foreground ml-1">{unit}</span>
@@ -327,7 +327,7 @@ function Stat({ icon: Icon, label, value, unit, color }) {
 function SkillRow({ label, score, xp, from }) {
     return (
         <div className="mb-4 last:mb-0">
-            <div className="flex justify-between text-[13px] mb-1.5">
+            <div className="flex justify-between text-[15px] mb-1.5">
                 <span className="text-muted-foreground font-medium tracking-tight">{label}</span>
                 <span className="font-bold text-card-foreground tabular-nums">
                     {xp !== undefined ? `${xp} XP` : `${score}%`}
@@ -343,11 +343,11 @@ function SkillRow({ label, score, xp, from }) {
 function StepLabel({ n, text, color, required }) {
     return (
         <div className="flex items-center gap-2 mb-2">
-            <span className={`w-6 h-6 rounded-md ${color} text-white flex items-center justify-center text-[11px] font-bold shrink-0`}>{n}</span>
-            <span className="font-bold text-card-foreground text-[14px] tracking-tight">{text}</span>
+            <span className={`w-6 h-6 rounded-md ${color} text-white flex items-center justify-center text-[13px] font-bold shrink-0`}>{n}</span>
+            <span className="font-bold text-card-foreground text-[16px] tracking-tight">{text}</span>
             {required
-                ? <span className="text-destructive text-[11px] font-semibold">필수</span>
-                : <span className="text-muted-foreground text-[11px]">선택</span>}
+                ? <span className="text-destructive text-[13px] font-semibold">필수</span>
+                : <span className="text-muted-foreground text-[13px]">선택</span>}
         </div>
     );
 }
@@ -632,7 +632,7 @@ export default function App() {
                             aria-label={label} aria-current={active ? 'page' : undefined}
                         >
                             <Icon size={20} strokeWidth={active ? 2.4 : 1.8} aria-hidden="true" />
-                            <span className="text-[10px] font-medium leading-none md:sr-only">{label}</span>
+                            <span className="text-[11.5px] font-medium leading-none md:sr-only">{label}</span>
                         </button>
                     );
                 })}
@@ -646,16 +646,16 @@ export default function App() {
       `}>
                 <header className="flex items-center justify-between mb-6 md:mb-8">
                     <div>
-                        <h1 className="text-[18px] sm:text-xl md:text-2xl font-extrabold tracking-tight text-foreground flex items-center gap-2">
+                        <h1 className="text-[20px] sm:text-xl md:text-2xl font-extrabold tracking-tight text-foreground flex items-center gap-2">
                             Junior Insight
-                            <span className="bg-primary text-primary-foreground text-[9px] px-1.5 py-px rounded font-bold uppercase tracking-widest">Beta</span>
+                            <span className="bg-primary text-primary-foreground text-[10.5px] px-1.5 py-px rounded font-bold uppercase tracking-widest">Beta</span>
                         </h1>
-                        <p className="text-muted-foreground text-[12px] sm:text-[13px] mt-0.5 tracking-tight">세상을 보는 눈을 키우는 문해력 성장소</p>
+                        <p className="text-muted-foreground text-[14px] sm:text-[15px] mt-0.5 tracking-tight">세상을 보는 눈을 키우는 문해력 성장소</p>
                     </div>
                     <div className="flex items-center gap-2 bg-card px-3 py-1.5 rounded-full border border-border">
                         <img src={`${import.meta.env.BASE_URL}avatar.png`} alt="지율이 아바타"
                             className="w-7 h-7 rounded-full shrink-0 object-cover bg-accent" />
-                        <span className="text-[13px] font-bold text-card-foreground tracking-tight hidden sm:inline">지율이</span>
+                        <span className="text-[15px] font-bold text-card-foreground tracking-tight hidden sm:inline">지율이</span>
                     </div>
                 </header>
 
@@ -717,7 +717,7 @@ function NewsFeed({ news, weather, loading, error, entries, onMission }) {
         <div className="animate-fade-in space-y-4">
             {/* 날씨 배너 — 학습 아님, 상단 알림 전용 */}
             {weather && (
-                <div className="flex items-center gap-2.5 bg-card border border-border rounded-xl px-4 py-2.5 text-[13px]" role="status" aria-live="polite">
+                <div className="flex items-center gap-2.5 bg-card border border-border rounded-xl px-4 py-2.5 text-[15px]" role="status" aria-live="polite">
                     <span className="text-lg shrink-0" aria-hidden="true">{weather.emoji}</span>
                     <span className="font-bold text-card-foreground shrink-0">오늘의 날씨</span>
                     <span className="text-muted-foreground truncate">· {weather.summary}</span>
@@ -730,13 +730,13 @@ function NewsFeed({ news, weather, loading, error, entries, onMission }) {
                 <div className="flex items-center justify-between mb-4">
                     <div className="flex items-center gap-2">
                         <BookOpen size={18} aria-hidden="true" className="opacity-80" />
-                        <h2 className="text-[17px] sm:text-xl font-bold tracking-tight">{heroTitle}</h2>
-                        <time className="text-[15px] sm:text-[17px] font-semibold tabular-nums opacity-80 ml-1">{today}</time>
+                        <h2 className="text-[19px] sm:text-xl font-bold tracking-tight">{heroTitle}</h2>
+                        <time className="text-[17px] sm:text-[19px] font-semibold tabular-nums opacity-80 ml-1">{today}</time>
                     </div>
                     {/* 툴팁 */}
                     <div className="relative group cursor-default">
-                        <span className="text-[12px] text-primary-foreground/60 border border-primary-foreground/30 rounded-full px-2 py-0.5 hover:text-primary-foreground transition-colors">?</span>
-                        <div className="absolute right-0 top-7 z-50 hidden group-hover:block w-64 bg-foreground text-background text-[11px] leading-relaxed p-3 rounded-lg shadow-lg pointer-events-none">
+                        <span className="text-[14px] text-primary-foreground/60 border border-primary-foreground/30 rounded-full px-2 py-0.5 hover:text-primary-foreground transition-colors">?</span>
+                        <div className="absolute right-0 top-7 z-50 hidden group-hover:block w-64 bg-foreground text-background text-[13px] leading-relaxed p-3 rounded-lg shadow-lg pointer-events-none">
                             <p className="font-bold mb-1">📰 뉴스 제공 안내</p>
                             <p>· Google 뉴스 RSS에서 한국 최신 기사 6개를 가져옵니다.</p>
                             <p>· 매일 오전 6시 이후 첫 접속 시 새 뉴스로 업데이트됩니다.</p>
@@ -751,16 +751,16 @@ function NewsFeed({ news, weather, loading, error, entries, onMission }) {
                         <>
                             <CheckCircle size={22} className="shrink-0 text-white" aria-hidden="true" />
                             <div>
-                                <p className="font-bold text-[14px] tracking-tight">오늘 미션 완료! 🎉</p>
-                                <p className="text-[11px] text-primary-foreground/70">훌륭해요! 내일도 도전해보세요.</p>
+                                <p className="font-bold text-[16px] tracking-tight">오늘 미션 완료! 🎉</p>
+                                <p className="text-[13px] text-primary-foreground/70">훌륭해요! 내일도 도전해보세요.</p>
                             </div>
                         </>
                     ) : (
                         <>
                             <Target size={22} className="shrink-0 opacity-90" aria-hidden="true" />
                             <div>
-                                <p className="font-bold text-[14px] tracking-tight">오늘의 미션을 완료하세요</p>
-                                <p className="text-[11px] text-primary-foreground/70">{heroSub}</p>
+                                <p className="font-bold text-[16px] tracking-tight">오늘의 미션을 완료하세요</p>
+                                <p className="text-[13px] text-primary-foreground/70">{heroSub}</p>
                             </div>
                         </>
                     )}
@@ -782,7 +782,7 @@ function NewsFeed({ news, weather, loading, error, entries, onMission }) {
 
             {/* Error */}
             {error && (
-                <div className="bg-destructive/10 border border-destructive/30 text-destructive p-4 rounded-lg text-[13px]">
+                <div className="bg-destructive/10 border border-destructive/30 text-destructive p-4 rounded-lg text-[15px]">
                     뉴스를 불러오지 못했습니다: {error}
                 </div>
             )}
@@ -800,7 +800,7 @@ function NewsFeed({ news, weather, loading, error, entries, onMission }) {
                         <div className="flex flex-wrap items-center gap-2 mb-2">
                             {n.subject ? <SubjectBadge subject={n.subject} /> : <Badge category={n.category} />}
                             {done && (
-                                <span className="ml-auto inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] font-semibold bg-secondary/15 text-secondary border border-secondary/30">
+                                <span className="ml-auto inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[13px] font-semibold bg-secondary/15 text-secondary border border-secondary/30">
                                     <CheckCircle size={11} aria-hidden="true" /> 완료
                                 </span>
                             )}
@@ -809,7 +809,7 @@ function NewsFeed({ news, weather, loading, error, entries, onMission }) {
                         {/* 제목 → 클릭 시 상세(요약+미션) 화면으로 이동 */}
                         <button
                             onClick={() => onMission(n)}
-                            className="block w-full text-left text-[15px] sm:text-[16px] font-bold text-card-foreground leading-snug tracking-tight hover:text-primary transition-colors duration-200 mb-3 cursor-pointer"
+                            className="block w-full text-left text-[17px] sm:text-[18px] font-bold text-card-foreground leading-snug tracking-tight hover:text-primary transition-colors duration-200 mb-3 cursor-pointer"
                             aria-label={`${n.title} 읽기 및 미션`}
                         >
                             {n.title}
@@ -817,10 +817,10 @@ function NewsFeed({ news, weather, loading, error, entries, onMission }) {
 
                         {/* 하단: 출처 */}
                         <div className="flex items-center justify-between">
-                            <span className="text-[11px] text-muted-foreground">
+                            <span className="text-[13px] text-muted-foreground">
                                 {n.source}{n.country ? ` · ${n.country}` : ''}
                             </span>
-                            <span className="text-[11px] text-primary/70 font-medium flex items-center gap-1">
+                            <span className="text-[13px] text-primary/70 font-medium flex items-center gap-1">
                                 <PenTool size={11} aria-hidden="true" />
                                 {done ? '수정하기' : '미션하기'}
                             </span>
@@ -871,7 +871,7 @@ function SparPanel({ news, form, onComplete }) {
     if (phase === 'idle') {
         return (
             <button type="button" onClick={startSpar} disabled={loading}
-                className="w-full py-3 rounded-lg font-bold text-[14px] border-2 border-dashed border-primary/40 text-primary bg-primary/5 hover:bg-primary/10 cursor-pointer press min-h-[48px] flex items-center justify-center gap-2 disabled:opacity-60 disabled:cursor-wait">
+                className="w-full py-3 rounded-lg font-bold text-[16px] border-2 border-dashed border-primary/40 text-primary bg-primary/5 hover:bg-primary/10 cursor-pointer press min-h-[48px] flex items-center justify-center gap-2 disabled:opacity-60 disabled:cursor-wait">
                 {loading ? '코치가 벼르는 중… 🥊' : '🥊 코치와 한판 붙기 (스파링)'}
             </button>
         );
@@ -880,27 +880,27 @@ function SparPanel({ news, form, onComplete }) {
         <div className="bg-card border border-border rounded-xl p-4 space-y-3 animate-slide-up">
             {/* AI 반박 */}
             <div className="flex gap-3">
-                <span className="w-8 h-8 rounded-full shrink-0 bg-gradient-to-br from-orange-400 to-red-500 flex items-center justify-center text-[15px]">🥊</span>
+                <span className="w-8 h-8 rounded-full shrink-0 bg-gradient-to-br from-orange-400 to-red-500 flex items-center justify-center text-[17px]">🥊</span>
                 <div>
-                    <p className="text-[12px] font-bold text-foreground">코치의 반박</p>
-                    <p className="text-[13px] text-foreground mt-1 leading-relaxed">{aiRebuttal}</p>
+                    <p className="text-[14px] font-bold text-foreground">코치의 반박</p>
+                    <p className="text-[15px] text-foreground mt-1 leading-relaxed">{aiRebuttal}</p>
                 </div>
             </div>
             {phase === 'challenge' && (
                 <>
                     <textarea rows={2} value={kidText} onChange={(e) => setKidText(e.target.value)}
                         placeholder="여기에 재반박! 네 근거로 받아쳐봐."
-                        className="w-full p-3 rounded-md border border-input bg-background text-[13px] leading-relaxed text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary resize-none" />
+                        className="w-full p-3 rounded-md border border-input bg-background text-[15px] leading-relaxed text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary resize-none" />
                     <button type="button" onClick={sendRebuttal} disabled={loading || !kidText.trim()}
-                        className="w-full py-2.5 rounded-lg font-bold text-[13px] bg-primary text-primary-foreground hover:opacity-90 cursor-pointer press min-h-[44px] disabled:opacity-50 disabled:cursor-not-allowed">
+                        className="w-full py-2.5 rounded-lg font-bold text-[15px] bg-primary text-primary-foreground hover:opacity-90 cursor-pointer press min-h-[44px] disabled:opacity-50 disabled:cursor-not-allowed">
                         {loading ? '코치가 판정 중…' : '반박 보내기 →'}
                     </button>
                 </>
             )}
             {phase === 'done' && verdict && (
                 <div className={`rounded-lg p-3 ${verdict.won ? 'bg-secondary/15 border border-secondary/30' : 'bg-accent/50 border border-border'}`}>
-                    <p className="text-[14px] font-extrabold tracking-tight">{verdict.won ? '🏆 네가 이겼다!' : '💪 좋은 승부였어'}</p>
-                    <p className="text-[13px] text-foreground mt-1 leading-relaxed">{verdict.reply}</p>
+                    <p className="text-[16px] font-extrabold tracking-tight">{verdict.won ? '🏆 네가 이겼다!' : '💪 좋은 승부였어'}</p>
+                    <p className="text-[15px] text-foreground mt-1 leading-relaxed">{verdict.reply}</p>
                 </div>
             )}
         </div>
@@ -916,7 +916,7 @@ function WriteView({ news, form, setForm, submit, coach, coaching, onRedo, onDon
         <div className="animate-slide-right pb-20 md:pb-0">
             {/* 뒤로가기 */}
             <button onClick={goBack}
-                className="flex items-center gap-1 text-[13px] font-medium text-muted-foreground hover:text-foreground transition-colors duration-200 mb-4 cursor-pointer h-11"
+                className="flex items-center gap-1 text-[15px] font-medium text-muted-foreground hover:text-foreground transition-colors duration-200 mb-4 cursor-pointer h-11"
                 aria-label="뉴스 목록으로 돌아가기">
                 <ArrowLeft size={15} aria-hidden="true" /> 뉴스 목록으로
             </button>
@@ -931,30 +931,30 @@ function WriteView({ news, form, setForm, submit, coach, coaching, onRedo, onDon
                         <div className="flex flex-wrap items-center gap-2 mb-3">
                             {news.subject ? <SubjectBadge subject={news.subject} /> : <Badge category={news.category} />}
                             {news.country && (
-                                <span className="text-[11px] text-muted-foreground">· {news.country}</span>
+                                <span className="text-[13px] text-muted-foreground">· {news.country}</span>
                             )}
                         </div>
 
                         {/* 성취 단원 (lesson 전용) */}
                         {news.unit && (
-                            <p className="text-[11px] text-muted-foreground mb-2 flex items-start gap-1">
+                            <p className="text-[13px] text-muted-foreground mb-2 flex items-start gap-1">
                                 <Target size={12} aria-hidden="true" className="shrink-0 mt-0.5 text-primary/70" />
                                 <span>성취 단원 · {news.unit}</span>
                             </p>
                         )}
 
                         {/* 제목 */}
-                        <p className="text-[15px] font-bold text-card-foreground leading-snug tracking-tight mb-4">
+                        <p className="text-[17px] font-bold text-card-foreground leading-snug tracking-tight mb-4">
                             {news.title}
                         </p>
 
                         {/* 요약 본문 */}
                         {news.summary_kor ? (
                             <div className="mb-4">
-                                <p className="text-[11px] font-bold text-primary mb-2 uppercase tracking-wider flex items-center gap-1">
+                                <p className="text-[13px] font-bold text-primary mb-2 uppercase tracking-wider flex items-center gap-1">
                                     <BookOpen size={11} aria-hidden="true" /> {isLesson ? '지문 읽기' : '기사 요약'}
                                 </p>
-                                <div className="text-[14px] text-foreground leading-[1.8] tracking-tight space-y-3">
+                                <div className="text-[16px] text-foreground leading-[1.9] tracking-tight space-y-3">
                                     {news.summary_kor.split('\n').filter(p => p.trim()).map((para, pi) => (
                                         <p key={pi}>{para.trim()}</p>
                                     ))}
@@ -962,7 +962,7 @@ function WriteView({ news, form, setForm, submit, coach, coaching, onRedo, onDon
                             </div>
                         ) : (
                             news.detail && news.detail !== news.title && (
-                                <p className="text-[14px] text-muted-foreground leading-[1.8] mb-4 tracking-tight">
+                                <p className="text-[16px] text-muted-foreground leading-[1.9] mb-4 tracking-tight">
                                     {news.detail}
                                 </p>
                             )
@@ -971,9 +971,9 @@ function WriteView({ news, form, setForm, submit, coach, coaching, onRedo, onDon
                         {/* 키워드 */}
                         {news.keywords?.length > 0 && (
                             <div className="flex flex-wrap gap-1 mb-4">
-                                <span className="text-[10px] text-muted-foreground font-medium self-center mr-0.5">핵심어:</span>
+                                <span className="text-[11.5px] text-muted-foreground font-medium self-center mr-0.5">핵심어:</span>
                                 {news.keywords.map((kw, ki) => (
-                                    <span key={ki} className="text-[10px] px-2 py-0.5 rounded-full bg-primary/10 text-primary font-semibold border border-primary/20">
+                                    <span key={ki} className="text-[11.5px] px-2 py-0.5 rounded-full bg-primary/10 text-primary font-semibold border border-primary/20">
                                         #{kw}
                                     </span>
                                 ))}
@@ -983,18 +983,18 @@ function WriteView({ news, form, setForm, submit, coach, coaching, onRedo, onDon
                         {/* 한자어 풀이 (lesson 전용) */}
                         {news.hanjaTerms?.length > 0 && (
                             <div className="mb-4 bg-accent/40 border border-border rounded-lg p-3">
-                                <p className="text-[11px] font-bold text-primary mb-2 uppercase tracking-wider flex items-center gap-1">
-                                    <span className="inline-flex items-center justify-center w-4 h-4 rounded bg-primary text-white text-[10px] font-black not-italic">漢</span>
+                                <p className="text-[13px] font-bold text-primary mb-2 uppercase tracking-wider flex items-center gap-1">
+                                    <span className="inline-flex items-center justify-center w-4 h-4 rounded bg-primary text-white text-[11.5px] font-black not-italic">漢</span>
                                     한자어 풀이
                                 </p>
                                 <div className="space-y-2">
                                     {news.hanjaTerms.map((h, hi) => (
-                                        <div key={hi} className="text-[12.5px] leading-relaxed">
+                                        <div key={hi} className="text-[14.5px] leading-relaxed">
                                             <span className="font-bold text-card-foreground">{h.word}</span>
                                             {h.hanja && (
-                                                <span className="ml-1 px-1.5 py-px rounded border border-primary/25 bg-card text-primary font-bold text-[12px]">{h.hanja}</span>
+                                                <span className="ml-1 px-1.5 py-px rounded border border-primary/25 bg-card text-primary font-bold text-[14px]">{h.hanja}</span>
                                             )}
-                                            {h.gloss && <span className="block text-muted-foreground text-[11.5px] mt-0.5">{h.gloss}</span>}
+                                            {h.gloss && <span className="block text-muted-foreground text-[13px] mt-0.5">{h.gloss}</span>}
                                         </div>
                                     ))}
                                 </div>
@@ -1004,7 +1004,7 @@ function WriteView({ news, form, setForm, submit, coach, coaching, onRedo, onDon
                         {/* 원문 링크 — 교과 콘텐츠(lesson)는 원문 없음 */}
                         {news.url && news.type !== 'lesson' && (
                             <a href={news.url} target="_blank" rel="noreferrer"
-                                className="inline-flex items-center gap-1 text-[12px] text-primary hover:underline font-medium">
+                                className="inline-flex items-center gap-1 text-[14px] text-primary hover:underline font-medium">
                                 <ExternalLink size={11} aria-hidden="true" /> 원문 읽기
                             </a>
                         )}
@@ -1017,8 +1017,8 @@ function WriteView({ news, form, setForm, submit, coach, coaching, onRedo, onDon
                     <div className="bg-accent border border-border p-3 rounded-lg flex items-center gap-3">
                         <Sparkles size={16} className="text-primary shrink-0" aria-hidden="true" />
                         <div>
-                            <p className="font-bold text-foreground text-[13px] tracking-tight">오늘의 미션</p>
-                            <p className="text-[11px] text-muted-foreground">3가지를 모두 작성하면 완료! 🎉</p>
+                            <p className="font-bold text-foreground text-[15px] tracking-tight">오늘의 미션</p>
+                            <p className="text-[13px] text-muted-foreground">3가지를 모두 작성하면 완료! 🎉</p>
                         </div>
                     </div>
 
@@ -1028,12 +1028,12 @@ function WriteView({ news, form, setForm, submit, coach, coaching, onRedo, onDon
                             <span className="w-7 h-7 rounded-md bg-primary flex items-center justify-center shrink-0">
                                 <Brain size={13} className="text-white" aria-hidden="true" />
                             </span>
-                            <p className="font-bold text-[13px] text-card-foreground tracking-tight flex-1">미션 1 · 한 문장 요약</p>
+                            <p className="font-bold text-[15px] text-card-foreground tracking-tight flex-1">미션 1 · 한 문장 요약</p>
                             {form.summary.trim() && <CheckCircle size={16} className="text-primary shrink-0" />}
                         </div>
-                        <p className="text-[12px] font-semibold text-foreground mb-2">{isLesson ? '이 지문의 핵심은?' : '이 기사의 핵심 내용은?'} <span className="text-destructive">*</span></p>
+                        <p className="text-[14px] font-semibold text-foreground mb-2">{isLesson ? '이 지문의 핵심은?' : '이 기사의 핵심 내용은?'} <span className="text-destructive">*</span></p>
                         <textarea rows={3}
-                            className="w-full p-3 rounded-md border border-input bg-background text-[13px] leading-relaxed text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent resize-none"
+                            className="w-full p-3 rounded-md border border-input bg-background text-[15px] leading-relaxed text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent resize-none"
                             placeholder={`${textNoun}의 핵심을 한 문장으로 줄여보세요.`}
                             value={form.summary}
                             onChange={(e) => setForm({ ...form, summary: e.target.value })}
@@ -1046,17 +1046,17 @@ function WriteView({ news, form, setForm, submit, coach, coaching, onRedo, onDon
                             <span className="w-7 h-7 rounded-md bg-primary flex items-center justify-center shrink-0">
                                 <PenTool size={13} className="text-white" aria-hidden="true" />
                             </span>
-                            <p className="font-bold text-[13px] text-card-foreground tracking-tight flex-1">미션 2 · {isLesson ? '나의 주장' : '나의 의견'}</p>
+                            <p className="font-bold text-[15px] text-card-foreground tracking-tight flex-1">미션 2 · {isLesson ? '나의 주장' : '나의 의견'}</p>
                             {form.choice !== null && form.reason.trim() && <CheckCircle size={16} className="text-primary shrink-0" />}
                         </div>
-                        <p className="text-[12px] font-semibold text-foreground mb-2">{claim || (isLesson ? '이 주제에 대한 너의 입장은?' : '이 기사에 대해 어떻게 생각하나요?')} <span className="text-destructive">*</span></p>
+                        <p className="text-[14px] font-semibold text-foreground mb-2">{claim || (isLesson ? '이 주제에 대한 너의 입장은?' : '이 기사에 대해 어떻게 생각하나요?')} <span className="text-destructive">*</span></p>
                         <div className="space-y-1.5 mb-3" role="radiogroup" aria-label="의견 선택">
                             {news.opinionOptions.map((opt, i) => {
                                 const on = form.choice === i;
                                 return (
                                     <button key={i} type="button" role="radio" aria-checked={on}
                                         onClick={() => setForm({ ...form, choice: i })}
-                                        className={`w-full text-left p-2.5 rounded-md border-2 text-[12px] font-medium flex items-center justify-between cursor-pointer transition-all duration-200 min-h-[40px] tracking-tight
+                                        className={`w-full text-left p-2.5 rounded-md border-2 text-[14px] font-medium flex items-center justify-between cursor-pointer transition-all duration-200 min-h-[40px] tracking-tight
                                             ${on ? 'border-primary bg-primary/8 text-foreground' : 'border-border text-muted-foreground hover:border-ring hover:bg-accent/30'}`}>
                                         <span>{opt}</span>
                                         {on && <CheckCircle size={14} className="text-primary shrink-0 ml-2" aria-hidden="true" />}
@@ -1064,9 +1064,9 @@ function WriteView({ news, form, setForm, submit, coach, coaching, onRedo, onDon
                                 );
                             })}
                         </div>
-                        <p className="text-[12px] font-semibold text-foreground mb-2">{isLesson ? '왜 그렇게 생각해? (근거)' : '그 의견을 선택한 이유는?'} <span className="text-destructive">*</span></p>
+                        <p className="text-[14px] font-semibold text-foreground mb-2">{isLesson ? '왜 그렇게 생각해? (근거)' : '그 의견을 선택한 이유는?'} <span className="text-destructive">*</span></p>
                         <input type="text"
-                            className="w-full p-3 rounded-md border border-input bg-background text-[13px] tracking-tight text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                            className="w-full p-3 rounded-md border border-input bg-background text-[15px] tracking-tight text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
                             placeholder={isLesson ? '지문에서 근거를 찾아 한 줄로 적어줘' : '이유를 한 줄로 적어주세요'}
                             value={form.reason}
                             onChange={(e) => setForm({ ...form, reason: e.target.value })}
@@ -1079,12 +1079,12 @@ function WriteView({ news, form, setForm, submit, coach, coaching, onRedo, onDon
                             <span className="w-7 h-7 rounded-md bg-primary flex items-center justify-center shrink-0">
                                 <Highlighter size={13} className="text-white" aria-hidden="true" />
                             </span>
-                            <p className="font-bold text-[13px] text-card-foreground tracking-tight flex-1">미션 3 · 핵심 단어</p>
+                            <p className="font-bold text-[15px] text-card-foreground tracking-tight flex-1">미션 3 · 핵심 단어</p>
                             {form.word.trim() && <CheckCircle size={16} className="text-primary shrink-0" />}
                         </div>
-                        <p className="text-[12px] font-semibold text-foreground mb-2">{isLesson ? '가장 중요한 단어는?' : '이 기사에서 가장 중요한 단어는?'} <span className="text-destructive">*</span></p>
+                        <p className="text-[14px] font-semibold text-foreground mb-2">{isLesson ? '가장 중요한 단어는?' : '이 기사에서 가장 중요한 단어는?'} <span className="text-destructive">*</span></p>
                         <input type="text"
-                            className="w-full p-3 rounded-md border border-input bg-background text-[13px] tracking-tight text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                            className="w-full p-3 rounded-md border border-input bg-background text-[15px] tracking-tight text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
                             placeholder="핵심 단어를 하나 적어주세요"
                             value={form.word}
                             onChange={(e) => setForm({ ...form, word: e.target.value })}
@@ -1097,15 +1097,15 @@ function WriteView({ news, form, setForm, submit, coach, coaching, onRedo, onDon
                             <div className="bg-accent/40 border border-border rounded-xl p-4 flex gap-3">
                                 <img src={`${import.meta.env.BASE_URL}avatar.png`} alt="코치" className="w-9 h-9 rounded-full shrink-0 object-cover bg-accent" />
                                 <div className="min-w-0">
-                                    <p className="text-[13px] font-bold text-foreground">🤖 코치 형</p>
-                                    {coach.feedback && <p className="text-[13px] text-foreground mt-1 leading-relaxed">{coach.feedback}</p>}
-                                    {coach.followup && <p className="text-[13px] text-primary font-medium mt-2 leading-relaxed">💬 {coach.followup}</p>}
+                                    <p className="text-[15px] font-bold text-foreground">🤖 코치 형</p>
+                                    {coach.feedback && <p className="text-[15px] text-foreground mt-1 leading-relaxed">{coach.feedback}</p>}
+                                    {coach.followup && <p className="text-[15px] text-primary font-medium mt-2 leading-relaxed">💬 {coach.followup}</p>}
                                     {coach.scores && (
                                         <div className="flex gap-2 mt-3">
                                             {[['요약 명료성', coach.scores.clarity], ['근거 구체성', coach.scores.evidence], ['어휘 정확성', coach.scores.vocab]].map(([lbl, val]) => (
                                                 <div key={lbl} className="flex-1 bg-card border border-border rounded-lg py-2 px-1 text-center">
-                                                    <p className="text-[17px] font-extrabold text-card-foreground tabular-nums leading-none">{val}<span className="text-[11px] text-muted-foreground font-semibold">/5</span></p>
-                                                    <p className="text-[9.5px] text-muted-foreground font-semibold mt-1 tracking-tight">{lbl}</p>
+                                                    <p className="text-[19px] font-extrabold text-card-foreground tabular-nums leading-none">{val}<span className="text-[13px] text-muted-foreground font-semibold">/5</span></p>
+                                                    <p className="text-[11px] text-muted-foreground font-semibold mt-1 tracking-tight">{lbl}</p>
                                                 </div>
                                             ))}
                                         </div>
@@ -1116,11 +1116,11 @@ function WriteView({ news, form, setForm, submit, coach, coaching, onRedo, onDon
                             <SparPanel news={news} form={form} onComplete={onSparComplete} />
                             <div className="flex gap-2">
                                 <button type="button" onClick={onRedo}
-                                    className="flex-1 py-3 rounded-lg font-bold text-[14px] border border-border bg-card text-muted-foreground hover:bg-accent/30 cursor-pointer press min-h-[48px]">
+                                    className="flex-1 py-3 rounded-lg font-bold text-[16px] border border-border bg-card text-muted-foreground hover:bg-accent/30 cursor-pointer press min-h-[48px]">
                                     다시 쓰기 ↻
                                 </button>
                                 <button type="button" onClick={onDone}
-                                    className="flex-[1.4] py-3 rounded-lg font-bold text-[14px] bg-primary text-primary-foreground hover:opacity-90 cursor-pointer press min-h-[48px] flex items-center justify-center gap-2">
+                                    className="flex-[1.4] py-3 rounded-lg font-bold text-[16px] bg-primary text-primary-foreground hover:opacity-90 cursor-pointer press min-h-[48px] flex items-center justify-center gap-2">
                                     <CheckCircle size={16} aria-hidden="true" /> 완료하고 나가기
                                 </button>
                             </div>
@@ -1130,7 +1130,7 @@ function WriteView({ news, form, setForm, submit, coach, coaching, onRedo, onDon
                         <div className="space-y-2">
                             <div className="flex gap-2">
                                 <button type="button" onClick={clearForm} disabled={coaching}
-                                    className="flex-1 py-3.5 rounded-lg font-bold text-[14px] border border-border bg-card text-muted-foreground hover:bg-accent/30 cursor-pointer press min-h-[52px] disabled:opacity-60">
+                                    className="flex-1 py-3.5 rounded-lg font-bold text-[16px] border border-border bg-card text-muted-foreground hover:bg-accent/30 cursor-pointer press min-h-[52px] disabled:opacity-60">
                                     다시 쓰기
                                 </button>
                                 <button type="button" onClick={submit} disabled={coaching}
@@ -1140,7 +1140,7 @@ function WriteView({ news, form, setForm, submit, coach, coaching, onRedo, onDon
                                 </button>
                             </div>
                             {!coaching && (
-                                <p className="text-center text-[11px] text-muted-foreground">제출하면 코치가 등장 🤖</p>
+                                <p className="text-center text-[13px] text-muted-foreground">제출하면 코치가 등장 🤖</p>
                             )}
                         </div>
                     )}
@@ -1192,54 +1192,54 @@ function GrowthMirror({ entries }) {
     if (!enough) {
         return (
             <div className="bg-card p-4 sm:p-5 rounded-lg border border-border">
-                <h3 className="font-bold text-[14px] tracking-tight mb-1 flex items-center gap-2 text-card-foreground">
+                <h3 className="font-bold text-[16px] tracking-tight mb-1 flex items-center gap-2 text-card-foreground">
                     <TrendingUp size={16} className="text-secondary" aria-hidden="true" /> 성장 미러
                 </h3>
-                <p className="text-[12px] text-muted-foreground">미션을 <span className="font-semibold text-foreground">{4 - n}개</span> 더 쌓으면, 처음 글과 최근 글을 비교해 얼마나 늘었는지 보여줄게! <span className="tabular-nums">({n}/4)</span></p>
+                <p className="text-[14px] text-muted-foreground">미션을 <span className="font-semibold text-foreground">{4 - n}개</span> 더 쌓으면, 처음 글과 최근 글을 비교해 얼마나 늘었는지 보여줄게! <span className="tabular-nums">({n}/4)</span></p>
             </div>
         );
     }
 
     return (
         <div className="bg-card p-4 sm:p-5 rounded-lg border border-border">
-            <h3 className="font-bold text-[14px] tracking-tight mb-3 flex items-center gap-2 text-card-foreground">
+            <h3 className="font-bold text-[16px] tracking-tight mb-3 flex items-center gap-2 text-card-foreground">
                 <TrendingUp size={16} className="text-secondary" aria-hidden="true" /> 성장 미러
             </h3>
 
             {/* 점수 변화 (코치 점수 있을 때) */}
             {earlyScore != null && recentScore != null && (
                 <div className="flex items-center justify-center gap-3 mb-3 text-center">
-                    <div><p className="text-[10px] text-muted-foreground font-semibold">처음</p><p className="text-xl font-extrabold tabular-nums text-muted-foreground">{earlyScore}<span className="text-[11px]">/15</span></p></div>
+                    <div><p className="text-[11.5px] text-muted-foreground font-semibold">처음</p><p className="text-xl font-extrabold tabular-nums text-muted-foreground">{earlyScore}<span className="text-[13px]">/15</span></p></div>
                     <TrendingUp size={20} className={recentScore >= earlyScore ? 'text-secondary' : 'text-muted-foreground'} aria-hidden="true" />
-                    <div><p className="text-[10px] text-primary font-semibold">최근</p><p className="text-xl font-extrabold tabular-nums text-primary">{recentScore}<span className="text-[11px]">/15</span></p></div>
-                    {recentScore > earlyScore && <span className="text-[12px] font-bold text-secondary">+{recentScore - earlyScore} ↑</span>}
+                    <div><p className="text-[11.5px] text-primary font-semibold">최근</p><p className="text-xl font-extrabold tabular-nums text-primary">{recentScore}<span className="text-[13px]">/15</span></p></div>
+                    {recentScore > earlyScore && <span className="text-[14px] font-bold text-secondary">+{recentScore - earlyScore} ↑</span>}
                 </div>
             )}
 
             {/* 처음 vs 최근 요약 */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 mb-3">
                 <div className="bg-background border border-border rounded-md p-3">
-                    <p className="text-[10px] text-muted-foreground font-bold mb-1">🕐 처음 요약</p>
-                    <p className="text-[12px] text-muted-foreground leading-relaxed line-clamp-4">{firstSummary || '—'}</p>
+                    <p className="text-[11.5px] text-muted-foreground font-bold mb-1">🕐 처음 요약</p>
+                    <p className="text-[14px] text-muted-foreground leading-relaxed line-clamp-4">{firstSummary || '—'}</p>
                 </div>
                 <div className="bg-background border border-secondary/30 rounded-md p-3">
-                    <p className="text-[10px] text-secondary font-bold mb-1">✨ 최근 요약</p>
-                    <p className="text-[12px] text-foreground leading-relaxed line-clamp-4">{lastSummary || '—'}</p>
+                    <p className="text-[11.5px] text-secondary font-bold mb-1">✨ 최근 요약</p>
+                    <p className="text-[14px] text-foreground leading-relaxed line-clamp-4">{lastSummary || '—'}</p>
                 </div>
             </div>
 
             {/* AI 성장 코멘트 */}
             {state === 'done' && result ? (
                 <div className="bg-accent/40 border border-border rounded-lg p-3">
-                    <p className="text-[12px] font-bold text-foreground">🌱 코치 형의 한마디</p>
-                    <p className="text-[13px] text-foreground mt-1 leading-relaxed">{result.comment}</p>
-                    {result.focus && <p className="text-[12px] text-secondary font-semibold mt-2">가장 큰 성장: {result.focus}</p>}
+                    <p className="text-[14px] font-bold text-foreground">🌱 코치 형의 한마디</p>
+                    <p className="text-[15px] text-foreground mt-1 leading-relaxed">{result.comment}</p>
+                    {result.focus && <p className="text-[14px] text-secondary font-semibold mt-2">가장 큰 성장: {result.focus}</p>}
                 </div>
             ) : state === 'unavailable' ? (
-                <p className="text-[12px] text-muted-foreground text-center">성장 코멘트는 잠시 후에 다시 볼 수 있어. 🌱</p>
+                <p className="text-[14px] text-muted-foreground text-center">성장 코멘트는 잠시 후에 다시 볼 수 있어. 🌱</p>
             ) : (
                 <button type="button" onClick={seeGrowth} disabled={state === 'loading'}
-                    className="w-full py-2.5 rounded-lg font-bold text-[13px] bg-secondary/15 text-secondary border border-secondary/30 hover:bg-secondary/25 cursor-pointer press min-h-[44px] disabled:opacity-60 disabled:cursor-wait">
+                    className="w-full py-2.5 rounded-lg font-bold text-[15px] bg-secondary/15 text-secondary border border-secondary/30 hover:bg-secondary/25 cursor-pointer press min-h-[44px] disabled:opacity-60 disabled:cursor-wait">
                     {state === 'loading' ? '코치가 네 글을 훑어보는 중… 🌱' : '🌱 내 성장 보기'}
                 </button>
             )}
@@ -1279,16 +1279,16 @@ function Dashboard({ stats, entries, lvlTitle }) {
 
             {/* Skills */}
             <div className="bg-card p-4 sm:p-5 rounded-lg border border-border">
-                <h3 className="font-bold text-[14px] tracking-tight mb-1 flex items-center gap-2 text-card-foreground">
+                <h3 className="font-bold text-[16px] tracking-tight mb-1 flex items-center gap-2 text-card-foreground">
                     <Award size={16} className="text-grad-mid" aria-hidden="true" /> 영역별 활동 점수
                 </h3>
-                <p className="text-[11px] text-muted-foreground mb-4">미션을 완료할수록 XP가 누적됩니다.</p>
+                <p className="text-[13px] text-muted-foreground mb-4">미션을 완료할수록 XP가 누적됩니다.</p>
                 <SkillRow label="요약 능력 (Summary)" score={s1} xp={summaryXpTotal} from="bg-primary" />
-                <p className="text-[11px] text-muted-foreground -mt-2 mb-4 pl-0.5">입력 시 <span className="font-semibold text-foreground">+1 XP</span> · <span className="font-semibold text-foreground">20자 이상</span> 요약 시 +5 XP</p>
+                <p className="text-[13px] text-muted-foreground -mt-2 mb-4 pl-0.5">입력 시 <span className="font-semibold text-foreground">+1 XP</span> · <span className="font-semibold text-foreground">20자 이상</span> 요약 시 +5 XP</p>
                 <SkillRow label="비판적 사고 (Reasoning)" score={s2} xp={reasonXpTotal} from="bg-secondary" />
-                <p className="text-[11px] text-muted-foreground -mt-2 mb-4 pl-0.5">입력 시 <span className="font-semibold text-foreground">+1 XP</span> · <span className="font-semibold text-foreground">15자 이상</span> 작성 시 +5 XP</p>
+                <p className="text-[13px] text-muted-foreground -mt-2 mb-4 pl-0.5">입력 시 <span className="font-semibold text-foreground">+1 XP</span> · <span className="font-semibold text-foreground">15자 이상</span> 작성 시 +5 XP</p>
                 <SkillRow label="어휘 습득 (Vocabulary)" score={s3} xp={wordXpTotal} from="bg-chart-4" />
-                <p className="text-[11px] text-muted-foreground -mt-2 pl-0.5">단어를 <span className="font-semibold text-foreground">1개 이상</span> 수집하면 +5 XP</p>
+                <p className="text-[13px] text-muted-foreground -mt-2 pl-0.5">단어를 <span className="font-semibold text-foreground">1개 이상</span> 수집하면 +5 XP</p>
             </div>
 
             {/* 성장 미러 */}
@@ -1296,14 +1296,14 @@ function Dashboard({ stats, entries, lvlTitle }) {
 
             {/* History */}
             <section className="bg-card p-4 sm:p-5 rounded-lg border border-border">
-                <h3 className="font-bold text-[14px] tracking-tight mb-4 flex items-center gap-2 text-card-foreground">
+                <h3 className="font-bold text-[16px] tracking-tight mb-4 flex items-center gap-2 text-card-foreground">
                     <Trophy size={16} className="text-chart-1" aria-hidden="true" /> 활동 기록
                 </h3>
                 {entries.length === 0 ? (
                     <div className="text-center py-10 text-muted-foreground bg-background rounded-lg border border-dashed border-border">
                         <BookOpen size={28} className="mx-auto mb-2 text-border" aria-hidden="true" />
-                        <p className="font-medium text-[13px]">아직 활동 기록이 없습니다</p>
-                        <p className="text-[12px] mt-0.5">뉴스를 읽고 미션을 완료해보세요</p>
+                        <p className="font-medium text-[15px]">아직 활동 기록이 없습니다</p>
+                        <p className="text-[14px] mt-0.5">뉴스를 읽고 미션을 완료해보세요</p>
                     </div>
                 ) : entries.map((e) => {
                     const opText = e.opinionOptions ? e.opinionOptions[e.choice] : ['찬성한다', '반대한다', '기타 의견이 있다'][e.choice] ?? '—';
@@ -1317,15 +1317,15 @@ function Dashboard({ stats, entries, lvlTitle }) {
                                 aria-expanded={isOpen}
                             >
                                 <div className="flex-1 min-w-0 pr-3">
-                                    <div className="flex items-center gap-1.5 text-[11px] text-muted-foreground mb-0.5">
+                                    <div className="flex items-center gap-1.5 text-[13px] text-muted-foreground mb-0.5">
                                         <time>{e.date}</time>
                                         <span className="w-0.5 h-0.5 bg-border rounded-full" aria-hidden="true" />
                                         <span>{e.newsCategory}</span>
                                     </div>
-                                    <p className="font-bold text-card-foreground text-[13px] tracking-tight truncate">{e.newsTitle}</p>
+                                    <p className="font-bold text-card-foreground text-[15px] tracking-tight truncate">{e.newsTitle}</p>
                                 </div>
                                 <div className="flex items-center gap-2 shrink-0">
-                                    <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] font-semibold bg-secondary/15 text-secondary border border-secondary/30">
+                                    <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[13px] font-semibold bg-secondary/15 text-secondary border border-secondary/30">
                                         <CheckCircle size={10} aria-hidden="true" /> 완료
                                     </span>
                                     {isOpen
@@ -1337,18 +1337,18 @@ function Dashboard({ stats, entries, lvlTitle }) {
                             {/* 상세 내용 — 펼쳐질 때 */}
                             {isOpen && (
                                 <div className="px-4 pb-4 bg-background border-t border-border">
-                                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 mt-3 text-[13px]">
+                                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 mt-3 text-[15px]">
                                         <div className="bg-card p-3 rounded-md border border-border">
-                                            <span className="text-[11px] text-muted-foreground font-medium block mb-1">📝 요약</span>
+                                            <span className="text-[13px] text-muted-foreground font-medium block mb-1">📝 요약</span>
                                             <span className="text-card-foreground tracking-tight">{e.summary}</span>
                                         </div>
                                         <div className="bg-card p-3 rounded-md border border-border">
-                                            <span className="text-[11px] text-muted-foreground font-medium block mb-1">💬 의견</span>
+                                            <span className="text-[13px] text-muted-foreground font-medium block mb-1">💬 의견</span>
                                             <span className="font-semibold text-primary block tracking-tight">{opText}</span>
-                                            <span className="text-muted-foreground block mt-1 tracking-tight text-[12px]">{e.reason}</span>
+                                            <span className="text-muted-foreground block mt-1 tracking-tight text-[14px]">{e.reason}</span>
                                         </div>
                                     </div>
-                                    <div className="mt-2 text-[12px] text-muted-foreground">
+                                    <div className="mt-2 text-[14px] text-muted-foreground">
                                         🔑 수집 단어: <span className="text-card-foreground font-semibold bg-accent/40 px-1.5 py-0.5 rounded">{e.word}</span>
                                     </div>
                                 </div>
