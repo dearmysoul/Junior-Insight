@@ -2,10 +2,7 @@
   "fetchedAt": "2026-07-05T03:03:17.130Z",
   "date": "2026-07-05",
   "weekday": "일",
-  "weather": {
-    "emoji": "🌤️",
-    "summary": "한국-유럽 날씨 뒤바꾼 이곳! 북시베리아에 무슨 일이?"
-  },
+  "weather": null,
   "articles": [
     {
       "id": "lesson-20260705-01",

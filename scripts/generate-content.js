@@ -14,7 +14,7 @@ import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
 import Anthropic from '@anthropic-ai/sdk';
 import { pickPlan, planForSubject } from './curriculum.js';
-import { buildNews } from './fetch-news.js';
+import { buildNews, fetchWeather } from './fetch-news.js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
@@ -162,7 +162,7 @@ async function main() {
         if (lesson) {
             articles = [lesson];
             subjectOfDay = plan.subject;
-            try { ({ weather } = await buildNews()); } catch { weather = null; } // 날씨만
+            try { weather = await fetchWeather(); } catch { weather = null; } // 실제 서울 날씨만
             console.log(`📘 교과 생성 완료 — ${plan.subject} · ${plan.unit.code}`);
         } else {
             console.log('↩️ 교과 생성 불가(키 미등록/검증 실패) → 뉴스 폴백');
