@@ -165,6 +165,9 @@ async function fetchNewsJson() {
                     unit: a.unit || null,              // 성취 단원
                     hanjaTerms: a.hanja_terms || [],   // [{word,hanja,gloss}]
                     checkQuestion: a.check_question || null, // 코치 되물음 시드
+                    argument: (a.argument && a.argument.claim && a.argument.options?.length)
+                        ? { claim: a.argument.claim, options: a.argument.options }
+                        : null, // "나의 주장" 쟁점(있으면 lesson)
                     detail: a.summary_kor || a.detail || a.title, // ChatGPT 요약 우선
                     summary_kor: a.summary_kor || null,
                     keywords: a.keywords || [],
@@ -172,7 +175,8 @@ async function fetchNewsJson() {
                     url: a.url,
                     date: a.date || today,
                     importance: a.importance || Math.max(60, 100 - idx * 5),
-                    opinionOptions: makeOpinionOptions(),
+                    // 쟁점(argument)이 있으면 그 입장 선택지를, 없으면 기본 찬성/반대
+                    opinionOptions: (a.argument?.options?.length ? a.argument.options : makeOpinionOptions()),
                 }));
             // 상단 날씨 배너: 최상위 weather 필드 우선, 없으면 null
             const weather = data.weather && data.weather.summary ? data.weather : null;
@@ -461,8 +465,8 @@ export default function App() {
     const submit = useCallback(async () => {
         // 3개 미션 입력값 모두 필수
         if (!form.summary.trim()) { flash('① 한 문장 요약을 작성해주세요'); return; }
-        if (form.choice === null) { flash('② 나의 의견을 선택해주세요'); return; }
-        if (!form.reason.trim()) { flash('② 의견의 이유를 적어주세요'); return; }
+        if (form.choice === null) { flash(selected.type === 'lesson' ? '② 나의 주장(입장)을 선택해주세요' : '② 나의 의견을 선택해주세요'); return; }
+        if (!form.reason.trim()) { flash(selected.type === 'lesson' ? '② 주장의 근거를 적어주세요' : '② 의견의 이유를 적어주세요'); return; }
         if (!form.word.trim()) { flash('③ 핵심 단어를 입력해주세요'); return; }
 
         // ── AI 코치 호출 (키 미등록/실패 시 graceful 폴백) ──
@@ -899,6 +903,10 @@ function SparPanel({ news, form, onComplete }) {
 }
 
 function WriteView({ news, form, setForm, submit, coach, coaching, onRedo, onDone, onSparComplete, goBack, isDone }) {
+    const isLesson = news.type === 'lesson';
+    const textNoun = isLesson ? '지문' : '기사';           // "지문"/"기사"
+    const claim = news.argument?.claim;                    // "나의 주장" 쟁점 질문
+    const clearForm = () => setForm({ summary: '', choice: null, reason: '', word: '' });
     return (
         <div className="animate-slide-right pb-20 md:pb-0">
             {/* 뒤로가기 */}
@@ -939,7 +947,7 @@ function WriteView({ news, form, setForm, submit, coach, coaching, onRedo, onDon
                         {news.summary_kor ? (
                             <div className="mb-4">
                                 <p className="text-[11px] font-bold text-primary mb-2 uppercase tracking-wider flex items-center gap-1">
-                                    <BookOpen size={11} aria-hidden="true" /> 기사 요약
+                                    <BookOpen size={11} aria-hidden="true" /> {isLesson ? '지문 읽기' : '기사 요약'}
                                 </p>
                                 <div className="text-[14px] text-foreground leading-[1.8] tracking-tight space-y-3">
                                     {news.summary_kor.split('\n').filter(p => p.trim()).map((para, pi) => (
@@ -1018,10 +1026,10 @@ function WriteView({ news, form, setForm, submit, coach, coaching, onRedo, onDon
                             <p className="font-bold text-[13px] text-card-foreground tracking-tight flex-1">미션 1 · 한 문장 요약</p>
                             {form.summary.trim() && <CheckCircle size={16} className="text-primary shrink-0" />}
                         </div>
-                        <p className="text-[12px] font-semibold text-foreground mb-2">이 기사의 핵심 내용은? <span className="text-destructive">*</span></p>
+                        <p className="text-[12px] font-semibold text-foreground mb-2">{isLesson ? '이 지문의 핵심은?' : '이 기사의 핵심 내용은?'} <span className="text-destructive">*</span></p>
                         <textarea rows={3}
                             className="w-full p-3 rounded-md border border-input bg-background text-[13px] leading-relaxed text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent resize-none"
-                            placeholder="기사의 핵심을 한 문장으로 줄여보세요."
+                            placeholder={`${textNoun}의 핵심을 한 문장으로 줄여보세요.`}
                             value={form.summary}
                             onChange={(e) => setForm({ ...form, summary: e.target.value })}
                         />
@@ -1033,10 +1041,10 @@ function WriteView({ news, form, setForm, submit, coach, coaching, onRedo, onDon
                             <span className="w-7 h-7 rounded-md bg-primary flex items-center justify-center shrink-0">
                                 <PenTool size={13} className="text-white" aria-hidden="true" />
                             </span>
-                            <p className="font-bold text-[13px] text-card-foreground tracking-tight flex-1">미션 2 · 나의 의견</p>
+                            <p className="font-bold text-[13px] text-card-foreground tracking-tight flex-1">미션 2 · {isLesson ? '나의 주장' : '나의 의견'}</p>
                             {form.choice !== null && form.reason.trim() && <CheckCircle size={16} className="text-primary shrink-0" />}
                         </div>
-                        <p className="text-[12px] font-semibold text-foreground mb-2">이 기사에 대해 어떻게 생각하나요? <span className="text-destructive">*</span></p>
+                        <p className="text-[12px] font-semibold text-foreground mb-2">{claim || (isLesson ? '이 주제에 대한 너의 입장은?' : '이 기사에 대해 어떻게 생각하나요?')} <span className="text-destructive">*</span></p>
                         <div className="space-y-1.5 mb-3" role="radiogroup" aria-label="의견 선택">
                             {news.opinionOptions.map((opt, i) => {
                                 const on = form.choice === i;
@@ -1051,10 +1059,10 @@ function WriteView({ news, form, setForm, submit, coach, coaching, onRedo, onDon
                                 );
                             })}
                         </div>
-                        <p className="text-[12px] font-semibold text-foreground mb-2">그 의견을 선택한 이유는? <span className="text-destructive">*</span></p>
+                        <p className="text-[12px] font-semibold text-foreground mb-2">{isLesson ? '왜 그렇게 생각해? (근거)' : '그 의견을 선택한 이유는?'} <span className="text-destructive">*</span></p>
                         <input type="text"
                             className="w-full p-3 rounded-md border border-input bg-background text-[13px] tracking-tight text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
-                            placeholder="이유를 한 줄로 적어주세요"
+                            placeholder={isLesson ? '지문에서 근거를 찾아 한 줄로 적어줘' : '이유를 한 줄로 적어주세요'}
                             value={form.reason}
                             onChange={(e) => setForm({ ...form, reason: e.target.value })}
                         />
@@ -1069,7 +1077,7 @@ function WriteView({ news, form, setForm, submit, coach, coaching, onRedo, onDon
                             <p className="font-bold text-[13px] text-card-foreground tracking-tight flex-1">미션 3 · 핵심 단어</p>
                             {form.word.trim() && <CheckCircle size={16} className="text-primary shrink-0" />}
                         </div>
-                        <p className="text-[12px] font-semibold text-foreground mb-2">이 기사에서 가장 중요한 단어는? <span className="text-destructive">*</span></p>
+                        <p className="text-[12px] font-semibold text-foreground mb-2">{isLesson ? '가장 중요한 단어는?' : '이 기사에서 가장 중요한 단어는?'} <span className="text-destructive">*</span></p>
                         <input type="text"
                             className="w-full p-3 rounded-md border border-input bg-background text-[13px] tracking-tight text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
                             placeholder="핵심 단어를 하나 적어주세요"
@@ -1113,12 +1121,23 @@ function WriteView({ news, form, setForm, submit, coach, coaching, onRedo, onDon
                             </div>
                         </div>
                     ) : (
-                        /* 제출 버튼 (코치 호출 중이면 로딩) */
-                        <button type="button" onClick={submit} disabled={coaching}
-                            className="w-full py-3.5 rounded-lg font-bold tracking-tight transition-opacity duration-200 flex items-center justify-center gap-2 cursor-pointer press min-h-[52px] bg-primary text-primary-foreground hover:opacity-90 disabled:opacity-60 disabled:cursor-wait">
-                            <Save size={17} aria-hidden="true" />
-                            {coaching ? '코치가 읽는 중…' : (isDone ? '수정 저장하기' : '제출하기')}
-                        </button>
+                        /* 제출 버튼 (코치 호출 중이면 로딩) — 다시 쓰기 + 제출하기 */
+                        <div className="space-y-2">
+                            <div className="flex gap-2">
+                                <button type="button" onClick={clearForm} disabled={coaching}
+                                    className="flex-1 py-3.5 rounded-lg font-bold text-[14px] border border-border bg-card text-muted-foreground hover:bg-accent/30 cursor-pointer press min-h-[52px] disabled:opacity-60">
+                                    다시 쓰기
+                                </button>
+                                <button type="button" onClick={submit} disabled={coaching}
+                                    className="flex-[1.6] py-3.5 rounded-lg font-bold tracking-tight transition-opacity duration-200 flex items-center justify-center gap-2 cursor-pointer press min-h-[52px] bg-primary text-primary-foreground hover:opacity-90 disabled:opacity-60 disabled:cursor-wait">
+                                    <Save size={17} aria-hidden="true" />
+                                    {coaching ? '코치가 읽는 중…' : (isDone ? '수정 저장하기' : '제출하기 →')}
+                                </button>
+                            </div>
+                            {!coaching && (
+                                <p className="text-center text-[11px] text-muted-foreground">제출하면 코치가 등장 🤖</p>
+                            )}
+                        </div>
                     )}
                 </div>
 
