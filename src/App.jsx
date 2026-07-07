@@ -1065,8 +1065,8 @@ function WriteView({ news, form, setForm, submit, coach, coaching, onRedo, onDon
                             })}
                         </div>
                         <p className="text-[14px] font-semibold text-foreground mb-2">{isLesson ? '왜 그렇게 생각해? (근거)' : '그 의견을 선택한 이유는?'} <span className="text-destructive">*</span></p>
-                        <input type="text"
-                            className="w-full p-3 rounded-md border border-input bg-background text-[15px] tracking-tight text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                        <textarea rows={3}
+                            className="w-full p-3 rounded-md border border-input bg-background text-[15px] leading-relaxed tracking-tight text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent resize-none"
                             placeholder={isLesson ? '지문에서 근거를 찾아 한 줄로 적어줘' : '이유를 한 줄로 적어주세요'}
                             value={form.reason}
                             onChange={(e) => setForm({ ...form, reason: e.target.value })}
