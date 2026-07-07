@@ -646,7 +646,7 @@ export default function App() {
       `}>
                 <header className="flex items-center justify-between mb-6 md:mb-8">
                     <div>
-                        <h1 className="text-[20px] sm:text-xl md:text-2xl font-extrabold tracking-tight text-foreground flex items-center gap-2">
+                        <h1 className="text-[20px] sm:text-xl md:text-2xl font-extrabold tracking-tight text-foreground flex items-center gap-2 font-display">
                             Junior Insight
                             <span className="bg-primary text-primary-foreground text-[10.5px] px-1.5 py-px rounded font-bold uppercase tracking-widest">Beta</span>
                         </h1>
@@ -730,7 +730,7 @@ function NewsFeed({ news, weather, loading, error, entries, onMission }) {
                 <div className="flex items-center justify-between mb-4">
                     <div className="flex items-center gap-2">
                         <BookOpen size={18} aria-hidden="true" className="opacity-80" />
-                        <h2 className="text-[19px] sm:text-xl font-bold tracking-tight">{heroTitle}</h2>
+                        <h2 className="text-[19px] sm:text-xl font-bold tracking-tight font-display">{heroTitle}</h2>
                         <time className="text-[17px] sm:text-[19px] font-semibold tabular-nums opacity-80 ml-1">{today}</time>
                     </div>
                     {/* 툴팁 */}
@@ -792,7 +792,7 @@ function NewsFeed({ news, weather, loading, error, entries, onMission }) {
                 const done = doneIds.has(n.id);
                 return (
                     <article key={n.id}
-                        className={`bg-card border rounded-lg p-4 sm:p-5 animate-slide-up transition-colors duration-200
+                        className={`bg-card border rounded-lg p-4 sm:p-5 animate-slide-up transition-all duration-200 elevation-1 hover:elevation-3
                             ${done ? 'border-secondary/40 bg-secondary/5' : 'border-border hover:border-primary/30'}`}
                         style={{ animationDelay: `${i * 60}ms` }}
                     >
@@ -1065,8 +1065,8 @@ function WriteView({ news, form, setForm, submit, coach, coaching, onRedo, onDon
                             })}
                         </div>
                         <p className="text-[14px] font-semibold text-foreground mb-2">{isLesson ? '왜 그렇게 생각해? (근거)' : '그 의견을 선택한 이유는?'} <span className="text-destructive">*</span></p>
-                        <input type="text"
-                            className="w-full p-3 rounded-md border border-input bg-background text-[15px] tracking-tight text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                        <textarea rows={3}
+                            className="w-full p-3 rounded-md border border-input bg-background text-[15px] leading-relaxed tracking-tight text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent resize-none"
                             placeholder={isLesson ? '지문에서 근거를 찾아 한 줄로 적어줘' : '이유를 한 줄로 적어주세요'}
                             value={form.reason}
                             onChange={(e) => setForm({ ...form, reason: e.target.value })}
