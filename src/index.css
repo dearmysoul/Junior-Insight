@@ -1,6 +1,8 @@
-@import "tailwindcss";
+/* Material Design — Roboto (display) + Inter (body) */
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&family=Inter:wght@300;400;500;600;700;800&display=swap");
 /* 한글 가독성 최적 서체 — Pretendard (동적 서브셋) */
 @import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css");
+@import "tailwindcss";
 
 /* ============================================
    JUNIOR INSIGHT — Readability Theme
@@ -9,97 +11,104 @@
    ============================================ */
 
 :root {
+  /* ── Material Design Color Tokens ── */
   --background: oklch(0.9820 0.0030 286);
-  --foreground: oklch(0.2500 0.0180 285);          /* 잉크색 — 본문 대비 ↑ */
-  --card: oklch(1.0000 0 0);
-  --card-foreground: oklch(0.2500 0.0180 285);
+  --foreground: oklch(0.1850 0.0250 265);          /* #111827 — Material text */
+  --card: oklch(1.0000 0 0);                       /* #FFFFFF — Material surface */
+  --card-foreground: oklch(0.1850 0.0250 265);
   --popover: oklch(1.0000 0 0);
-  --popover-foreground: oklch(0.2500 0.0180 285);
-  --primary: oklch(0.5100 0.1900 277);             /* 또렷한 인디고 — CTA·포커스 */
+  --popover-foreground: oklch(0.1850 0.0250 265);
+  --primary: oklch(0.4790 0.2050 305);             /* #6442D6 — Material deep purple */
   --primary-foreground: oklch(0.9900 0 0);
-  --secondary: oklch(0.9250 0.0350 277);
-  --secondary-foreground: oklch(0.3200 0.0800 277);
+  --secondary: oklch(0.8190 0.0880 306);           /* #C8B3FD — Material secondary lavender */
+  --secondary-foreground: oklch(0.2800 0.0900 305);
   --muted: oklch(0.9500 0.0060 286);
-  --muted-foreground: oklch(0.4500 0.0220 285);    /* 보조 텍스트도 읽히게 */
-  --accent: oklch(0.9150 0.0450 255);
-  --accent-foreground: oklch(0.3000 0.0600 260);
-  --destructive: oklch(0.5500 0.2000 25);
+  --muted-foreground: oklch(0.4500 0.0220 285);
+  --accent: oklch(0.9200 0.0500 305);              /* purple-tinted accent surface */
+  --accent-foreground: oklch(0.3000 0.0700 305);
+  --destructive: oklch(0.5350 0.2200 27);          /* #DC2626 — Material danger */
   --destructive-foreground: oklch(0.9900 0 0);
   --border: oklch(0.8800 0.0100 286);
   --input: oklch(0.9400 0.0060 286);
-  --ring: oklch(0.5100 0.1900 277);
-  --chart-1: oklch(0.5100 0.1900 277);
-  --chart-2: oklch(0.6500 0.1500 10);
-  --chart-3: oklch(0.6300 0.1100 170);
-  --chart-4: oklch(0.7500 0.1300 80);
-  --chart-5: oklch(0.6300 0.1200 245);
-  --sidebar: oklch(0.9650 0.0050 286);
-  --sidebar-foreground: oklch(0.2500 0.0180 285);
-  --sidebar-primary: oklch(0.5100 0.1900 277);
+  --ring: oklch(0.4790 0.2050 305);               /* matches primary */
+  --chart-1: oklch(0.4790 0.2050 305);            /* primary purple */
+  --chart-2: oklch(0.6270 0.1730 150);            /* #16A34A — success green */
+  --chart-3: oklch(0.6380 0.1870 63);             /* #D97706 — warning amber */
+  --chart-4: oklch(0.6500 0.1500 10);             /* warm red accent */
+  --chart-5: oklch(0.6300 0.1200 245);            /* blue accent */
+  --sidebar: oklch(0.9650 0.0050 305);
+  --sidebar-foreground: oklch(0.1850 0.0250 265);
+  --sidebar-primary: oklch(0.4790 0.2050 305);
   --sidebar-primary-foreground: oklch(0.9900 0 0);
-  --sidebar-accent: oklch(0.9150 0.0450 255);
-  --sidebar-accent-foreground: oklch(0.3000 0.0600 260);
-  --sidebar-border: oklch(0.9000 0.0080 286);
-  --sidebar-ring: oklch(0.5100 0.1900 277);
-  --font-sans: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", sans-serif;
+  --sidebar-accent: oklch(0.9200 0.0500 305);
+  --sidebar-accent-foreground: oklch(0.3000 0.0700 305);
+  --sidebar-border: oklch(0.9000 0.0080 305);
+  --sidebar-ring: oklch(0.4790 0.2050 305);
+  /* ── Material Typography ── */
+  --font-sans: "Inter", "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", sans-serif;
+  --font-display: "Roboto", "Inter", "Pretendard Variable", Pretendard, sans-serif;
   --font-serif: "Lora", Georgia, serif;
   --font-mono: "Fira Code", "Courier New", monospace;
-  --radius: 0.75rem;
-  --shadow-x: 1px;
-  --shadow-y: 2px;
-  --shadow-blur: 5px;
-  --shadow-spread: 1px;
-  --shadow-opacity: 0.06;
+  /* ── Material Geometry ── */
+  --radius: 0.5rem;                               /* 8px — Material md radius */
+  --radius-sm: 0.25rem;                           /* 4px — Material sm radius */
+  /* ── Material Elevation Shadows ── */
+  --shadow-x: 0px;
+  --shadow-y: 1px;
+  --shadow-blur: 3px;
+  --shadow-spread: 0px;
+  --shadow-opacity: 0.12;
   --shadow-color: hsl(0 0% 0%);
-  --shadow-2xs: 1px 2px 5px 1px hsl(0 0% 0% / 0.03);
-  --shadow-xs: 1px 2px 5px 1px hsl(0 0% 0% / 0.03);
-  --shadow-sm: 1px 2px 5px 1px hsl(0 0% 0% / 0.06), 1px 1px 2px 0px hsl(0 0% 0% / 0.06);
-  --shadow: 1px 2px 5px 1px hsl(0 0% 0% / 0.06), 1px 1px 2px 0px hsl(0 0% 0% / 0.06);
-  --shadow-md: 1px 2px 5px 1px hsl(0 0% 0% / 0.06), 1px 2px 4px 0px hsl(0 0% 0% / 0.06);
-  --shadow-lg: 1px 2px 5px 1px hsl(0 0% 0% / 0.06), 1px 4px 6px 0px hsl(0 0% 0% / 0.06);
-  --shadow-xl: 1px 2px 5px 1px hsl(0 0% 0% / 0.06), 1px 8px 10px 0px hsl(0 0% 0% / 0.06);
-  --shadow-2xl: 1px 2px 5px 1px hsl(0 0% 0% / 0.15);
+  --shadow-2xs: 0 1px 2px 0 hsl(0 0% 0% / 0.05);
+  --shadow-xs:  0 1px 3px 0 hsl(0 0% 0% / 0.10), 0 1px 2px -1px hsl(0 0% 0% / 0.10);
+  --shadow-sm:  0 2px 4px -1px hsl(0 0% 0% / 0.10), 0 1px 3px -1px hsl(0 0% 0% / 0.06);
+  --shadow:     0 4px 6px -1px hsl(0 0% 0% / 0.10), 0 2px 4px -2px hsl(0 0% 0% / 0.10);
+  --shadow-md:  0 4px 8px -2px hsl(0 0% 0% / 0.12), 0 2px 4px -2px hsl(0 0% 0% / 0.08);
+  --shadow-lg:  0 8px 16px -4px hsl(0 0% 0% / 0.12), 0 4px 6px -4px hsl(0 0% 0% / 0.08);
+  --shadow-xl:  0 16px 24px -6px hsl(0 0% 0% / 0.12), 0 8px 12px -6px hsl(0 0% 0% / 0.08);
+  --shadow-2xl: 0 24px 40px -8px hsl(0 0% 0% / 0.18);
   --tracking-normal: 0em;
   --spacing: 0.25rem;
 }
 
 .dark {
   --background: oklch(0.1900 0.0180 282);
-  --foreground: oklch(0.9400 0.0100 286);          /* 대비 ↑ */
+  --foreground: oklch(0.9400 0.0100 286);
   --card: oklch(0.2350 0.0230 282);
   --card-foreground: oklch(0.9400 0.0100 286);
   --popover: oklch(0.2350 0.0230 282);
   --popover-foreground: oklch(0.9400 0.0100 286);
-  --primary: oklch(0.7200 0.1400 277);
-  --primary-foreground: oklch(0.1700 0.0200 282);
-  --secondary: oklch(0.4200 0.0600 277);
+  --primary: oklch(0.7200 0.1600 305);             /* lighter Material purple for dark */
+  --primary-foreground: oklch(0.1700 0.0200 305);
+  --secondary: oklch(0.4200 0.0900 305);           /* muted lavender for dark */
   --secondary-foreground: oklch(0.9400 0.0100 286);
   --muted: oklch(0.2600 0.0250 282);
-  --muted-foreground: oklch(0.7400 0.0200 285);    /* 어두운 배경에서도 읽히게 */
-  --accent: oklch(0.3200 0.0500 260);
-  --accent-foreground: oklch(0.8800 0.0500 250);
-  --destructive: oklch(0.7000 0.1500 22);
+  --muted-foreground: oklch(0.7400 0.0200 285);
+  --accent: oklch(0.3200 0.0600 305);
+  --accent-foreground: oklch(0.8800 0.0600 305);
+  --destructive: oklch(0.7000 0.1800 27);
   --destructive-foreground: oklch(0.1700 0.0200 282);
   --border: oklch(0.3200 0.0220 285);
   --input: oklch(0.2800 0.0250 285);
-  --ring: oklch(0.7200 0.1400 277);
-  --chart-1: oklch(0.7200 0.1400 277);
-  --chart-2: oklch(0.7500 0.1300 10);
-  --chart-3: oklch(0.7300 0.1000 170);
-  --chart-4: oklch(0.8200 0.1200 80);
+  --ring: oklch(0.7200 0.1600 305);
+  --chart-1: oklch(0.7200 0.1600 305);
+  --chart-2: oklch(0.7300 0.1500 150);
+  --chart-3: oklch(0.7500 0.1600 63);
+  --chart-4: oklch(0.7500 0.1300 10);
   --chart-5: oklch(0.7300 0.1100 245);
-  --sidebar: oklch(0.1750 0.0170 282);
+  --sidebar: oklch(0.1750 0.0170 305);
   --sidebar-foreground: oklch(0.9400 0.0100 286);
-  --sidebar-primary: oklch(0.7200 0.1400 277);
-  --sidebar-primary-foreground: oklch(0.1700 0.0200 282);
-  --sidebar-accent: oklch(0.3200 0.0500 260);
-  --sidebar-accent-foreground: oklch(0.8800 0.0500 250);
-  --sidebar-border: oklch(0.2800 0.0250 285);
-  --sidebar-ring: oklch(0.7200 0.1400 277);
-  --font-sans: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", sans-serif;
+  --sidebar-primary: oklch(0.7200 0.1600 305);
+  --sidebar-primary-foreground: oklch(0.1700 0.0200 305);
+  --sidebar-accent: oklch(0.3200 0.0600 305);
+  --sidebar-accent-foreground: oklch(0.8800 0.0600 305);
+  --sidebar-border: oklch(0.2800 0.0250 305);
+  --sidebar-ring: oklch(0.7200 0.1600 305);
+  --font-sans: "Inter", "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", sans-serif;
+  --font-display: "Roboto", "Inter", "Pretendard Variable", Pretendard, sans-serif;
   --font-serif: "Lora", Georgia, serif;
   --font-mono: "Fira Code", "Courier New", monospace;
-  --radius: 0.75rem;
+  --radius: 0.5rem;
   --shadow-x: 1px;
   --shadow-y: 2px;
   --shadow-blur: 5px;
@@ -150,12 +159,13 @@
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
   --font-sans: var(--font-sans);
+  --font-display: var(--font-display);
   --font-mono: var(--font-mono);
   --font-serif: var(--font-serif);
-  --radius-sm: calc(var(--radius) - 4px);
-  --radius-md: calc(var(--radius) - 2px);
-  --radius-lg: var(--radius);
-  --radius-xl: calc(var(--radius) + 4px);
+  --radius-sm: var(--radius-sm);             /* 4px — Material sm */
+  --radius-md: var(--radius);               /* 8px — Material md */
+  --radius-lg: calc(var(--radius) + 4px);   /* 12px */
+  --radius-xl: calc(var(--radius) + 8px);   /* 16px */
   --shadow-2xs: var(--shadow-2xs);
   --shadow-xs: var(--shadow-xs);
   --shadow-sm: var(--shadow-sm);
@@ -188,6 +198,7 @@
     letter-spacing: var(--tracking-normal, 0em);
     word-break: keep-all;
     overflow-wrap: break-word;
+    font-feature-settings: "cv11", "ss01";  /* Inter stylistic sets */
   }
 
   ::selection {
@@ -270,4 +281,17 @@
 
   .progress-fill { transition: width 700ms cubic-bezier(.34,1.56,.64,1); }
   .chart-grow    { transition: height 500ms cubic-bezier(.34,1.56,.64,1); }
+
+  /* Material Display — Roboto for headings/titles */
+  .font-display {
+    font-family: var(--font-display);
+    font-weight: 700;
+    letter-spacing: -0.01em;
+  }
+
+  /* Material elevation helpers */
+  .elevation-1 { box-shadow: var(--shadow-xs); }
+  .elevation-2 { box-shadow: var(--shadow-sm); }
+  .elevation-3 { box-shadow: var(--shadow); }
+  .elevation-4 { box-shadow: var(--shadow-md); }
 }
