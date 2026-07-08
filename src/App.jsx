@@ -652,20 +652,6 @@ export default function App() {
         px-4 pt-4 sm:px-6 sm:pt-6 md:px-8 md:pt-8
         transition-all duration-300
       ">
-                <header className="flex items-center justify-between mb-6 md:mb-8">
-                    <div>
-                        <h1 className="text-[20px] sm:text-xl md:text-2xl font-extrabold tracking-tight text-foreground flex items-center gap-2">
-                            Junior Insight
-                            <span className="bg-primary text-primary-foreground text-[10.5px] px-1.5 py-px rounded font-bold uppercase tracking-widest">Beta</span>
-                        </h1>
-                        <p className="text-muted-foreground text-[14px] sm:text-[15px] mt-0.5 tracking-tight">세상을 보는 눈을 키우는 문해력 성장소</p>
-                    </div>
-                    <div className="flex items-center gap-2 bg-card px-3 py-1.5 rounded-full border border-border">
-                        <img src={`${import.meta.env.BASE_URL}avatar.png`} alt="지율이 아바타"
-                            className="w-7 h-7 rounded-full shrink-0 object-cover bg-accent" />
-                        <span className="text-[15px] font-bold text-card-foreground tracking-tight hidden sm:inline">지율이</span>
-                    </div>
-                </header>
 
                 {tab === 'news' && (
                     <NewsFeed
@@ -732,47 +718,19 @@ function NewsFeed({ news, weather, loading, error, entries, onMission }) {
                 </div>
             )}
 
-            {/* Hero */}
-            <div className="bg-primary text-primary-foreground p-5 sm:p-6 rounded-xl">
-                {/* 상단: 타이틀 + 날짜 + 툴팁 */}
-                <div className="flex items-center justify-between mb-4">
-                    <div className="flex items-center gap-2">
-                        <BookOpen size={18} aria-hidden="true" className="opacity-80" />
-                        <h2 className="text-[19px] sm:text-xl font-bold tracking-tight">{heroTitle}</h2>
-                        <time className="text-[17px] sm:text-[19px] font-semibold tabular-nums opacity-80 ml-1">{today}</time>
-                    </div>
-                    {/* 툴팁 */}
-                    <div className="relative group cursor-default">
-                        <span className="text-[14px] text-primary-foreground/60 border border-primary-foreground/30 rounded-full px-2 py-0.5 hover:text-primary-foreground transition-colors">?</span>
-                        <div className="absolute right-0 top-7 z-50 hidden group-hover:block w-64 bg-foreground text-background text-[13px] leading-relaxed p-3 rounded-lg shadow-lg pointer-events-none">
-                            <p className="font-bold mb-1">📰 뉴스 제공 안내</p>
-                            <p>· Google 뉴스 RSS에서 한국 최신 기사 6개를 가져옵니다.</p>
-                            <p>· 매일 오전 6시 이후 첫 접속 시 새 뉴스로 업데이트됩니다.</p>
-                            <p>· 뉴스 클릭 시 원문 기사로 이동합니다.</p>
-                        </div>
-                    </div>
+            {/* 페이지 타이틀 */}
+            <div className="flex items-end justify-between pb-2 border-b border-border">
+                <div>
+                    <p className="text-[12px] font-bold text-muted-foreground uppercase tracking-widest mb-1">
+                        {weekdayKor}요일{lesson ? ` · ${lesson.subject}` : ''}
+                    </p>
+                    <h2 className="text-[22px] sm:text-2xl font-extrabold tracking-tight text-foreground">{heroTitle}</h2>
                 </div>
-
-                {/* 하단: 미션 안내 영역 */}
-                <div className={`rounded-lg p-3 flex items-center gap-3 ${isTodayDone ? 'bg-white/15' : 'bg-white/10'}`}>
-                    {isTodayDone ? (
-                        <>
-                            <CheckCircle size={22} className="shrink-0 text-white" aria-hidden="true" />
-                            <div>
-                                <p className="font-bold text-[16px] tracking-tight">오늘 미션 완료! 🎉</p>
-                                <p className="text-[13px] text-primary-foreground/70">훌륭해요! 내일도 도전해보세요.</p>
-                            </div>
-                        </>
-                    ) : (
-                        <>
-                            <Target size={22} className="shrink-0 opacity-90" aria-hidden="true" />
-                            <div>
-                                <p className="font-bold text-[16px] tracking-tight">오늘의 미션을 완료하세요</p>
-                                <p className="text-[13px] text-primary-foreground/70">{heroSub}</p>
-                            </div>
-                        </>
-                    )}
-                </div>
+                {isTodayDone && (
+                    <span className="inline-flex items-center gap-1.5 text-[13px] font-semibold text-secondary pb-0.5">
+                        <CheckCircle size={14} aria-hidden="true" /> 오늘 완료
+                    </span>
+                )}
             </div>
 
             {/* Loading */}
@@ -1025,15 +983,6 @@ function WriteView({ news, form, setForm, submit, coach, coaching, onRedo, onDon
 
                 {/* ══ 우측: 미션 입력 영역 ══ */}
                 <div className="w-full md:flex-1 space-y-3">
-                    {/* 미션 안내 배너 */}
-                    <div className="bg-accent border border-border p-3 rounded-lg flex items-center gap-3">
-                        <Sparkles size={16} className="text-primary shrink-0" aria-hidden="true" />
-                        <div>
-                            <p className="font-bold text-foreground text-[15px] tracking-tight">오늘의 미션</p>
-                            <p className="text-[13px] text-muted-foreground">3가지를 모두 작성하면 완료! 🎉</p>
-                        </div>
-                    </div>
-
                     {/* 미션 1: 한 문장 요약 */}
                     <div className="bg-card border border-border rounded-lg p-4">
                         <div className="flex items-center gap-2.5 mb-3">
