@@ -614,36 +614,44 @@ export default function App() {
             <nav className="
         fixed z-40
         bottom-0 left-0 right-0 h-14
-        md:top-0 md:bottom-0 md:right-auto md:w-16 md:h-screen
+        md:top-0 md:bottom-0 md:right-auto md:w-52 md:h-screen
         bg-card/95 backdrop-blur-md
         border-t border-border md:border-t-0 md:border-r
-        flex md:flex-col items-center justify-around md:justify-start md:pt-6 md:gap-2
+        flex md:flex-col items-center justify-around md:justify-start md:pt-5 md:px-3 md:gap-1
       " role="navigation" aria-label="메인 내비게이션">
-                <span className="hidden md:flex items-center justify-center w-9 h-9 rounded-lg bg-primary text-primary-foreground font-black text-base mb-6">J</span>
+                {/* 데스크톱 브랜드 */}
+                <div className="hidden md:flex items-center gap-2.5 w-full px-1 mb-6">
+                    <span className="flex items-center justify-center w-8 h-8 rounded-lg bg-primary text-primary-foreground font-black text-[15px] shrink-0">J</span>
+                    <div className="min-w-0">
+                        <p className="text-[13px] font-extrabold text-card-foreground leading-none tracking-tight">Junior Insight</p>
+                        <p className="text-[11px] font-medium text-muted-foreground leading-none mt-0.5">문해력 성장소</p>
+                    </div>
+                </div>
                 {navItems.map(({ id, Icon, label }) => {
                     const active = tab === id || (id === 'news' && tab === 'write');
                     return (
                         <button key={id} onClick={() => goTab(id)}
                             className={`
-                flex flex-col items-center justify-center gap-0.5 rounded-lg cursor-pointer
-                w-14 h-11 md:w-12 md:h-11 transition-colors duration-200
+                flex flex-col md:flex-row items-center justify-center md:justify-start
+                gap-0.5 md:gap-3 rounded-lg cursor-pointer
+                w-14 h-11 md:w-full md:h-10 md:px-3
+                transition-colors duration-200
                 ${active ? 'bg-primary/12 text-primary' : 'text-muted-foreground hover:text-foreground hover:bg-accent/30'}
               `}
                             aria-label={label} aria-current={active ? 'page' : undefined}
                         >
                             <Icon size={20} strokeWidth={active ? 2.4 : 1.8} aria-hidden="true" />
-                            <span className="text-[11.5px] font-medium leading-none md:sr-only">{label}</span>
+                            <span className="text-[11.5px] md:text-[14px] font-medium leading-none">{label}</span>
                         </button>
                     );
                 })}
             </nav>
 
-            <main className={`
-        pb-20 md:pb-8 md:ml-16
+            <main className="
+        pb-20 md:pb-8 md:ml-52
         px-4 pt-4 sm:px-6 sm:pt-6 md:px-8 md:pt-8
-        mx-auto transition-all duration-300
-        ${tab === 'write' ? 'max-w-5xl' : 'max-w-3xl'}
-      `}>
+        transition-all duration-300
+      ">
                 <header className="flex items-center justify-between mb-6 md:mb-8">
                     <div>
                         <h1 className="text-[20px] sm:text-xl md:text-2xl font-extrabold tracking-tight text-foreground flex items-center gap-2">
@@ -788,11 +796,13 @@ function NewsFeed({ news, weather, loading, error, entries, onMission }) {
             )}
 
             {/* Cards */}
-            {!loading && news.map((n, i) => {
+            {!loading && (
+            <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4">
+            {news.map((n, i) => {
                 const done = doneIds.has(n.id);
                 return (
                     <article key={n.id}
-                        className={`bg-card border rounded-lg p-4 sm:p-5 animate-slide-up transition-colors duration-200
+                        className={`bg-card border rounded-lg p-4 sm:p-5 animate-slide-up transition-colors duration-200 flex flex-col
                             ${done ? 'border-secondary/40 bg-secondary/5' : 'border-border hover:border-primary/30'}`}
                         style={{ animationDelay: `${i * 60}ms` }}
                     >
@@ -809,14 +819,14 @@ function NewsFeed({ news, weather, loading, error, entries, onMission }) {
                         {/* 제목 → 클릭 시 상세(요약+미션) 화면으로 이동 */}
                         <button
                             onClick={() => onMission(n)}
-                            className="block w-full text-left text-[17px] sm:text-[18px] font-bold text-card-foreground leading-snug tracking-tight hover:text-primary transition-colors duration-200 mb-3 cursor-pointer"
+                            className="block w-full text-left text-[17px] sm:text-[18px] font-bold text-card-foreground leading-snug tracking-tight hover:text-primary transition-colors duration-200 mb-3 cursor-pointer flex-1"
                             aria-label={`${n.title} 읽기 및 미션`}
                         >
                             {n.title}
                         </button>
 
                         {/* 하단: 출처 */}
-                        <div className="flex items-center justify-between">
+                        <div className="flex items-center justify-between mt-auto">
                             <span className="text-[13px] text-muted-foreground">
                                 {n.source}{n.country ? ` · ${n.country}` : ''}
                             </span>
@@ -828,6 +838,8 @@ function NewsFeed({ news, weather, loading, error, entries, onMission }) {
                     </article>
                 );
             })}
+            </div>
+            )}
         </div>
     );
 }
@@ -1065,9 +1077,10 @@ function WriteView({ news, form, setForm, submit, coach, coaching, onRedo, onDon
                             })}
                         </div>
                         <p className="text-[14px] font-semibold text-foreground mb-2">{isLesson ? '왜 그렇게 생각해? (근거)' : '그 의견을 선택한 이유는?'} <span className="text-destructive">*</span></p>
-                        <input type="text"
-                            className="w-full p-3 rounded-md border border-input bg-background text-[15px] tracking-tight text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
-                            placeholder={isLesson ? '지문에서 근거를 찾아 한 줄로 적어줘' : '이유를 한 줄로 적어주세요'}
+                        <textarea
+                            rows={3}
+                            className="w-full p-3 rounded-md border border-input bg-background text-[15px] tracking-tight text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent resize-none leading-relaxed"
+                            placeholder={isLesson ? '지문에서 근거를 찾아 적어줘' : '이유를 자세히 적어주세요'}
                             value={form.reason}
                             onChange={(e) => setForm({ ...form, reason: e.target.value })}
                         />
