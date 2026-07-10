@@ -256,6 +256,52 @@ async function fetchGoogleNews() {
 const LEVEL_TITLES = ['', '새싹', '탐험가', '기자', '논설가', '편집장'];
 
 /* ──────────────────────────────────────────────
+   HANJA TOOLTIP
+   ────────────────────────────────────────────── */
+function HanjaTooltip({ term, children }) {
+    const [open, setOpen] = useState(false);
+    return (
+        <span className="relative inline">
+            <button
+                type="button"
+                onClick={(e) => { e.stopPropagation(); setOpen((o) => !o); }}
+                className="underline decoration-dotted decoration-primary underline-offset-2 text-primary/90 font-medium cursor-pointer"
+                aria-expanded={open}
+            >
+                {children}
+            </button>
+            {open && (
+                <span
+                    role="tooltip"
+                    className="absolute bottom-full left-0 z-20 bg-card border border-border rounded-lg p-2.5 shadow-lg w-56 leading-relaxed pointer-events-none"
+                >
+                    <span className="block font-bold text-[14px] text-foreground">{term.hanja}</span>
+                    <span className="block text-[12px] text-muted-foreground mt-0.5">{term.gloss}</span>
+                </span>
+            )}
+        </span>
+    );
+}
+
+/** 텍스트에서 hanjaTerms 단어를 찾아 툴팁으로 교체 */
+function HanjaText({ text, terms }) {
+    if (!terms || terms.length === 0) return <>{text}</>;
+    const escaped = terms.map((t) => t.word.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'));
+    const re = new RegExp(`(${escaped.join('|')})`, 'g');
+    const parts = text.split(re);
+    return (
+        <>
+            {parts.map((part, i) => {
+                const match = terms.find((t) => t.word === part);
+                return match
+                    ? <HanjaTooltip key={i} term={match}>{part}</HanjaTooltip>
+                    : <span key={i}>{part}</span>;
+            })}
+        </>
+    );
+}
+
+/* ──────────────────────────────────────────────
    SMALL COMPONENTS
    ────────────────────────────────────────────── */
 function Badge({ category }) {
@@ -362,9 +408,11 @@ export default function App() {
     // 3가지 입력 모두 필수
     const [form, setForm] = useState({ summary: '', choice: null, reason: '', word: '' });
     // AI 코치 — 제출 후 피드백(피드백 있으면 화면 유지, 다시쓰기 가능)
-    const [coach, setCoach] = useState(null);       // { feedback, followup, scores } | null
-    const [coaching, setCoaching] = useState(false); // 코치 호출 중
-    const [lastEntry, setLastEntry] = useState(null); // 스파링 재반박 저장용 최근 entry
+    const [coach, setCoach] = useState(null);           // { feedback, followup, scores } | null
+    const [coaching, setCoaching] = useState(false);    // 코치 호출 중
+    const [coachReaction, setCoachReaction] = useState(null);       // 코치 followup 답장 반응 (string)
+    const [followupReacting, setFollowupReacting] = useState(false); // followup 답장 호출 중
+    const [lastEntry, setLastEntry] = useState(null);   // 스파링 재반박 저장용 최근 entry
 
     /* ── Google News 실시간 fetch ── */
     const [news, setNews] = useState([]);
@@ -577,15 +625,41 @@ export default function App() {
     // 코치 피드백 보고 다시 도전 (입력값 유지)
     const redoMission = useCallback(() => {
         setCoach(null);
+        setCoachReaction(null);
         window.scrollTo({ top: 0, behavior: 'smooth' });
     }, []);
     // 완료하고 뉴스 목록으로
     const finishMission = useCallback(() => {
         setCoach(null);
+        setCoachReaction(null);
         setForm({ summary: '', choice: null, reason: '', word: '' });
         setTab('news');
         window.scrollTo({ top: 0, behavior: 'smooth' });
     }, []);
+
+    // 코치 followup 질문에 아이가 답할 때 — 짧은 반응 + 보너스 XP
+    const onFollowupReply = useCallback(async (replyText, followupQ) => {
+        if (!replyText.trim() || !selected) return;
+        setFollowupReacting(true);
+        try {
+            const r = await fetch('/api/coach', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    followupReply: replyText,
+                    followup: followupQ,
+                    articleTitle: selected.title,
+                }),
+            }).then((x) => (x.ok ? x.json() : null)).catch(() => null);
+            if (r && r.reaction) {
+                setCoachReaction(r.reaction);
+                setStats((p) => { const next = { ...p, xp: p.xp + 3 }; saveStats(next); return next; });
+                flash('잘 답했어! +3 XP');
+            }
+        } finally {
+            setFollowupReacting(false);
+        }
+    }, [selected, flash]);
 
     // 스파링 완료 — 재반박 저장 + 보너스 XP
     const onSparComplete = useCallback((rebuttal, won) => {
@@ -671,6 +745,9 @@ export default function App() {
                         submit={submit}
                         coach={coach}
                         coaching={coaching}
+                        coachReaction={coachReaction}
+                        followupReacting={followupReacting}
+                        onFollowupReply={onFollowupReply}
                         onRedo={redoMission}
                         onDone={finishMission}
                         onSparComplete={onSparComplete}
@@ -877,11 +954,13 @@ function SparPanel({ news, form, onComplete }) {
     );
 }
 
-function WriteView({ news, form, setForm, submit, coach, coaching, onRedo, onDone, onSparComplete, goBack, isDone }) {
+function WriteView({ news, form, setForm, submit, coach, coaching, coachReaction, followupReacting, onFollowupReply, onRedo, onDone, onSparComplete, goBack, isDone }) {
     const isLesson = news.type === 'lesson';
-    const textNoun = isLesson ? '지문' : '기사';           // "지문"/"기사"
-    const claim = news.argument?.claim;                    // "나의 주장" 쟁점 질문
+    const textNoun = isLesson ? '지문' : '기사';
+    const claim = news.argument?.claim;
     const clearForm = () => setForm({ summary: '', choice: null, reason: '', word: '' });
+    const [followupText, setFollowupText] = useState('');
+    useEffect(() => { if (!coach) setFollowupText(''); }, [coach]);
     return (
         <div className="animate-slide-right pb-20 md:pb-0">
             {/* 뒤로가기 */}
@@ -926,7 +1005,7 @@ function WriteView({ news, form, setForm, submit, coach, coaching, onRedo, onDon
                                 </p>
                                 <div className="text-[16px] text-foreground leading-[1.9] tracking-tight space-y-3">
                                     {news.summary_kor.split('\n').filter(p => p.trim()).map((para, pi) => (
-                                        <p key={pi}>{para.trim()}</p>
+                                        <p key={pi}><HanjaText text={para.trim()} terms={news.hanjaTerms} /></p>
                                     ))}
                                 </div>
                             </div>
@@ -1058,10 +1137,9 @@ function WriteView({ news, form, setForm, submit, coach, coaching, onRedo, onDon
                         <div className="space-y-3 animate-slide-up">
                             <div className="bg-accent/40 border border-border rounded-xl p-4 flex gap-3">
                                 <img src={`${import.meta.env.BASE_URL}avatar.png`} alt="코치" className="w-9 h-9 rounded-full shrink-0 object-cover bg-accent" />
-                                <div className="min-w-0">
+                                <div className="min-w-0 w-full">
                                     <p className="text-[15px] font-bold text-foreground">🤖 코치 형</p>
                                     {coach.feedback && <p className="text-[15px] text-foreground mt-1 leading-relaxed">{coach.feedback}</p>}
-                                    {coach.followup && <p className="text-[15px] text-primary font-medium mt-2 leading-relaxed">💬 {coach.followup}</p>}
                                     {coach.scores && (
                                         <div className="flex gap-2 mt-3">
                                             {[['요약 명료성', coach.scores.clarity], ['근거 구체성', coach.scores.evidence], ['어휘 정확성', coach.scores.vocab]].map(([lbl, val]) => (
@@ -1070,6 +1148,36 @@ function WriteView({ news, form, setForm, submit, coach, coaching, onRedo, onDon
                                                     <p className="text-[11px] text-muted-foreground font-semibold mt-1 tracking-tight">{lbl}</p>
                                                 </div>
                                             ))}
+                                        </div>
+                                    )}
+                                    {/* followup 질문 + 답장 UI */}
+                                    {coach.followup && (
+                                        <div className="mt-3 space-y-2">
+                                            <p className="text-[15px] text-primary font-medium leading-relaxed">💬 {coach.followup}</p>
+                                            {!coachReaction ? (
+                                                <>
+                                                    <textarea
+                                                        rows={2}
+                                                        value={followupText}
+                                                        onChange={(e) => setFollowupText(e.target.value)}
+                                                        placeholder="코치 질문에 답해봐…"
+                                                        className="w-full p-3 rounded-md border border-input bg-background text-[15px] leading-relaxed text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary resize-none"
+                                                    />
+                                                    <button
+                                                        type="button"
+                                                        onClick={() => onFollowupReply(followupText, coach.followup)}
+                                                        disabled={followupReacting || !followupText.trim()}
+                                                        className="w-full py-2.5 rounded-lg font-bold text-[15px] bg-primary text-primary-foreground hover:opacity-90 cursor-pointer press min-h-[44px] disabled:opacity-50 disabled:cursor-not-allowed"
+                                                    >
+                                                        {followupReacting ? '코치가 읽는 중…' : '답하기 →'}
+                                                    </button>
+                                                </>
+                                            ) : (
+                                                <div className="flex gap-2 pt-1">
+                                                    <span className="w-7 h-7 rounded-full shrink-0 bg-gradient-to-br from-primary to-primary/60 flex items-center justify-center text-[14px]">🤖</span>
+                                                    <p className="text-[15px] text-foreground leading-relaxed">{coachReaction}</p>
+                                                </div>
+                                            )}
                                         </div>
                                     )}
                                 </div>
