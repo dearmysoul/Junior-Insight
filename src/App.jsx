@@ -488,6 +488,7 @@ export default function App() {
                     checkQuestion: selected.checkQuestion,
                     summary: form.summary, choice: form.choice,
                     reason: form.reason, word: form.word,
+                    opinionOptions: selected.opinionOptions,
                 }),
             }).then(x => (x.ok ? x.json() : null)).catch(() => null);
             if (r && r.scores) coachResult = r;   // disabled/error/coach_failed는 무시

@@ -65,6 +65,7 @@ export default async function handler(req, res) {
     const passage = String(b.summaryKor || b.detail || '').slice(0, 4000);
     const checkQ = String(b.checkQuestion || '').slice(0, 500);
     const choice = Number.isInteger(b.choice) ? b.choice : null;
+    const opinionOptions = Array.isArray(b.opinionOptions) ? b.opinionOptions : null;
     if (!summary || choice === null || !reason || !word) {
         return res.status(400).json({ error: 'missing_fields' });
     }
@@ -81,7 +82,7 @@ export default async function handler(req, res) {
                 content: `[지문/기사] ${title}
 ${passage ? `[본문] ${passage}\n` : ''}${checkQ ? `[되물음 시드] ${checkQ}\n` : ''}--- 아이가 쓴 것 ---
 ① 한 문장 요약: ${summary}
-② 의견: ${OPINIONS[choice] ?? '기타'} / 이유: ${reason}
+② 의견(선택): ${(opinionOptions ?? OPINIONS)[choice] ?? '기타'} / 이유: ${reason}
 ③ 핵심 단어: ${word}
 
 세 가지를 채점하고, 가장 약한 부분 하나만 골라 되물어라.`,
