@@ -9,111 +9,103 @@
    ============================================ */
 
 :root {
-  --background: oklch(0.9820 0.0030 286);
-  --foreground: oklch(0.2500 0.0180 285);          /* 잉크색 — 본문 대비 ↑ */
-  --card: oklch(1.0000 0 0);
-  --card-foreground: oklch(0.2500 0.0180 285);
-  --popover: oklch(1.0000 0 0);
-  --popover-foreground: oklch(0.2500 0.0180 285);
-  --primary: oklch(0.5100 0.1900 277);             /* 또렷한 인디고 — CTA·포커스 */
-  --primary-foreground: oklch(0.9900 0 0);
-  --secondary: oklch(0.9250 0.0350 277);
-  --secondary-foreground: oklch(0.3200 0.0800 277);
-  --muted: oklch(0.9500 0.0060 286);
-  --muted-foreground: oklch(0.4500 0.0220 285);    /* 보조 텍스트도 읽히게 */
-  --accent: oklch(0.9150 0.0450 255);
-  --accent-foreground: oklch(0.3000 0.0600 260);
-  --destructive: oklch(0.5500 0.2000 25);
-  --destructive-foreground: oklch(0.9900 0 0);
-  --border: oklch(0.8800 0.0100 286);
-  --input: oklch(0.9400 0.0060 286);
-  --ring: oklch(0.5100 0.1900 277);
-  --chart-1: oklch(0.5100 0.1900 277);
-  --chart-2: oklch(0.6500 0.1500 10);
-  --chart-3: oklch(0.6300 0.1100 170);
-  --chart-4: oklch(0.7500 0.1300 80);
-  --chart-5: oklch(0.6300 0.1200 245);
-  --sidebar: oklch(0.9650 0.0050 286);
-  --sidebar-foreground: oklch(0.2500 0.0180 285);
-  --sidebar-primary: oklch(0.5100 0.1900 277);
-  --sidebar-primary-foreground: oklch(0.9900 0 0);
-  --sidebar-accent: oklch(0.9150 0.0450 255);
-  --sidebar-accent-foreground: oklch(0.3000 0.0600 260);
-  --sidebar-border: oklch(0.9000 0.0080 286);
-  --sidebar-ring: oklch(0.5100 0.1900 277);
-  --font-sans: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", sans-serif;
+  /* UX Growth Studio 참고 — 차분한 세이지/틸 에디토리얼 팔레트 */
+  --background: #f4f6f3;                 /* 세이지 오프화이트 */
+  --foreground: #242824;                 /* 잉크 — 강한 본문 대비 */
+  --card: #ffffff;
+  --card-foreground: #242824;
+  --popover: #ffffff;
+  --popover-foreground: #242824;
+  --primary: #276b62;                    /* 딥 틸 — CTA·히어로·포커스 */
+  --primary-foreground: #ffffff;
+  --secondary: #e5f0ed;                  /* 틸 소프트 */
+  --secondary-foreground: #164940;
+  --muted: #f0f3ef;                      /* 표면 소프트 */
+  --muted-foreground: #5b6459;           /* 보조 텍스트도 또렷하게 */
+  --accent: #e5f0ed;                     /* 강조 배경 틴트 */
+  --accent-foreground: #164940;
+  --destructive: #b04a34;                /* 클레이 레드 — 경고 */
+  --destructive-foreground: #ffffff;
+  --border: #d9e0d8;                     /* 세이지 보더 */
+  --input: #f8faf8;
+  --ring: #276b62;
+  --chart-1: #276b62;                    /* teal */
+  --chart-2: #38618c;                    /* blue */
+  --chart-3: #8f7a2b;                    /* yellow */
+  --chart-4: #8e624e;                    /* clay */
+  --chart-5: #4f7a5c;                    /* green */
+  --sidebar: #edf3ee;
+  --sidebar-foreground: #242824;
+  --sidebar-primary: #276b62;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #e5f0ed;
+  --sidebar-accent-foreground: #164940;
+  --sidebar-border: #d9e0d8;
+  --sidebar-ring: #276b62;
+  --font-sans: "Pretendard Variable", Pretendard, "Noto Sans KR", -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
   --font-serif: "Lora", Georgia, serif;
   --font-mono: "Fira Code", "Courier New", monospace;
-  --radius: 0.75rem;
-  --shadow-x: 1px;
-  --shadow-y: 2px;
-  --shadow-blur: 5px;
-  --shadow-spread: 1px;
-  --shadow-opacity: 0.06;
-  --shadow-color: hsl(0 0% 0%);
-  --shadow-2xs: 1px 2px 5px 1px hsl(0 0% 0% / 0.03);
-  --shadow-xs: 1px 2px 5px 1px hsl(0 0% 0% / 0.03);
-  --shadow-sm: 1px 2px 5px 1px hsl(0 0% 0% / 0.06), 1px 1px 2px 0px hsl(0 0% 0% / 0.06);
-  --shadow: 1px 2px 5px 1px hsl(0 0% 0% / 0.06), 1px 1px 2px 0px hsl(0 0% 0% / 0.06);
-  --shadow-md: 1px 2px 5px 1px hsl(0 0% 0% / 0.06), 1px 2px 4px 0px hsl(0 0% 0% / 0.06);
-  --shadow-lg: 1px 2px 5px 1px hsl(0 0% 0% / 0.06), 1px 4px 6px 0px hsl(0 0% 0% / 0.06);
-  --shadow-xl: 1px 2px 5px 1px hsl(0 0% 0% / 0.06), 1px 8px 10px 0px hsl(0 0% 0% / 0.06);
-  --shadow-2xl: 1px 2px 5px 1px hsl(0 0% 0% / 0.15);
+  --radius: 0.5rem;                      /* 8px — 레퍼런스와 동일 */
+  --shadow-color: 29 44 34;              /* 그린 톤 그림자 */
+  --shadow-2xs: 0 1px 2px rgb(var(--shadow-color) / 0.04);
+  --shadow-xs: 0 2px 6px rgb(var(--shadow-color) / 0.05);
+  --shadow-sm: 0 6px 16px rgb(var(--shadow-color) / 0.06);
+  --shadow: 0 10px 28px rgb(var(--shadow-color) / 0.07);
+  --shadow-md: 0 14px 36px rgb(var(--shadow-color) / 0.08);
+  --shadow-lg: 0 18px 45px rgb(var(--shadow-color) / 0.08);
+  --shadow-xl: 0 24px 60px rgb(var(--shadow-color) / 0.10);
+  --shadow-2xl: 0 30px 70px rgb(var(--shadow-color) / 0.14);
   --tracking-normal: 0em;
   --spacing: 0.25rem;
 }
 
 .dark {
-  --background: oklch(0.1900 0.0180 282);
-  --foreground: oklch(0.9400 0.0100 286);          /* 대비 ↑ */
-  --card: oklch(0.2350 0.0230 282);
-  --card-foreground: oklch(0.9400 0.0100 286);
-  --popover: oklch(0.2350 0.0230 282);
-  --popover-foreground: oklch(0.9400 0.0100 286);
-  --primary: oklch(0.7200 0.1400 277);
-  --primary-foreground: oklch(0.1700 0.0200 282);
-  --secondary: oklch(0.4200 0.0600 277);
-  --secondary-foreground: oklch(0.9400 0.0100 286);
-  --muted: oklch(0.2600 0.0250 282);
-  --muted-foreground: oklch(0.7400 0.0200 285);    /* 어두운 배경에서도 읽히게 */
-  --accent: oklch(0.3200 0.0500 260);
-  --accent-foreground: oklch(0.8800 0.0500 250);
-  --destructive: oklch(0.7000 0.1500 22);
-  --destructive-foreground: oklch(0.1700 0.0200 282);
-  --border: oklch(0.3200 0.0220 285);
-  --input: oklch(0.2800 0.0250 285);
-  --ring: oklch(0.7200 0.1400 277);
-  --chart-1: oklch(0.7200 0.1400 277);
-  --chart-2: oklch(0.7500 0.1300 10);
-  --chart-3: oklch(0.7300 0.1000 170);
-  --chart-4: oklch(0.8200 0.1200 80);
-  --chart-5: oklch(0.7300 0.1100 245);
-  --sidebar: oklch(0.1750 0.0170 282);
-  --sidebar-foreground: oklch(0.9400 0.0100 286);
-  --sidebar-primary: oklch(0.7200 0.1400 277);
-  --sidebar-primary-foreground: oklch(0.1700 0.0200 282);
-  --sidebar-accent: oklch(0.3200 0.0500 260);
-  --sidebar-accent-foreground: oklch(0.8800 0.0500 250);
-  --sidebar-border: oklch(0.2800 0.0250 285);
-  --sidebar-ring: oklch(0.7200 0.1400 277);
-  --font-sans: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", sans-serif;
+  /* 다크 — 딥 그린/틸 톤으로 조화 (대비 유지) */
+  --background: #131a17;
+  --foreground: #e8ede9;
+  --card: #1a221e;
+  --card-foreground: #e8ede9;
+  --popover: #1a221e;
+  --popover-foreground: #e8ede9;
+  --primary: #5cbfae;                    /* 밝은 틸 — 어두운 배경에서 또렷 */
+  --primary-foreground: #0e1613;
+  --secondary: #24312c;
+  --secondary-foreground: #e8ede9;
+  --muted: #1e2723;
+  --muted-foreground: #a3b0a8;
+  --accent: #24322d;
+  --accent-foreground: #bfe6dc;
+  --destructive: #d9765c;
+  --destructive-foreground: #0e1613;
+  --border: #2c3833;
+  --input: #232d29;
+  --ring: #5cbfae;
+  --chart-1: #5cbfae;
+  --chart-2: #6f9fd0;
+  --chart-3: #cbb463;
+  --chart-4: #cf9a80;
+  --chart-5: #7fb98d;
+  --sidebar: #111815;
+  --sidebar-foreground: #e8ede9;
+  --sidebar-primary: #5cbfae;
+  --sidebar-primary-foreground: #0e1613;
+  --sidebar-accent: #24322d;
+  --sidebar-accent-foreground: #bfe6dc;
+  --sidebar-border: #232d29;
+  --sidebar-ring: #5cbfae;
+  --font-sans: "Pretendard Variable", Pretendard, "Noto Sans KR", -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
   --font-serif: "Lora", Georgia, serif;
   --font-mono: "Fira Code", "Courier New", monospace;
-  --radius: 0.75rem;
-  --shadow-x: 1px;
-  --shadow-y: 2px;
-  --shadow-blur: 5px;
-  --shadow-spread: 1px;
-  --shadow-opacity: 0.06;
-  --shadow-color: hsl(0 0% 0%);
-  --shadow-2xs: 1px 2px 5px 1px hsl(0 0% 0% / 0.03);
-  --shadow-xs: 1px 2px 5px 1px hsl(0 0% 0% / 0.03);
-  --shadow-sm: 1px 2px 5px 1px hsl(0 0% 0% / 0.06), 1px 1px 2px 0px hsl(0 0% 0% / 0.06);
-  --shadow: 1px 2px 5px 1px hsl(0 0% 0% / 0.06), 1px 1px 2px 0px hsl(0 0% 0% / 0.06);
-  --shadow-md: 1px 2px 5px 1px hsl(0 0% 0% / 0.06), 1px 2px 4px 0px hsl(0 0% 0% / 0.06);
-  --shadow-lg: 1px 2px 5px 1px hsl(0 0% 0% / 0.06), 1px 4px 6px 0px hsl(0 0% 0% / 0.06);
-  --shadow-xl: 1px 2px 5px 1px hsl(0 0% 0% / 0.06), 1px 8px 10px 0px hsl(0 0% 0% / 0.06);
-  --shadow-2xl: 1px 2px 5px 1px hsl(0 0% 0% / 0.15);
+  --radius: 0.5rem;
+  --shadow-color: 0 0 0;
+  --shadow-2xs: 0 1px 2px rgb(0 0 0 / 0.20);
+  --shadow-xs: 0 2px 6px rgb(0 0 0 / 0.25);
+  --shadow-sm: 0 6px 16px rgb(0 0 0 / 0.30);
+  --shadow: 0 10px 28px rgb(0 0 0 / 0.32);
+  --shadow-md: 0 14px 36px rgb(0 0 0 / 0.36);
+  --shadow-lg: 0 18px 45px rgb(0 0 0 / 0.40);
+  --shadow-xl: 0 24px 60px rgb(0 0 0 / 0.45);
+  --shadow-2xl: 0 30px 70px rgb(0 0 0 / 0.55);
 }
 
 @theme inline {
