@@ -187,10 +187,19 @@ async function main() {
     if (plan.mode === 'lesson') {
         const lesson = await generateLesson(plan, today);
         if (lesson) {
-            articles = [lesson];
             subjectOfDay = plan.subject;
-            try { weather = await fetchWeather(); } catch { weather = null; } // 실제 서울 날씨만
-            console.log(`📘 교과 생성 완료 — ${plan.subject} · ${plan.unit.code}`);
+            // 지문 + 뉴스 두 트랙을 함께 제공(앱에서 토글). 뉴스 실패해도 지문은 유지.
+            let newsArticles = [];
+            try {
+                const nb = await buildNews();
+                weather = nb.weather;            // buildNews가 실제 서울 날씨(open-meteo) 조회
+                newsArticles = nb.articles;
+            } catch (e) {
+                console.warn('⚠️ 뉴스 트랙 수집 실패(지문만 제공):', e && e.message);
+                try { weather = await fetchWeather(); } catch { weather = null; }
+            }
+            articles = [lesson, ...newsArticles];   // 지문을 항상 첫 카드로
+            console.log(`📘 교과 생성 완료 — ${plan.subject} · ${plan.unit.code} (+뉴스 ${newsArticles.length})`);
         } else {
             console.log('↩️ 교과 생성 불가(키 미등록/검증 실패) → 뉴스 폴백');
         }
