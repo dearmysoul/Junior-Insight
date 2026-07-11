@@ -1294,6 +1294,14 @@ function GrowthMirror({ entries }) {
     };
     const earlyScore = avgScore(earlyEntries);
     const recentScore = avgScore(recentEntries);
+    // 차원별(명료성·근거·어휘) 처음→최근 평균 — 코치 점수 있는 항목만
+    const avgDim = (list, key) => {
+        const scored = list.filter((e) => e.scoreClarity != null);
+        if (!scored.length) return null;
+        return Math.round(scored.reduce((a, e) => a + (e[key] ?? 0), 0) / scored.length * 10) / 10;
+    };
+    const dimRows = [['명료성', 'scoreClarity'], ['근거', 'scoreEvidence'], ['어휘', 'scoreVocab']]
+        .map(([label, key]) => ({ label, early: avgDim(earlyEntries, key), recent: avgDim(recentEntries, key) }));
     const firstSummary = earlyEntries[0]?.summary || '';
     const lastSummary = recentEntries[recentEntries.length - 1]?.summary || '';
 
@@ -1335,6 +1343,31 @@ function GrowthMirror({ entries }) {
                     <TrendingUp size={20} className={recentScore >= earlyScore ? 'text-secondary' : 'text-muted-foreground'} aria-hidden="true" />
                     <div><p className="text-[11.5px] text-primary font-semibold">최근</p><p className="text-xl font-extrabold tabular-nums text-primary">{recentScore}<span className="text-[13px]">/15</span></p></div>
                     {recentScore > earlyScore && <span className="text-[14px] font-bold text-secondary">+{recentScore - earlyScore} ↑</span>}
+                </div>
+            )}
+
+            {/* 차원별 성장 (처음 → 최근) — 코치 점수 있을 때 */}
+            {earlyScore != null && recentScore != null && (
+                <div className="space-y-1.5 mb-3">
+                    <p className="text-[11.5px] font-bold text-muted-foreground uppercase tracking-wider">차원별 성장 · 처음 → 최근</p>
+                    {dimRows.map(({ label, early, recent }) => {
+                        const delta = (early != null && recent != null) ? Math.round((recent - early) * 10) / 10 : null;
+                        const pct = recent != null ? (recent / 5) * 100 : 0;
+                        return (
+                            <div key={label} className="flex items-center gap-2 text-[13px]">
+                                <span className="w-12 shrink-0 font-semibold text-muted-foreground">{label}</span>
+                                <div className="flex-1 h-2 rounded-full bg-accent/50 overflow-hidden">
+                                    <div className="h-full rounded-full bg-secondary" style={{ width: `${pct}%` }} />
+                                </div>
+                                <span className="tabular-nums text-muted-foreground w-14 text-right">
+                                    {early ?? '—'} → <span className="text-foreground font-bold">{recent ?? '—'}</span>
+                                </span>
+                                <span className={`tabular-nums w-8 text-right font-bold ${delta > 0 ? 'text-secondary' : 'text-muted-foreground'}`}>
+                                    {delta != null && delta !== 0 ? (delta > 0 ? `+${delta}` : delta) : ''}
+                                </span>
+                            </div>
+                        );
+                    })}
                 </div>
             )}
 
