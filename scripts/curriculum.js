@@ -58,7 +58,7 @@ export const CURRICULUM = {
     },
     '역사': {
         active: true, difficulty: 3, topicCategory: 'Society',
-        topicPool: ['사건의 원인·결과', '인물', '제도·생활', '교류'],
+        topicPool: ['사건의 원인·결과', '인물', '제도·생활', '교류', '문화·예술', '전쟁·평화', '경제·무역'],
         units: [
             { code: '역사·고대', statement: '문명의 형성과 고대 국가의 성립을 이해한다' },
             { code: '역사·고려조선', statement: '고려·조선의 제도와 사회 변화를 이해한다' },
@@ -70,7 +70,7 @@ export const CURRICULUM = {
         active: true, difficulty: 3, topicCategory: 'Society',
         // 저작권: 실제 작품 인용 금지 → AI 창작 짧은 지문(시·이야기)만 사용
         literaryOriginal: true,
-        topicPool: ['성장', '우정', '가족', '자연', '용기'],
+        topicPool: ['성장', '우정', '가족', '자연', '용기', '도전', '희망', '상실'],
         units: [
             { code: '문학·화자정서', statement: '창작 시를 읽고 화자의 처지와 정서를 파악한다' },
             { code: '문학·인물갈등', statement: '창작 이야기를 읽고 인물의 마음과 갈등을 파악한다' },
@@ -80,13 +80,18 @@ export const CURRICULUM = {
     },
     // 주말(토·일) — 학교 교과가 아닌 '일반상식'(예술·금융 중심 교양).
     // 실존 사실 기반이므로 팩트체크는 사실+한자 모두 적용(문학처럼 창작 아님).
-    // units와 topicPool을 같은 순서로 정렬 → 요일 회전 시 주제가 어긋나지 않음.
+    // units와 topicPool을 같은 길이·같은 순서로 정렬 → 요일 회전 시 주제가 어긋나지 않음.
+    // 예술·금융을 번갈아 배치해 매 주말 다른 세부 소재가 나오도록 함.
     '일반상식': {
         active: true, difficulty: 3, topicCategory: 'Society', generalKnowledge: true,
-        topicPool: ['예술', '금융'],
+        topicPool: ['명화·미술', '돈·화폐', '음악·악기', '투자·시장', '건축·디자인', '소비·저축'],
         units: [
-            { code: '상식·예술', statement: '명화·음악·건축 등 예술 작품과 그 속에 담긴 이야기를 이해한다' },
-            { code: '상식·금융', statement: '돈과 금융의 원리를 이해하고 합리적인 경제생활을 판단한다' },
+            { code: '상식·예술', statement: '명화와 화가의 삶 속 이야기를 이해한다' },
+            { code: '상식·금융', statement: '돈과 화폐의 역사·원리를 이해한다' },
+            { code: '상식·예술', statement: '음악과 음악가의 세계를 이해한다' },
+            { code: '상식·금융', statement: '투자와 시장이 움직이는 원리를 이해한다' },
+            { code: '상식·예술', statement: '건축·디자인에 담긴 아이디어를 이해한다' },
+            { code: '상식·금융', statement: '소비·저축 등 합리적 경제생활을 판단한다' },
         ],
     },
 };
