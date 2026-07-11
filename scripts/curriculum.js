@@ -6,13 +6,15 @@
  * 학년: 중1~3 통합, 난이도 중상(3).
  */
 
-// 요일(0=일~6=토) → 교과. 주말은 뉴스.
+// 요일(0=일~6=토) → 교과. 주말(토·일)은 일반상식(예술·금융 등 교양).
 export const SUBJECT_BY_WEEKDAY = {
     1: '국어 · 비문학',
     2: '과학',
     3: '역사',
     4: '국어 · 문학',
     5: '사회',
+    6: '일반상식',   // 토
+    0: '일반상식',   // 일
 };
 
 export const CURRICULUM = {
@@ -76,6 +78,17 @@ export const CURRICULUM = {
             { code: '문학·표현', statement: '비유·상징 등 표현의 효과를 파악한다' },
         ],
     },
+    // 주말(토·일) — 학교 교과가 아닌 '일반상식'(예술·금융 중심 교양).
+    // 실존 사실 기반이므로 팩트체크는 사실+한자 모두 적용(문학처럼 창작 아님).
+    // units와 topicPool을 같은 순서로 정렬 → 요일 회전 시 주제가 어긋나지 않음.
+    '일반상식': {
+        active: true, difficulty: 3, topicCategory: 'Society', generalKnowledge: true,
+        topicPool: ['예술', '금융'],
+        units: [
+            { code: '상식·예술', statement: '명화·음악·건축 등 예술 작품과 그 속에 담긴 이야기를 이해한다' },
+            { code: '상식·금융', statement: '돈과 금융의 원리를 이해하고 합리적인 경제생활을 판단한다' },
+        ],
+    },
 };
 
 const WEEKDAY_KOR = ['일', '월', '화', '수', '목', '금', '토'];
@@ -104,15 +117,15 @@ function dayIndex(date) {
 
 /**
  * 오늘의 편성 계획.
- *  주말 → {mode:'news'}
+ *  평일 → 교과 / 주말 → 일반상식(예술·금융). 둘 다 온보딩되면 lesson.
  *  미온보딩 교과 요일 → {mode:'news', subject}  (성취기준 확정 전까지 뉴스)
- *  온보딩된 교과 요일 → {mode:'lesson', subject, unit, difficulty, topicPool}
+ *  온보딩된 요일 → {mode:'lesson', subject, unit, difficulty, topicPool}
  */
 export function pickPlan(date) {
     const dow = kstDow(date);
     const weekday = WEEKDAY_KOR[dow];
     const subject = SUBJECT_BY_WEEKDAY[dow];
-    if (!subject) return { mode: 'news', weekday };            // 토·일
+    if (!subject) return { mode: 'news', weekday };            // 편성 없음(안전망)
     const cfg = CURRICULUM[subject];
     if (!cfg || !cfg.active || cfg.units.length === 0) {
         return { mode: 'news', weekday, subject };             // 미온보딩 → 뉴스 폴백
@@ -126,6 +139,7 @@ export function pickPlan(date) {
         difficulty: cfg.difficulty,
         topicCategory: cfg.topicCategory || null,
         literaryOriginal: cfg.literaryOriginal || false,
+        generalKnowledge: cfg.generalKnowledge || false,
         topic,
     };
 }
@@ -145,6 +159,7 @@ export function planForSubject(subject, date) {
         difficulty: cfg.difficulty,
         topicCategory: cfg.topicCategory || null,
         literaryOriginal: cfg.literaryOriginal || false,
+        generalKnowledge: cfg.generalKnowledge || false,
         topic,
     };
 }

@@ -129,10 +129,17 @@ function selectDaily(pool) {
     return out.slice(0, TARGET);
 }
 
+// HTML 태그 제거 + 엔티티 디코딩.
+// 태그는 공백으로 치환(단어 붙음 방지). &nbsp;·숫자 엔티티까지 디코딩해
+// 화면에 '&nbsp;'가 코드처럼 노출되는 문제를 막는다. &amp;는 마지막에 처리(중복 디코딩 방지).
 function stripHtml(html) {
     return (html || '')
-        .replace(/<[^>]*>/g, '')
-        .replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&amp;/g, '&').replace(/&quot;/g, '"').replace(/&#39;/g, "'")
+        .replace(/<[^>]*>/g, ' ')
+        .replace(/&nbsp;/g, ' ')
+        .replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&quot;/g, '"').replace(/&#39;/g, "'")
+        .replace(/&#(\d+);/g, (_, n) => String.fromCodePoint(+n))
+        .replace(/&#x([0-9a-fA-F]+);/g, (_, n) => String.fromCodePoint(parseInt(n, 16)))
+        .replace(/&amp;/g, '&')
         .trim();
 }
 
@@ -166,7 +173,11 @@ async function buildNews() {
         const link = item.getElementsByTagName('link')[0]?.textContent?.trim() || '';
         const pubDate = item.getElementsByTagName('pubDate')[0]?.textContent || '';
         const descRaw = item.getElementsByTagName('description')[0]?.textContent || '';
-        const detail = stripHtml(descRaw).slice(0, 200) || title;
+        // Google News 설명은 연관 헤드라인 나열(구분자 &nbsp;&nbsp; → 여러 공백)이라
+        // 첫 조각만 취하고, 비거나 제목과 같으면 제목으로 폴백(코드 같은 덩어리 방지).
+        let detail = stripHtml(descRaw).split(/\s{2,}/)[0].trim();
+        if (detail.length < 15 || detail === title) detail = title;
+        detail = detail.slice(0, 200);
         const date = pubDate ? new Date(pubDate).toISOString().slice(0, 10) : today;
         const category = detectCategory(title);
 

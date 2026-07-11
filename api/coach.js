@@ -43,6 +43,15 @@ const ALLOWED_ORIGIN = [/\.vercel\.app$/, /^https?:\/\/localhost(:\d+)?$/, /^htt
 const clampScore = (n) => Math.max(0, Math.min(5, Math.round(Number(n) || 0)));
 const OPINIONS = ['찬성', '반대', '기타'];
 
+const REACTION_SCHEMA = {
+    type: 'object',
+    additionalProperties: false,
+    properties: {
+        reaction: { type: 'string', description: '반말 1~2문장. 아이 답변 인정/격려 + 필요하면 한 마디 더 밀기. 훈계 금지.' },
+    },
+    required: ['reaction'],
+};
+
 export default async function handler(req, res) {
     // 가드 ② origin — 헤더가 있을 때만 검사(없으면 서버-서버/개발 호출로 간주)
     const origin = req.headers.origin || '';
@@ -58,6 +67,33 @@ export default async function handler(req, res) {
 
     // 가드 ④ 입력 검증 + 길이 상한
     const b = (req.body && typeof req.body === 'object') ? req.body : {};
+
+    // ── followupReply 모드: 코치 질문에 대한 아이 답변 → 짧은 반응 반환 ──
+    const followupReply = String(b.followupReply || '').slice(0, 300).trim();
+    if (followupReply) {
+        const followupQ = String(b.followup || '').slice(0, 400).trim();
+        const articleTitle = String(b.articleTitle || '').slice(0, 300);
+        try {
+            const client = new Anthropic();
+            const msg = await client.messages.create({
+                model: 'claude-haiku-4-5-20251001',
+                max_tokens: 200,
+                output_config: { format: { type: 'json_schema', schema: REACTION_SCHEMA } },
+                system: SYSTEM,
+                messages: [{
+                    role: 'user',
+                    content: `[기사] ${articleTitle}\n[코치 질문] ${followupQ}\n[아이 답변] ${followupReply}\n\n아이 답변에 한 마디로 반응해.`,
+                }],
+            });
+            const text = (msg.content.find((c) => c.type === 'text') || {}).text || '{}';
+            let data;
+            try { data = JSON.parse(text); } catch { data = {}; }
+            return res.status(200).json({ reaction: String(data.reaction || '').slice(0, 300) });
+        } catch (e) {
+            console.error('coach followup error:', e && e.message);
+            return res.status(200).json({ error: 'coach_failed' });
+        }
+    }
     const summary = String(b.summary || '').slice(0, 500).trim();
     const reason = String(b.reason || '').slice(0, 500).trim();
     const word = String(b.word || '').slice(0, 100).trim();
