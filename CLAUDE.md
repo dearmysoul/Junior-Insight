@@ -48,6 +48,8 @@ DOW=$(date -u +%u)   # 1=월 … 7=일
 | 5 | 첫 기사 `type !== "news"` (뉴스 폴백은 생성 실패 신호) | lesson | 지문 생성이 실패해 뉴스로 대체됨 |
 | 6 | 모든 `summary_kor`에 HTML 태그(`<`, `>`)·엔티티(`&nbsp;`) 없음 | 없음 | 렌더링 깨짐 |
 
+> **참고(알림 아님):** `data.generation`에 생성 진단이 담긴다 — `factcheck`(verified/fact_fail/hanja_fail/gen_fail/no_key), `fell_back_to_news`, `tokens`(비용 추정용). 점검 #5가 실패했을 때 알림에 `generation.factcheck`·`factcheck_issues`를 함께 적어주면 원인 파악이 빠르다. 토큰은 정상 범위면 언급하지 않는다.
+
 ### STEP 4: 알림 (문제가 있을 때만)
 
 - **모든 점검 통과** → 아무것도 하지 않고 조용히 종료. (사용자에게 알리지 않음)

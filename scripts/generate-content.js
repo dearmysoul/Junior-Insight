@@ -98,12 +98,21 @@ const parse = (msg) => {
     try { return JSON.parse(t); } catch { return {}; }
 };
 
+// 토큰 사용량 누적(모니터링용). msg.usage는 API가 돌려주는 실측값.
+const addUsage = (metrics, msg) => {
+    const u = (msg && msg.usage) || {};
+    metrics.tokensIn = (metrics.tokensIn || 0) + (u.input_tokens || 0);
+    metrics.tokensOut = (metrics.tokensOut || 0) + (u.output_tokens || 0);
+};
+
 /**
  * 교과 지문 생성 + 팩트체크. 키 없으면 null(→뉴스 폴백).
+ * @param {object} [metrics] 있으면 model·토큰·팩트체크 결과를 채워 넣는다(모니터링).
  * @returns {Promise<object|null>} lesson article
  */
-export async function generateLesson(plan, today) {
-    if (!process.env.ANTHROPIC_API_KEY) return null;
+export async function generateLesson(plan, today, metrics = {}) {
+    metrics.model = 'claude-opus-4-8';
+    if (!process.env.ANTHROPIC_API_KEY) { metrics.factcheck = 'no_key'; return null; }
     const client = new Anthropic();
 
     // 1) 생성
@@ -124,8 +133,9 @@ ${plan.generalKnowledge
         : '위 성취기준에 맞는 지문 1편을 규칙대로 써라.'}`,
         }],
     });
+    addUsage(metrics, gen);
     const d = parse(gen);
-    if (!d.title_kor || !d.summary_kor) return null;
+    if (!d.title_kor || !d.summary_kor) { metrics.factcheck = 'gen_fail'; return null; }
 
     // 2) 팩트체크 (사실 + 한자)
     const fc = await client.messages.create({
@@ -140,14 +150,18 @@ ${plan.generalKnowledge
 [한자어] ${JSON.stringify(d.hanja_terms)}`,
         }],
     });
+    addUsage(metrics, fc);
     const v = parse(fc);
     // 문학(창작 지문)은 검증할 '사실'이 없으므로 한자만 검사, 그 외는 사실+한자 모두 검사.
     const factFail = plan.literaryOriginal ? false : v.ok === false;
     // 검증 실패 시 이 날은 뉴스로 폴백(오답 노출 방지)
     if (factFail || v.hanja_ok === false) {
+        metrics.factcheck = factFail ? 'fact_fail' : 'hanja_fail';
+        metrics.issues = (v.issues || []).slice(0, 5);
         console.warn('⚠️ 팩트체크 실패 → 뉴스 폴백:', (v.issues || []).join('; '));
         return null;
     }
+    metrics.factcheck = 'verified';
 
     return {
         id: `lesson-${today.replace(/-/g, '')}-01`,
@@ -183,9 +197,10 @@ async function main() {
 
     // 날씨 배너는 항상 뉴스 파이프라인에서 추출
     let weather = null, articles = null, subjectOfDay = null;
+    const metrics = {};   // 생성 모니터링(모델·토큰·팩트체크 결과)
 
     if (plan.mode === 'lesson') {
-        const lesson = await generateLesson(plan, today);
+        const lesson = await generateLesson(plan, today, metrics);
         if (lesson) {
             subjectOfDay = plan.subject;
             // 지문 + 뉴스 두 트랙을 함께 제공(앱에서 토글). 뉴스 실패해도 지문은 유지.
@@ -212,10 +227,24 @@ async function main() {
     const payload = { fetchedAt: new Date().toISOString(), date: today, weekday: plan.weekday, weather, articles };
     if (subjectOfDay) payload.subject_of_day = subjectOfDay;
 
+    // 생성 모니터링 메타 — 앱은 무시, CLAUDE.md 감시 루틴/운영자가 팩트체크·비용 확인용.
+    // factcheck: verified | fact_fail | hanja_fail | gen_fail | no_key | (lesson 아니면 news_only)
+    const tokensTotal = (metrics.tokensIn || 0) + (metrics.tokensOut || 0);
+    payload.generation = {
+        mode: plan.mode,
+        subject: plan.subject || null,
+        factcheck: metrics.factcheck || (plan.mode === 'lesson' ? 'unknown' : 'news_only'),
+        fell_back_to_news: plan.mode === 'lesson' && articles[0]?.type !== 'lesson',
+        model: metrics.model || null,
+        tokens: { input: metrics.tokensIn || 0, output: metrics.tokensOut || 0, total: tokensTotal },
+        ...(metrics.issues && metrics.issues.length ? { factcheck_issues: metrics.issues } : {}),
+    };
+
     const outPath = join(__dirname, '..', 'public', 'news.json');
     mkdirSync(dirname(outPath), { recursive: true });
     writeFileSync(outPath, JSON.stringify(payload, null, 2), 'utf-8');
     console.log(`✅ news.json 저장 — ${articles.length}개 (${articles[0]?.type})${weather ? ` + 날씨 배너` : ''}`);
+    console.log(`📊 모니터링 — 팩트체크:${payload.generation.factcheck} | 토큰:${tokensTotal.toLocaleString()}(in ${metrics.tokensIn || 0}/out ${metrics.tokensOut || 0})${payload.generation.fell_back_to_news ? ' | ⚠️뉴스폴백' : ''}`);
 }
 
 // 직접 실행 시에만 구동
