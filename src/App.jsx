@@ -801,13 +801,20 @@ function NewsFeed({ news, weather, loading, error, entries, onMission }) {
     // 배너 완료 여부: 오늘 완료한 항목이 1개라도 있으면 true
     const isTodayDone = todayEntries.length > 0;
 
-    // 교과 학습일 판별 — lesson 콘텐츠가 있으면 "오늘의 학습" 히어로로
-    const lesson = news.find(n => n.type === 'lesson' && n.subject);
+    // 트랙 분리 — 오늘의 지문(교과/일반상식) vs 뉴스
+    const lessons = news.filter(n => n.type === 'lesson');
+    const newsItems = news.filter(n => n.type !== 'lesson');
+    const lesson = lessons.find(n => n.subject) || lessons[0] || null;
     const weekdayKor = ['일', '월', '화', '수', '목', '금', '토'][new Date().getDay()];
-    const heroTitle = lesson ? '오늘의 학습' : '오늘의 뉴스';
-    const heroSub = lesson
-        ? `${weekdayKor}요일 · ${lesson.subject} — 지문 1개를 읽고 · 요약 · 주장 · 핵심단어를 쓰면 완료!`
-        : '뉴스 1개를 읽고 · 요약 · 의견 · 핵심단어를 작성하면 완료!';
+
+    // 둘 다 있을 때만 토글 노출. 한쪽만 있으면 그쪽으로 고정.
+    const [track, setTrack] = useState('lesson');   // 'lesson' | 'news'
+    const effectiveTrack = lessons.length === 0 ? 'news'
+        : newsItems.length === 0 ? 'lesson'
+        : track;
+    const showToggle = lessons.length > 0 && newsItems.length > 0;
+    const shown = effectiveTrack === 'lesson' ? lessons : newsItems;
+    const heroTitle = effectiveTrack === 'lesson' ? '오늘의 학습' : '오늘의 뉴스';
 
     return (
         <div className="animate-fade-in space-y-4">
@@ -824,7 +831,7 @@ function NewsFeed({ news, weather, loading, error, entries, onMission }) {
             <div className="flex items-end justify-between pb-2 border-b border-border">
                 <div>
                     <p className="text-[12px] font-bold text-muted-foreground uppercase tracking-widest mb-1">
-                        {weekdayKor}요일{lesson ? ` · ${lesson.subject}` : ''}
+                        {weekdayKor}요일{effectiveTrack === 'lesson' && lesson?.subject ? ` · ${lesson.subject}` : ''}
                     </p>
                     <h2 className="text-[22px] sm:text-2xl font-extrabold tracking-tight text-foreground">{heroTitle}</h2>
                 </div>
@@ -834,6 +841,30 @@ function NewsFeed({ news, weather, loading, error, entries, onMission }) {
                     </span>
                 )}
             </div>
+
+            {/* 트랙 토글 — 오늘의 지문 / 뉴스 (둘 다 있을 때만) */}
+            {showToggle && (
+                <div className="inline-flex p-1 rounded-lg bg-accent/40 border border-border gap-1" role="tablist" aria-label="콘텐츠 트랙">
+                    {[
+                        ['lesson', '오늘의 지문', lessons.length],
+                        ['news', '뉴스', newsItems.length],
+                    ].map(([key, label, count]) => (
+                        <button
+                            key={key}
+                            type="button"
+                            role="tab"
+                            aria-selected={effectiveTrack === key}
+                            onClick={() => setTrack(key)}
+                            className={`px-3.5 py-1.5 rounded-md text-[14px] font-bold tracking-tight transition-colors duration-200 cursor-pointer
+                                ${effectiveTrack === key
+                                    ? 'bg-card text-foreground shadow-sm border border-border'
+                                    : 'text-muted-foreground hover:text-foreground'}`}
+                        >
+                            {label} <span className="tabular-nums opacity-70">{count}</span>
+                        </button>
+                    ))}
+                </div>
+            )}
 
             {/* Loading */}
             {loading && (
@@ -858,7 +889,7 @@ function NewsFeed({ news, weather, loading, error, entries, onMission }) {
             {/* Cards */}
             {!loading && (
             <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4">
-            {news.map((n, i) => {
+            {shown.map((n, i) => {
                 const done = doneIds.has(n.id);
                 return (
                     <article key={n.id}
