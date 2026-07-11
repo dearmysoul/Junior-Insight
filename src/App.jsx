@@ -424,6 +424,37 @@ function StepLabel({ n, text, color, required }) {
 }
 
 /* ──────────────────────────────────────────────
+   학습 기록(버전 스냅샷) 유틸
+   한 미션의 매 제출을 버전으로 누적 — 무엇을 썼고, 어떤 피드백을 받아
+   어떻게 고쳐 썼는지(followup·스파링 포함) 전 과정을 보존한다.
+   ────────────────────────────────────────────── */
+const OPINION_FALLBACK = ['찬성한다', '반대한다', '기타 의견이 있다'];
+function buildVersion(form, coachResult, opinionOptions, versionNum) {
+    return {
+        version: versionNum,
+        at: Date.now(),
+        summary: form.summary.trim(),
+        choice: form.choice,
+        choiceLabel: (opinionOptions || OPINION_FALLBACK)[form.choice] ?? '기타',
+        reason: form.reason.trim(),
+        word: form.word.trim(),
+        feedback: coachResult ? coachResult.feedback : null,
+        followup: coachResult ? coachResult.followup : null,
+        scores: coachResult ? coachResult.scores : null,
+        followupReply: null,      // 코치 질문에 아이가 답한 내용
+        followupReaction: null,   // 그에 대한 코치 반응
+        spar: null,               // { aiChallenge, kidRebuttal, verdict:{won,reply} }
+    };
+}
+/** history 배열의 마지막(현재) 버전에 patch를 병합한 새 배열 반환 */
+function patchLatestVersion(history, patch) {
+    if (!Array.isArray(history) || history.length === 0) return history;
+    const h = history.slice();
+    h[h.length - 1] = { ...h[h.length - 1], ...patch };
+    return h;
+}
+
+/* ──────────────────────────────────────────────
    MAIN APP
    ────────────────────────────────────────────── */
 export default function App() {
@@ -569,6 +600,10 @@ export default function App() {
         }
 
         const todayStr = new Date().toLocaleDateString('ko-KR');
+        // 버전 스냅샷 누적 — 다시 쓰기면 기존 history에 새 버전 추가(이전 버전·피드백 보존)
+        const existingEntry = entries.find(e => e.newsId === selected.id);
+        const priorHistory = Array.isArray(existingEntry?.history) ? existingEntry.history : [];
+        const history = [...priorHistory, buildVersion(form, coachResult, selected.opinionOptions, priorHistory.length + 1)];
         const newEntry = {
             id: Date.now(), date: todayStr,
             newsId: selected.id, newsTitle: selected.title, newsCategory: selected.category,
@@ -581,6 +616,7 @@ export default function App() {
             scoreClarity: coachResult ? coachResult.scores.clarity : null,
             scoreEvidence: coachResult ? coachResult.scores.evidence : null,
             scoreVocab: coachResult ? coachResult.scores.vocab : null,
+            history,   // 버전별 전체 학습 기록
         };
 
         // Supabase에 저장 (upsert)
@@ -678,6 +714,14 @@ export default function App() {
             }).then((x) => (x.ok ? x.json() : null)).catch(() => null);
             if (r && r.reaction) {
                 setCoachReaction(r.reaction);
+                // 최신 버전에 followup 답장·코치 반응 저장
+                setLastEntry((prev) => {
+                    if (!prev) return prev;
+                    const updated = { ...prev, history: patchLatestVersion(prev.history, { followupReply: replyText.trim(), followupReaction: r.reaction }) };
+                    saveEntry(updated);
+                    setEntries((p) => p.map((e) => (e.newsId === updated.newsId ? updated : e)));
+                    return updated;
+                });
                 setStats((p) => { const next = { ...p, xp: p.xp + 3 }; saveStats(next); return next; });
                 flash('잘 답했어! +3 XP');
             }
@@ -686,11 +730,15 @@ export default function App() {
         }
     }, [selected, flash]);
 
-    // 스파링 완료 — 재반박 저장 + 보너스 XP
-    const onSparComplete = useCallback((rebuttal, won) => {
+    // 스파링 완료 — AI 반박·재반박·판정 전체를 최신 버전에 저장 + 보너스 XP
+    const onSparComplete = useCallback((spar, won) => {
         setLastEntry((prev) => {
             if (!prev) return prev;
-            const updated = { ...prev, rebuttal };
+            const updated = {
+                ...prev,
+                rebuttal: spar.kidRebuttal,   // 하위호환: 기존 rebuttal 컬럼 유지
+                history: patchLatestVersion(prev.history, { spar }),
+            };
             saveEntry(updated);
             setEntries((p) => p.map((e) => (e.newsId === updated.newsId ? updated : e)));
             return updated;
@@ -966,7 +1014,8 @@ function SparPanel({ news, form, onComplete }) {
         setLoading(false);
         const v = r && typeof r.won === 'boolean' ? r : { won: false, reply: '좋은 시도였어. 다음엔 근거를 하나 더 얹어보자!' };
         setVerdict(v); setPhase('done');
-        onComplete?.(kidText.trim(), v.won);
+        // 스파링 전체(코치 반박·내 재반박·판정)를 기록으로 전달
+        onComplete?.({ aiChallenge: aiRebuttal, kidRebuttal: kidText.trim(), verdict: v }, v.won);
     };
 
     if (unavailable) return null;
@@ -1402,6 +1451,90 @@ function GrowthMirror({ entries }) {
     );
 }
 
+/* 학습 기록 — 코치 점수 칩 */
+function ScoreChips({ scores }) {
+    if (!scores) return null;
+    return (
+        <div className="flex flex-wrap gap-1.5 mt-1.5">
+            {[['명료성', scores.clarity], ['근거', scores.evidence], ['어휘', scores.vocab]].map(([l, v]) => (
+                <span key={l} className="text-[12px] px-1.5 py-0.5 rounded bg-accent/50 text-muted-foreground font-semibold">
+                    {l} <span className="tabular-nums text-foreground">{v ?? '—'}</span>/5
+                </span>
+            ))}
+        </div>
+    );
+}
+
+/* 학습 기록 — 한 버전(작성 + 코치 + followup + 스파링) */
+function VersionCard({ v, total }) {
+    const label = total > 1
+        ? (v.version === 1 ? '1차 작성' : `${v.version}차 · 고쳐 쓴 글`)
+        : '작성한 글';
+    return (
+        <div className="relative pl-4 border-l-2 border-border">
+            <span className="absolute -left-[7px] top-1 w-3 h-3 rounded-full bg-primary" aria-hidden="true" />
+            <p className="text-[13px] font-bold text-primary mb-1.5">{label}</p>
+            <div className="space-y-1 text-[14px]">
+                <p><span className="text-muted-foreground">📝 요약 </span><span className="text-foreground">{v.summary}</span></p>
+                <p><span className="text-muted-foreground">💬 의견 </span><span className="font-semibold text-primary">{v.choiceLabel}</span> <span className="text-muted-foreground">— {v.reason}</span></p>
+                <p><span className="text-muted-foreground">🔑 단어 </span><span className="text-foreground font-semibold">{v.word}</span></p>
+            </div>
+            {v.feedback && (
+                <div className="mt-2 bg-accent/30 border border-border rounded-md p-2.5">
+                    <p className="text-[13px] font-bold text-foreground">🤖 코치</p>
+                    <p className="text-[14px] text-foreground mt-0.5 leading-relaxed">{v.feedback}</p>
+                    <ScoreChips scores={v.scores} />
+                    {v.followup && <p className="text-[13.5px] text-primary mt-1.5 leading-relaxed">💬 {v.followup}</p>}
+                    {v.followupReply && (
+                        <div className="mt-1.5 pl-2 border-l-2 border-primary/30 space-y-0.5">
+                            <p className="text-[13.5px] text-foreground"><span className="text-muted-foreground">내 답: </span>{v.followupReply}</p>
+                            {v.followupReaction && <p className="text-[13.5px] text-foreground">🤖 {v.followupReaction}</p>}
+                        </div>
+                    )}
+                </div>
+            )}
+            {v.spar && (
+                <div className="mt-2 bg-card border border-border rounded-md p-2.5 space-y-1">
+                    <p className="text-[13px] font-bold text-foreground">🥊 스파링</p>
+                    {v.spar.aiChallenge && <p className="text-[13.5px] text-muted-foreground">코치 반박: {v.spar.aiChallenge}</p>}
+                    {v.spar.kidRebuttal && <p className="text-[13.5px] text-foreground">내 재반박: {v.spar.kidRebuttal}</p>}
+                    {v.spar.verdict && (
+                        <p className="text-[13.5px] font-semibold">
+                            {v.spar.verdict.won ? '🏆 판정: 승리' : '💪 판정: 무승부'}
+                            {v.spar.verdict.reply ? <span className="font-normal text-muted-foreground"> — {v.spar.verdict.reply}</span> : null}
+                        </p>
+                    )}
+                </div>
+            )}
+        </div>
+    );
+}
+
+/* 학습 기록 타임라인 — history 있으면 버전별, 없으면(옛 항목) 플랫 폴백 */
+function HistoryTimeline({ entry }) {
+    const history = Array.isArray(entry.history) ? entry.history : null;
+    if (!history || history.length === 0) {
+        const opText = (entry.opinionOptions || OPINION_FALLBACK)[entry.choice] ?? '—';
+        return (
+            <div className="space-y-1 text-[14px]">
+                <p><span className="text-muted-foreground">📝 요약 </span>{entry.summary}</p>
+                <p><span className="text-muted-foreground">💬 의견 </span><span className="font-semibold text-primary">{opText}</span> <span className="text-muted-foreground">— {entry.reason}</span></p>
+                <p><span className="text-muted-foreground">🔑 단어 </span><span className="font-semibold text-foreground">{entry.word}</span></p>
+                {entry.feedback && <p className="mt-1 text-muted-foreground">🤖 {entry.feedback}</p>}
+                {entry.rebuttal && <p className="text-muted-foreground">🥊 재반박: {entry.rebuttal}</p>}
+            </div>
+        );
+    }
+    return (
+        <div className="space-y-4">
+            {history.map((v, i) => <VersionCard key={i} v={v} total={history.length} />)}
+            {history.length > 1 && (
+                <p className="text-[13px] text-secondary font-semibold pl-4">↑ 피드백을 받아 {history.length}번에 걸쳐 고쳐 썼어요</p>
+            )}
+        </div>
+    );
+}
+
 function Dashboard({ stats, entries, lvlTitle }) {
     const [expandedId, setExpandedId] = useState(null);
 
@@ -1461,7 +1594,6 @@ function Dashboard({ stats, entries, lvlTitle }) {
                         <p className="text-[14px] mt-0.5">뉴스를 읽고 미션을 완료해보세요</p>
                     </div>
                 ) : entries.map((e) => {
-                    const opText = e.opinionOptions ? e.opinionOptions[e.choice] : ['찬성한다', '반대한다', '기타 의견이 있다'][e.choice] ?? '—';
                     const isOpen = expandedId === e.id;
                     return (
                         <div key={e.id} className="mb-3 last:mb-0 rounded-lg border border-border overflow-hidden">
@@ -1489,23 +1621,10 @@ function Dashboard({ stats, entries, lvlTitle }) {
                                 </div>
                             </button>
 
-                            {/* 상세 내용 — 펼쳐질 때 */}
+                            {/* 상세 내용 — 펼쳐질 때: 버전별 학습 기록 타임라인 */}
                             {isOpen && (
-                                <div className="px-4 pb-4 bg-background border-t border-border">
-                                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 mt-3 text-[15px]">
-                                        <div className="bg-card p-3 rounded-md border border-border">
-                                            <span className="text-[13px] text-muted-foreground font-medium block mb-1">📝 요약</span>
-                                            <span className="text-card-foreground tracking-tight">{e.summary}</span>
-                                        </div>
-                                        <div className="bg-card p-3 rounded-md border border-border">
-                                            <span className="text-[13px] text-muted-foreground font-medium block mb-1">💬 의견</span>
-                                            <span className="font-semibold text-primary block tracking-tight">{opText}</span>
-                                            <span className="text-muted-foreground block mt-1 tracking-tight text-[14px]">{e.reason}</span>
-                                        </div>
-                                    </div>
-                                    <div className="mt-2 text-[14px] text-muted-foreground">
-                                        🔑 수집 단어: <span className="text-card-foreground font-semibold bg-accent/40 px-1.5 py-0.5 rounded">{e.word}</span>
-                                    </div>
+                                <div className="px-4 pb-4 pt-3 bg-background border-t border-border">
+                                    <HistoryTimeline entry={e} />
                                 </div>
                             )}
                         </div>
