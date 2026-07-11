@@ -115,11 +115,13 @@ export async function generateLesson(plan, today) {
         messages: [{
             role: 'user',
             content: `[교과] ${plan.subject}
-[성취기준] ${plan.unit.code} · ${plan.unit.statement}
+[주제] ${plan.unit.code} · ${plan.unit.statement}
 [소재] ${plan.topic || '자유(아이 관심)'}
-${plan.literaryOriginal
-    ? '※ 문학: 실제 작품(시·소설) 인용 절대 금지. 저작권 문제 없는 AI 창작 짧은 지문(시 또는 이야기, 300~400자)을 직접 지어라. hanja_terms는 지문 속 한자어로.'
-    : '위 성취기준에 맞는 지문 1편을 규칙대로 써라.'}`,
+${plan.generalKnowledge
+    ? '※ 일반상식: 학교 교과가 아니라 청소년이 알아두면 좋은 흥미로운 교양(예술·금융 등)이다. 반드시 실존하는 검증 가능한 사실(실제 명화·예술가·금융 개념·경제 상식 등)만 다뤄라. "어? 그렇구나!" 하게 3단락(배경→사실→의미)으로 쓰고, hanja_terms는 지문 속 한자어로 풀이하라.'
+    : plan.literaryOriginal
+        ? '※ 문학: 실제 작품(시·소설) 인용 절대 금지. 저작권 문제 없는 AI 창작 짧은 지문(시 또는 이야기, 300~400자)을 직접 지어라. hanja_terms는 지문 속 한자어로.'
+        : '위 성취기준에 맞는 지문 1편을 규칙대로 써라.'}`,
         }],
     });
     const d = parse(gen);

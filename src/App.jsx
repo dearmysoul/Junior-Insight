@@ -331,6 +331,7 @@ function SubjectBadge({ subject }) {
         /역사/.test(s)        ? { Icon: Clock,      bg: '#fffbeb', text: '#92400e', border: '#fde68a' } :
         /문학/.test(s)        ? { Icon: PenTool,    bg: '#fff1f2', text: '#be185d', border: '#fbcfe8' } :
         /사회/.test(s)        ? { Icon: Award,      bg: '#f0fdf4', text: '#15803d', border: '#bbf7d0' } :
+        /일반상식|상식/.test(s) ? { Icon: Star,      bg: '#eef2ff', text: '#4338ca', border: '#c7d2fe' } :
                                 { Icon: BookMarked, bg: '#f5f3ff', text: '#6d28d9', border: '#ddd6fe' };
     const { Icon, bg, text, border } = cfg;
     return (
