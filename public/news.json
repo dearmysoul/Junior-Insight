@@ -1,69 +1,147 @@
 {
-  "fetchedAt": "2026-07-11T01:57:30.396Z",
-  "date": "2026-07-11",
-  "weekday": "토",
+  "fetchedAt": "2026-07-11T22:34:35.463Z",
+  "date": "2026-07-12",
+  "weekday": "일",
   "weather": {
-    "emoji": "🌤️",
-    "summary": "서울 대체로 맑음, 29°C"
+    "emoji": "☀️",
+    "summary": "서울 맑음, 25°C"
   },
   "articles": [
     {
-      "id": "lesson-20260711-01",
+      "id": "lesson-20260712-01",
       "type": "lesson",
       "subject": "일반상식",
-      "unit": "돈과 금융의 원리를 이해하고 합리적인 경제생활을 판단한다 [상식·금융]",
-      "title_kor": "어? 은행에 넣은 내 돈이 사라졌다고?",
+      "unit": "명화와 화가의 삶 속 이야기를 이해한다 [상식·예술]",
+      "title_kor": "귀를 자른 화가, 왜 팔리지 않았을까?",
       "source": "교육과정 학습 · 일반상식",
       "country": "KR",
       "category": "Society",
-      "summary_kor": "1637년 네덜란드에서는 튤립 알뿌리 하나가 집 한 채 값까지 치솟았다. 사람들은 꽃이 아니라 '더 비싸게 팔 수 있다'는 기대만 보고 돈을 쏟아부었다. 이것이 인류 최초의 거품 경제로 불리는 '튤립 파동'이다.\n\n거품은 어느 날 갑자기 터졌다. 값이 오를 거라 믿던 사람들이 한꺼번에 팔려고 나서자 가격은 순식간에 폭락했고, 전 재산을 알뿌리에 건 이들은 빚더미에 앉았다. 물건의 실제 가치가 아니라 남들의 심리에 기댄 투자가 얼마나 위험한지 보여 준 사건이다.\n\n오늘날에도 '남들이 사니까 나도 산다'는 심리는 그대로다. 금융의 기본은 그 돈이 실제로 어떤 가치를 만들어 내는지, 감당할 수 있는 위험인지를 스스로 판단하는 것이다. 유행이 아니라 원리를 보는 눈이 합리적 경제생활의 시작이다.",
+      "summary_kor": "19세기 네덜란드에 빈센트 반 고흐라는 화가가 있었다. 그는 평생 900점 넘는 그림을 그렸지만, 살아 있을 때 팔린 작품은 극소수였다고 전해진다. 가난과 정신적 고통에 시달리던 그는 결국 37세에 세상을 떠났다.\n\n그런데 그가 죽은 뒤 상황이 뒤집혔다. '별이 빛나는 밤', '해바라기' 같은 작품이 재평가되면서, 오늘날 그의 그림은 세계 미술관의 보물이 되었다. 소용돌이치는 붓질과 강렬한 색채는 화가의 감정을 그대로 화폭에 옮긴 것으로 여겨진다.\n\n왜 살아서는 인정받지 못했을까? 당시 사람들의 취향과 너무 달랐기 때문이라는 해석이 있다. 예술의 가치는 시대에 따라 달라진다. 고흐의 이야기는 '지금 인정받지 못한 것'이 반드시 '가치 없는 것'은 아님을 보여 준다.",
       "keywords": [
-        "튤립 파동",
-        "거품 경제",
-        "투자",
-        "금융 심리",
-        "경제 상식"
+        "반 고흐",
+        "명화",
+        "해바라기",
+        "재평가",
+        "예술의 가치"
       ],
       "hanja_terms": [
         {
-          "word": "파동",
-          "hanja": "波動",
-          "gloss": "물결 파 · 움직일 동 → 물결처럼 크게 흔들려 퍼지는 변동"
+          "word": "화폭",
+          "hanja": "畵幅",
+          "gloss": "그림 화 · 폭 폭 → 그림을 그리는 천이나 종이"
         },
         {
-          "word": "거품",
-          "hanja": "泡沫",
-          "gloss": "거품 포 · 거품 말 → 실제 가치보다 부풀어 오른 헛된 값"
+          "word": "취향",
+          "hanja": "趣向",
+          "gloss": "뜻 취 · 향할 향 → 마음이 쏠리는 방향"
         },
         {
-          "word": "폭락",
-          "hanja": "暴落",
-          "gloss": "사나울 폭 · 떨어질 락 → 값이 갑자기 크게 떨어짐"
+          "word": "재평가",
+          "hanja": "再評價",
+          "gloss": "다시 재 · 평할 평 · 값 가 → 다시 값어치를 매김"
         },
         {
-          "word": "가치",
-          "hanja": "價値",
-          "gloss": "값 가 · 값 치 → 어떤 것이 지닌 실제 값어치"
+          "word": "강렬",
+          "hanja": "强烈",
+          "gloss": "강할 강 · 세찰 렬 → 매우 강하고 세참"
         }
       ],
-      "check_question": "튤립 값이 그토록 치솟은 이유는 꽃의 실제 쓸모 때문이었을까, 아니면 다른 무엇 때문이었을까? 지문에서 근거를 찾아보자.",
+      "check_question": "고흐가 살아 있을 때 그림이 거의 팔리지 않은 까닭을 지문에서 찾아, 죽은 뒤 평가가 달라진 이유와 연결해 생각해 보자.",
       "argument": {
-        "claim": "투자할 때 '남들이 다 사니까 나도 산다'는 판단, 괜찮을까?",
+        "claim": "예술 작품의 가치는 '지금 잘 팔리는가'로 판단해야 할까?",
         "options": [
-          "괜찮다 — 많은 사람이 사는 데는 이유가 있으니 따라가는 게 안전하다",
-          "위험하다 — 실제 가치가 아니라 심리에 기댄 것이라 거품처럼 터질 수 있다",
-          "경우에 따라 다르다 — 그 물건의 진짜 가치를 확인했다면 참고할 수 있다"
+          "잘 팔리는 게 가치의 기준이다",
+          "시대가 지나면 달라지므로 판매량으로 정할 수 없다",
+          "잘 모르겠다"
         ]
       },
       "factcheck": {
         "status": "verified",
-        "anchor": "1637년 네덜란드 튤립 파동은 역사상 최초의 투기적 거품 경제 사례로 불리며, 튤립 알뿌리 가격이 폭등했다가 급락했다.",
+        "anchor": "빈센트 반 고흐는 네덜란드 출신 화가로 1890년 37세에 사망했으며, 살아있을 때 판매된 작품은 매우 적었고 사후 재평가되었다.",
         "hanja_checked": true
       },
       "difficulty": 3,
-      "date": "2026-07-11",
+      "date": "2026-07-12",
       "importance": 100
+    },
+    {
+      "id": "https://news.google.com/rss/articles/CBMicEFVX3lxTE14b0wyT0lLM01kNzBqV0hHZHNEd1A5SEUxYVpWNXJib04wZV9abG0xVW5OUWI0QWZndUZBQlFTc3RfVDhDdUNPWjZNZmgxWDNXQUhldE0zZjlBZFZySWZ0T2lnSVMtbHVGYWI5ZlkxWkc?oc=5",
+      "type": "news",
+      "title": "반도체 호재에 자취 감추는 광주 미분양…건설업계 \"분위기 달라졌다\"",
+      "source": "연합인포맥스",
+      "category": "Tech & Economy",
+      "url": "https://news.google.com/rss/articles/CBMicEFVX3lxTE14b0wyT0lLM01kNzBqV0hHZHNEd1A5SEUxYVpWNXJib04wZV9abG0xVW5OUWI0QWZndUZBQlFTc3RfVDhDdUNPWjZNZmgxWDNXQUhldE0zZjlBZFZySWZ0T2lnSVMtbHVGYWI5ZlkxWkc?oc=5",
+      "detail": "반도체 호재에 자취 감추는 광주 미분양…건설업계 \"분위기 달라졌다\"",
+      "date": "2026-07-09",
+      "importance": 100
+    },
+    {
+      "id": "https://news.google.com/rss/articles/CBMia0FVX3lxTE1SZFhWSDFUY1BxTGx1bS1XcjBJdmpIRWNzQWV6eW5aNDRJR2dlMlJwQl85NXp2eWFWMElkN3Y1T25hRFIzNHFhYmMzWUU0dURRRzNkM3dNWkFtbVI4VzZiYUFWcXVJVkNkT0xn?oc=5",
+      "type": "news",
+      "title": "트럼프 “암살 시도 땐 궤멸”…이란에 수천발 미사일 경고",
+      "source": "한겨레",
+      "category": "World",
+      "url": "https://news.google.com/rss/articles/CBMia0FVX3lxTE1SZFhWSDFUY1BxTGx1bS1XcjBJdmpIRWNzQWV6eW5aNDRJR2dlMlJwQl85NXp2eWFWMElkN3Y1T25hRFIzNHFhYmMzWUU0dURRRzNkM3dNWkFtbVI4VzZiYUFWcXVJVkNkT0xn?oc=5",
+      "detail": "트럼프 “암살 시도 땐 궤멸”…이란에 수천발 미사일 경고",
+      "date": "2026-07-11",
+      "importance": 95
+    },
+    {
+      "id": "https://news.google.com/rss/articles/CBMiW0FVX3lxTFA5WU5qR1IyT09iLTZvMGFOc1hKaVZ5QzZKU3ZDaUdqN01xZDRveU55ZHNIeFJhTG5YTENtb2ZqWF9xOWNtaExZVGVrczhDV3VmZExQdzlJOHBTTDTSAWBBVV95cUxQbGY1YUs4dG5WMzZIMzRxdl96d3ZGTzdjNTROYUEzbGR4ZlJ2dWNDenV1SV9KMk9jWjJCY2g4bmZncVVlZ0djUFk0alNYeml3UmlucXBFaVZJM3ptQ2w2cVE?oc=5",
+      "type": "news",
+      "title": "한 달 앞으로 다가온 與전대…최대변수 '선호투표·1인1표' 주목",
+      "source": "연합뉴스",
+      "category": "Society",
+      "url": "https://news.google.com/rss/articles/CBMiW0FVX3lxTFA5WU5qR1IyT09iLTZvMGFOc1hKaVZ5QzZKU3ZDaUdqN01xZDRveU55ZHNIeFJhTG5YTENtb2ZqWF9xOWNtaExZVGVrczhDV3VmZExQdzlJOHBTTDTSAWBBVV95cUxQbGY1YUs4dG5WMzZIMzRxdl96d3ZGTzdjNTROYUEzbGR4ZlJ2dWNDenV1SV9KMk9jWjJCY2g4bmZncVVlZ0djUFk0alNYeml3UmlucXBFaVZJM3ptQ2w2cVE?oc=5",
+      "detail": "한 달 앞으로 다가온 與전대…최대변수 '선호투표·1인1표' 주목",
+      "date": "2026-07-11",
+      "importance": 90
+    },
+    {
+      "id": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE5hUVQwVFlpOU1SLUczdmNJcmhjVDJEUjJoSWl5dGk4U1p4dU5LSkhzTmN1cGYwS1hGYzk0QkluVUxHMlB5enoyeEFpc0ZTZzYxdldRWUdZTGxuZ9IBX0FVX3lxTE1vemVVLUNpR1hoQVI4djhoaG5YVHhCbHRQVmM1aEZvWHZIbjJPNVFMUDVYM3RRN2twNXIwcm1aenJ5UWJzdHBLdXp0cG8xTnp0STdFUDAxSFZFX05MeXhJ?oc=5",
+      "type": "news",
+      "title": "대통령이 직접 세일즈하는 ‘K-방산’ 훗날 부담은 없을까요? [반도 앨리스]",
+      "source": "경향신문",
+      "category": "Society",
+      "url": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE5hUVQwVFlpOU1SLUczdmNJcmhjVDJEUjJoSWl5dGk4U1p4dU5LSkhzTmN1cGYwS1hGYzk0QkluVUxHMlB5enoyeEFpc0ZTZzYxdldRWUdZTGxuZ9IBX0FVX3lxTE1vemVVLUNpR1hoQVI4djhoaG5YVHhCbHRQVmM1aEZvWHZIbjJPNVFMUDVYM3RRN2twNXIwcm1aenJ5UWJzdHBLdXp0cG8xTnp0STdFUDAxSFZFX05MeXhJ?oc=5",
+      "detail": "대통령이 직접 세일즈하는 ‘K-방산’ 훗날 부담은 없을까요? [반도 앨리스]",
+      "date": "2026-07-10",
+      "importance": 85
+    },
+    {
+      "id": "https://news.google.com/rss/articles/CBMibEFVX3lxTE5qVE9FcENYSzZqWV9ydWY1bGY2NzFQWGFuMVZ2WHdvcTkxRTR3UFBRWXBfejlmRFpUU2xHam01MllpT1hSbjcyeXA0d1RaSkd5T1pNMWEtb29ETzNCbG5xVVJ6Vm1ORmFGdTlyVA?oc=5",
+      "type": "news",
+      "title": "“숨 막히는 더위” 경산 40도…일요일 최고 37도 ‘찜통’",
+      "source": "한겨레",
+      "category": "World",
+      "url": "https://news.google.com/rss/articles/CBMibEFVX3lxTE5qVE9FcENYSzZqWV9ydWY1bGY2NzFQWGFuMVZ2WHdvcTkxRTR3UFBRWXBfejlmRFpUU2xHam01MllpT1hSbjcyeXA0d1RaSkd5T1pNMWEtb29ETzNCbG5xVVJ6Vm1ORmFGdTlyVA?oc=5",
+      "detail": "“숨 막히는 더위” 경산 40도…일요일 최고 37도 ‘찜통’",
+      "date": "2026-07-11",
+      "importance": 80
+    },
+    {
+      "id": "https://news.google.com/rss/articles/CBMicEFVX3lxTE9oZ2tWcEtuNnJnT01sdEJSNHJnb2d3QlpOODc2OHA1T0JqSW5jcDZnU0ptRWRVYTRVSkxmUU5tcGNYMDZUU0ZFcTJiX3VyREpxM0JBbnQ5Y0JyVWNYR1laVHFBMGx0LWpkQUJoR3dEVDQ?oc=5",
+      "type": "news",
+      "title": "구리 묶으니 남양주가 '쑥'…풍선효과 만만찮네",
+      "source": "연합인포맥스",
+      "category": "Economy",
+      "url": "https://news.google.com/rss/articles/CBMicEFVX3lxTE9oZ2tWcEtuNnJnT01sdEJSNHJnb2d3QlpOODc2OHA1T0JqSW5jcDZnU0ptRWRVYTRVSkxmUU5tcGNYMDZUU0ZFcTJiX3VyREpxM0JBbnQ5Y0JyVWNYR1laVHFBMGx0LWpkQUJoR3dEVDQ?oc=5",
+      "detail": "구리 묶으니 남양주가 '쑥'…풍선효과 만만찮네",
+      "date": "2026-07-11",
+      "importance": 75
     }
   ],
-  "subject_of_day": "일반상식"
+  "subject_of_day": "일반상식",
+  "generation": {
+    "mode": "lesson",
+    "subject": "일반상식",
+    "factcheck": "verified",
+    "fell_back_to_news": false,
+    "model": "claude-opus-4-8",
+    "tokens": {
+      "input": 3977,
+      "output": 1124,
+      "total": 5101
+    }
+  }
 }
