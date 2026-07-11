@@ -33,6 +33,8 @@ export async function loadEntries() {
         scoreEvidence: r.score_evidence ?? null,
         scoreVocab: r.score_vocab ?? null,
         rebuttal: r.rebuttal ?? null,
+        // 학습 기록(버전별 타임라인) — 마이그레이션 전이면 undefined
+        history: r.history ?? null,
     }));
 }
 
@@ -59,9 +61,19 @@ export async function saveEntry(entry) {
         row.score_vocab = entry.scoreVocab ?? null;
     }
     if (entry.rebuttal != null) row.rebuttal = entry.rebuttal;   // 스파링 재반박
-    const { error } = await supabase
+
+    // 학습 기록(history)은 별도 컬럼. 컬럼이 없을 수 있으므로(마이그레이션 전)
+    // history 포함해 먼저 저장 시도 → 실패하면 history 빼고 재시도(핵심 데이터는 보존).
+    const rowWithHistory = entry.history != null ? { ...row, history: entry.history } : row;
+    let { error } = await supabase
         .from('entries')
-        .upsert(row, { onConflict: 'user_id,news_id' });
+        .upsert(rowWithHistory, { onConflict: 'user_id,news_id' });
+    if (error && entry.history != null) {
+        console.warn('saveEntry: history 컬럼 없음(마이그레이션 필요) → history 제외 재시도');
+        ({ error } = await supabase
+            .from('entries')
+            .upsert(row, { onConflict: 'user_id,news_id' }));
+    }
     if (error) console.error('saveEntry:', error);
 }
 
