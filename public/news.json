@@ -1,147 +1,147 @@
 {
-  "fetchedAt": "2026-07-11T22:34:35.463Z",
-  "date": "2026-07-12",
-  "weekday": "일",
+  "fetchedAt": "2026-07-12T22:35:43.436Z",
+  "date": "2026-07-13",
+  "weekday": "월",
   "weather": {
     "emoji": "☀️",
-    "summary": "서울 맑음, 25°C"
+    "summary": "서울 맑음, 26°C"
   },
   "articles": [
     {
-      "id": "lesson-20260712-01",
+      "id": "lesson-20260713-01",
       "type": "lesson",
-      "subject": "일반상식",
-      "unit": "명화와 화가의 삶 속 이야기를 이해한다 [상식·예술]",
-      "title_kor": "귀를 자른 화가, 왜 팔리지 않았을까?",
-      "source": "교육과정 학습 · 일반상식",
+      "subject": "국어 · 비문학",
+      "unit": "글에 사용된 다양한 논증 방법을 파악하며 읽는다 [9국02-05]",
+      "title_kor": "어? 담배가 폐암 원인이라는 걸 어떻게 증명했지?",
+      "source": "교육과정 학습 · 국어 · 비문학",
       "country": "KR",
-      "category": "Society",
-      "summary_kor": "19세기 네덜란드에 빈센트 반 고흐라는 화가가 있었다. 그는 평생 900점 넘는 그림을 그렸지만, 살아 있을 때 팔린 작품은 극소수였다고 전해진다. 가난과 정신적 고통에 시달리던 그는 결국 37세에 세상을 떠났다.\n\n그런데 그가 죽은 뒤 상황이 뒤집혔다. '별이 빛나는 밤', '해바라기' 같은 작품이 재평가되면서, 오늘날 그의 그림은 세계 미술관의 보물이 되었다. 소용돌이치는 붓질과 강렬한 색채는 화가의 감정을 그대로 화폭에 옮긴 것으로 여겨진다.\n\n왜 살아서는 인정받지 못했을까? 당시 사람들의 취향과 너무 달랐기 때문이라는 해석이 있다. 예술의 가치는 시대에 따라 달라진다. 고흐의 이야기는 '지금 인정받지 못한 것'이 반드시 '가치 없는 것'은 아님을 보여 준다.",
+      "category": "Tech & Economy",
+      "summary_kor": "1950년대 미국과 영국에서는 폐암 환자가 갑자기 늘었다. 하지만 담배가 원인이라는 걸 밝히기는 쉽지 않았다. \"흡연자 중에 폐암이 많다\"는 말만으로는 부족했기 때문이다. 반대편에서는 \"원래 폐가 약한 사람이 담배를 피우는 것 아니냐\"고 맞받았다.\n\n연구자들은 여러 논증을 겹쳐 썼다. 수많은 흡연자와 비흡연자를 오래 추적해 흡연자에게서 폐암이 훨씬 많이 나타난다는 사례를 제시했다(귀납). 또 담배 연기 속 발암 물질이 세포를 손상시킨다는 원리로부터 결론을 이끌었다(연역). 하나의 방법만으로는 반박당했지만, 통계와 원리를 함께 엮자 주장은 단단해졌다.\n\n이 사례는 논증 방법이 왜 중요한지를 보여 준다. 근거가 아무리 많아도 그것을 어떻게 연결하느냐에 따라 설득력이 달라진다. 귀납은 사례를 모아 일반화하고, 연역은 원리에서 개별 결론을 끌어낸다. 글을 읽을 때 이 짜임을 파악하면, 주장이 정말 탄탄한지 아니면 허점이 있는지 가려낼 수 있다.",
       "keywords": [
-        "반 고흐",
-        "명화",
-        "해바라기",
-        "재평가",
-        "예술의 가치"
+        "논증 방법",
+        "귀납",
+        "연역",
+        "사회 쟁점",
+        "설득력"
       ],
       "hanja_terms": [
         {
-          "word": "화폭",
-          "hanja": "畵幅",
-          "gloss": "그림 화 · 폭 폭 → 그림을 그리는 천이나 종이"
+          "word": "논증",
+          "hanja": "論證",
+          "gloss": "논할 론 · 증거 증 → 근거를 들어 주장을 증명함"
         },
         {
-          "word": "취향",
-          "hanja": "趣向",
-          "gloss": "뜻 취 · 향할 향 → 마음이 쏠리는 방향"
+          "word": "귀납",
+          "hanja": "歸納",
+          "gloss": "돌아갈 귀 · 들일 납 → 개별 사례를 모아 일반 결론을 이끎"
         },
         {
-          "word": "재평가",
-          "hanja": "再評價",
-          "gloss": "다시 재 · 평할 평 · 값 가 → 다시 값어치를 매김"
+          "word": "연역",
+          "hanja": "演繹",
+          "gloss": "펼 연 · 풀 역 → 일반 원리에서 개별 결론을 끌어냄"
         },
         {
-          "word": "강렬",
-          "hanja": "强烈",
-          "gloss": "강할 강 · 세찰 렬 → 매우 강하고 세참"
+          "word": "발암",
+          "hanja": "發癌",
+          "gloss": "필 발 · 암 암 → 암을 일으킴"
         }
       ],
-      "check_question": "고흐가 살아 있을 때 그림이 거의 팔리지 않은 까닭을 지문에서 찾아, 죽은 뒤 평가가 달라진 이유와 연결해 생각해 보자.",
+      "check_question": "연구자들이 통계(귀납)와 원리(연역) 중 하나만 사용했다면, 반대편의 어떤 반박에 부딪혔을지 지문에서 근거를 찾아 생각해 보자.",
       "argument": {
-        "claim": "예술 작품의 가치는 '지금 잘 팔리는가'로 판단해야 할까?",
+        "claim": "주장을 설득력 있게 만들 때, 귀납과 연역 중 무엇이 더 중요할까?",
         "options": [
-          "잘 팔리는 게 가치의 기준이다",
-          "시대가 지나면 달라지므로 판매량으로 정할 수 없다",
-          "잘 모르겠다"
+          "많은 사례를 모으는 귀납이 더 중요하다",
+          "원리로 설명하는 연역이 더 중요하다",
+          "둘을 함께 엮어야 하므로 하나만 고를 수 없다"
         ]
       },
       "factcheck": {
         "status": "verified",
-        "anchor": "빈센트 반 고흐는 네덜란드 출신 화가로 1890년 37세에 사망했으며, 살아있을 때 판매된 작품은 매우 적었고 사후 재평가되었다.",
+        "anchor": "1950년대 영국(Doll & Hill 등)과 미국에서 흡연과 폐암의 관련성을 대규모 역학 연구로 밝혔으며, 이는 귀납적 통계 증거와 연역적 기전 설명을 결합한 논증이다.",
         "hanja_checked": true
       },
       "difficulty": 3,
+      "date": "2026-07-13",
+      "importance": 100
+    },
+    {
+      "id": "https://news.google.com/rss/articles/CBMiggFBVV95cUxQTjFpMDlDbE50UV94TnVieXNZN0ZaU0pEWWVhUUdJc0FfelFONTFZdWYtZVRJaU82VkVGZTFxWTBDTEE4dmFkVkNpejY3LXFRR085cGs3cjBKUE12SkxDdUdHOHJPbU9KY1JBTVg4M0wtek5sQ0lLeXctNTNWUHFEUlpB0gGWAUFVX3lxTE1pR05OS2RhZkNmdkEwS0lVWDVyd29sekIyOG05YXpsd2s5Y3lOQXdlUk5HNkZwdWZyclB5RFRGT0U5SHl3YUdKRm1hZHRON1Z0SEg1ZWM0UjdzQXZTVDNJQ3NLYjk3MnhPXzh6RnY0RWJBeVZFZzhoT2pUNGZ0ZFZXUlV1cFo2bUliZDhCM3VXTHhmbWRFdw?oc=5",
+      "type": "news",
+      "title": "삼성전자 용인 반도체 공장 양산 1~2년 당긴다… 2029년 첫 가동 - 조선비즈",
+      "source": "Chosunbiz",
+      "category": "Tech & Economy",
+      "url": "https://news.google.com/rss/articles/CBMiggFBVV95cUxQTjFpMDlDbE50UV94TnVieXNZN0ZaU0pEWWVhUUdJc0FfelFONTFZdWYtZVRJaU82VkVGZTFxWTBDTEE4dmFkVkNpejY3LXFRR085cGs3cjBKUE12SkxDdUdHOHJPbU9KY1JBTVg4M0wtek5sQ0lLeXctNTNWUHFEUlpB0gGWAUFVX3lxTE1pR05OS2RhZkNmdkEwS0lVWDVyd29sekIyOG05YXpsd2s5Y3lOQXdlUk5HNkZwdWZyclB5RFRGT0U5SHl3YUdKRm1hZHRON1Z0SEg1ZWM0UjdzQXZTVDNJQ3NLYjk3MnhPXzh6RnY0RWJBeVZFZzhoT2pUNGZ0ZFZXUlV1cFo2bUliZDhCM3VXTHhmbWRFdw?oc=5",
+      "detail": "삼성전자 용인 반도체 공장 양산 1~2년 당긴다… 2029년 첫 가동 - 조선비즈",
       "date": "2026-07-12",
       "importance": 100
     },
     {
-      "id": "https://news.google.com/rss/articles/CBMicEFVX3lxTE14b0wyT0lLM01kNzBqV0hHZHNEd1A5SEUxYVpWNXJib04wZV9abG0xVW5OUWI0QWZndUZBQlFTc3RfVDhDdUNPWjZNZmgxWDNXQUhldE0zZjlBZFZySWZ0T2lnSVMtbHVGYWI5ZlkxWkc?oc=5",
+      "id": "https://news.google.com/rss/articles/CBMibEFVX3lxTE8wN1FITDVSYnMwTlVhU3BzRkVDdXBUX19CZ3RlbUxUUXlpZFdHa0pQUS0zQmZVcUVSMGpWblhIVHA1Mm11MXVKVm1oZV9fTXktc25vTG16dFplZU01V19CUGVuTVBlTnNiMFR5NQ?oc=5",
       "type": "news",
-      "title": "반도체 호재에 자취 감추는 광주 미분양…건설업계 \"분위기 달라졌다\"",
-      "source": "연합인포맥스",
-      "category": "Tech & Economy",
-      "url": "https://news.google.com/rss/articles/CBMicEFVX3lxTE14b0wyT0lLM01kNzBqV0hHZHNEd1A5SEUxYVpWNXJib04wZV9abG0xVW5OUWI0QWZndUZBQlFTc3RfVDhDdUNPWjZNZmgxWDNXQUhldE0zZjlBZFZySWZ0T2lnSVMtbHVGYWI5ZlkxWkc?oc=5",
-      "detail": "반도체 호재에 자취 감추는 광주 미분양…건설업계 \"분위기 달라졌다\"",
-      "date": "2026-07-09",
-      "importance": 100
-    },
-    {
-      "id": "https://news.google.com/rss/articles/CBMia0FVX3lxTE1SZFhWSDFUY1BxTGx1bS1XcjBJdmpIRWNzQWV6eW5aNDRJR2dlMlJwQl85NXp2eWFWMElkN3Y1T25hRFIzNHFhYmMzWUU0dURRRzNkM3dNWkFtbVI4VzZiYUFWcXVJVkNkT0xn?oc=5",
-      "type": "news",
-      "title": "트럼프 “암살 시도 땐 궤멸”…이란에 수천발 미사일 경고",
+      "title": "39도 한반도, 위에선 ‘광선 빔’ 아래선 ‘열 송풍기’…다음주 더 덥다",
       "source": "한겨레",
       "category": "World",
-      "url": "https://news.google.com/rss/articles/CBMia0FVX3lxTE1SZFhWSDFUY1BxTGx1bS1XcjBJdmpIRWNzQWV6eW5aNDRJR2dlMlJwQl85NXp2eWFWMElkN3Y1T25hRFIzNHFhYmMzWUU0dURRRzNkM3dNWkFtbVI4VzZiYUFWcXVJVkNkT0xn?oc=5",
-      "detail": "트럼프 “암살 시도 땐 궤멸”…이란에 수천발 미사일 경고",
-      "date": "2026-07-11",
+      "url": "https://news.google.com/rss/articles/CBMibEFVX3lxTE8wN1FITDVSYnMwTlVhU3BzRkVDdXBUX19CZ3RlbUxUUXlpZFdHa0pQUS0zQmZVcUVSMGpWblhIVHA1Mm11MXVKVm1oZV9fTXktc25vTG16dFplZU01V19CUGVuTVBlTnNiMFR5NQ?oc=5",
+      "detail": "39도 한반도, 위에선 ‘광선 빔’ 아래선 ‘열 송풍기’…다음주 더 덥다",
+      "date": "2026-07-12",
       "importance": 95
     },
     {
-      "id": "https://news.google.com/rss/articles/CBMiW0FVX3lxTFA5WU5qR1IyT09iLTZvMGFOc1hKaVZ5QzZKU3ZDaUdqN01xZDRveU55ZHNIeFJhTG5YTENtb2ZqWF9xOWNtaExZVGVrczhDV3VmZExQdzlJOHBTTDTSAWBBVV95cUxQbGY1YUs4dG5WMzZIMzRxdl96d3ZGTzdjNTROYUEzbGR4ZlJ2dWNDenV1SV9KMk9jWjJCY2g4bmZncVVlZ0djUFk0alNYeml3UmlucXBFaVZJM3ptQ2w2cVE?oc=5",
+      "id": "https://news.google.com/rss/articles/CBMic0FVX3lxTE5GejAwYXNoRUdJUmhBdnhRVGw1Q01PSUZNY0dMd1piRW1wT0xtakdmcXc3NGtqV0dPeHRlVmRIWDQwTjhGaUFHLXFJWTdXVEY0alB0VW1TTGtpaDRJWTNSbjZGWmhTOGt2ZnRraXBlWkEtZHfSAWZBVV95cUxPcnhac3c0RjBKdW55VWF3R0szdVlsZ3ZsM01sdnplNGxhaFhSX2t0ZGJ3OEs4RG9zVWk5dnBPUUVlWVotVExyMlEwWWhfY2xBMUNSSDllX2xlWHpNSWZTMTI0YnYtQ0E?oc=5",
       "type": "news",
-      "title": "한 달 앞으로 다가온 與전대…최대변수 '선호투표·1인1표' 주목",
-      "source": "연합뉴스",
+      "title": "트럼프 “이란 사정없이 폭격…호르무즈 안전 확보했다”",
+      "source": "동아일보",
       "category": "Society",
-      "url": "https://news.google.com/rss/articles/CBMiW0FVX3lxTFA5WU5qR1IyT09iLTZvMGFOc1hKaVZ5QzZKU3ZDaUdqN01xZDRveU55ZHNIeFJhTG5YTENtb2ZqWF9xOWNtaExZVGVrczhDV3VmZExQdzlJOHBTTDTSAWBBVV95cUxQbGY1YUs4dG5WMzZIMzRxdl96d3ZGTzdjNTROYUEzbGR4ZlJ2dWNDenV1SV9KMk9jWjJCY2g4bmZncVVlZ0djUFk0alNYeml3UmlucXBFaVZJM3ptQ2w2cVE?oc=5",
-      "detail": "한 달 앞으로 다가온 與전대…최대변수 '선호투표·1인1표' 주목",
-      "date": "2026-07-11",
+      "url": "https://news.google.com/rss/articles/CBMic0FVX3lxTE5GejAwYXNoRUdJUmhBdnhRVGw1Q01PSUZNY0dMd1piRW1wT0xtakdmcXc3NGtqV0dPeHRlVmRIWDQwTjhGaUFHLXFJWTdXVEY0alB0VW1TTGtpaDRJWTNSbjZGWmhTOGt2ZnRraXBlWkEtZHfSAWZBVV95cUxPcnhac3c0RjBKdW55VWF3R0szdVlsZ3ZsM01sdnplNGxhaFhSX2t0ZGJ3OEs4RG9zVWk5dnBPUUVlWVotVExyMlEwWWhfY2xBMUNSSDllX2xlWHpNSWZTMTI0YnYtQ0E?oc=5",
+      "detail": "트럼프 “이란 사정없이 폭격…호르무즈 안전 확보했다”",
+      "date": "2026-07-12",
       "importance": 90
     },
     {
-      "id": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE5hUVQwVFlpOU1SLUczdmNJcmhjVDJEUjJoSWl5dGk4U1p4dU5LSkhzTmN1cGYwS1hGYzk0QkluVUxHMlB5enoyeEFpc0ZTZzYxdldRWUdZTGxuZ9IBX0FVX3lxTE1vemVVLUNpR1hoQVI4djhoaG5YVHhCbHRQVmM1aEZvWHZIbjJPNVFMUDVYM3RRN2twNXIwcm1aenJ5UWJzdHBLdXp0cG8xTnp0STdFUDAxSFZFX05MeXhJ?oc=5",
+      "id": "https://news.google.com/rss/articles/CBMibkFVX3lxTE5MOTFvc0VVNEdhSTgzUHlNRU1OazVzN29MQWhQWm45VnNXamRvYWhaM2w2bUtpQWRvdnZSbFBIMk1DS3ktd0VJOHBTdVZWYVF4ODBoSXlXSXluRk9xRWpUWXhmSGIxUnZuVDUxOENR0gFzQVVfeXFMTTNkMDBSQ3dHTlFaOEEwYVRpRVBNOU1DTTd1NldDUkZLZkN3Q0ZadkFmWUFCYThxWXRrbm1FVlItRkM4a0NEZ08zOXlWYXJyNW1OWHlyZ2NTMm9WaHJPZV92TFdnMjFqT1dfWE9MMWR3ZUlOZw?oc=5",
       "type": "news",
-      "title": "대통령이 직접 세일즈하는 ‘K-방산’ 훗날 부담은 없을까요? [반도 앨리스]",
-      "source": "경향신문",
-      "category": "Society",
-      "url": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE5hUVQwVFlpOU1SLUczdmNJcmhjVDJEUjJoSWl5dGk4U1p4dU5LSkhzTmN1cGYwS1hGYzk0QkluVUxHMlB5enoyeEFpc0ZTZzYxdldRWUdZTGxuZ9IBX0FVX3lxTE1vemVVLUNpR1hoQVI4djhoaG5YVHhCbHRQVmM1aEZvWHZIbjJPNVFMUDVYM3RRN2twNXIwcm1aenJ5UWJzdHBLdXp0cG8xTnp0STdFUDAxSFZFX05MeXhJ?oc=5",
-      "detail": "대통령이 직접 세일즈하는 ‘K-방산’ 훗날 부담은 없을까요? [반도 앨리스]",
-      "date": "2026-07-10",
+      "title": "귀국한 이 대통령, 숨 돌릴 틈 없다...부동산·메가프로젝트·내각개편 속도전",
+      "source": "한국일보",
+      "category": "Economy",
+      "url": "https://news.google.com/rss/articles/CBMibkFVX3lxTE5MOTFvc0VVNEdhSTgzUHlNRU1OazVzN29MQWhQWm45VnNXamRvYWhaM2w2bUtpQWRvdnZSbFBIMk1DS3ktd0VJOHBTdVZWYVF4ODBoSXlXSXluRk9xRWpUWXhmSGIxUnZuVDUxOENR0gFzQVVfeXFMTTNkMDBSQ3dHTlFaOEEwYVRpRVBNOU1DTTd1NldDUkZLZkN3Q0ZadkFmWUFCYThxWXRrbm1FVlItRkM4a0NEZ08zOXlWYXJyNW1OWHlyZ2NTMm9WaHJPZV92TFdnMjFqT1dfWE9MMWR3ZUlOZw?oc=5",
+      "detail": "귀국한 이 대통령, 숨 돌릴 틈 없다...부동산·메가프로젝트·내각개편 속도전",
+      "date": "2026-07-12",
       "importance": 85
     },
     {
-      "id": "https://news.google.com/rss/articles/CBMibEFVX3lxTE5qVE9FcENYSzZqWV9ydWY1bGY2NzFQWGFuMVZ2WHdvcTkxRTR3UFBRWXBfejlmRFpUU2xHam01MllpT1hSbjcyeXA0d1RaSkd5T1pNMWEtb29ETzNCbG5xVVJ6Vm1ORmFGdTlyVA?oc=5",
+      "id": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE1USzFuSTI2MUYyT0xiX19VUkx2X3pIdWlSbUJSWExJVjJhYXdaaVVIY3lKalJET2MwSVRCbWR6c0FNX1lDLUN3SWozNzhwTi1EVXd5aFVTZGpMZ9IBX0FVX3lxTFBYNFJHWWdPR3B2S3NHbzVOSGlfNlZIckN6dGNOSE95WGw0dkF0bzZ5Skt6aUVfX3JudE9oTmRWSW9YX3BxQm50MVVXa2pWdjkteFRxMHh5OW1fTml1ZlN3?oc=5",
       "type": "news",
-      "title": "“숨 막히는 더위” 경산 40도…일요일 최고 37도 ‘찜통’",
-      "source": "한겨레",
+      "title": "[속보] 해군 “동해 경비임무 중 실종 병사 1명 시신 수습”",
+      "source": "경향신문",
       "category": "World",
-      "url": "https://news.google.com/rss/articles/CBMibEFVX3lxTE5qVE9FcENYSzZqWV9ydWY1bGY2NzFQWGFuMVZ2WHdvcTkxRTR3UFBRWXBfejlmRFpUU2xHam01MllpT1hSbjcyeXA0d1RaSkd5T1pNMWEtb29ETzNCbG5xVVJ6Vm1ORmFGdTlyVA?oc=5",
-      "detail": "“숨 막히는 더위” 경산 40도…일요일 최고 37도 ‘찜통’",
-      "date": "2026-07-11",
+      "url": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE1USzFuSTI2MUYyT0xiX19VUkx2X3pIdWlSbUJSWExJVjJhYXdaaVVIY3lKalJET2MwSVRCbWR6c0FNX1lDLUN3SWozNzhwTi1EVXd5aFVTZGpMZ9IBX0FVX3lxTFBYNFJHWWdPR3B2S3NHbzVOSGlfNlZIckN6dGNOSE95WGw0dkF0bzZ5Skt6aUVfX3JudE9oTmRWSW9YX3BxQm50MVVXa2pWdjkteFRxMHh5OW1fTml1ZlN3?oc=5",
+      "detail": "[속보] 해군 “동해 경비임무 중 실종 병사 1명 시신 수습”",
+      "date": "2026-07-12",
       "importance": 80
     },
     {
-      "id": "https://news.google.com/rss/articles/CBMicEFVX3lxTE9oZ2tWcEtuNnJnT01sdEJSNHJnb2d3QlpOODc2OHA1T0JqSW5jcDZnU0ptRWRVYTRVSkxmUU5tcGNYMDZUU0ZFcTJiX3VyREpxM0JBbnQ5Y0JyVWNYR1laVHFBMGx0LWpkQUJoR3dEVDQ?oc=5",
+      "id": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE9hQi1BdlhYV2FPWU5RUXBPWFN1TFozT21OLWU0YWJENE8ySjVfb0luQ3pNTmNPWVhZWXdraWcyYzJ3OXV1Yi1qQ09kbGJRTk1JQ2RqU19pMnN3b09saF9qNg?oc=5",
       "type": "news",
-      "title": "구리 묶으니 남양주가 '쑥'…풍선효과 만만찮네",
-      "source": "연합인포맥스",
-      "category": "Economy",
-      "url": "https://news.google.com/rss/articles/CBMicEFVX3lxTE9oZ2tWcEtuNnJnT01sdEJSNHJnb2d3QlpOODc2OHA1T0JqSW5jcDZnU0ptRWRVYTRVSkxmUU5tcGNYMDZUU0ZFcTJiX3VyREpxM0JBbnQ5Y0JyVWNYR1laVHFBMGx0LWpkQUJoR3dEVDQ?oc=5",
-      "detail": "구리 묶으니 남양주가 '쑥'…풍선효과 만만찮네",
-      "date": "2026-07-11",
+      "title": "‘경찰 가족 봐주기’ 윗선 정조준…장윤기, 오늘 공판서 범행동기 입 열까",
+      "source": "한겨레",
+      "category": "Society",
+      "url": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE9hQi1BdlhYV2FPWU5RUXBPWFN1TFozT21OLWU0YWJENE8ySjVfb0luQ3pNTmNPWVhZWXdraWcyYzJ3OXV1Yi1qQ09kbGJRTk1JQ2RqU19pMnN3b09saF9qNg?oc=5",
+      "detail": "‘경찰 가족 봐주기’ 윗선 정조준…장윤기, 오늘 공판서 범행동기 입 열까",
+      "date": "2026-07-12",
       "importance": 75
     }
   ],
-  "subject_of_day": "일반상식",
+  "subject_of_day": "국어 · 비문학",
   "generation": {
     "mode": "lesson",
-    "subject": "일반상식",
+    "subject": "국어 · 비문학",
     "factcheck": "verified",
     "fell_back_to_news": false,
     "model": "claude-opus-4-8",
     "tokens": {
-      "input": 3977,
-      "output": 1124,
-      "total": 5101
+      "input": 3972,
+      "output": 1153,
+      "total": 5125
     }
   }
 }
