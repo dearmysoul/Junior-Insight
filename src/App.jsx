@@ -1659,60 +1659,46 @@ function HanjaQuiz({ terms, onClose }) {
     );
 }
 
-/** 성장 포트폴리오 — 지문·작성·코치·스파링 전체를 인쇄용 레이아웃으로. */
-function Portfolio({ entries, stats, lvlTitle, onClose }) {
-    const scored = entries.filter((e) => e.scoreClarity != null);
-    const avgTotal = scored.length
-        ? Math.round(scored.reduce((a, e) => a + e.scoreClarity + e.scoreEvidence + e.scoreVocab, 0) / scored.length)
-        : null;
+/** 한 학습을 인쇄 — 타이틀 + 지문·한자어 + 작성 글/코치/스파링 전체(그 항목만). */
+function EntryPortfolio({ entry, onClose }) {
+    const e = entry;
     return (
         <div className="fixed inset-0 z-50 bg-background overflow-auto">
             {/* 상단 바 — 인쇄 시 숨김 */}
             <div className="no-print sticky top-0 z-10 bg-card/95 backdrop-blur border-b border-border px-4 py-3 flex items-center justify-between">
                 <button onClick={onClose} className="text-[14px] font-semibold text-muted-foreground hover:text-foreground cursor-pointer">✕ 닫기</button>
-                <p className="text-[14px] font-bold text-foreground">성장 포트폴리오</p>
+                <p className="text-[14px] font-bold text-foreground">학습 인쇄</p>
                 <button onClick={() => window.print()} className="px-3.5 py-1.5 rounded-lg font-bold text-[14px] bg-primary text-primary-foreground cursor-pointer press">🖨️ 인쇄 / PDF</button>
             </div>
 
             <div className="print-area max-w-3xl mx-auto px-5 py-6">
-                <header className="border-b-2 border-foreground/70 pb-3 mb-6">
-                    <h1 className="text-[24px] font-extrabold tracking-tight text-foreground">나의 성장 포트폴리오</h1>
-                    <p className="text-[14px] text-muted-foreground mt-1">
-                        완료 {entries.length}건 · Lv.{stats.level} {lvlTitle} · Total {stats.xp} XP{avgTotal != null ? ` · 평균 코치점수 ${avgTotal}/15` : ''}
-                    </p>
+                <header className="border-b-2 border-foreground/70 pb-3 mb-5">
+                    <p className="text-[12.5px] text-muted-foreground mb-1">{e.date} · {(e.source && e.source.subject) || e.newsCategory}</p>
+                    <h1 className="text-[22px] font-extrabold tracking-tight text-foreground leading-snug">{e.newsTitle}</h1>
                 </header>
 
-                {entries.length === 0 ? (
-                    <p className="text-muted-foreground">아직 기록이 없습니다.</p>
-                ) : entries.map((e) => (
-                    <article key={e.id} className="portfolio-entry mb-8">
-                        <p className="text-[12.5px] text-muted-foreground mb-1">{e.date} · {(e.source && e.source.subject) || e.newsCategory}</p>
-                        <h2 className="text-[18px] font-bold tracking-tight text-foreground mb-2">{e.newsTitle}</h2>
-
-                        {e.source && e.source.summaryKor && (
-                            <section className="mb-3">
-                                <p className="text-[12px] font-bold text-primary mb-1 uppercase tracking-wider">지문</p>
-                                <div className="text-[14.5px] text-foreground leading-[1.85] space-y-2">
-                                    {e.source.summaryKor.split('\n').filter((p) => p.trim()).map((para, i) => <p key={i}>{para.trim()}</p>)}
-                                </div>
-                            </section>
-                        )}
-                        {e.source && Array.isArray(e.source.hanjaTerms) && e.source.hanjaTerms.length > 0 && (
-                            <section className="mb-3">
-                                <p className="text-[12px] font-bold text-primary mb-1 uppercase tracking-wider">한자어</p>
-                                <ul className="text-[13.5px] text-foreground space-y-0.5">
-                                    {e.source.hanjaTerms.map((t, i) => (
-                                        <li key={i}><span className="font-bold">{t.word}</span> <span className="text-muted-foreground">{t.hanja} — {t.gloss}</span></li>
-                                    ))}
-                                </ul>
-                            </section>
-                        )}
-                        <section>
-                            <p className="text-[12px] font-bold text-primary mb-1.5 uppercase tracking-wider">내가 쓴 것 · 코치 · 스파링</p>
-                            <HistoryTimeline entry={e} />
-                        </section>
-                    </article>
-                ))}
+                {e.source && e.source.summaryKor && (
+                    <section className="mb-4">
+                        <p className="text-[12px] font-bold text-primary mb-1 uppercase tracking-wider">지문</p>
+                        <div className="text-[14.5px] text-foreground leading-[1.85] space-y-2">
+                            {e.source.summaryKor.split('\n').filter((p) => p.trim()).map((para, i) => <p key={i}>{para.trim()}</p>)}
+                        </div>
+                    </section>
+                )}
+                {e.source && Array.isArray(e.source.hanjaTerms) && e.source.hanjaTerms.length > 0 && (
+                    <section className="mb-4">
+                        <p className="text-[12px] font-bold text-primary mb-1 uppercase tracking-wider">한자어</p>
+                        <ul className="text-[13.5px] text-foreground space-y-0.5">
+                            {e.source.hanjaTerms.map((t, i) => (
+                                <li key={i}><span className="font-bold">{t.word}</span> <span className="text-muted-foreground">{t.hanja} — {t.gloss}</span></li>
+                            ))}
+                        </ul>
+                    </section>
+                )}
+                <section>
+                    <p className="text-[12px] font-bold text-primary mb-1.5 uppercase tracking-wider">내가 쓴 것 · 코치 · 스파링</p>
+                    <HistoryTimeline entry={e} />
+                </section>
             </div>
         </div>
     );
@@ -1720,7 +1706,8 @@ function Portfolio({ entries, stats, lvlTitle, onClose }) {
 
 function Dashboard({ stats, entries, lvlTitle }) {
     const [expandedId, setExpandedId] = useState(null);
-    const [tool, setTool] = useState(null);   // 'quiz' | 'portfolio' | null
+    const [tool, setTool] = useState(null);          // 'quiz' | null
+    const [printEntry, setPrintEntry] = useState(null);  // 인쇄할 학습 항목
     const hanjaTerms = useMemo(() => collectHanja(entries), [entries]);
 
     // 영역별 XP 계산 — 실제 누적 XP 기반
@@ -1767,30 +1754,21 @@ function Dashboard({ stats, entries, lvlTitle }) {
             {/* 성장 미러 */}
             <GrowthMirror entries={entries} />
 
-            {/* 학습 도구 — 한자 퀴즈 · 성장 포트폴리오 */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                <button
-                    onClick={() => hanjaTerms.length >= 4 && setTool('quiz')}
-                    disabled={hanjaTerms.length < 4}
-                    className="text-left bg-card p-4 rounded-lg border border-border hover:border-primary/40 transition-colors cursor-pointer press disabled:opacity-60 disabled:cursor-not-allowed"
-                >
-                    <p className="font-bold text-[15px] text-card-foreground flex items-center gap-2">🀄 한자 퀴즈</p>
-                    <p className="text-[13px] text-muted-foreground mt-1">
-                        {hanjaTerms.length >= 4 ? `모은 한자어 ${hanjaTerms.length}개로 퀴즈 풀기` : `한자어 ${4 - hanjaTerms.length}개 더 모으면 시작`}
-                    </p>
-                </button>
-                <button
-                    onClick={() => setTool('portfolio')}
-                    className="text-left bg-card p-4 rounded-lg border border-border hover:border-primary/40 transition-colors cursor-pointer press"
-                >
-                    <p className="font-bold text-[15px] text-card-foreground flex items-center gap-2">🖨️ 성장 포트폴리오</p>
-                    <p className="text-[13px] text-muted-foreground mt-1">지문·내가 쓴 글·코치 기록을 인쇄/PDF로</p>
-                </button>
-            </div>
+            {/* 학습 도구 — 한자 퀴즈 (포트폴리오 인쇄는 아래 활동 기록에서 항목별로) */}
+            <button
+                onClick={() => hanjaTerms.length >= 4 && setTool('quiz')}
+                disabled={hanjaTerms.length < 4}
+                className="block w-full text-left bg-card p-4 rounded-lg border border-border hover:border-primary/40 transition-colors cursor-pointer press disabled:opacity-60 disabled:cursor-not-allowed"
+            >
+                <p className="font-bold text-[15px] text-card-foreground flex items-center gap-2">🀄 한자 퀴즈</p>
+                <p className="text-[13px] text-muted-foreground mt-1">
+                    {hanjaTerms.length >= 4 ? `모은 한자어 ${hanjaTerms.length}개로 퀴즈 풀기` : `한자어 ${4 - hanjaTerms.length}개 더 모으면 시작`}
+                </p>
+            </button>
 
             {/* 오버레이 */}
             {tool === 'quiz' && <HanjaQuiz terms={hanjaTerms} onClose={() => setTool(null)} />}
-            {tool === 'portfolio' && <Portfolio entries={entries} stats={stats} lvlTitle={lvlTitle} onClose={() => setTool(null)} />}
+            {printEntry && <EntryPortfolio entry={printEntry} onClose={() => setPrintEntry(null)} />}
 
             {/* History */}
             <section className="bg-card p-4 sm:p-5 rounded-lg border border-border">
@@ -1831,10 +1809,17 @@ function Dashboard({ stats, entries, lvlTitle }) {
                                 </div>
                             </button>
 
-                            {/* 상세 내용 — 펼쳐질 때: 버전별 학습 기록 타임라인 */}
+                            {/* 상세 내용 — 펼쳐질 때: 버전별 학습 기록 타임라인 + 개별 인쇄 */}
                             {isOpen && (
                                 <div className="px-4 pb-4 pt-3 bg-background border-t border-border">
                                     <HistoryTimeline entry={e} />
+                                    <button
+                                        type="button"
+                                        onClick={() => setPrintEntry(e)}
+                                        className="mt-4 w-full py-2.5 rounded-lg font-bold text-[14px] border border-primary/40 text-primary bg-primary/5 hover:bg-primary/10 cursor-pointer press min-h-[44px] flex items-center justify-center gap-2"
+                                    >
+                                        🖨️ 이 학습 인쇄 / PDF
+                                    </button>
                                 </div>
                             )}
                         </div>
