@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useMemo } from 'react';
 import {
     BookOpen, PenTool, BarChart2, TrendingUp, Award,
     CheckCircle, Brain, Save, ExternalLink, Highlighter,
@@ -453,6 +453,25 @@ function patchLatestVersion(history, patch) {
     h[h.length - 1] = { ...h[h.length - 1], ...patch };
     return h;
 }
+/** 그날 지문/기사 원본 스냅샷 — news.json은 매일 새로 생성되므로 미션 시점에 보존.
+ *  한자 퀴즈·성장 포트폴리오가 과거 기록에도 동작하게 한다. */
+function buildSource(a) {
+    if (!a) return null;
+    return {
+        title: a.title,
+        type: a.type || 'news',
+        subject: a.subject || null,
+        unit: a.unit || null,
+        category: a.category || null,
+        summaryKor: a.summary_kor || a.detail || null,
+        hanjaTerms: Array.isArray(a.hanjaTerms) ? a.hanjaTerms : [],
+        keywords: Array.isArray(a.keywords) ? a.keywords : [],
+        checkQuestion: a.checkQuestion || null,
+        argument: a.argument || null,
+        url: a.url || null,
+        sourceName: a.source || null,
+    };
+}
 
 /* ──────────────────────────────────────────────
    MAIN APP
@@ -617,6 +636,7 @@ export default function App() {
             scoreEvidence: coachResult ? coachResult.scores.evidence : null,
             scoreVocab: coachResult ? coachResult.scores.vocab : null,
             history,   // 버전별 전체 학습 기록
+            source: existingEntry?.source || buildSource(selected),   // 그날 지문·한자어 스냅샷
         };
 
         // Supabase에 저장 (upsert)
@@ -1535,8 +1555,173 @@ function HistoryTimeline({ entry }) {
     );
 }
 
+/* ── 한자 퀴즈 ── */
+function shuffleArr(arr) {
+    const a = arr.slice();
+    for (let i = a.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a;
+}
+/** 모든 entry.source에서 한자어를 모아 단어 기준 중복 제거 */
+function collectHanja(entries) {
+    const map = new Map();
+    entries.forEach((e) => {
+        const terms = e.source && e.source.hanjaTerms;
+        if (Array.isArray(terms)) terms.forEach((t) => {
+            if (t && t.word && t.hanja && !map.has(t.word)) map.set(t.word, t);
+        });
+    });
+    return [...map.values()];
+}
+
+/** 모은 한자어로 4지선다 퀴즈(한자→낱말). 전체화면 오버레이. */
+function HanjaQuiz({ terms, onClose }) {
+    const questions = useMemo(() => {
+        const pool = shuffleArr(terms).slice(0, Math.min(terms.length, 10));
+        return pool.map((t) => ({
+            term: t,
+            options: shuffleArr([t, ...shuffleArr(terms.filter((x) => x.word !== t.word)).slice(0, 3)]),
+        }));
+    }, [terms]);
+    const [qi, setQi] = useState(0);
+    const [picked, setPicked] = useState(null);
+    const [score, setScore] = useState(0);
+    const [done, setDone] = useState(false);
+    const q = questions[qi];
+    const answered = picked !== null;
+    const choose = (word) => {
+        if (answered) return;
+        setPicked(word);
+        if (word === q.term.word) setScore((s) => s + 1);
+    };
+    const next = () => {
+        if (qi + 1 >= questions.length) setDone(true);
+        else { setQi(qi + 1); setPicked(null); }
+    };
+    const restart = () => { setQi(0); setPicked(null); setScore(0); setDone(false); };
+
+    return (
+        <div className="fixed inset-0 z-50 bg-background/95 backdrop-blur-sm flex items-center justify-center p-4" role="dialog" aria-modal="true">
+            <div className="w-full max-w-md bg-card border border-border rounded-2xl p-5 shadow-xl animate-scale-in">
+                <div className="flex items-center justify-between mb-4">
+                    <h3 className="font-extrabold text-[18px] tracking-tight">🀄 한자 퀴즈</h3>
+                    <button onClick={onClose} className="text-muted-foreground hover:text-foreground cursor-pointer text-[14px] font-semibold">닫기 ✕</button>
+                </div>
+
+                {done ? (
+                    <div className="text-center py-4">
+                        <p className="text-[14px] text-muted-foreground">결과</p>
+                        <p className="text-[42px] font-extrabold tabular-nums my-1 text-foreground">{score}<span className="text-[20px] text-muted-foreground">/{questions.length}</span></p>
+                        <p className="text-[15px] text-foreground mb-5">{score === questions.length ? '완벽해! 🏆' : score >= questions.length / 2 ? '잘했어! 💪' : '다시 도전해볼까? 🌱'}</p>
+                        <div className="flex gap-2">
+                            <button onClick={restart} className="flex-1 py-2.5 rounded-lg font-bold bg-primary text-primary-foreground cursor-pointer press min-h-[44px]">다시 풀기</button>
+                            <button onClick={onClose} className="flex-1 py-2.5 rounded-lg font-bold border border-border bg-card text-muted-foreground cursor-pointer press min-h-[44px]">닫기</button>
+                        </div>
+                    </div>
+                ) : q ? (
+                    <>
+                        <div className="flex items-center justify-between text-[13px] text-muted-foreground mb-3">
+                            <span className="tabular-nums">{qi + 1} / {questions.length}</span>
+                            <span className="tabular-nums">점수 {score}</span>
+                        </div>
+                        <div className="bg-accent/30 border border-border rounded-xl p-5 text-center mb-4">
+                            <p className="text-[34px] font-extrabold tracking-[0.1em] text-foreground">{q.term.hanja}</p>
+                            <p className="text-[13.5px] text-muted-foreground mt-2 leading-relaxed">{q.term.gloss}</p>
+                        </div>
+                        <p className="text-[14px] font-semibold text-center text-muted-foreground mb-3">이 한자어는 무슨 낱말일까?</p>
+                        <div className="grid grid-cols-2 gap-2">
+                            {q.options.map((o) => {
+                                const isCorrect = o.word === q.term.word;
+                                const state = !answered ? 'idle' : isCorrect ? 'correct' : (o.word === picked ? 'wrong' : 'dim');
+                                return (
+                                    <button key={o.word} onClick={() => choose(o.word)} disabled={answered}
+                                        className={`py-3 rounded-lg font-bold text-[16px] border press transition-colors min-h-[48px] ${answered ? 'cursor-default' : 'cursor-pointer'}
+                                            ${state === 'idle' ? 'bg-card border-border text-foreground hover:border-primary/40'
+                                              : state === 'correct' ? 'bg-secondary/20 border-secondary text-secondary'
+                                              : state === 'wrong' ? 'bg-destructive/15 border-destructive text-destructive'
+                                              : 'bg-card border-border text-muted-foreground opacity-50'}`}>
+                                        {o.word}
+                                    </button>
+                                );
+                            })}
+                        </div>
+                        {answered && (
+                            <button onClick={next} className="w-full mt-4 py-2.5 rounded-lg font-bold bg-primary text-primary-foreground cursor-pointer press min-h-[44px]">
+                                {qi + 1 >= questions.length ? '결과 보기 →' : '다음 →'}
+                            </button>
+                        )}
+                    </>
+                ) : null}
+            </div>
+        </div>
+    );
+}
+
+/** 성장 포트폴리오 — 지문·작성·코치·스파링 전체를 인쇄용 레이아웃으로. */
+function Portfolio({ entries, stats, lvlTitle, onClose }) {
+    const scored = entries.filter((e) => e.scoreClarity != null);
+    const avgTotal = scored.length
+        ? Math.round(scored.reduce((a, e) => a + e.scoreClarity + e.scoreEvidence + e.scoreVocab, 0) / scored.length)
+        : null;
+    return (
+        <div className="fixed inset-0 z-50 bg-background overflow-auto">
+            {/* 상단 바 — 인쇄 시 숨김 */}
+            <div className="no-print sticky top-0 z-10 bg-card/95 backdrop-blur border-b border-border px-4 py-3 flex items-center justify-between">
+                <button onClick={onClose} className="text-[14px] font-semibold text-muted-foreground hover:text-foreground cursor-pointer">✕ 닫기</button>
+                <p className="text-[14px] font-bold text-foreground">성장 포트폴리오</p>
+                <button onClick={() => window.print()} className="px-3.5 py-1.5 rounded-lg font-bold text-[14px] bg-primary text-primary-foreground cursor-pointer press">🖨️ 인쇄 / PDF</button>
+            </div>
+
+            <div className="print-area max-w-3xl mx-auto px-5 py-6">
+                <header className="border-b-2 border-foreground/70 pb-3 mb-6">
+                    <h1 className="text-[24px] font-extrabold tracking-tight text-foreground">나의 성장 포트폴리오</h1>
+                    <p className="text-[14px] text-muted-foreground mt-1">
+                        완료 {entries.length}건 · Lv.{stats.level} {lvlTitle} · Total {stats.xp} XP{avgTotal != null ? ` · 평균 코치점수 ${avgTotal}/15` : ''}
+                    </p>
+                </header>
+
+                {entries.length === 0 ? (
+                    <p className="text-muted-foreground">아직 기록이 없습니다.</p>
+                ) : entries.map((e) => (
+                    <article key={e.id} className="portfolio-entry mb-8">
+                        <p className="text-[12.5px] text-muted-foreground mb-1">{e.date} · {(e.source && e.source.subject) || e.newsCategory}</p>
+                        <h2 className="text-[18px] font-bold tracking-tight text-foreground mb-2">{e.newsTitle}</h2>
+
+                        {e.source && e.source.summaryKor && (
+                            <section className="mb-3">
+                                <p className="text-[12px] font-bold text-primary mb-1 uppercase tracking-wider">지문</p>
+                                <div className="text-[14.5px] text-foreground leading-[1.85] space-y-2">
+                                    {e.source.summaryKor.split('\n').filter((p) => p.trim()).map((para, i) => <p key={i}>{para.trim()}</p>)}
+                                </div>
+                            </section>
+                        )}
+                        {e.source && Array.isArray(e.source.hanjaTerms) && e.source.hanjaTerms.length > 0 && (
+                            <section className="mb-3">
+                                <p className="text-[12px] font-bold text-primary mb-1 uppercase tracking-wider">한자어</p>
+                                <ul className="text-[13.5px] text-foreground space-y-0.5">
+                                    {e.source.hanjaTerms.map((t, i) => (
+                                        <li key={i}><span className="font-bold">{t.word}</span> <span className="text-muted-foreground">{t.hanja} — {t.gloss}</span></li>
+                                    ))}
+                                </ul>
+                            </section>
+                        )}
+                        <section>
+                            <p className="text-[12px] font-bold text-primary mb-1.5 uppercase tracking-wider">내가 쓴 것 · 코치 · 스파링</p>
+                            <HistoryTimeline entry={e} />
+                        </section>
+                    </article>
+                ))}
+            </div>
+        </div>
+    );
+}
+
 function Dashboard({ stats, entries, lvlTitle }) {
     const [expandedId, setExpandedId] = useState(null);
+    const [tool, setTool] = useState(null);   // 'quiz' | 'portfolio' | null
+    const hanjaTerms = useMemo(() => collectHanja(entries), [entries]);
 
     // 영역별 XP 계산 — 실제 누적 XP 기반
     const summaryXpTotal = entries.reduce((acc, e) => {
@@ -1581,6 +1766,31 @@ function Dashboard({ stats, entries, lvlTitle }) {
 
             {/* 성장 미러 */}
             <GrowthMirror entries={entries} />
+
+            {/* 학습 도구 — 한자 퀴즈 · 성장 포트폴리오 */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <button
+                    onClick={() => hanjaTerms.length >= 4 && setTool('quiz')}
+                    disabled={hanjaTerms.length < 4}
+                    className="text-left bg-card p-4 rounded-lg border border-border hover:border-primary/40 transition-colors cursor-pointer press disabled:opacity-60 disabled:cursor-not-allowed"
+                >
+                    <p className="font-bold text-[15px] text-card-foreground flex items-center gap-2">🀄 한자 퀴즈</p>
+                    <p className="text-[13px] text-muted-foreground mt-1">
+                        {hanjaTerms.length >= 4 ? `모은 한자어 ${hanjaTerms.length}개로 퀴즈 풀기` : `한자어 ${4 - hanjaTerms.length}개 더 모으면 시작`}
+                    </p>
+                </button>
+                <button
+                    onClick={() => setTool('portfolio')}
+                    className="text-left bg-card p-4 rounded-lg border border-border hover:border-primary/40 transition-colors cursor-pointer press"
+                >
+                    <p className="font-bold text-[15px] text-card-foreground flex items-center gap-2">🖨️ 성장 포트폴리오</p>
+                    <p className="text-[13px] text-muted-foreground mt-1">지문·내가 쓴 글·코치 기록을 인쇄/PDF로</p>
+                </button>
+            </div>
+
+            {/* 오버레이 */}
+            {tool === 'quiz' && <HanjaQuiz terms={hanjaTerms} onClose={() => setTool(null)} />}
+            {tool === 'portfolio' && <Portfolio entries={entries} stats={stats} lvlTitle={lvlTitle} onClose={() => setTool(null)} />}
 
             {/* History */}
             <section className="bg-card p-4 sm:p-5 rounded-lg border border-border">

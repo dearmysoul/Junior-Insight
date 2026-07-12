@@ -35,6 +35,8 @@ export async function loadEntries() {
         rebuttal: r.rebuttal ?? null,
         // 학습 기록(버전별 타임라인) — 마이그레이션 전이면 undefined
         history: r.history ?? null,
+        // 그날 지문·한자어 스냅샷 — 마이그레이션 전이면 undefined
+        source: r.source ?? null,
     }));
 }
 
@@ -62,14 +64,17 @@ export async function saveEntry(entry) {
     }
     if (entry.rebuttal != null) row.rebuttal = entry.rebuttal;   // 스파링 재반박
 
-    // 학습 기록(history)은 별도 컬럼. 컬럼이 없을 수 있으므로(마이그레이션 전)
-    // history 포함해 먼저 저장 시도 → 실패하면 history 빼고 재시도(핵심 데이터는 보존).
-    const rowWithHistory = entry.history != null ? { ...row, history: entry.history } : row;
+    // history(학습 기록)·source(지문 스냅샷)는 별도 jsonb 컬럼. 마이그레이션 전엔
+    // 컬럼이 없을 수 있으므로, 포함해 먼저 저장 → 실패하면 핵심 컬럼만으로 재시도(데이터 보존).
+    const rowExt = { ...row };
+    if (entry.history != null) rowExt.history = entry.history;
+    if (entry.source != null) rowExt.source = entry.source;
+    const hasExt = rowExt !== row && (entry.history != null || entry.source != null);
     let { error } = await supabase
         .from('entries')
-        .upsert(rowWithHistory, { onConflict: 'user_id,news_id' });
-    if (error && entry.history != null) {
-        console.warn('saveEntry: history 컬럼 없음(마이그레이션 필요) → history 제외 재시도');
+        .upsert(rowExt, { onConflict: 'user_id,news_id' });
+    if (error && hasExt) {
+        console.warn('saveEntry: history/source 컬럼 없음(마이그레이션 필요) → 확장 컬럼 제외 재시도');
         ({ error } = await supabase
             .from('entries')
             .upsert(row, { onConflict: 'user_id,news_id' }));

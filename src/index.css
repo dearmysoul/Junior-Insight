@@ -271,3 +271,38 @@
   .progress-fill { transition: width 700ms cubic-bezier(.34,1.56,.64,1); }
   .chart-grow    { transition: height 500ms cubic-bezier(.34,1.56,.64,1); }
 }
+
+/* ============================================
+   PRINT — 성장 포트폴리오
+   다크 테마여도 인쇄는 항상 밝은 배경·검은 글씨. .print-area만 인쇄.
+   @theme inline 매핑이라 .print-area에서 base 변수를 덮으면 하위 색이 전부 라이트로 바뀐다.
+   ============================================ */
+@media print {
+  @page { margin: 14mm; }
+  .no-print { display: none !important; }
+  body * { visibility: hidden; }
+  .print-area, .print-area * { visibility: visible; }
+  .print-area {
+    position: absolute;
+    left: 0; top: 0; width: 100%;
+    padding: 0;
+    background: #ffffff;
+    color: #1a1a20;
+    --background: #ffffff;
+    --foreground: #1a1a20;
+    --card: #ffffff;
+    --card-foreground: #1a1a20;
+    --muted: #f3f3f5;
+    --muted-foreground: #4a4a52;
+    --accent: #eef1fb;
+    --accent-foreground: #2a2f45;
+    --border: #d5d7de;
+    --primary: #3a3ab0;
+    --primary-foreground: #ffffff;
+    --secondary: #e6e9fb;
+    --secondary-foreground: #2a2f6a;
+    --destructive: #b23636;
+  }
+  .portfolio-entry { page-break-inside: auto; }
+  .portfolio-entry h1, .portfolio-entry h2 { break-after: avoid; }
+}
