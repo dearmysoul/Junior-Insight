@@ -560,6 +560,19 @@ export default function App() {
         });
     }, []);
 
+    // 지문 스냅샷 백필 — source 없는 기존 기록이 오늘 뉴스 피드에 아직 있으면
+    // 그 지문·한자어를 채워 저장(코치 재호출 없이). 스냅샷 기능 이전에 푼 미션 보정.
+    useEffect(() => {
+        if (news.length === 0 || entries.length === 0) return;
+        const byId = new Map(news.map((n) => [n.id, n]));
+        const toFix = entries.filter((e) => !e.source && byId.has(e.newsId));
+        if (toFix.length === 0) return;
+        const patched = toFix.map((e) => ({ ...e, source: buildSource(byId.get(e.newsId)) }));
+        patched.forEach(saveEntry);
+        const map = new Map(patched.map((e) => [e.newsId, e]));
+        setEntries((prev) => prev.map((e) => map.get(e.newsId) || e));
+    }, [news, entries]);
+
     const flash = useCallback((msg) => {
         setToast({ show: true, msg });
         setTimeout(() => setToast((p) => ({ ...p, show: false })), 2800);
@@ -1677,13 +1690,15 @@ function EntryPortfolio({ entry, onClose }) {
                     <h1 className="text-[22px] font-extrabold tracking-tight text-foreground leading-snug">{e.newsTitle}</h1>
                 </header>
 
-                {e.source && e.source.summaryKor && (
+                {e.source && e.source.summaryKor ? (
                     <section className="mb-4">
                         <p className="text-[12px] font-bold text-primary mb-1 uppercase tracking-wider">지문</p>
                         <div className="text-[14.5px] text-foreground leading-[1.85] space-y-2">
                             {e.source.summaryKor.split('\n').filter((p) => p.trim()).map((para, i) => <p key={i}>{para.trim()}</p>)}
                         </div>
                     </section>
+                ) : (
+                    <p className="text-[13px] text-muted-foreground italic mb-4">지문은 이 학습을 저장한 시점에 함께 보관되지 않아 표시할 수 없습니다.</p>
                 )}
                 {e.source && Array.isArray(e.source.hanjaTerms) && e.source.hanjaTerms.length > 0 && (
                     <section className="mb-4">
