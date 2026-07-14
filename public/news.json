@@ -1,81 +1,95 @@
 {
-  "fetchedAt": "2026-07-13T22:42:35.392Z",
-  "date": "2026-07-14",
-  "weekday": "화",
+  "fetchedAt": "2026-07-14T22:43:55.807Z",
+  "date": "2026-07-15",
+  "weekday": "수",
   "weather": {
-    "emoji": "🌤️",
-    "summary": "서울 대체로 맑음, 26°C"
+    "emoji": "⛅",
+    "summary": "서울 구름 조금, 25°C"
   },
   "articles": [
     {
-      "id": "lesson-20260714-01",
-      "type": "lesson",
-      "subject": "과학",
-      "unit": "물질의 상태 변화와 성질을 이해한다 [과학·물질]",
-      "title_kor": "냉동실 얼음이 왜 쪼그라들지?",
-      "source": "교육과정 학습 · 과학",
-      "country": "KR",
-      "category": "Society",
-      "summary_kor": "어느 날 냉장고 얼음틀을 열었더니 얼음이 처음보다 작아져 있었다. 물을 새로 넣은 적도 없는데 얼음이 저절로 줄어든 것이다. 냉동실은 분명 영하인데 어떻게 얼음이 사라졌을까?\n\n비밀은 '승화(昇華)'에 있다. 고체가 액체를 거치지 않고 곧바로 기체로 변하는 현상이다. 영하의 냉동실에서도 얼음 표면의 물 분자는 조금씩 기체인 수증기로 빠져나간다. 특히 냉동실은 습도가 낮고 문을 여닫을 때마다 건조한 공기가 드나들어, 얼음이 마르듯 서서히 줄어든다. 오래 둔 아이스크림에 하얀 서리가 끼는 것도 같은 원리로 설명된다.\n\n이처럼 물질의 상태 변화는 온도만이 아니라 주변 습도와 기압에도 영향을 받는다. 드라이아이스가 연기를 내며 사라지는 것, 젖은 빨래가 겨울에도 마르는 것 모두 같은 이치다. 눈에 보이지 않는 분자의 움직임이 우리 냉장고 안에서도 쉬지 않고 일어나고 있는 셈이다.",
-      "keywords": [
-        "승화",
-        "상태 변화",
-        "수증기",
-        "습도",
-        "냉동실"
-      ],
-      "hanja_terms": [
-        {
-          "word": "승화",
-          "hanja": "昇華",
-          "gloss": "오를 승·빛날 화 → 고체가 바로 기체로 변함"
-        },
-        {
-          "word": "기체",
-          "hanja": "氣體",
-          "gloss": "기운 기·몸 체 → 일정한 모양·부피가 없는 상태"
-        },
-        {
-          "word": "습도",
-          "hanja": "濕度",
-          "gloss": "젖을 습·법도 도 → 공기 중 수증기의 양"
-        },
-        {
-          "word": "기압",
-          "hanja": "氣壓",
-          "gloss": "기운 기·누를 압 → 공기가 누르는 힘"
-        }
-      ],
-      "check_question": "냉동실은 영하인데도 얼음이 줄어들었다. 지문에서 그 이유로 든 근거 두 가지를 찾아 연결해 보자.",
-      "argument": {
-        "claim": "물질의 상태 변화를 좌우하는 가장 큰 요인은 온도일까, 아니면 습도·기압 같은 주변 환경일까?",
-        "options": [
-          "온도가 가장 중요하다",
-          "습도·기압 같은 환경이 더 중요하다",
-          "상황에 따라 둘 다 중요하다"
-        ]
-      },
-      "factcheck": {
-        "status": "verified",
-        "anchor": "승화(昇華)는 고체가 액체를 거치지 않고 곧바로 기체로 변하는 현상이며, 냉동실 얼음이 줄어드는 것과 드라이아이스가 사라지는 것이 이에 해당한다.",
-        "hanja_checked": true
-      },
-      "difficulty": 3,
+      "id": "https://news.google.com/rss/articles/CBMiW0FVX3lxTFBYcW9EbDN6YzBQTll0Q0swcGlKb0pYakFBSFl6SloxUE5qcnFCSGo4Q3ZDV0pZOXhqYXo1S1ZIblUtVTlyekNFTU5KWkF2UDVpdHc3WFZvSmJyYnPSAWBBVV95cUxOMEZtei0wOW50d0V6WFI3cVlDWks0UWNNYkZwMXVPdUlkYmtOMkQ3bnBuTF9QT0xlWHlhdEwwRWI4TUJkMGlhb2xBOHNFQUEwY1h5bWpYekZ2bHloVVk4cTY?oc=5",
+      "type": "news",
+      "title": "드론 이어 게임체인저…우크라, 로봇 지상군 시대 열었다",
+      "source": "연합뉴스",
+      "category": "Tech & Economy",
+      "url": "https://news.google.com/rss/articles/CBMiW0FVX3lxTFBYcW9EbDN6YzBQTll0Q0swcGlKb0pYakFBSFl6SloxUE5qcnFCSGo4Q3ZDV0pZOXhqYXo1S1ZIblUtVTlyekNFTU5KWkF2UDVpdHc3WFZvSmJyYnPSAWBBVV95cUxOMEZtei0wOW50d0V6WFI3cVlDWks0UWNNYkZwMXVPdUlkYmtOMkQ3bnBuTF9QT0xlWHlhdEwwRWI4TUJkMGlhb2xBOHNFQUEwY1h5bWpYekZ2bHloVVk4cTY?oc=5",
+      "detail": "드론 이어 게임체인저…우크라, 로봇 지상군 시대 열었다",
       "date": "2026-07-14",
       "importance": 100
+    },
+    {
+      "id": "https://news.google.com/rss/articles/CBMiW0FVX3lxTE8xenlOby14UDlhZHZjRUpfNk9BN1poWjRyTklLb1A0ZjY5Skk4MlpoUWRrOUdOQlFxZG8wcVZRY2hwcUhDa0hrbXpSQVkxSzg4bDAzajZCUlQ2Y2vSAWBBVV95cUxQdW5NSURHSTU2MVg4X0xoaTFCRUZiT0o1SE45aVZLVXhyLTBUZ3FhQ2oxYlBMYXVWZ3d1ZlYycGJWUHBQS0FveWhKdXJuNTRpLXA1d0lSRXhQM01jcUFIRkI?oc=5",
+      "type": "news",
+      "title": "내년 최저임금 시간당 1만700원…올해보다 3.7% 인상(종합2보)",
+      "source": "연합뉴스",
+      "category": "World",
+      "url": "https://news.google.com/rss/articles/CBMiW0FVX3lxTE8xenlOby14UDlhZHZjRUpfNk9BN1poWjRyTklLb1A0ZjY5Skk4MlpoUWRrOUdOQlFxZG8wcVZRY2hwcUhDa0hrbXpSQVkxSzg4bDAzajZCUlQ2Y2vSAWBBVV95cUxQdW5NSURHSTU2MVg4X0xoaTFCRUZiT0o1SE45aVZLVXhyLTBUZ3FhQ2oxYlBMYXVWZ3d1ZlYycGJWUHBQS0FveWhKdXJuNTRpLXA1d0lSRXhQM01jcUFIRkI?oc=5",
+      "detail": "내년 최저임금 시간당 1만700원…올해보다 3.7% 인상(종합2보)",
+      "date": "2026-07-14",
+      "importance": 95
+    },
+    {
+      "id": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE9CT1pDaGNxUXExbjEwaUNnRVZPS29oUTZtUUVRbnFkTWZOWGNZd0pTb3NWMkJaYWtZSE5tQnJfcTg3WGZ0VlNzaXllc1hHWW5najBBLWRYM1pIZ9IBX0FVX3lxTE8tTGpPa2U0U1lKT1cyNWtPQk1xWHlmVnhXSktWZzNSMHc1Vnh1RE16c0JRc3JLN0k5b21iLW1fcmg5YktZMmpEWi1oWU9CRmlaUmMxNktFUERkNURMUE5B?oc=5",
+      "type": "news",
+      "title": "트럼프, 통행료 20% 하루만에 번복…“중동 투자 협정으로 대체”",
+      "source": "경향신문",
+      "category": "Economy",
+      "url": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE9CT1pDaGNxUXExbjEwaUNnRVZPS29oUTZtUUVRbnFkTWZOWGNZd0pTb3NWMkJaYWtZSE5tQnJfcTg3WGZ0VlNzaXllc1hHWW5najBBLWRYM1pIZ9IBX0FVX3lxTE8tTGpPa2U0U1lKT1cyNWtPQk1xWHlmVnhXSktWZzNSMHc1Vnh1RE16c0JRc3JLN0k5b21iLW1fcmg5YktZMmpEWi1oWU9CRmlaUmMxNktFUERkNURMUE5B?oc=5",
+      "detail": "트럼프, 통행료 20% 하루만에 번복…“중동 투자 협정으로 대체”",
+      "date": "2026-07-14",
+      "importance": 90
+    },
+    {
+      "id": "https://news.google.com/rss/articles/CBMiakFVX3lxTE5La3BnVDBMREItQ2lQYTRTdktCeUdGQWxQdHBTc3ZtTXNUVUVuejNFWmx3b3FsaUhnOFdWLXEyakI0cVV6azBreHYtdVBnclJMeEd6aXVITnd3eHlmTldDWjJURGI1WElOMHc?oc=5",
+      "type": "news",
+      "title": "“보완수사권 일부 존치 필요” 신중론 나온 민주 의총…“토론 계속”",
+      "source": "한겨레",
+      "category": "Society",
+      "url": "https://news.google.com/rss/articles/CBMiakFVX3lxTE5La3BnVDBMREItQ2lQYTRTdktCeUdGQWxQdHBTc3ZtTXNUVUVuejNFWmx3b3FsaUhnOFdWLXEyakI0cVV6azBreHYtdVBnclJMeEd6aXVITnd3eHlmTldDWjJURGI1WElOMHc?oc=5",
+      "detail": "“보완수사권 일부 존치 필요” 신중론 나온 민주 의총…“토론 계속”",
+      "date": "2026-07-14",
+      "importance": 85
+    },
+    {
+      "id": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE9ta1BWYW5OSk5DckZWeHMteUIxV01tcGYyVlBzS1ZpamFYMnRRS3J1RGVwNFhLbE1wcjZBQWpsU3R5X2JCSl9QNzlfQ1BCZXlXZVhjVGZnZWUzUdIBX0FVX3lxTE05ell6Mm1lM1ZqZUtEWExYb0dWVFNfZXRvVEI3aWJBX2VBME4yckEzMDRlc1lsQW9ZQXRIWjlwWGczSVRnTk1UYk9HaWRUZFljdjNhdGUxSENsZTVpaTlB?oc=5",
+      "type": "news",
+      "title": "여당, 당대표 ‘선호투표제’로…경선 룰 갈등 일단락",
+      "source": "경향신문",
+      "category": "Society",
+      "url": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE9ta1BWYW5OSk5DckZWeHMteUIxV01tcGYyVlBzS1ZpamFYMnRRS3J1RGVwNFhLbE1wcjZBQWpsU3R5X2JCSl9QNzlfQ1BCZXlXZVhjVGZnZWUzUdIBX0FVX3lxTE05ell6Mm1lM1ZqZUtEWExYb0dWVFNfZXRvVEI3aWJBX2VBME4yckEzMDRlc1lsQW9ZQXRIWjlwWGczSVRnTk1UYk9HaWRUZFljdjNhdGUxSENsZTVpaTlB?oc=5",
+      "detail": "여당, 당대표 ‘선호투표제’로…경선 룰 갈등 일단락",
+      "date": "2026-07-14",
+      "importance": 80
+    },
+    {
+      "id": "https://news.google.com/rss/articles/CBMid0FVX3lxTFBoNXptZTItTURsblJYR0wyd1VQQkloWlR0d0VlZi1pcWNDNll6Q1cxakVqbWhfWUExQzhqZXQtenJkUkZlRVBJVVhxdzVHMEFLaDVjTlE3ckNsc1RKWE0ybER5cXk2aGpJZ0JNY2RnODdIQkFTZlFB0gFmQVVfeXFMTnY5ZTFMYURlYmJ6ZzU0YUI0UjhYOEREMFB5N1k5T0R3NUFtUzdmUmVUUGQ2T1NIc0pLc0ZrQ242al9OU3liN3d5Rzg4U3h0U1pfcFRnTUpPdm1kMEtFRHg1YnNvQ2ZB?oc=5",
+      "type": "news",
+      "title": "李 “초고가 주택 세금 강화에 공감대…집값 잡는게 목적 아니다”",
+      "source": "동아일보",
+      "category": "Economy",
+      "url": "https://news.google.com/rss/articles/CBMid0FVX3lxTFBoNXptZTItTURsblJYR0wyd1VQQkloWlR0d0VlZi1pcWNDNll6Q1cxakVqbWhfWUExQzhqZXQtenJkUkZlRVBJVVhxdzVHMEFLaDVjTlE3ckNsc1RKWE0ybER5cXk2aGpJZ0JNY2RnODdIQkFTZlFB0gFmQVVfeXFMTnY5ZTFMYURlYmJ6ZzU0YUI0UjhYOEREMFB5N1k5T0R3NUFtUzdmUmVUUGQ2T1NIc0pLc0ZrQ242al9OU3liN3d5Rzg4U3h0U1pfcFRnTUpPdm1kMEtFRHg1YnNvQ2ZB?oc=5",
+      "detail": "李 “초고가 주택 세금 강화에 공감대…집값 잡는게 목적 아니다”",
+      "date": "2026-07-14",
+      "importance": 75
     }
   ],
-  "subject_of_day": "과학",
   "generation": {
     "mode": "lesson",
-    "subject": "과학",
-    "factcheck": "verified",
-    "fell_back_to_news": false,
+    "subject": "역사",
+    "factcheck": "fact_fail",
+    "fell_back_to_news": true,
     "model": "claude-opus-4-8",
     "tokens": {
-      "input": 3897,
-      "output": 1135,
-      "total": 5032
-    }
+      "input": 3859,
+      "output": 1421,
+      "total": 5280
+    },
+    "factcheck_issues": [
+      "'무역(貿易)'의 훈음: 貿의 훈음은 '무역할 무' 또는 '바꿀 무'로 볼 수 있으나 易를 '바꿀 역'으로 푼 것은 적절함(易은 '바꿀 역/쉬울 이'). 이 부분은 큰 오류 아님",
+      "'억제(抑制)'에서 制의 훈음을 '마를 제'로 표기했으나 制의 훈음은 '지을 제' 또는 '억제할 제/마름질할 제'로, '마를 제'는 부정확함. 制는 '억제하다·만들다·마름질하다'의 뜻이며 표준 훈음은 '절제할 제/지을 제'",
+      "지문에 '억제'라는 단어가 직접 등장하지 않음(본문은 '억누르는'으로 표현). 한자어 목록과 지문의 대응이 불일치",
+      "'수은, 향료, 산호를 바쳤다'는 『고려사』 기록 표현은 대체로 사실에 부합하나 정확한 품목 검증 필요"
+    ]
   }
 }
