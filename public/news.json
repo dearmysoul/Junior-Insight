@@ -1,44 +1,91 @@
 {
-  "fetchedAt": "2026-07-14T22:43:55.807Z",
+  "fetchedAt": "2026-07-15T01:08:00.856Z",
   "date": "2026-07-15",
   "weekday": "수",
   "weather": {
-    "emoji": "⛅",
-    "summary": "서울 구름 조금, 25°C"
+    "emoji": "☁️",
+    "summary": "서울 흐림, 25°C"
   },
   "articles": [
     {
-      "id": "https://news.google.com/rss/articles/CBMiW0FVX3lxTFBYcW9EbDN6YzBQTll0Q0swcGlKb0pYakFBSFl6SloxUE5qcnFCSGo4Q3ZDV0pZOXhqYXo1S1ZIblUtVTlyekNFTU5KWkF2UDVpdHc3WFZvSmJyYnPSAWBBVV95cUxOMEZtei0wOW50d0V6WFI3cVlDWks0UWNNYkZwMXVPdUlkYmtOMkQ3bnBuTF9QT0xlWHlhdEwwRWI4TUJkMGlhb2xBOHNFQUEwY1h5bWpYekZ2bHloVVk4cTY?oc=5",
+      "id": "lesson-20260715-01",
+      "type": "lesson",
+      "subject": "역사",
+      "unit": "고려·조선의 제도와 사회 변화를 이해한다 [역사·고려조선]",
+      "title_kor": "고려에 '코리아'라는 이름을 준 나라, 어디였을까?",
+      "source": "교육과정 학습 · 역사",
+      "country": "KR",
+      "category": "Society",
+      "summary_kor": "고려 시대, 개경에서 서쪽으로 약 20리 떨어진 예성강 하구에는 벽란도(碧瀾渡)라는 국제 항구가 있었다. 이곳은 밀물 때 큰 배가 드나들 수 있어, 송나라·일본은 물론 멀리 아라비아 상인까지 몰려들던 곳이었다.\n\n송나라 상인은 비단과 약재, 서적을 들여왔고 고려는 인삼·나전칠기·종이를 팔았다. 특히 아라비아 상인들은 수은과 향료를 싣고 와 고려를 '코리아(Corea)'라 부르며 서방에 알렸다. 조정은 이들을 위해 잔치를 열고 숙소를 마련해 주기도 했다.\n\n그러나 조선이 들어서자 분위기는 달라졌다. 농업을 중시하고 상업을 억누르는 정책, 그리고 해안을 비우는 정책 속에서 벽란도의 활기는 점차 사그라들었다. 나라가 무역을 대하는 태도가 바뀌자, 한 항구의 운명도 함께 바뀐 것이다.",
+      "keywords": [
+        "벽란도",
+        "예성강",
+        "고려 무역",
+        "아라비아 상인",
+        "코리아",
+        "조선 상업 억제"
+      ],
+      "hanja_terms": [
+        {
+          "word": "무역",
+          "hanja": "貿易",
+          "gloss": "바꿀 무·바꿀 역 → 물건을 사고팖"
+        },
+        {
+          "word": "항구",
+          "hanja": "港口",
+          "gloss": "항구 항·입 구 → 배가 드나드는 어귀"
+        },
+        {
+          "word": "상업",
+          "hanja": "商業",
+          "gloss": "장사 상·업 업 → 물건을 사고파는 일"
+        },
+        {
+          "word": "조정",
+          "hanja": "朝廷",
+          "gloss": "아침 조·조정 정 → 임금이 나라를 다스리던 곳"
+        }
+      ],
+      "check_question": "벽란도가 국제 항구로 번성할 수 있었던 조건과, 조선에 들어서 활기를 잃게 된 이유를 지문에서 각각 찾아 견주어 보자.",
+      "argument": {
+        "claim": "나라의 발전을 위해 고려처럼 무역을 활짝 여는 것과 조선처럼 농업을 지키는 것 중, 어느 쪽이 더 나은 선택일까?",
+        "options": [
+          "무역을 여는 것 — 다양한 문물과 부가 들어오니까",
+          "농업을 지키는 것 — 백성의 먹거리와 안정이 먼저니까",
+          "둘 다 균형이 중요 — 상황에 따라 조절해야 하니까"
+        ]
+      },
+      "factcheck": {
+        "status": "verified",
+        "anchor": "벽란도(碧瀾渡)는 고려 시대 예성강 하구에 있던 국제 무역항으로, 송·일본·아라비아 상인들이 드나들었으며 고려가 '코리아'로 서방에 알려지는 계기가 되었다.",
+        "hanja_checked": true
+      },
+      "difficulty": 3,
+      "date": "2026-07-15",
+      "importance": 100
+    },
+    {
+      "id": "https://news.google.com/rss/articles/CBMiXkFVX3lxTE1jeVp5SU40YWpmM21WMGlIN3dDVnlYVU5QTWVTaU95SHVLbmFCVWxRaFV5YUNwOVh2aDFtWmNIUlNFN1ZCN24wNDJHenNxNzlJX0t4NkNLNXdmRlV0WkE?oc=5",
       "type": "news",
-      "title": "드론 이어 게임체인저…우크라, 로봇 지상군 시대 열었다",
-      "source": "연합뉴스",
+      "title": "“우크라이나, 드론 이어 지상 로봇으로 전장 판도 바꿔”",
+      "source": "주간경향",
       "category": "Tech & Economy",
-      "url": "https://news.google.com/rss/articles/CBMiW0FVX3lxTFBYcW9EbDN6YzBQTll0Q0swcGlKb0pYakFBSFl6SloxUE5qcnFCSGo4Q3ZDV0pZOXhqYXo1S1ZIblUtVTlyekNFTU5KWkF2UDVpdHc3WFZvSmJyYnPSAWBBVV95cUxOMEZtei0wOW50d0V6WFI3cVlDWks0UWNNYkZwMXVPdUlkYmtOMkQ3bnBuTF9QT0xlWHlhdEwwRWI4TUJkMGlhb2xBOHNFQUEwY1h5bWpYekZ2bHloVVk4cTY?oc=5",
-      "detail": "드론 이어 게임체인저…우크라, 로봇 지상군 시대 열었다",
+      "url": "https://news.google.com/rss/articles/CBMiXkFVX3lxTE1jeVp5SU40YWpmM21WMGlIN3dDVnlYVU5QTWVTaU95SHVLbmFCVWxRaFV5YUNwOVh2aDFtWmNIUlNFN1ZCN24wNDJHenNxNzlJX0t4NkNLNXdmRlV0WkE?oc=5",
+      "detail": "“우크라이나, 드론 이어 지상 로봇으로 전장 판도 바꿔”",
       "date": "2026-07-14",
       "importance": 100
     },
     {
-      "id": "https://news.google.com/rss/articles/CBMiW0FVX3lxTE8xenlOby14UDlhZHZjRUpfNk9BN1poWjRyTklLb1A0ZjY5Skk4MlpoUWRrOUdOQlFxZG8wcVZRY2hwcUhDa0hrbXpSQVkxSzg4bDAzajZCUlQ2Y2vSAWBBVV95cUxQdW5NSURHSTU2MVg4X0xoaTFCRUZiT0o1SE45aVZLVXhyLTBUZ3FhQ2oxYlBMYXVWZ3d1ZlYycGJWUHBQS0FveWhKdXJuNTRpLXA1d0lSRXhQM01jcUFIRkI?oc=5",
+      "id": "https://news.google.com/rss/articles/CBMiWkFVX3lxTFBZOVAwQjd4SGRyZHNZY1cydG5hRlFBNHM3aU5qb1ZXbk5zb1RkQmxFaHZ6eVE3UWRiZGxmbFRRajBDUWR1TE1rTVJBTVNzWHpGaWZHNldoSWNldw?oc=5",
       "type": "news",
-      "title": "내년 최저임금 시간당 1만700원…올해보다 3.7% 인상(종합2보)",
-      "source": "연합뉴스",
-      "category": "World",
-      "url": "https://news.google.com/rss/articles/CBMiW0FVX3lxTE8xenlOby14UDlhZHZjRUpfNk9BN1poWjRyTklLb1A0ZjY5Skk4MlpoUWRrOUdOQlFxZG8wcVZRY2hwcUhDa0hrbXpSQVkxSzg4bDAzajZCUlQ2Y2vSAWBBVV95cUxQdW5NSURHSTU2MVg4X0xoaTFCRUZiT0o1SE45aVZLVXhyLTBUZ3FhQ2oxYlBMYXVWZ3d1ZlYycGJWUHBQS0FveWhKdXJuNTRpLXA1d0lSRXhQM01jcUFIRkI?oc=5",
-      "detail": "내년 최저임금 시간당 1만700원…올해보다 3.7% 인상(종합2보)",
-      "date": "2026-07-14",
-      "importance": 95
-    },
-    {
-      "id": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE9CT1pDaGNxUXExbjEwaUNnRVZPS29oUTZtUUVRbnFkTWZOWGNZd0pTb3NWMkJaYWtZSE5tQnJfcTg3WGZ0VlNzaXllc1hHWW5najBBLWRYM1pIZ9IBX0FVX3lxTE8tTGpPa2U0U1lKT1cyNWtPQk1xWHlmVnhXSktWZzNSMHc1Vnh1RE16c0JRc3JLN0k5b21iLW1fcmg5YktZMmpEWi1oWU9CRmlaUmMxNktFUERkNURMUE5B?oc=5",
-      "type": "news",
-      "title": "트럼프, 통행료 20% 하루만에 번복…“중동 투자 협정으로 대체”",
+      "title": "미국·이란 교전 나흘째···이란, 바레인·쿠웨이트 미군 기지 공습",
       "source": "경향신문",
-      "category": "Economy",
-      "url": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE9CT1pDaGNxUXExbjEwaUNnRVZPS29oUTZtUUVRbnFkTWZOWGNZd0pTb3NWMkJaYWtZSE5tQnJfcTg3WGZ0VlNzaXllc1hHWW5najBBLWRYM1pIZ9IBX0FVX3lxTE8tTGpPa2U0U1lKT1cyNWtPQk1xWHlmVnhXSktWZzNSMHc1Vnh1RE16c0JRc3JLN0k5b21iLW1fcmg5YktZMmpEWi1oWU9CRmlaUmMxNktFUERkNURMUE5B?oc=5",
-      "detail": "트럼프, 통행료 20% 하루만에 번복…“중동 투자 협정으로 대체”",
-      "date": "2026-07-14",
-      "importance": 90
+      "category": "World",
+      "url": "https://news.google.com/rss/articles/CBMiWkFVX3lxTFBZOVAwQjd4SGRyZHNZY1cydG5hRlFBNHM3aU5qb1ZXbk5zb1RkQmxFaHZ6eVE3UWRiZGxmbFRRajBDUWR1TE1rTVJBTVNzWHpGaWZHNldoSWNldw?oc=5",
+      "detail": "미국·이란 교전 나흘째···이란, 바레인·쿠웨이트 미군 기지 공습",
+      "date": "2026-07-15",
+      "importance": 95
     },
     {
       "id": "https://news.google.com/rss/articles/CBMiakFVX3lxTE5La3BnVDBMREItQ2lQYTRTdktCeUdGQWxQdHBTc3ZtTXNUVUVuejNFWmx3b3FsaUhnOFdWLXEyakI0cVV6azBreHYtdVBnclJMeEd6aXVITnd3eHlmTldDWjJURGI1WElOMHc?oc=5",
@@ -49,47 +96,53 @@
       "url": "https://news.google.com/rss/articles/CBMiakFVX3lxTE5La3BnVDBMREItQ2lQYTRTdktCeUdGQWxQdHBTc3ZtTXNUVUVuejNFWmx3b3FsaUhnOFdWLXEyakI0cVV6azBreHYtdVBnclJMeEd6aXVITnd3eHlmTldDWjJURGI1WElOMHc?oc=5",
       "detail": "“보완수사권 일부 존치 필요” 신중론 나온 민주 의총…“토론 계속”",
       "date": "2026-07-14",
+      "importance": 90
+    },
+    {
+      "id": "https://news.google.com/rss/articles/CBMid0FVX3lxTE5Bd1NoUm8zVE5oZV9wb3ItSUxqajVnd2JrRkRHXzd3MUlVYlkxN0IxYl9iSzFrMHo4T3NfcU94Q2ZuQ3l0Tnc5MlJNZFBleEk5SFY5Rnc5aFJPei0ySWFDNVdFbWdCZVZpb2tRYW1tcmVQVGIxb0t30gFmQVVfeXFMTmV1Si1kdkZ4bE9ZV3dzamlpMkttMFZPWGozd3JnOFQzd0U4RDVtaXZRZUZUR3RCR28yQldnc3dmSkNJcHhMcng1MmREbUFsMjJ4Q2dHNXA0SUZSY2hRWXNBVFg3UzBn?oc=5",
+      "type": "news",
+      "title": "강경화 대사, 외교장관 지시로 오늘 귀국… 靑 안보실 등과 대미투자-쿠팡 논의 나서",
+      "source": "동아일보",
+      "category": "Economy",
+      "url": "https://news.google.com/rss/articles/CBMid0FVX3lxTE5Bd1NoUm8zVE5oZV9wb3ItSUxqajVnd2JrRkRHXzd3MUlVYlkxN0IxYl9iSzFrMHo4T3NfcU94Q2ZuQ3l0Tnc5MlJNZFBleEk5SFY5Rnc5aFJPei0ySWFDNVdFbWdCZVZpb2tRYW1tcmVQVGIxb0t30gFmQVVfeXFMTmV1Si1kdkZ4bE9ZV3dzamlpMkttMFZPWGozd3JnOFQzd0U4RDVtaXZRZUZUR3RCR28yQldnc3dmSkNJcHhMcng1MmREbUFsMjJ4Q2dHNXA0SUZSY2hRWXNBVFg3UzBn?oc=5",
+      "detail": "강경화 대사, 외교장관 지시로 오늘 귀국… 靑 안보실 등과 대미투자-쿠팡 논의 나서",
+      "date": "2026-07-14",
       "importance": 85
     },
     {
-      "id": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE9ta1BWYW5OSk5DckZWeHMteUIxV01tcGYyVlBzS1ZpamFYMnRRS3J1RGVwNFhLbE1wcjZBQWpsU3R5X2JCSl9QNzlfQ1BCZXlXZVhjVGZnZWUzUdIBX0FVX3lxTE05ell6Mm1lM1ZqZUtEWExYb0dWVFNfZXRvVEI3aWJBX2VBME4yckEzMDRlc1lsQW9ZQXRIWjlwWGczSVRnTk1UYk9HaWRUZFljdjNhdGUxSENsZTVpaTlB?oc=5",
+      "id": "https://news.google.com/rss/articles/CBMidEFVX3lxTFBnRjhtUTNpQ01oeU1UY3YwWmtjYmFSczBTWkJJd05iU19Dck5ja1liOURZVk15RF9JNi1xV3NiSWM1cHM4U3ZQWTVJWC03bTliU3pZMl9EQ0ROMHZDM3NINWlfYmpiS0tjbTNHQkgwNm5IMXVD?oc=5",
       "type": "news",
-      "title": "여당, 당대표 ‘선호투표제’로…경선 룰 갈등 일단락",
-      "source": "경향신문",
+      "title": "민주, 당대표 선거에 ‘선호투표제’ 도입키로…‘반대’ 정청래 “수용한다”",
+      "source": "한겨레",
       "category": "Society",
-      "url": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE9ta1BWYW5OSk5DckZWeHMteUIxV01tcGYyVlBzS1ZpamFYMnRRS3J1RGVwNFhLbE1wcjZBQWpsU3R5X2JCSl9QNzlfQ1BCZXlXZVhjVGZnZWUzUdIBX0FVX3lxTE05ell6Mm1lM1ZqZUtEWExYb0dWVFNfZXRvVEI3aWJBX2VBME4yckEzMDRlc1lsQW9ZQXRIWjlwWGczSVRnTk1UYk9HaWRUZFljdjNhdGUxSENsZTVpaTlB?oc=5",
-      "detail": "여당, 당대표 ‘선호투표제’로…경선 룰 갈등 일단락",
+      "url": "https://news.google.com/rss/articles/CBMidEFVX3lxTFBnRjhtUTNpQ01oeU1UY3YwWmtjYmFSczBTWkJJd05iU19Dck5ja1liOURZVk15RF9JNi1xV3NiSWM1cHM4U3ZQWTVJWC03bTliU3pZMl9EQ0ROMHZDM3NINWlfYmpiS0tjbTNHQkgwNm5IMXVD?oc=5",
+      "detail": "민주, 당대표 선거에 ‘선호투표제’ 도입키로…‘반대’ 정청래 “수용한다”",
       "date": "2026-07-14",
       "importance": 80
     },
     {
-      "id": "https://news.google.com/rss/articles/CBMid0FVX3lxTFBoNXptZTItTURsblJYR0wyd1VQQkloWlR0d0VlZi1pcWNDNll6Q1cxakVqbWhfWUExQzhqZXQtenJkUkZlRVBJVVhxdzVHMEFLaDVjTlE3ckNsc1RKWE0ybER5cXk2aGpJZ0JNY2RnODdIQkFTZlFB0gFmQVVfeXFMTnY5ZTFMYURlYmJ6ZzU0YUI0UjhYOEREMFB5N1k5T0R3NUFtUzdmUmVUUGQ2T1NIc0pLc0ZrQ242al9OU3liN3d5Rzg4U3h0U1pfcFRnTUpPdm1kMEtFRHg1YnNvQ2ZB?oc=5",
+      "id": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE9VYkg0Z2lPdG1FdFc3TmdrSEQ1R0VZcDBCMjdacUQ0R01lOGlyX0o3LTV0dlo4c2ExcE9zdGcyVnY4SFZfX0kwbHRFcVV5RWk2WC0zaVhDZnVpQdIBX0FVX3lxTE80SEYyZ0VXd2FNaGZhSGplSjdPbE51VUk0UDBlak1WNF9tU1dTSWE2MjBLSWJRc3UtOXhtVWFyNU1XXzA0dGJzOVlzeEk1MzNoNkNVd1ZObmh0eDFkZ1Rn?oc=5",
       "type": "news",
-      "title": "李 “초고가 주택 세금 강화에 공감대…집값 잡는게 목적 아니다”",
-      "source": "동아일보",
-      "category": "Economy",
-      "url": "https://news.google.com/rss/articles/CBMid0FVX3lxTFBoNXptZTItTURsblJYR0wyd1VQQkloWlR0d0VlZi1pcWNDNll6Q1cxakVqbWhfWUExQzhqZXQtenJkUkZlRVBJVVhxdzVHMEFLaDVjTlE3ckNsc1RKWE0ybER5cXk2aGpJZ0JNY2RnODdIQkFTZlFB0gFmQVVfeXFMTnY5ZTFMYURlYmJ6ZzU0YUI0UjhYOEREMFB5N1k5T0R3NUFtUzdmUmVUUGQ2T1NIc0pLc0ZrQ242al9OU3liN3d5Rzg4U3h0U1pfcFRnTUpPdm1kMEtFRHg1YnNvQ2ZB?oc=5",
-      "detail": "李 “초고가 주택 세금 강화에 공감대…집값 잡는게 목적 아니다”",
+      "title": "[속보]내년 최저임금 시간당 1만700원 최종 결정···올해보다 3.7% 오른다",
+      "source": "경향신문",
+      "category": "World",
+      "url": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE9VYkg0Z2lPdG1FdFc3TmdrSEQ1R0VZcDBCMjdacUQ0R01lOGlyX0o3LTV0dlo4c2ExcE9zdGcyVnY4SFZfX0kwbHRFcVV5RWk2WC0zaVhDZnVpQdIBX0FVX3lxTE80SEYyZ0VXd2FNaGZhSGplSjdPbE51VUk0UDBlak1WNF9tU1dTSWE2MjBLSWJRc3UtOXhtVWFyNU1XXzA0dGJzOVlzeEk1MzNoNkNVd1ZObmh0eDFkZ1Rn?oc=5",
+      "detail": "[속보]내년 최저임금 시간당 1만700원 최종 결정···올해보다 3.7% 오른다",
       "date": "2026-07-14",
       "importance": 75
     }
   ],
+  "subject_of_day": "역사",
   "generation": {
     "mode": "lesson",
     "subject": "역사",
-    "factcheck": "fact_fail",
-    "fell_back_to_news": true,
+    "factcheck": "verified",
+    "fell_back_to_news": false,
     "model": "claude-opus-4-8",
     "tokens": {
-      "input": 3859,
-      "output": 1421,
-      "total": 5280
-    },
-    "factcheck_issues": [
-      "'무역(貿易)'의 훈음: 貿의 훈음은 '무역할 무' 또는 '바꿀 무'로 볼 수 있으나 易를 '바꿀 역'으로 푼 것은 적절함(易은 '바꿀 역/쉬울 이'). 이 부분은 큰 오류 아님",
-      "'억제(抑制)'에서 制의 훈음을 '마를 제'로 표기했으나 制의 훈음은 '지을 제' 또는 '억제할 제/마름질할 제'로, '마를 제'는 부정확함. 制는 '억제하다·만들다·마름질하다'의 뜻이며 표준 훈음은 '절제할 제/지을 제'",
-      "지문에 '억제'라는 단어가 직접 등장하지 않음(본문은 '억누르는'으로 표현). 한자어 목록과 지문의 대응이 불일치",
-      "'수은, 향료, 산호를 바쳤다'는 『고려사』 기록 표현은 대체로 사실에 부합하나 정확한 품목 검증 필요"
-    ]
+      "input": 3834,
+      "output": 1310,
+      "total": 5144
+    }
   }
 }
