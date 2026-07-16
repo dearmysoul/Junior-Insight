@@ -1,92 +1,147 @@
 {
-  "fetchedAt": "2026-07-15T22:45:33.868Z",
-  "date": "2026-07-16",
-  "weekday": "목",
+  "fetchedAt": "2026-07-16T22:45:17.038Z",
+  "date": "2026-07-17",
+  "weekday": "금",
   "weather": {
-    "emoji": "⛅",
-    "summary": "서울 구름 조금, 23°C"
+    "emoji": "🌤️",
+    "summary": "서울 대체로 맑음, 23°C"
   },
   "articles": [
     {
-      "id": "https://news.google.com/rss/articles/CBMiW0FVX3lxTE1ER25tTzNwQm9yZmFZS1ZwX25WcWpNanYyUGVVNGVzTnFpNFFwd2xaUXNqYXlTQU5OaTdqVklTQWZ6d284UGZZYmZ2M0VMbmFoLS14aWQ5WkVldHc?oc=5",
-      "type": "news",
-      "title": "내년 최저임금 1만 700원…“플랫폼 등 노동환경 변하는데 제도는 제자리”",
-      "source": "KBS 뉴스",
-      "category": "Tech & Economy",
-      "url": "https://news.google.com/rss/articles/CBMiW0FVX3lxTE1ER25tTzNwQm9yZmFZS1ZwX25WcWpNanYyUGVVNGVzTnFpNFFwd2xaUXNqYXlTQU5OaTdqVklTQWZ6d284UGZZYmZ2M0VMbmFoLS14aWQ5WkVldHc?oc=5",
-      "detail": "내년 최저임금 1만 700원…“플랫폼 등 노동환경 변하는데 제도는 제자리”",
-      "date": "2026-07-15",
+      "id": "lesson-20260717-01",
+      "type": "lesson",
+      "subject": "사회",
+      "unit": "합리적 선택과 시장·소비 생활을 이해한다 [사회·경제]",
+      "title_kor": "콜라 한 캔이 정치를 바꿨다고?",
+      "source": "교육과정 학습 · 사회",
+      "country": "KR",
+      "category": "Society",
+      "summary_kor": "1955년 미국 앨라배마주 몽고메리. 흑인은 버스 뒷자리에만 앉아야 했다. 백인에게 자리를 양보하지 않은 로자 파크스가 체포되자, 흑인 시민들은 화가 났다. 그런데 그들이 선택한 무기는 주먹이 아니라 '지갑'이었다.\n\n흑인들은 무려 381일 동안 버스를 타지 않았다. 걸어 다니거나 함께 차를 나눠 탔다. 버스 회사 승객의 대부분이 흑인이었기 때문에, 이들이 돈을 쓰지 않자 회사는 막대한 손해를 입었다. 결국 이 불매(不買) 운동은 인종 차별 버스법을 무너뜨리는 힘이 되었다.\n\n소비는 단순히 물건을 사는 행위가 아니다. 어디에 돈을 쓸지 고르는 선택 하나하나가 세상을 향한 의사 표현이 될 수 있다. 오늘날에도 사람들은 나쁜 기업의 제품을 사지 않거나, 착한 기업의 물건을 골라 사며 자신의 뜻을 밝힌다. 소비가 곧 정치가 되는 순간이다.",
+      "keywords": [
+        "불매운동",
+        "합리적 선택",
+        "소비자 권리",
+        "민주주의",
+        "로자 파크스"
+      ],
+      "hanja_terms": [
+        {
+          "word": "불매",
+          "hanja": "不買",
+          "gloss": "아니 불 · 살 매 → 물건을 사지 않음"
+        },
+        {
+          "word": "소비",
+          "hanja": "消費",
+          "gloss": "사라질 소 · 쓸 비 → 돈이나 물건을 써서 없앰"
+        },
+        {
+          "word": "차별",
+          "hanja": "差別",
+          "gloss": "어긋날 차 · 나눌 별 → 차등을 두어 구별함"
+        },
+        {
+          "word": "권리",
+          "hanja": "權利",
+          "gloss": "권세 권 · 이로울 리 → 마땅히 누릴 힘이나 자격"
+        }
+      ],
+      "check_question": "흑인들이 주먹 대신 '지갑'을 무기로 삼았을 때, 버스 회사가 큰 손해를 입은 이유를 지문에서 찾아보자.",
+      "argument": {
+        "claim": "소비를 통해 세상을 바꾸는 방법, 나에게 얼마나 효과적일까?",
+        "options": [
+          "효과적이다 - 내 지갑도 세상을 향한 목소리다",
+          "별로다 - 한 사람의 소비만으론 힘이 약하다",
+          "잘 모르겠다 - 상황에 따라 다르다"
+        ]
+      },
+      "factcheck": {
+        "status": "verified",
+        "anchor": "몽고메리 버스 보이콧은 1955년 12월 로자 파크스 체포 후 시작되어 약 381일간 이어졌고, 1956년 대법원 판결로 버스 내 인종분리가 위헌 판결을 받았다.",
+        "hanja_checked": true
+      },
+      "difficulty": 3,
+      "date": "2026-07-17",
       "importance": 100
     },
     {
-      "id": "https://news.google.com/rss/articles/CBMiZ0FVX3lxTE1sa1ZaclJVcVFJVWFDT1hONVhkRVlqMGFDazMzTFF0YmVENUxKNmpFbndVbG1lV0FYWXpOY0o2OURLb2hMMzk0YlJldGQ0TFNWdkN1ZHdPVUxJX0dkRi1iQ2RuSWdhUDjSAWpBVV95cUxNZHg5RWJxSzltLU9senVwcW42ZVhLcUF3cE1VMV9lVjI2OWFiTHljMUhBNGM1Z1hYa3NmdGxjbk9wRDN3d21iZjdmb0ZHYndqMWR1QzZ6cnlHOFlMVjMwNWluQ0h3bWYxc2Rn?oc=5",
+      "id": "https://news.google.com/rss/articles/CBMiRkFVX3lxTE9Kd01KVW1GOUNqam5aNnk1Q2dCOUwzZXJCTHVLM3RYYTdrWUdxNXZEQy0wdjdsZHdDdVJDcjZ5UDJIS2kzT1E?oc=5",
       "type": "news",
-      "title": "미군, 이란 상대로 새로운 공습 단행",
-      "source": "VOA 한국어 홈페이지",
+      "title": "‘반도체 피크아웃’ 공포에… 삼전닉스 추락·코스피는 다시 7000선 붕괴",
+      "source": "v.daum.net",
+      "category": "Tech & Economy",
+      "url": "https://news.google.com/rss/articles/CBMiRkFVX3lxTE9Kd01KVW1GOUNqam5aNnk1Q2dCOUwzZXJCTHVLM3RYYTdrWUdxNXZEQy0wdjdsZHdDdVJDcjZ5UDJIS2kzT1E?oc=5",
+      "detail": "‘반도체 피크아웃’ 공포에… 삼전닉스 추락·코스피는 다시 7000선 붕괴",
+      "date": "2026-07-16",
+      "importance": 100
+    },
+    {
+      "id": "https://news.google.com/rss/articles/CBMiggFBVV95cUxOcXlzNUNGT3hPS2t2QlpqcWFQSUh2LUpyR0w0V0dSV25XcHhvYTBreGNjLUdsdEZSRGtxOEtnRVoxVFBpV2g2ZE90dXh6bkt3dWdHSGVBYVVvcmp3TW1RbG5udjFaMFc0YjdmS0hudFFXb3Y3VEw4d0lHcHJUU29QSXh3?oc=5",
+      "type": "news",
+      "title": "이란, 예멘 후티 반군에 홍해 ‘원유 수송로’ 차단 준비 지시",
+      "source": "한겨레",
       "category": "World",
-      "url": "https://news.google.com/rss/articles/CBMiZ0FVX3lxTE1sa1ZaclJVcVFJVWFDT1hONVhkRVlqMGFDazMzTFF0YmVENUxKNmpFbndVbG1lV0FYWXpOY0o2OURLb2hMMzk0YlJldGQ0TFNWdkN1ZHdPVUxJX0dkRi1iQ2RuSWdhUDjSAWpBVV95cUxNZHg5RWJxSzltLU9senVwcW42ZVhLcUF3cE1VMV9lVjI2OWFiTHljMUhBNGM1Z1hYa3NmdGxjbk9wRDN3d21iZjdmb0ZHYndqMWR1QzZ6cnlHOFlMVjMwNWluQ0h3bWYxc2Rn?oc=5",
-      "detail": "미군, 이란 상대로 새로운 공습 단행",
-      "date": "2026-07-15",
+      "url": "https://news.google.com/rss/articles/CBMiggFBVV95cUxOcXlzNUNGT3hPS2t2QlpqcWFQSUh2LUpyR0w0V0dSV25XcHhvYTBreGNjLUdsdEZSRGtxOEtnRVoxVFBpV2g2ZE90dXh6bkt3dWdHSGVBYVVvcmp3TW1RbG5udjFaMFc0YjdmS0hudFFXb3Y3VEw4d0lHcHJUU29QSXh3?oc=5",
+      "detail": "이란, 예멘 후티 반군에 홍해 ‘원유 수송로’ 차단 준비 지시",
+      "date": "2026-07-16",
       "importance": 95
     },
     {
-      "id": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE1uX1JZS0hUeUd2Sk9KdFhwSXdQQXZyQkZScFJUT1FNcWhNYXhCR0I0V0dLMmtjUXdjTm51STNWZmJBMmtaTFpXVXZib2dCNlFUNVprZURDU0pSUdIBX0FVX3lxTE5Db0RHRUhuRVEtQ2N4dHNZVVlhSjVSZk91UE5mdXU2RlJ1ME1oWnY3SU9NT3ZhU0htUk5kcjZyZFljT3NmYjNjSFpkWUJieTl6OHpzZGtzVDNvSHVKbXln?oc=5",
+      "id": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE5qakduTzVGM28zaUhHWENBbERocDJXUm14YXdXYTZKa2psTjVIaFlHUkNWOWpHOFdHUjdHZG1lVDdKZDZxeGU3LWtIV3RlQTRfZGFvZ0Y4c1NmZ9IBX0FVX3lxTE5PTk83dzQwSnpZN09SSFBRNWZqaFlTbDJJemVCal9WMmYzYWNtTDZncjVwcmNjRW1aQTN1YUlMdUFmcFVCUG5xSmtubU1WMWVCcm10UWxsNm84LWlQMEpZ?oc=5",
       "type": "news",
-      "title": "유시민 ‘이재명 대통령 필연적 실패’ 발언에 민주당 “저주와 다르지 않다…고사 지내나”",
+      "title": "여당 의원들 “DJ 때도 패악질” “저주의 언어”…유시민에 격앙",
       "source": "경향신문",
       "category": "Society",
-      "url": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE1uX1JZS0hUeUd2Sk9KdFhwSXdQQXZyQkZScFJUT1FNcWhNYXhCR0I0V0dLMmtjUXdjTm51STNWZmJBMmtaTFpXVXZib2dCNlFUNVprZURDU0pSUdIBX0FVX3lxTE5Db0RHRUhuRVEtQ2N4dHNZVVlhSjVSZk91UE5mdXU2RlJ1ME1oWnY3SU9NT3ZhU0htUk5kcjZyZFljT3NmYjNjSFpkWUJieTl6OHpzZGtzVDNvSHVKbXln?oc=5",
-      "detail": "유시민 ‘이재명 대통령 필연적 실패’ 발언에 민주당 “저주와 다르지 않다…고사 지내나”",
-      "date": "2026-07-15",
+      "url": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE5qakduTzVGM28zaUhHWENBbERocDJXUm14YXdXYTZKa2psTjVIaFlHUkNWOWpHOFdHUjdHZG1lVDdKZDZxeGU3LWtIV3RlQTRfZGFvZ0Y4c1NmZ9IBX0FVX3lxTE5PTk83dzQwSnpZN09SSFBRNWZqaFlTbDJJemVCal9WMmYzYWNtTDZncjVwcmNjRW1aQTN1YUlMdUFmcFVCUG5xSmtubU1WMWVCcm10UWxsNm84LWlQMEpZ?oc=5",
+      "detail": "여당 의원들 “DJ 때도 패악질” “저주의 언어”…유시민에 격앙",
+      "date": "2026-07-16",
       "importance": 90
     },
     {
-      "id": "https://news.google.com/rss/articles/CBMiW0FVX3lxTE81clhFTmV4RXhKZHVZS0kxdUZFNEdiRDJBeDdtWkw4dk9sUE5JNkhvMlkzR1ZwVmR4ZTh4QUdMRWY2RWpuOFhiX3FkOWJmbzFMQ2RFdm9haHM2aXfSAWBBVV95cUxNelVDdnBpaFdnb0xzdWVwMHdqbnhoQ1RlaHd4emlHUTRQdEhiZDdzSzctN2RBeXVpWlpKdFlHcjRoQS0xNVhBX3JRSmdMalotY3FhVlpJUTZGamtrOG5GSWY?oc=5",
+      "id": "https://news.google.com/rss/articles/CBMid0FVX3lxTFBZRmxMb0ZYT216SXV1QVFzMFA2QlBGTzY2SzVVbW92dnRzTE5qQWRDRjc0YTB2eXJMNmhKaVlZV0Z1aDBjRkkwZUJMRms3dDZwWG1Ed1hsczJGZkdiUFJCWUhhX0huX2QyaFVKUFp2UnMxVkI4YU5F0gF3QVVfeXFMTlRZWE8wbURJVllQR3lCNFllYzNfcG1Hb3dsRTF5QlVNUElTTTUxSWc1YjQwSWhSR28wQkdnNmFhenljU2REM2FtaFJxTVpCaG5CVXMwVlBCWm03dnJBTEhXOWVraHVCUlJKdFhPemVxUjZnNlMzaHc?oc=5",
       "type": "news",
-      "title": "'대전 자운대 4년제' 사관학교 통합안, 오늘 당정협의서 공개",
-      "source": "연합뉴스",
+      "title": "'즉시항고 포기' 심우정 전 검찰총장 구속영장 기각",
+      "source": "MBC 뉴스",
       "category": "Society",
-      "url": "https://news.google.com/rss/articles/CBMiW0FVX3lxTE81clhFTmV4RXhKZHVZS0kxdUZFNEdiRDJBeDdtWkw4dk9sUE5JNkhvMlkzR1ZwVmR4ZTh4QUdMRWY2RWpuOFhiX3FkOWJmbzFMQ2RFdm9haHM2aXfSAWBBVV95cUxNelVDdnBpaFdnb0xzdWVwMHdqbnhoQ1RlaHd4emlHUTRQdEhiZDdzSzctN2RBeXVpWlpKdFlHcjRoQS0xNVhBX3JRSmdMalotY3FhVlpJUTZGamtrOG5GSWY?oc=5",
-      "detail": "'대전 자운대 4년제' 사관학교 통합안, 오늘 당정협의서 공개",
-      "date": "2026-07-15",
+      "url": "https://news.google.com/rss/articles/CBMid0FVX3lxTFBZRmxMb0ZYT216SXV1QVFzMFA2QlBGTzY2SzVVbW92dnRzTE5qQWRDRjc0YTB2eXJMNmhKaVlZV0Z1aDBjRkkwZUJMRms3dDZwWG1Ed1hsczJGZkdiUFJCWUhhX0huX2QyaFVKUFp2UnMxVkI4YU5F0gF3QVVfeXFMTlRZWE8wbURJVllQR3lCNFllYzNfcG1Hb3dsRTF5QlVNUElTTTUxSWc1YjQwSWhSR28wQkdnNmFhenljU2REM2FtaFJxTVpCaG5CVXMwVlBCWm03dnJBTEhXOWVraHVCUlJKdFhPemVxUjZnNlMzaHc?oc=5",
+      "detail": "'즉시항고 포기' 심우정 전 검찰총장 구속영장 기각",
+      "date": "2026-07-16",
       "importance": 85
     },
     {
-      "id": "https://news.google.com/rss/articles/CBMidEFVX3lxTFAwbi1ldHZWb2NNM2NIRmJOb2Y0UUNncEh4aUk4bmxEWWFTS0pSeHhoY0p3OW1lUi1pejZKd2NMQnBzMDZTOFowLVpPSTNENnZoWUJpQ1JaVjNydzBVaHhWUC1wTWprdThDX01QSkZMQ0JtQkFh?oc=5",
+      "id": "https://news.google.com/rss/articles/CBMidEFVX3lxTE1YekpBTDJwR1ZCYlFva3NHZXBUQVZDRUl0dkU3RFRtWmdnVGdOOU5NM3p2dkwtRTFKeWYtNDNlOVQwV1N3ckpFNW05YXFLa3d3cjNfSmZNVHV3MEIxTS1ST0tYN0ZjTG5IVjQzcko4Mko4ZGgw0gF0QVVfeXFMTXA1MjdCdVNxaFhDRVMxYzBPMGxhMklEV3E4NHdCOGxuNG95SFd1SzlISXZSQTVrRTdaQnpxSThrQ01SMXF2ZVROYW1qRzg0QVM3RlowNGJjWmduckZ0bTlDSDdvaTRGakZYTWN6dmhhMFRZWHU?oc=5",
       "type": "news",
-      "title": "유네스코, 강제동원 감추는 일본에 “사도광산 전체 역사 다뤄라”",
-      "source": "한겨레",
+      "title": "한화 CEO 앞서 \"군함 필요\"‥한국 '콕' 짚은 트럼프",
+      "source": "MBC 뉴스",
       "category": "World",
-      "url": "https://news.google.com/rss/articles/CBMidEFVX3lxTFAwbi1ldHZWb2NNM2NIRmJOb2Y0UUNncEh4aUk4bmxEWWFTS0pSeHhoY0p3OW1lUi1pejZKd2NMQnBzMDZTOFowLVpPSTNENnZoWUJpQ1JaVjNydzBVaHhWUC1wTWprdThDX01QSkZMQ0JtQkFh?oc=5",
-      "detail": "유네스코, 강제동원 감추는 일본에 “사도광산 전체 역사 다뤄라”",
-      "date": "2026-07-15",
+      "url": "https://news.google.com/rss/articles/CBMidEFVX3lxTE1YekpBTDJwR1ZCYlFva3NHZXBUQVZDRUl0dkU3RFRtWmdnVGdOOU5NM3p2dkwtRTFKeWYtNDNlOVQwV1N3ckpFNW05YXFLa3d3cjNfSmZNVHV3MEIxTS1ST0tYN0ZjTG5IVjQzcko4Mko4ZGgw0gF0QVVfeXFMTXA1MjdCdVNxaFhDRVMxYzBPMGxhMklEV3E4NHdCOGxuNG95SFd1SzlISXZSQTVrRTdaQnpxSThrQ01SMXF2ZVROYW1qRzg0QVM3RlowNGJjWmduckZ0bTlDSDdvaTRGakZYTWN6dmhhMFRZWHU?oc=5",
+      "detail": "한화 CEO 앞서 \"군함 필요\"‥한국 '콕' 짚은 트럼프",
+      "date": "2026-07-16",
       "importance": 80
     },
     {
-      "id": "https://news.google.com/rss/articles/CBMiT0FVX3lxTE9mWVJqczg1UjNtS0lUNEpfelBxbVNzZkR1c2FLb1NJbnNxOGw3TWdNTG9ZbEdTQ081a0E1NjNGbkFVVnZqOXFkN2hybjNCMUE?oc=5",
+      "id": "https://news.google.com/rss/articles/CBMiW0FVX3lxTFBhbW5EUXlZMnNkYnM5Z3d3clhicjhkZi1pbTNybWx2TW5XTEwwNDBrN2tmV3g4NjlzNVJpSW1OdzZ0bi1SenZFbkhud0pNa090bk1zckFFaEU5emc?oc=5",
       "type": "news",
-      "title": "쿠팡, 트럼프 측근 회사에 2분기 25만달러…백악관 로비 썼다",
-      "source": "v.daum.net",
+      "title": "한은, 기준금리 0.25p 인상…‘긴축 신호탄’",
+      "source": "KBS 뉴스",
       "category": "Economy",
-      "url": "https://news.google.com/rss/articles/CBMiT0FVX3lxTE9mWVJqczg1UjNtS0lUNEpfelBxbVNzZkR1c2FLb1NJbnNxOGw3TWdNTG9ZbEdTQ081a0E1NjNGbkFVVnZqOXFkN2hybjNCMUE?oc=5",
-      "detail": "쿠팡, 트럼프 측근 회사에 2분기 25만달러…백악관 로비 썼다",
-      "date": "2026-07-15",
+      "url": "https://news.google.com/rss/articles/CBMiW0FVX3lxTFBhbW5EUXlZMnNkYnM5Z3d3clhicjhkZi1pbTNybWx2TW5XTEwwNDBrN2tmV3g4NjlzNVJpSW1OdzZ0bi1SenZFbkhud0pNa090bk1zckFFaEU5emc?oc=5",
+      "detail": "한은, 기준금리 0.25p 인상…‘긴축 신호탄’",
+      "date": "2026-07-16",
       "importance": 75
     }
   ],
+  "subject_of_day": "사회",
   "generation": {
     "mode": "lesson",
-    "subject": "국어 · 문학",
-    "factcheck": "hanja_fail",
-    "fell_back_to_news": true,
+    "subject": "사회",
+    "factcheck": "verified",
+    "fell_back_to_news": false,
     "model": "claude-opus-4-8",
     "tokens": {
-      "input": 3879,
-      "output": 1113,
-      "total": 4992
-    },
-    "factcheck_issues": [
-      "한자어 '배려'의 한자 '配'의 훈음이 '나눌 배'로 잘못 표기됨. 配는 '짝 배' 또는 '나눌/짝지을 배'로 통용되나 표준 훈음은 '짝지을 배'이며, '나눌 배'는 부정확함. 다만 '慮'는 '생각할 려'로 정확함."
-    ]
+      "input": 3875,
+      "output": 1209,
+      "total": 5084
+    }
   }
 }
