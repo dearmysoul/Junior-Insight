@@ -1,147 +1,147 @@
 {
-  "fetchedAt": "2026-07-16T22:45:17.038Z",
-  "date": "2026-07-17",
-  "weekday": "금",
+  "fetchedAt": "2026-07-17T22:36:34.698Z",
+  "date": "2026-07-18",
+  "weekday": "토",
   "weather": {
-    "emoji": "🌤️",
-    "summary": "서울 대체로 맑음, 23°C"
+    "emoji": "🌧️",
+    "summary": "서울 비, 25°C"
   },
   "articles": [
     {
-      "id": "lesson-20260717-01",
+      "id": "lesson-20260718-01",
       "type": "lesson",
-      "subject": "사회",
-      "unit": "합리적 선택과 시장·소비 생활을 이해한다 [사회·경제]",
-      "title_kor": "콜라 한 캔이 정치를 바꿨다고?",
-      "source": "교육과정 학습 · 사회",
+      "subject": "일반상식",
+      "unit": "명화와 화가의 삶 속 이야기를 이해한다 [상식·예술]",
+      "title_kor": "귀를 자른 화가, 왜 그림은 이렇게 팔렸을까?",
+      "source": "교육과정 학습 · 일반상식",
       "country": "KR",
       "category": "Society",
-      "summary_kor": "1955년 미국 앨라배마주 몽고메리. 흑인은 버스 뒷자리에만 앉아야 했다. 백인에게 자리를 양보하지 않은 로자 파크스가 체포되자, 흑인 시민들은 화가 났다. 그런데 그들이 선택한 무기는 주먹이 아니라 '지갑'이었다.\n\n흑인들은 무려 381일 동안 버스를 타지 않았다. 걸어 다니거나 함께 차를 나눠 탔다. 버스 회사 승객의 대부분이 흑인이었기 때문에, 이들이 돈을 쓰지 않자 회사는 막대한 손해를 입었다. 결국 이 불매(不買) 운동은 인종 차별 버스법을 무너뜨리는 힘이 되었다.\n\n소비는 단순히 물건을 사는 행위가 아니다. 어디에 돈을 쓸지 고르는 선택 하나하나가 세상을 향한 의사 표현이 될 수 있다. 오늘날에도 사람들은 나쁜 기업의 제품을 사지 않거나, 착한 기업의 물건을 골라 사며 자신의 뜻을 밝힌다. 소비가 곧 정치가 되는 순간이다.",
+      "summary_kor": "네덜란드 화가 빈센트 반 고흐는 살아 있는 동안 극심한 가난에 시달렸다. 그림을 그려도 거의 팔리지 않았고, 동생 테오가 보내주는 생활비에 의지해 겨우 붓을 들었다. 정신 질환으로 고통받던 그는 스스로 귀 일부를 잘라내는 사건까지 일으켰다.\n\n그런데 고흐가 남긴 편지와 기록에 따르면, 그는 생전에 자신의 그림을 거의 팔지 못했다. 수백 점을 그렸지만 판매(販賣)된 작품은 극소수였다. 결국 그는 37세에 세상을 떠났고, 명성(名聲)은 죽은 뒤에야 찾아왔다. 오늘날 그의 '해바라기'와 '별이 빛나는 밤'은 세계에서 가장 사랑받는 명화가 되었다.\n\n이 이야기는 예술의 가치(價値)가 시대에 따라 달라질 수 있음을 보여준다. 당대에는 인정(認定)받지 못한 화풍이, 시간이 흘러 완전히 새로운 평가를 받은 것이다. 고흐의 삶은 '지금 인정받지 못함'이 곧 '가치 없음'은 아니라는 사실을 말해준다.",
       "keywords": [
-        "불매운동",
-        "합리적 선택",
-        "소비자 권리",
-        "민주주의",
-        "로자 파크스"
+        "반 고흐",
+        "명화",
+        "예술의 가치",
+        "화가의 삶",
+        "해바라기"
       ],
       "hanja_terms": [
         {
-          "word": "불매",
-          "hanja": "不買",
-          "gloss": "아니 불 · 살 매 → 물건을 사지 않음"
+          "word": "판매",
+          "hanja": "販賣",
+          "gloss": "팔 판 · 팔 매 → 물건을 팖"
         },
         {
-          "word": "소비",
-          "hanja": "消費",
-          "gloss": "사라질 소 · 쓸 비 → 돈이나 물건을 써서 없앰"
+          "word": "명성",
+          "hanja": "名聲",
+          "gloss": "이름 명 · 소리 성 → 세상에 널리 알려진 이름과 평판"
         },
         {
-          "word": "차별",
-          "hanja": "差別",
-          "gloss": "어긋날 차 · 나눌 별 → 차등을 두어 구별함"
+          "word": "가치",
+          "hanja": "價値",
+          "gloss": "값 가 · 값 치 → 사물이 지니는 값어치나 중요성"
         },
         {
-          "word": "권리",
-          "hanja": "權利",
-          "gloss": "권세 권 · 이로울 리 → 마땅히 누릴 힘이나 자격"
+          "word": "인정",
+          "hanja": "認定",
+          "gloss": "알 인 · 정할 정 → 옳거나 확실하다고 여겨 받아들임"
         }
       ],
-      "check_question": "흑인들이 주먹 대신 '지갑'을 무기로 삼았을 때, 버스 회사가 큰 손해를 입은 이유를 지문에서 찾아보자.",
+      "check_question": "고흐가 생전에 그림을 거의 팔지 못했는데도 오늘날 명화로 불리는 이유를, 지문의 '예술의 가치는 시대에 따라 달라진다'는 내용에서 찾아보자.",
       "argument": {
-        "claim": "소비를 통해 세상을 바꾸는 방법, 나에게 얼마나 효과적일까?",
+        "claim": "예술 작품의 진짜 가치는 '당대의 인기'로 정해질까, '시간이 흐른 뒤의 평가'로 정해질까?",
         "options": [
-          "효과적이다 - 내 지갑도 세상을 향한 목소리다",
-          "별로다 - 한 사람의 소비만으론 힘이 약하다",
-          "잘 모르겠다 - 상황에 따라 다르다"
+          "당대에 팔리고 사랑받는 것이 진짜 가치다",
+          "시간이 흐른 뒤의 평가가 진짜 가치다",
+          "둘 다 중요해서 하나로 정할 수 없다"
         ]
       },
       "factcheck": {
         "status": "verified",
-        "anchor": "몽고메리 버스 보이콧은 1955년 12월 로자 파크스 체포 후 시작되어 약 381일간 이어졌고, 1956년 대법원 판결로 버스 내 인종분리가 위헌 판결을 받았다.",
+        "anchor": "빈센트 반 고흐는 네덜란드 화가로 생전에 가난했고 동생 테오의 지원을 받았으며, 정신 질환으로 자신의 귀 일부를 잘랐고 37세에 사망했다. 대표작으로 '해바라기'와 '별이 빛나는 밤'이 있다.",
         "hanja_checked": true
       },
       "difficulty": 3,
+      "date": "2026-07-18",
+      "importance": 100
+    },
+    {
+      "id": "https://news.google.com/rss/articles/CBMic0FVX3lxTE9XU0VhNG9VdXE5Z1c0X3VQTldsUGZCTVc5bmNtVlBPOHZYWEt4S09ZNjRvRm9SakFpYnhmQ1VnbUNKdUZid2VPVERrSGMtTkhnTDhQdlM1TlV2Y0tJMEtIWUtKT3RTVDZLRXBJZXBBc19fcGc?oc=5",
+      "type": "news",
+      "title": "AI 거품론 지속…뉴욕증시 '뚝'·반도체주 '베어마켓' 진입",
+      "source": "마켓인",
+      "category": "Tech & Economy",
+      "url": "https://news.google.com/rss/articles/CBMic0FVX3lxTE9XU0VhNG9VdXE5Z1c0X3VQTldsUGZCTVc5bmNtVlBPOHZYWEt4S09ZNjRvRm9SakFpYnhmQ1VnbUNKdUZid2VPVERrSGMtTkhnTDhQdlM1TlV2Y0tJMEtIWUtKT3RTVDZLRXBJZXBBc19fcGc?oc=5",
+      "detail": "AI 거품론 지속…뉴욕증시 '뚝'·반도체주 '베어마켓' 진입",
       "date": "2026-07-17",
       "importance": 100
     },
     {
-      "id": "https://news.google.com/rss/articles/CBMiRkFVX3lxTE9Kd01KVW1GOUNqam5aNnk1Q2dCOUwzZXJCTHVLM3RYYTdrWUdxNXZEQy0wdjdsZHdDdVJDcjZ5UDJIS2kzT1E?oc=5",
+      "id": "https://news.google.com/rss/articles/CBMikAFBVV95cUxPUGQtcG9DQ0RNNmJKMloxM2lnVTdRVHhtOVFGdjF5S0VfcFRDMTBDTXBzRVhXeHgzb2dWQ0hOZS1HbVNLU19RbTBKcTRhS2g0YWMwaTFlTkZFOE1MdUdRRzc0WU1iSGpIeXJtODBRUDVNNEJHS2VQamhjQXJ3WWFab09mMEFfMFBiaGwwS0s2V04?oc=5",
       "type": "news",
-      "title": "‘반도체 피크아웃’ 공포에… 삼전닉스 추락·코스피는 다시 7000선 붕괴",
-      "source": "v.daum.net",
-      "category": "Tech & Economy",
-      "url": "https://news.google.com/rss/articles/CBMiRkFVX3lxTE9Kd01KVW1GOUNqam5aNnk1Q2dCOUwzZXJCTHVLM3RYYTdrWUdxNXZEQy0wdjdsZHdDdVJDcjZ5UDJIS2kzT1E?oc=5",
-      "detail": "‘반도체 피크아웃’ 공포에… 삼전닉스 추락·코스피는 다시 7000선 붕괴",
-      "date": "2026-07-16",
-      "importance": 100
-    },
-    {
-      "id": "https://news.google.com/rss/articles/CBMiggFBVV95cUxOcXlzNUNGT3hPS2t2QlpqcWFQSUh2LUpyR0w0V0dSV25XcHhvYTBreGNjLUdsdEZSRGtxOEtnRVoxVFBpV2g2ZE90dXh6bkt3dWdHSGVBYVVvcmp3TW1RbG5udjFaMFc0YjdmS0hudFFXb3Y3VEw4d0lHcHJUU29QSXh3?oc=5",
-      "type": "news",
-      "title": "이란, 예멘 후티 반군에 홍해 ‘원유 수송로’ 차단 준비 지시",
-      "source": "한겨레",
+      "title": "수도권 300㎜ 물폭탄... 새벽부터 쏟아진다",
+      "source": "조선일보",
       "category": "World",
-      "url": "https://news.google.com/rss/articles/CBMiggFBVV95cUxOcXlzNUNGT3hPS2t2QlpqcWFQSUh2LUpyR0w0V0dSV25XcHhvYTBreGNjLUdsdEZSRGtxOEtnRVoxVFBpV2g2ZE90dXh6bkt3dWdHSGVBYVVvcmp3TW1RbG5udjFaMFc0YjdmS0hudFFXb3Y3VEw4d0lHcHJUU29QSXh3?oc=5",
-      "detail": "이란, 예멘 후티 반군에 홍해 ‘원유 수송로’ 차단 준비 지시",
-      "date": "2026-07-16",
+      "url": "https://news.google.com/rss/articles/CBMikAFBVV95cUxPUGQtcG9DQ0RNNmJKMloxM2lnVTdRVHhtOVFGdjF5S0VfcFRDMTBDTXBzRVhXeHgzb2dWQ0hOZS1HbVNLU19RbTBKcTRhS2g0YWMwaTFlTkZFOE1MdUdRRzc0WU1iSGpIeXJtODBRUDVNNEJHS2VQamhjQXJ3WWFab09mMEFfMFBiaGwwS0s2V04?oc=5",
+      "detail": "수도권 300㎜ 물폭탄... 새벽부터 쏟아진다",
+      "date": "2026-07-17",
       "importance": 95
     },
     {
-      "id": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE5qakduTzVGM28zaUhHWENBbERocDJXUm14YXdXYTZKa2psTjVIaFlHUkNWOWpHOFdHUjdHZG1lVDdKZDZxeGU3LWtIV3RlQTRfZGFvZ0Y4c1NmZ9IBX0FVX3lxTE5PTk83dzQwSnpZN09SSFBRNWZqaFlTbDJJemVCal9WMmYzYWNtTDZncjVwcmNjRW1aQTN1YUlMdUFmcFVCUG5xSmtubU1WMWVCcm10UWxsNm84LWlQMEpZ?oc=5",
+      "id": "https://news.google.com/rss/articles/CBMidEFVX3lxTE1fZnpnOV8yWHZVUzBoZUNEUGo0OFVOMC0yaFdNYUxnQmF4U0RRcExZdVpwNTF3U25DVUhtMGtJa1JDMmxIRzYwV296ODNzT3FCZ1JrcVZsb0phRmk4Vnh0VHV3OVlLaC04TEZjMEVuQm9oNTJY?oc=5",
       "type": "news",
-      "title": "여당 의원들 “DJ 때도 패악질” “저주의 언어”…유시민에 격앙",
-      "source": "경향신문",
-      "category": "Society",
-      "url": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE5qakduTzVGM28zaUhHWENBbERocDJXUm14YXdXYTZKa2psTjVIaFlHUkNWOWpHOFdHUjdHZG1lVDdKZDZxeGU3LWtIV3RlQTRfZGFvZ0Y4c1NmZ9IBX0FVX3lxTE5PTk83dzQwSnpZN09SSFBRNWZqaFlTbDJJemVCal9WMmYzYWNtTDZncjVwcmNjRW1aQTN1YUlMdUFmcFVCUG5xSmtubU1WMWVCcm10UWxsNm84LWlQMEpZ?oc=5",
-      "detail": "여당 의원들 “DJ 때도 패악질” “저주의 언어”…유시민에 격앙",
-      "date": "2026-07-16",
+      "title": "‘자격 미달’ 송영길·김용, 전대 출마 예외적 허용…바닥 드러낸 계파 갈등",
+      "source": "한겨레",
+      "category": "World",
+      "url": "https://news.google.com/rss/articles/CBMidEFVX3lxTE1fZnpnOV8yWHZVUzBoZUNEUGo0OFVOMC0yaFdNYUxnQmF4U0RRcExZdVpwNTF3U25DVUhtMGtJa1JDMmxIRzYwV296ODNzT3FCZ1JrcVZsb0phRmk4Vnh0VHV3OVlLaC04TEZjMEVuQm9oNTJY?oc=5",
+      "detail": "‘자격 미달’ 송영길·김용, 전대 출마 예외적 허용…바닥 드러낸 계파 갈등",
+      "date": "2026-07-17",
       "importance": 90
     },
     {
-      "id": "https://news.google.com/rss/articles/CBMid0FVX3lxTFBZRmxMb0ZYT216SXV1QVFzMFA2QlBGTzY2SzVVbW92dnRzTE5qQWRDRjc0YTB2eXJMNmhKaVlZV0Z1aDBjRkkwZUJMRms3dDZwWG1Ed1hsczJGZkdiUFJCWUhhX0huX2QyaFVKUFp2UnMxVkI4YU5F0gF3QVVfeXFMTlRZWE8wbURJVllQR3lCNFllYzNfcG1Hb3dsRTF5QlVNUElTTTUxSWc1YjQwSWhSR28wQkdnNmFhenljU2REM2FtaFJxTVpCaG5CVXMwVlBCWm03dnJBTEhXOWVraHVCUlJKdFhPemVxUjZnNlMzaHc?oc=5",
+      "id": "https://news.google.com/rss/articles/CBMic0FVX3lxTE9QMzlzckdXSEdVTlpkTHJNYnBNTExTWjA5OFFhU0FYdS1QeUNaOVVjbjljcVRSWlJnYWlid2I2NTJmTTVGdUxkQXpIS2ZmYXJmZU56Ml9wdnBQSm9ESl9samRRVmM0LXVqOFZZdDA4Q3RBd3fSAWZBVV95cUxQb1NGLXE5Tl9jZ1VIYXJFMG5SZ2N5SDhTejVaVEZIYl93Q3Y3am9NamhfcHZyZG83cHh1aDI1aS1qcGlsTGE2eEtrVGdfaUZHbVNRQWYxMklneXNCaGlTeld6RE03NVE?oc=5",
       "type": "news",
-      "title": "'즉시항고 포기' 심우정 전 검찰총장 구속영장 기각",
-      "source": "MBC 뉴스",
+      "title": "트럼프 “내가 진 대선은 부정선거”…NYT “증거도 없이”",
+      "source": "동아일보",
       "category": "Society",
-      "url": "https://news.google.com/rss/articles/CBMid0FVX3lxTFBZRmxMb0ZYT216SXV1QVFzMFA2QlBGTzY2SzVVbW92dnRzTE5qQWRDRjc0YTB2eXJMNmhKaVlZV0Z1aDBjRkkwZUJMRms3dDZwWG1Ed1hsczJGZkdiUFJCWUhhX0huX2QyaFVKUFp2UnMxVkI4YU5F0gF3QVVfeXFMTlRZWE8wbURJVllQR3lCNFllYzNfcG1Hb3dsRTF5QlVNUElTTTUxSWc1YjQwSWhSR28wQkdnNmFhenljU2REM2FtaFJxTVpCaG5CVXMwVlBCWm03dnJBTEhXOWVraHVCUlJKdFhPemVxUjZnNlMzaHc?oc=5",
-      "detail": "'즉시항고 포기' 심우정 전 검찰총장 구속영장 기각",
-      "date": "2026-07-16",
+      "url": "https://news.google.com/rss/articles/CBMic0FVX3lxTE9QMzlzckdXSEdVTlpkTHJNYnBNTExTWjA5OFFhU0FYdS1QeUNaOVVjbjljcVRSWlJnYWlid2I2NTJmTTVGdUxkQXpIS2ZmYXJmZU56Ml9wdnBQSm9ESl9samRRVmM0LXVqOFZZdDA4Q3RBd3fSAWZBVV95cUxQb1NGLXE5Tl9jZ1VIYXJFMG5SZ2N5SDhTejVaVEZIYl93Q3Y3am9NamhfcHZyZG83cHh1aDI1aS1qcGlsTGE2eEtrVGdfaUZHbVNRQWYxMklneXNCaGlTeld6RE03NVE?oc=5",
+      "detail": "트럼프 “내가 진 대선은 부정선거”…NYT “증거도 없이”",
+      "date": "2026-07-17",
       "importance": 85
     },
     {
-      "id": "https://news.google.com/rss/articles/CBMidEFVX3lxTE1YekpBTDJwR1ZCYlFva3NHZXBUQVZDRUl0dkU3RFRtWmdnVGdOOU5NM3p2dkwtRTFKeWYtNDNlOVQwV1N3ckpFNW05YXFLa3d3cjNfSmZNVHV3MEIxTS1ST0tYN0ZjTG5IVjQzcko4Mko4ZGgw0gF0QVVfeXFMTXA1MjdCdVNxaFhDRVMxYzBPMGxhMklEV3E4NHdCOGxuNG95SFd1SzlISXZSQTVrRTdaQnpxSThrQ01SMXF2ZVROYW1qRzg0QVM3RlowNGJjWmduckZ0bTlDSDdvaTRGakZYTWN6dmhhMFRZWHU?oc=5",
+      "id": "https://news.google.com/rss/articles/CBMiVkFVX3lxTE5SYTA5cC0wVV8yMWlfVEsxWmZwMExhTkJwS1VBVGlnaER1SWVzOUtkaUdPRjJhc2hIbTdjMmdGOGhDX1M3dzR0S0NNaEExTEJPN0wyWWlB?oc=5",
       "type": "news",
-      "title": "한화 CEO 앞서 \"군함 필요\"‥한국 '콕' 짚은 트럼프",
-      "source": "MBC 뉴스",
-      "category": "World",
-      "url": "https://news.google.com/rss/articles/CBMidEFVX3lxTE1YekpBTDJwR1ZCYlFva3NHZXBUQVZDRUl0dkU3RFRtWmdnVGdOOU5NM3p2dkwtRTFKeWYtNDNlOVQwV1N3ckpFNW05YXFLa3d3cjNfSmZNVHV3MEIxTS1ST0tYN0ZjTG5IVjQzcko4Mko4ZGgw0gF0QVVfeXFMTXA1MjdCdVNxaFhDRVMxYzBPMGxhMklEV3E4NHdCOGxuNG95SFd1SzlISXZSQTVrRTdaQnpxSThrQ01SMXF2ZVROYW1qRzg0QVM3RlowNGJjWmduckZ0bTlDSDdvaTRGakZYTWN6dmhhMFRZWHU?oc=5",
-      "detail": "한화 CEO 앞서 \"군함 필요\"‥한국 '콕' 짚은 트럼프",
-      "date": "2026-07-16",
+      "title": "심우정 전 검찰총장 딸 외교부 최종 합격 취소…“관련자 징계 요구”",
+      "source": "매일경제",
+      "category": "Society",
+      "url": "https://news.google.com/rss/articles/CBMiVkFVX3lxTE5SYTA5cC0wVV8yMWlfVEsxWmZwMExhTkJwS1VBVGlnaER1SWVzOUtkaUdPRjJhc2hIbTdjMmdGOGhDX1M3dzR0S0NNaEExTEJPN0wyWWlB?oc=5",
+      "detail": "심우정 전 검찰총장 딸 외교부 최종 합격 취소…“관련자 징계 요구”",
+      "date": "2026-07-17",
       "importance": 80
     },
     {
-      "id": "https://news.google.com/rss/articles/CBMiW0FVX3lxTFBhbW5EUXlZMnNkYnM5Z3d3clhicjhkZi1pbTNybWx2TW5XTEwwNDBrN2tmV3g4NjlzNVJpSW1OdzZ0bi1SenZFbkhud0pNa090bk1zckFFaEU5emc?oc=5",
+      "id": "https://news.google.com/rss/articles/CBMiXkFVX3lxTFBDcU5fQkNxWXhQTXFiYVBEanZ1Zkw4b3RWaEo4X1BSM3VBRVZoYWJNZWFnR3NSV3dMcmh4M3NRU25pSzdmS09sUkdVSndsQ1NMNU1GbXlLSFNUOHVKSFE?oc=5",
       "type": "news",
-      "title": "한은, 기준금리 0.25p 인상…‘긴축 신호탄’",
-      "source": "KBS 뉴스",
+      "title": "연내 3%대 기준금리 전망...주담대 최고 금리 8% 눈앞에",
+      "source": "YTN",
       "category": "Economy",
-      "url": "https://news.google.com/rss/articles/CBMiW0FVX3lxTFBhbW5EUXlZMnNkYnM5Z3d3clhicjhkZi1pbTNybWx2TW5XTEwwNDBrN2tmV3g4NjlzNVJpSW1OdzZ0bi1SenZFbkhud0pNa090bk1zckFFaEU5emc?oc=5",
-      "detail": "한은, 기준금리 0.25p 인상…‘긴축 신호탄’",
-      "date": "2026-07-16",
+      "url": "https://news.google.com/rss/articles/CBMiXkFVX3lxTFBDcU5fQkNxWXhQTXFiYVBEanZ1Zkw4b3RWaEo4X1BSM3VBRVZoYWJNZWFnR3NSV3dMcmh4M3NRU25pSzdmS09sUkdVSndsQ1NMNU1GbXlLSFNUOHVKSFE?oc=5",
+      "detail": "연내 3%대 기준금리 전망...주담대 최고 금리 8% 눈앞에",
+      "date": "2026-07-17",
       "importance": 75
     }
   ],
-  "subject_of_day": "사회",
+  "subject_of_day": "일반상식",
   "generation": {
     "mode": "lesson",
-    "subject": "사회",
+    "subject": "일반상식",
     "factcheck": "verified",
     "fell_back_to_news": false,
     "model": "claude-opus-4-8",
     "tokens": {
-      "input": 3875,
-      "output": 1209,
-      "total": 5084
+      "input": 4056,
+      "output": 1151,
+      "total": 5207
     }
   }
 }
