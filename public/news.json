@@ -1,133 +1,133 @@
 {
-  "fetchedAt": "2026-07-17T22:36:34.698Z",
-  "date": "2026-07-18",
-  "weekday": "토",
+  "fetchedAt": "2026-07-18T22:36:06.412Z",
+  "date": "2026-07-19",
+  "weekday": "일",
   "weather": {
-    "emoji": "🌧️",
-    "summary": "서울 비, 25°C"
+    "emoji": "⛅",
+    "summary": "서울 구름 조금, 23°C"
   },
   "articles": [
     {
-      "id": "lesson-20260718-01",
+      "id": "lesson-20260719-01",
       "type": "lesson",
       "subject": "일반상식",
-      "unit": "명화와 화가의 삶 속 이야기를 이해한다 [상식·예술]",
-      "title_kor": "귀를 자른 화가, 왜 그림은 이렇게 팔렸을까?",
+      "unit": "돈과 화폐의 역사·원리를 이해한다 [상식·금융]",
+      "title_kor": "돌덩이가 돈이었다고?",
       "source": "교육과정 학습 · 일반상식",
       "country": "KR",
       "category": "Society",
-      "summary_kor": "네덜란드 화가 빈센트 반 고흐는 살아 있는 동안 극심한 가난에 시달렸다. 그림을 그려도 거의 팔리지 않았고, 동생 테오가 보내주는 생활비에 의지해 겨우 붓을 들었다. 정신 질환으로 고통받던 그는 스스로 귀 일부를 잘라내는 사건까지 일으켰다.\n\n그런데 고흐가 남긴 편지와 기록에 따르면, 그는 생전에 자신의 그림을 거의 팔지 못했다. 수백 점을 그렸지만 판매(販賣)된 작품은 극소수였다. 결국 그는 37세에 세상을 떠났고, 명성(名聲)은 죽은 뒤에야 찾아왔다. 오늘날 그의 '해바라기'와 '별이 빛나는 밤'은 세계에서 가장 사랑받는 명화가 되었다.\n\n이 이야기는 예술의 가치(價値)가 시대에 따라 달라질 수 있음을 보여준다. 당대에는 인정(認定)받지 못한 화풍이, 시간이 흘러 완전히 새로운 평가를 받은 것이다. 고흐의 삶은 '지금 인정받지 못함'이 곧 '가치 없음'은 아니라는 사실을 말해준다.",
+      "summary_kor": "태평양 한가운데 야프섬에는 지름이 사람 키보다 큰 돌바퀴가 있다. 이 돌은 '라이(Rai)'라 불리는 진짜 화폐였다. 무거워서 옮기지도 못하는 돌이 어떻게 돈 노릇을 했을까?\n\n놀랍게도 야프섬 사람들은 이 돌을 거래할 때 실제로 옮기지 않았다. 누구의 소유인지 마을 사람 모두가 기억하고 인정하면 그것으로 끝이었다. 심지어 바다에 빠져 보이지 않는 돌조차 '누구의 것'이라는 합의만 있으면 여전히 화폐로 통용되었다. 소유권은 물건이 아니라 사람들의 기억과 신뢰 속에 있었던 것이다.\n\n이 사례는 돈의 본질을 보여 준다. 화폐는 금속이나 종이 그 자체가 아니라, 그 가치를 모두가 믿어 주는 신용에서 나온다. 오늘날 통장 속 숫자나 스마트폰 결제도 실물이 아닌 신뢰로 움직인다. 눈에 보이지 않는 돌과 우리의 디지털 화폐는 사실 닮은꼴이다.",
       "keywords": [
-        "반 고흐",
-        "명화",
-        "예술의 가치",
-        "화가의 삶",
-        "해바라기"
+        "화폐",
+        "신용",
+        "야프섬",
+        "라이 스톤",
+        "소유권"
       ],
       "hanja_terms": [
         {
-          "word": "판매",
-          "hanja": "販賣",
-          "gloss": "팔 판 · 팔 매 → 물건을 팖"
+          "word": "화폐",
+          "hanja": "貨幣",
+          "gloss": "재물 화 · 화폐 폐 → 교환의 매개가 되는 돈"
         },
         {
-          "word": "명성",
-          "hanja": "名聲",
-          "gloss": "이름 명 · 소리 성 → 세상에 널리 알려진 이름과 평판"
+          "word": "신용",
+          "hanja": "信用",
+          "gloss": "믿을 신 · 쓸 용 → 믿고 거래할 수 있는 능력"
         },
         {
-          "word": "가치",
-          "hanja": "價値",
-          "gloss": "값 가 · 값 치 → 사물이 지니는 값어치나 중요성"
+          "word": "소유권",
+          "hanja": "所有權",
+          "gloss": "바 소 · 있을 유 · 권세 권 → 물건을 가질 권리"
         },
         {
-          "word": "인정",
-          "hanja": "認定",
-          "gloss": "알 인 · 정할 정 → 옳거나 확실하다고 여겨 받아들임"
+          "word": "통용",
+          "hanja": "通用",
+          "gloss": "통할 통 · 쓸 용 → 널리 두루 쓰임"
         }
       ],
-      "check_question": "고흐가 생전에 그림을 거의 팔지 못했는데도 오늘날 명화로 불리는 이유를, 지문의 '예술의 가치는 시대에 따라 달라진다'는 내용에서 찾아보자.",
+      "check_question": "바다에 빠져 보이지 않는 돌이 여전히 화폐로 쓰일 수 있었던 이유를 지문에서 찾아보자. 이때 돈의 가치는 어디에 담겨 있었을까?",
       "argument": {
-        "claim": "예술 작품의 진짜 가치는 '당대의 인기'로 정해질까, '시간이 흐른 뒤의 평가'로 정해질까?",
+        "claim": "돈의 가치는 물건 그 자체에 있을까, 아니면 사람들의 믿음에 있을까?",
         "options": [
-          "당대에 팔리고 사랑받는 것이 진짜 가치다",
-          "시간이 흐른 뒤의 평가가 진짜 가치다",
-          "둘 다 중요해서 하나로 정할 수 없다"
+          "물건 자체(금·종이)에 있다",
+          "사람들의 믿음과 합의에 있다",
+          "둘 다 필요하다"
         ]
       },
       "factcheck": {
         "status": "verified",
-        "anchor": "빈센트 반 고흐는 네덜란드 화가로 생전에 가난했고 동생 테오의 지원을 받았으며, 정신 질환으로 자신의 귀 일부를 잘랐고 37세에 사망했다. 대표작으로 '해바라기'와 '별이 빛나는 밤'이 있다.",
+        "anchor": "야프섬의 라이(Rai) 돌화폐는 실제로 옮기지 않고 소유권 합의만으로 거래되었으며, 바다에 빠진 돌조차 화폐로 통용된 것으로 잘 알려져 있다. 이는 화폐의 신용적 본질을 보여주는 대표 사례다.",
         "hanja_checked": true
       },
       "difficulty": 3,
+      "date": "2026-07-19",
+      "importance": 100
+    },
+    {
+      "id": "https://news.google.com/rss/articles/CBMiUEFVX3lxTE1TdnRNUFFtZng5NEltTW81SW52d0p0Ykd3eUhRN3VKYTdwT3JiNHEyUnRtV1FJWGZwTlF3aE1TSnpvblNyR1hDRmc1Yy0tdWJk?oc=5",
+      "type": "news",
+      "title": "반도체주 폭락에 한일개미…“월요일도 쉬자” vs “우리가 뒤집어써”",
+      "source": "문화일보",
+      "category": "Tech & Economy",
+      "url": "https://news.google.com/rss/articles/CBMiUEFVX3lxTE1TdnRNUFFtZng5NEltTW81SW52d0p0Ykd3eUhRN3VKYTdwT3JiNHEyUnRtV1FJWGZwTlF3aE1TSnpvblNyR1hDRmc1Yy0tdWJk?oc=5",
+      "detail": "반도체주 폭락에 한일개미…“월요일도 쉬자” vs “우리가 뒤집어써”",
       "date": "2026-07-18",
       "importance": 100
     },
     {
-      "id": "https://news.google.com/rss/articles/CBMic0FVX3lxTE9XU0VhNG9VdXE5Z1c0X3VQTldsUGZCTVc5bmNtVlBPOHZYWEt4S09ZNjRvRm9SakFpYnhmQ1VnbUNKdUZid2VPVERrSGMtTkhnTDhQdlM1TlV2Y0tJMEtIWUtKT3RTVDZLRXBJZXBBc19fcGc?oc=5",
+      "id": "https://news.google.com/rss/articles/CBMingFBVV95cUxQUGFWVHB4eVhyN2ZYODBxWENUSXhDWmUzb1RsOXV5U1FGZ1ppdTdPemU2UjVJQTVkNFdqY0V3azdXZW9UY0tiWWJ3RkhSNGZGVXhBSXplclh1RWs5dmc4X21hUG1WR0hYajM3eVBpcUVmUVNMc2t0VmlmQkJfVHl6cG42emg0ZVlXTHF5bHNSb2M1NmJYaDQwdnQ1c2ktQQ?oc=5",
       "type": "news",
-      "title": "AI 거품론 지속…뉴욕증시 '뚝'·반도체주 '베어마켓' 진입",
-      "source": "마켓인",
-      "category": "Tech & Economy",
-      "url": "https://news.google.com/rss/articles/CBMic0FVX3lxTE9XU0VhNG9VdXE5Z1c0X3VQTldsUGZCTVc5bmNtVlBPOHZYWEt4S09ZNjRvRm9SakFpYnhmQ1VnbUNKdUZid2VPVERrSGMtTkhnTDhQdlM1TlV2Y0tJMEtIWUtKT3RTVDZLRXBJZXBBc19fcGc?oc=5",
-      "detail": "AI 거품론 지속…뉴욕증시 '뚝'·반도체주 '베어마켓' 진입",
-      "date": "2026-07-17",
-      "importance": 100
-    },
-    {
-      "id": "https://news.google.com/rss/articles/CBMikAFBVV95cUxPUGQtcG9DQ0RNNmJKMloxM2lnVTdRVHhtOVFGdjF5S0VfcFRDMTBDTXBzRVhXeHgzb2dWQ0hOZS1HbVNLU19RbTBKcTRhS2g0YWMwaTFlTkZFOE1MdUdRRzc0WU1iSGpIeXJtODBRUDVNNEJHS2VQamhjQXJ3WWFab09mMEFfMFBiaGwwS0s2V04?oc=5",
-      "type": "news",
-      "title": "수도권 300㎜ 물폭탄... 새벽부터 쏟아진다",
+      "title": "‘MOU 파기 선언’ 이란, 중동국 맹폭 “미군 2명 전사 1명 실종”",
       "source": "조선일보",
       "category": "World",
-      "url": "https://news.google.com/rss/articles/CBMikAFBVV95cUxPUGQtcG9DQ0RNNmJKMloxM2lnVTdRVHhtOVFGdjF5S0VfcFRDMTBDTXBzRVhXeHgzb2dWQ0hOZS1HbVNLU19RbTBKcTRhS2g0YWMwaTFlTkZFOE1MdUdRRzc0WU1iSGpIeXJtODBRUDVNNEJHS2VQamhjQXJ3WWFab09mMEFfMFBiaGwwS0s2V04?oc=5",
-      "detail": "수도권 300㎜ 물폭탄... 새벽부터 쏟아진다",
-      "date": "2026-07-17",
+      "url": "https://news.google.com/rss/articles/CBMingFBVV95cUxQUGFWVHB4eVhyN2ZYODBxWENUSXhDWmUzb1RsOXV5U1FGZ1ppdTdPemU2UjVJQTVkNFdqY0V3azdXZW9UY0tiWWJ3RkhSNGZGVXhBSXplclh1RWs5dmc4X21hUG1WR0hYajM3eVBpcUVmUVNMc2t0VmlmQkJfVHl6cG42emg0ZVlXTHF5bHNSb2M1NmJYaDQwdnQ1c2ktQQ?oc=5",
+      "detail": "‘MOU 파기 선언’ 이란, 중동국 맹폭 “미군 2명 전사 1명 실종”",
+      "date": "2026-07-18",
       "importance": 95
     },
     {
-      "id": "https://news.google.com/rss/articles/CBMidEFVX3lxTE1fZnpnOV8yWHZVUzBoZUNEUGo0OFVOMC0yaFdNYUxnQmF4U0RRcExZdVpwNTF3U25DVUhtMGtJa1JDMmxIRzYwV296ODNzT3FCZ1JrcVZsb0phRmk4Vnh0VHV3OVlLaC04TEZjMEVuQm9oNTJY?oc=5",
+      "id": "https://news.google.com/rss/articles/CBMiZEFVX3lxTE1haS1wSjUtaVE0VXM0SU5DX1pwS0QwdGhUX2cwVnNQY3lIdHV0dnExY1MzdmZqREFvNWROTUVYaWU2MkhnQVlDdi03a2lCQkpRM01ZLWJ1ZnZqR1ctbWNvbGM2MUk?oc=5",
       "type": "news",
-      "title": "‘자격 미달’ 송영길·김용, 전대 출마 예외적 허용…바닥 드러낸 계파 갈등",
+      "title": "인천 쿠팡물류센터 불길 안 잡혀…외벽 타고 7층까지 번졌다",
       "source": "한겨레",
-      "category": "World",
-      "url": "https://news.google.com/rss/articles/CBMidEFVX3lxTE1fZnpnOV8yWHZVUzBoZUNEUGo0OFVOMC0yaFdNYUxnQmF4U0RRcExZdVpwNTF3U25DVUhtMGtJa1JDMmxIRzYwV296ODNzT3FCZ1JrcVZsb0phRmk4Vnh0VHV3OVlLaC04TEZjMEVuQm9oNTJY?oc=5",
-      "detail": "‘자격 미달’ 송영길·김용, 전대 출마 예외적 허용…바닥 드러낸 계파 갈등",
-      "date": "2026-07-17",
+      "category": "Society",
+      "url": "https://news.google.com/rss/articles/CBMiZEFVX3lxTE1haS1wSjUtaVE0VXM0SU5DX1pwS0QwdGhUX2cwVnNQY3lIdHV0dnExY1MzdmZqREFvNWROTUVYaWU2MkhnQVlDdi03a2lCQkpRM01ZLWJ1ZnZqR1ctbWNvbGM2MUk?oc=5",
+      "detail": "인천 쿠팡물류센터 불길 안 잡혀…외벽 타고 7층까지 번졌다",
+      "date": "2026-07-18",
       "importance": 90
     },
     {
-      "id": "https://news.google.com/rss/articles/CBMic0FVX3lxTE9QMzlzckdXSEdVTlpkTHJNYnBNTExTWjA5OFFhU0FYdS1QeUNaOVVjbjljcVRSWlJnYWlid2I2NTJmTTVGdUxkQXpIS2ZmYXJmZU56Ml9wdnBQSm9ESl9samRRVmM0LXVqOFZZdDA4Q3RBd3fSAWZBVV95cUxQb1NGLXE5Tl9jZ1VIYXJFMG5SZ2N5SDhTejVaVEZIYl93Q3Y3am9NamhfcHZyZG83cHh1aDI1aS1qcGlsTGE2eEtrVGdfaUZHbVNRQWYxMklneXNCaGlTeld6RE03NVE?oc=5",
+      "id": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE11ZDJ3MkRIX3JLRDIwbmRkbVdfV2xZNHRxZUw4U2VYWUhQeHZGbktYakZzSzZ1Z2F2R1F5NVZMOHNyMGhGckNJY0hMYWhDZjN3alVjUU8yaGxoZw?oc=5",
       "type": "news",
-      "title": "트럼프 “내가 진 대선은 부정선거”…NYT “증거도 없이”",
-      "source": "동아일보",
-      "category": "Society",
-      "url": "https://news.google.com/rss/articles/CBMic0FVX3lxTE9QMzlzckdXSEdVTlpkTHJNYnBNTExTWjA5OFFhU0FYdS1QeUNaOVVjbjljcVRSWlJnYWlid2I2NTJmTTVGdUxkQXpIS2ZmYXJmZU56Ml9wdnBQSm9ESl9samRRVmM0LXVqOFZZdDA4Q3RBd3fSAWZBVV95cUxQb1NGLXE5Tl9jZ1VIYXJFMG5SZ2N5SDhTejVaVEZIYl93Q3Y3am9NamhfcHZyZG83cHh1aDI1aS1qcGlsTGE2eEtrVGdfaUZHbVNRQWYxMklneXNCaGlTeld6RE03NVE?oc=5",
-      "detail": "트럼프 “내가 진 대선은 부정선거”…NYT “증거도 없이”",
-      "date": "2026-07-17",
+      "title": "호르무즈 이어 홍해도 흔들…\"양대 원유동맥 막히면 세계 침체\"",
+      "source": "한국경제",
+      "category": "World",
+      "url": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE11ZDJ3MkRIX3JLRDIwbmRkbVdfV2xZNHRxZUw4U2VYWUhQeHZGbktYakZzSzZ1Z2F2R1F5NVZMOHNyMGhGckNJY0hMYWhDZjN3alVjUU8yaGxoZw?oc=5",
+      "detail": "호르무즈 이어 홍해도 흔들…\"양대 원유동맥 막히면 세계 침체\"",
+      "date": "2026-07-18",
       "importance": 85
     },
     {
-      "id": "https://news.google.com/rss/articles/CBMiVkFVX3lxTE5SYTA5cC0wVV8yMWlfVEsxWmZwMExhTkJwS1VBVGlnaER1SWVzOUtkaUdPRjJhc2hIbTdjMmdGOGhDX1M3dzR0S0NNaEExTEJPN0wyWWlB?oc=5",
+      "id": "https://news.google.com/rss/articles/CBMiakFVX3lxTE1FY1hNMEhGS2ZWd0tKU3l5Sjkwbk5OX3VPdDloM2hhSlY1QWN6T3NaMTlfbExRdjNvSC1sSnExVTV5R09TU0hoZldtY3dPVHk3SnB6Wks0Rmx6bmxCSHJ2WGxUV09ZOGNQSGc?oc=5",
       "type": "news",
-      "title": "심우정 전 검찰총장 딸 외교부 최종 합격 취소…“관련자 징계 요구”",
-      "source": "매일경제",
+      "title": "이건태 “당원 뜻 따라 보완수사권 토론 안 해”…한동훈 “밀릴 것 같아 도망”",
+      "source": "한겨레",
       "category": "Society",
-      "url": "https://news.google.com/rss/articles/CBMiVkFVX3lxTE5SYTA5cC0wVV8yMWlfVEsxWmZwMExhTkJwS1VBVGlnaER1SWVzOUtkaUdPRjJhc2hIbTdjMmdGOGhDX1M3dzR0S0NNaEExTEJPN0wyWWlB?oc=5",
-      "detail": "심우정 전 검찰총장 딸 외교부 최종 합격 취소…“관련자 징계 요구”",
-      "date": "2026-07-17",
+      "url": "https://news.google.com/rss/articles/CBMiakFVX3lxTE1FY1hNMEhGS2ZWd0tKU3l5Sjkwbk5OX3VPdDloM2hhSlY1QWN6T3NaMTlfbExRdjNvSC1sSnExVTV5R09TU0hoZldtY3dPVHk3SnB6Wks0Rmx6bmxCSHJ2WGxUV09ZOGNQSGc?oc=5",
+      "detail": "이건태 “당원 뜻 따라 보완수사권 토론 안 해”…한동훈 “밀릴 것 같아 도망”",
+      "date": "2026-07-18",
       "importance": 80
     },
     {
-      "id": "https://news.google.com/rss/articles/CBMiXkFVX3lxTFBDcU5fQkNxWXhQTXFiYVBEanZ1Zkw4b3RWaEo4X1BSM3VBRVZoYWJNZWFnR3NSV3dMcmh4M3NRU25pSzdmS09sUkdVSndsQ1NMNU1GbXlLSFNUOHVKSFE?oc=5",
+      "id": "https://news.google.com/rss/articles/CBMingFBVV95cUxPNnkyXzVwYU9nOFl2ckVXelFuaGV0RG5adUVEN0JvbzliY2ZCbXlaWWU1MjVlMmZNU1dQZk1sSTFhQlpDS2lka2h1NGk1dXZpLUpfS01oclBrMnBXWTQxcWEtYUx2Mi0tZ2dfcEpsUVBBQklrZVdFLVdnZ1hNYWxjNkcyVUZrbXlnbzFjc3FHN1hWdFFBMjdtaEdyRjNLZw?oc=5",
       "type": "news",
-      "title": "연내 3%대 기준금리 전망...주담대 최고 금리 8% 눈앞에",
-      "source": "YTN",
+      "title": "트럼프 \"캐나다 산불로 대기오염, 관세 더 부과해야 할 듯\"",
+      "source": "조선일보",
       "category": "Economy",
-      "url": "https://news.google.com/rss/articles/CBMiXkFVX3lxTFBDcU5fQkNxWXhQTXFiYVBEanZ1Zkw4b3RWaEo4X1BSM3VBRVZoYWJNZWFnR3NSV3dMcmh4M3NRU25pSzdmS09sUkdVSndsQ1NMNU1GbXlLSFNUOHVKSFE?oc=5",
-      "detail": "연내 3%대 기준금리 전망...주담대 최고 금리 8% 눈앞에",
-      "date": "2026-07-17",
+      "url": "https://news.google.com/rss/articles/CBMingFBVV95cUxPNnkyXzVwYU9nOFl2ckVXelFuaGV0RG5adUVEN0JvbzliY2ZCbXlaWWU1MjVlMmZNU1dQZk1sSTFhQlpDS2lka2h1NGk1dXZpLUpfS01oclBrMnBXWTQxcWEtYUx2Mi0tZ2dfcEpsUVBBQklrZVdFLVdnZ1hNYWxjNkcyVUZrbXlnbzFjc3FHN1hWdFFBMjdtaEdyRjNLZw?oc=5",
+      "detail": "트럼프 \"캐나다 산불로 대기오염, 관세 더 부과해야 할 듯\"",
+      "date": "2026-07-18",
       "importance": 75
     }
   ],
@@ -139,9 +139,9 @@
     "fell_back_to_news": false,
     "model": "claude-opus-4-8",
     "tokens": {
-      "input": 4056,
-      "output": 1151,
-      "total": 5207
+      "input": 4023,
+      "output": 1069,
+      "total": 5092
     }
   }
 }
