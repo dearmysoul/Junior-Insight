@@ -1,147 +1,147 @@
 {
-  "fetchedAt": "2026-07-18T22:36:06.412Z",
-  "date": "2026-07-19",
-  "weekday": "일",
+  "fetchedAt": "2026-07-19T22:38:48.525Z",
+  "date": "2026-07-20",
+  "weekday": "월",
   "weather": {
-    "emoji": "⛅",
-    "summary": "서울 구름 조금, 23°C"
+    "emoji": "🌧️",
+    "summary": "서울 비, 23°C"
   },
   "articles": [
     {
-      "id": "lesson-20260719-01",
+      "id": "lesson-20260720-01",
       "type": "lesson",
-      "subject": "일반상식",
-      "unit": "돈과 화폐의 역사·원리를 이해한다 [상식·금융]",
-      "title_kor": "돌덩이가 돈이었다고?",
-      "source": "교육과정 학습 · 일반상식",
+      "subject": "국어 · 비문학",
+      "unit": "매체에 드러난 다양한 표현 방법과 의도를 평가하며 읽는다 [9국02-07]",
+      "title_kor": "9,900원? 어? 왜 10,000원이 아니지?",
+      "source": "교육과정 학습 · 국어 · 비문학",
       "country": "KR",
-      "category": "Society",
-      "summary_kor": "태평양 한가운데 야프섬에는 지름이 사람 키보다 큰 돌바퀴가 있다. 이 돌은 '라이(Rai)'라 불리는 진짜 화폐였다. 무거워서 옮기지도 못하는 돌이 어떻게 돈 노릇을 했을까?\n\n놀랍게도 야프섬 사람들은 이 돌을 거래할 때 실제로 옮기지 않았다. 누구의 소유인지 마을 사람 모두가 기억하고 인정하면 그것으로 끝이었다. 심지어 바다에 빠져 보이지 않는 돌조차 '누구의 것'이라는 합의만 있으면 여전히 화폐로 통용되었다. 소유권은 물건이 아니라 사람들의 기억과 신뢰 속에 있었던 것이다.\n\n이 사례는 돈의 본질을 보여 준다. 화폐는 금속이나 종이 그 자체가 아니라, 그 가치를 모두가 믿어 주는 신용에서 나온다. 오늘날 통장 속 숫자나 스마트폰 결제도 실물이 아닌 신뢰로 움직인다. 눈에 보이지 않는 돌과 우리의 디지털 화폐는 사실 닮은꼴이다.",
+      "category": "Tech & Economy",
+      "summary_kor": "마트에 가면 가격표가 온통 990원, 4,900원, 19,900원이다. 100원, 100원, 100원만 깎였을 뿐인데 왜 딱 떨어지는 숫자를 안 쓸까? 이 '끝자리 9' 전략은 우연이 아니라 매체와 광고가 오래 써 온 계산된 표현 방법이다.\n\n사람의 뇌는 숫자를 왼쪽부터 읽는다. 9,900원을 보면 앞자리 '9'가 먼저 인식돼 '9천 원대'로 느낀다. 실제로는 만 원에 가깝지만 소비자는 훨씬 싸다고 착각한다. 광고 문구의 '단돈', '반값', '역대 최저가' 같은 표현도 같은 원리로, 의도적으로 감정을 자극해 구매를 유도한다.\n\n중요한 건 이 표현들이 거짓말은 아니라는 점이다. 9,900원은 진짜 9,900원이다. 그래서 더 교묘하다. 매체를 읽을 때는 '무엇을 말하는가'뿐 아니라 '왜 그렇게 표현했는가'를 따져야 한다. 표현의 의도를 평가하며 읽는 힘이 곧 현명한 소비의 시작이다.",
       "keywords": [
-        "화폐",
-        "신용",
-        "야프섬",
-        "라이 스톤",
-        "소유권"
+        "끝자리 9 전략",
+        "가격 표시",
+        "광고 표현",
+        "소비 심리",
+        "매체 비판적 읽기"
       ],
       "hanja_terms": [
         {
-          "word": "화폐",
-          "hanja": "貨幣",
-          "gloss": "재물 화 · 화폐 폐 → 교환의 매개가 되는 돈"
+          "word": "의도",
+          "hanja": "意圖",
+          "gloss": "뜻 의 · 그림 도 → 무엇을 이루려고 마음속으로 세운 목적"
         },
         {
-          "word": "신용",
-          "hanja": "信用",
-          "gloss": "믿을 신 · 쓸 용 → 믿고 거래할 수 있는 능력"
+          "word": "유도",
+          "hanja": "誘導",
+          "gloss": "꾈 유 · 이끌 도 → 꾀어서 원하는 쪽으로 이끎"
         },
         {
-          "word": "소유권",
-          "hanja": "所有權",
-          "gloss": "바 소 · 있을 유 · 권세 권 → 물건을 가질 권리"
+          "word": "착각",
+          "hanja": "錯覺",
+          "gloss": "섞일 착 · 깨달을 각 → 사실과 다르게 잘못 느끼거나 앎"
         },
         {
-          "word": "통용",
-          "hanja": "通用",
-          "gloss": "통할 통 · 쓸 용 → 널리 두루 쓰임"
+          "word": "자극",
+          "hanja": "刺戟",
+          "gloss": "찌를 자 · 창 극 → 감정이나 반응을 불러일으킴"
         }
       ],
-      "check_question": "바다에 빠져 보이지 않는 돌이 여전히 화폐로 쓰일 수 있었던 이유를 지문에서 찾아보자. 이때 돈의 가치는 어디에 담겨 있었을까?",
+      "check_question": "9,900원이 거짓말이 아닌데도 지문은 왜 '더 교묘하다'고 했을까? 지문에서 뇌가 숫자를 읽는 방식과 연결해 생각해 보자.",
       "argument": {
-        "claim": "돈의 가치는 물건 그 자체에 있을까, 아니면 사람들의 믿음에 있을까?",
+        "claim": "'끝자리 9' 같은 가격 표시 방법, 소비자를 속이는 걸까 아니면 정당한 판매 전략일까?",
         "options": [
-          "물건 자체(금·종이)에 있다",
-          "사람들의 믿음과 합의에 있다",
-          "둘 다 필요하다"
+          "소비자의 착각을 노리므로 규제해야 한다",
+          "거짓이 아니니 정당한 전략이다",
+          "소비자가 비판적으로 읽으면 되는 문제다"
         ]
       },
       "factcheck": {
         "status": "verified",
-        "anchor": "야프섬의 라이(Rai) 돌화폐는 실제로 옮기지 않고 소유권 합의만으로 거래되었으며, 바다에 빠진 돌조차 화폐로 통용된 것으로 잘 알려져 있다. 이는 화폐의 신용적 본질을 보여주는 대표 사례다.",
+        "anchor": "끝자리 9 가격 전략(9,900원 등)은 소비자가 숫자를 왼쪽부터 읽어 앞자리를 먼저 인식하기 때문에 실제보다 싸게 느끼게 하는 심리적 가격 책정 기법이다.",
         "hanja_checked": true
       },
       "difficulty": 3,
+      "date": "2026-07-20",
+      "importance": 100
+    },
+    {
+      "id": "https://news.google.com/rss/articles/CBMidkFVX3lxTE5sVlB6TTZiQTZ0SXY4VWFLY3hRckJhcHc1QW1UT0lPVjVtSGw4cWpTeGNCYkhoY0p1Y3lQeV82TkhJV0Q4WTdVdTJnME1IT1QwbVZseTdrUXVFbmlKenhYT0hobTgxdVVmNFhpRFBSdUVNRVM4cXfSAWZBVV95cUxPSEsweXRubTc3cGpqaE5VMmVvaWJYNXo2bGJxUjlvMFBOckoxcWstalQ4c0YyYWswMTZSS3VwdVZ3VjNIRWFMN2Znb3hsWjJyM2xCRnkySTZoVEhja1dkdDFLZlpaS3c?oc=5",
+      "type": "news",
+      "title": "“한국, 반도체 의존하다 ‘네덜란드병’ 걸릴수도” 한은의 경고",
+      "source": "동아일보",
+      "category": "Tech & Economy",
+      "url": "https://news.google.com/rss/articles/CBMidkFVX3lxTE5sVlB6TTZiQTZ0SXY4VWFLY3hRckJhcHc1QW1UT0lPVjVtSGw4cWpTeGNCYkhoY0p1Y3lQeV82TkhJV0Q4WTdVdTJnME1IT1QwbVZseTdrUXVFbmlKenhYT0hobTgxdVVmNFhpRFBSdUVNRVM4cXfSAWZBVV95cUxPSEsweXRubTc3cGpqaE5VMmVvaWJYNXo2bGJxUjlvMFBOckoxcWstalQ4c0YyYWswMTZSS3VwdVZ3VjNIRWFMN2Znb3hsWjJyM2xCRnkySTZoVEhja1dkdDFLZlpaS3c?oc=5",
+      "detail": "“한국, 반도체 의존하다 ‘네덜란드병’ 걸릴수도” 한은의 경고",
       "date": "2026-07-19",
       "importance": 100
     },
     {
-      "id": "https://news.google.com/rss/articles/CBMiUEFVX3lxTE1TdnRNUFFtZng5NEltTW81SW52d0p0Ykd3eUhRN3VKYTdwT3JiNHEyUnRtV1FJWGZwTlF3aE1TSnpvblNyR1hDRmc1Yy0tdWJk?oc=5",
+      "id": "https://news.google.com/rss/articles/CBMidEFVX3lxTE5sRDlxWHhmWTFFUE00SVFJcGJaZXJkVmJfdkdiZGFpVGtsaFFnY0llWlI5MEtCd0wtYVBPSGZKSU85MXdzUmlDUnV6aTRXMFZqOVhYaUhlcG1vaWxJQjZaNzJqbjFjYW9HSWFObnZ3ekVWUE9J?oc=5",
       "type": "news",
-      "title": "반도체주 폭락에 한일개미…“월요일도 쉬자” vs “우리가 뒤집어써”",
-      "source": "문화일보",
-      "category": "Tech & Economy",
-      "url": "https://news.google.com/rss/articles/CBMiUEFVX3lxTE1TdnRNUFFtZng5NEltTW81SW52d0p0Ykd3eUhRN3VKYTdwT3JiNHEyUnRtV1FJWGZwTlF3aE1TSnpvblNyR1hDRmc1Yy0tdWJk?oc=5",
-      "detail": "반도체주 폭락에 한일개미…“월요일도 쉬자” vs “우리가 뒤집어써”",
-      "date": "2026-07-18",
-      "importance": 100
-    },
-    {
-      "id": "https://news.google.com/rss/articles/CBMingFBVV95cUxQUGFWVHB4eVhyN2ZYODBxWENUSXhDWmUzb1RsOXV5U1FGZ1ppdTdPemU2UjVJQTVkNFdqY0V3azdXZW9UY0tiWWJ3RkhSNGZGVXhBSXplclh1RWs5dmc4X21hUG1WR0hYajM3eVBpcUVmUVNMc2t0VmlmQkJfVHl6cG42emg0ZVlXTHF5bHNSb2M1NmJYaDQwdnQ1c2ktQQ?oc=5",
-      "type": "news",
-      "title": "‘MOU 파기 선언’ 이란, 중동국 맹폭 “미군 2명 전사 1명 실종”",
-      "source": "조선일보",
+      "title": "퇴행의 여당 전대 “제발 미래를 보라”…과열 경쟁 속 예비경선 시작",
+      "source": "한겨레",
       "category": "World",
-      "url": "https://news.google.com/rss/articles/CBMingFBVV95cUxQUGFWVHB4eVhyN2ZYODBxWENUSXhDWmUzb1RsOXV5U1FGZ1ppdTdPemU2UjVJQTVkNFdqY0V3azdXZW9UY0tiWWJ3RkhSNGZGVXhBSXplclh1RWs5dmc4X21hUG1WR0hYajM3eVBpcUVmUVNMc2t0VmlmQkJfVHl6cG42emg0ZVlXTHF5bHNSb2M1NmJYaDQwdnQ1c2ktQQ?oc=5",
-      "detail": "‘MOU 파기 선언’ 이란, 중동국 맹폭 “미군 2명 전사 1명 실종”",
-      "date": "2026-07-18",
+      "url": "https://news.google.com/rss/articles/CBMidEFVX3lxTE5sRDlxWHhmWTFFUE00SVFJcGJaZXJkVmJfdkdiZGFpVGtsaFFnY0llWlI5MEtCd0wtYVBPSGZKSU85MXdzUmlDUnV6aTRXMFZqOVhYaUhlcG1vaWxJQjZaNzJqbjFjYW9HSWFObnZ3ekVWUE9J?oc=5",
+      "detail": "퇴행의 여당 전대 “제발 미래를 보라”…과열 경쟁 속 예비경선 시작",
+      "date": "2026-07-19",
       "importance": 95
     },
     {
-      "id": "https://news.google.com/rss/articles/CBMiZEFVX3lxTE1haS1wSjUtaVE0VXM0SU5DX1pwS0QwdGhUX2cwVnNQY3lIdHV0dnExY1MzdmZqREFvNWROTUVYaWU2MkhnQVlDdi03a2lCQkpRM01ZLWJ1ZnZqR1ctbWNvbGM2MUk?oc=5",
+      "id": "https://news.google.com/rss/articles/CBMidkFVX3lxTE9rTkNiMV9SXzh4ZEdmcXBMUzJUR0dORVlocmp2Y01uWm1oWVZnQUtrUWlyLWc2ZkpXYUplMTF5em1xeGZwYmFhUzhYY19EUnp6S3pEUUQzRFpDcW9DOWNzc1Q3U3NEQjhZUzF0cmlWVE13djdqNkHSAWZBVV95cUxPUVZBTWtpM1VucjEzSHBZVGJIVi1IUHFGVS1TbEFkSzhwOEEwSUpJN291ZGNxV1o4WU85c3lXUHZqSERTVmhYM1Nhd1ZvVE4yS3VZOFdwQWxlUDFvTEEtUHp6QTZYNGc?oc=5",
       "type": "news",
-      "title": "인천 쿠팡물류센터 불길 안 잡혀…외벽 타고 7층까지 번졌다",
-      "source": "한겨레",
+      "title": "[속보]인천 쿠팡 물류센터 붕괴 위험…반경 116m 구민에 대피령",
+      "source": "동아일보",
       "category": "Society",
-      "url": "https://news.google.com/rss/articles/CBMiZEFVX3lxTE1haS1wSjUtaVE0VXM0SU5DX1pwS0QwdGhUX2cwVnNQY3lIdHV0dnExY1MzdmZqREFvNWROTUVYaWU2MkhnQVlDdi03a2lCQkpRM01ZLWJ1ZnZqR1ctbWNvbGM2MUk?oc=5",
-      "detail": "인천 쿠팡물류센터 불길 안 잡혀…외벽 타고 7층까지 번졌다",
-      "date": "2026-07-18",
+      "url": "https://news.google.com/rss/articles/CBMidkFVX3lxTE9rTkNiMV9SXzh4ZEdmcXBMUzJUR0dORVlocmp2Y01uWm1oWVZnQUtrUWlyLWc2ZkpXYUplMTF5em1xeGZwYmFhUzhYY19EUnp6S3pEUUQzRFpDcW9DOWNzc1Q3U3NEQjhZUzF0cmlWVE13djdqNkHSAWZBVV95cUxPUVZBTWtpM1VucjEzSHBZVGJIVi1IUHFGVS1TbEFkSzhwOEEwSUpJN291ZGNxV1o4WU85c3lXUHZqSERTVmhYM1Nhd1ZvVE4yS3VZOFdwQWxlUDFvTEEtUHp6QTZYNGc?oc=5",
+      "detail": "[속보]인천 쿠팡 물류센터 붕괴 위험…반경 116m 구민에 대피령",
+      "date": "2026-07-19",
       "importance": 90
     },
     {
-      "id": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE11ZDJ3MkRIX3JLRDIwbmRkbVdfV2xZNHRxZUw4U2VYWUhQeHZGbktYakZzSzZ1Z2F2R1F5NVZMOHNyMGhGckNJY0hMYWhDZjN3alVjUU8yaGxoZw?oc=5",
+      "id": "https://news.google.com/rss/articles/CBMiXEFVX3lxTE5LbDJzNlhTSWZfYXJtckFadEZVV3lucTgwX3hqa25PcjVDa3psMFFIbkkweHl6TlFMY1BjWTJDUXJxc3R3NXIwQnBPU0tXaS1halN6a2lKR19xNmw1?oc=5",
       "type": "news",
-      "title": "호르무즈 이어 홍해도 흔들…\"양대 원유동맥 막히면 세계 침체\"",
-      "source": "한국경제",
-      "category": "World",
-      "url": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE11ZDJ3MkRIX3JLRDIwbmRkbVdfV2xZNHRxZUw4U2VYWUhQeHZGbktYakZzSzZ1Z2F2R1F5NVZMOHNyMGhGckNJY0hMYWhDZjN3alVjUU8yaGxoZw?oc=5",
-      "detail": "호르무즈 이어 홍해도 흔들…\"양대 원유동맥 막히면 세계 침체\"",
-      "date": "2026-07-18",
+      "title": "한·미 관계 이상 기류 원인은 '대미 투자 지연'...'韓 친중 정부' 오해도 한 몫",
+      "source": "뉴스핌",
+      "category": "Economy",
+      "url": "https://news.google.com/rss/articles/CBMiXEFVX3lxTE5LbDJzNlhTSWZfYXJtckFadEZVV3lucTgwX3hqa25PcjVDa3psMFFIbkkweHl6TlFMY1BjWTJDUXJxc3R3NXIwQnBPU0tXaS1halN6a2lKR19xNmw1?oc=5",
+      "detail": "한·미 관계 이상 기류 원인은 '대미 투자 지연'...'韓 친중 정부' 오해도 한 몫",
+      "date": "2026-07-19",
       "importance": 85
     },
     {
-      "id": "https://news.google.com/rss/articles/CBMiakFVX3lxTE1FY1hNMEhGS2ZWd0tKU3l5Sjkwbk5OX3VPdDloM2hhSlY1QWN6T3NaMTlfbExRdjNvSC1sSnExVTV5R09TU0hoZldtY3dPVHk3SnB6Wks0Rmx6bmxCSHJ2WGxUV09ZOGNQSGc?oc=5",
+      "id": "https://news.google.com/rss/articles/CBMiWkFVX3lxTFBQbGhNay1kejR6ZnFZNkhjMWM5WG4yZjRkTFVZUzVmd2hJUEV5ZnlwTS0wU1JmSjJXelNPdTZIUzlTeTVQdWQzdzhnWWtfMnl4R1JOVTd2MjBNQdIBX0FVX3lxTE14angxMXVoS0x6azVGZFFMTlJUT19KNmt4ck5qZHlCYnlkU0w1bHRXSnI4b05KbUpsNVJpVnZGb3VJVkVoLTB2anNGaV9XSmZ4ZVkyV2I1RTNHX0NidUtF?oc=5",
       "type": "news",
-      "title": "이건태 “당원 뜻 따라 보완수사권 토론 안 해”…한동훈 “밀릴 것 같아 도망”",
-      "source": "한겨레",
+      "title": "“완전 패배수” “실패” 소리 나오는데···트럼프는 왜 중간선거 앞두고 전쟁을 재개했나",
+      "source": "경향신문",
       "category": "Society",
-      "url": "https://news.google.com/rss/articles/CBMiakFVX3lxTE1FY1hNMEhGS2ZWd0tKU3l5Sjkwbk5OX3VPdDloM2hhSlY1QWN6T3NaMTlfbExRdjNvSC1sSnExVTV5R09TU0hoZldtY3dPVHk3SnB6Wks0Rmx6bmxCSHJ2WGxUV09ZOGNQSGc?oc=5",
-      "detail": "이건태 “당원 뜻 따라 보완수사권 토론 안 해”…한동훈 “밀릴 것 같아 도망”",
-      "date": "2026-07-18",
+      "url": "https://news.google.com/rss/articles/CBMiWkFVX3lxTFBQbGhNay1kejR6ZnFZNkhjMWM5WG4yZjRkTFVZUzVmd2hJUEV5ZnlwTS0wU1JmSjJXelNPdTZIUzlTeTVQdWQzdzhnWWtfMnl4R1JOVTd2MjBNQdIBX0FVX3lxTE14angxMXVoS0x6azVGZFFMTlJUT19KNmt4ck5qZHlCYnlkU0w1bHRXSnI4b05KbUpsNVJpVnZGb3VJVkVoLTB2anNGaV9XSmZ4ZVkyV2I1RTNHX0NidUtF?oc=5",
+      "detail": "“완전 패배수” “실패” 소리 나오는데···트럼프는 왜 중간선거 앞두고 전쟁을 재개했나",
+      "date": "2026-07-19",
       "importance": 80
     },
     {
-      "id": "https://news.google.com/rss/articles/CBMingFBVV95cUxPNnkyXzVwYU9nOFl2ckVXelFuaGV0RG5adUVEN0JvbzliY2ZCbXlaWWU1MjVlMmZNU1dQZk1sSTFhQlpDS2lka2h1NGk1dXZpLUpfS01oclBrMnBXWTQxcWEtYUx2Mi0tZ2dfcEpsUVBBQklrZVdFLVdnZ1hNYWxjNkcyVUZrbXlnbzFjc3FHN1hWdFFBMjdtaEdyRjNLZw?oc=5",
+      "id": "https://news.google.com/rss/articles/CBMiW0FVX3lxTE1fdi14R2Vwem9VVzk5X19abnEzcHZsRXFkMzVBdEZxSVJsWVliWUMwSGZ2NVE0VW1zTXdpeVRYOGtVaUw3b3hGUXZmUndKQ2w0czVsUE9qNWF1ZGfSAWBBVV95cUxOTXNzci0zSnkwaVYxWnY0d1dCLVBFSDdpQ1RlRDVSSC12cTN4dU00VW5faUx1WXF6c3lWSGgwbUZ4V3J6cVFIR0lCd2ZGR2pHVUNKNWg3V2hXamwta3dSV1A?oc=5",
       "type": "news",
-      "title": "트럼프 \"캐나다 산불로 대기오염, 관세 더 부과해야 할 듯\"",
-      "source": "조선일보",
-      "category": "Economy",
-      "url": "https://news.google.com/rss/articles/CBMingFBVV95cUxPNnkyXzVwYU9nOFl2ckVXelFuaGV0RG5adUVEN0JvbzliY2ZCbXlaWWU1MjVlMmZNU1dQZk1sSTFhQlpDS2lka2h1NGk1dXZpLUpfS01oclBrMnBXWTQxcWEtYUx2Mi0tZ2dfcEpsUVBBQklrZVdFLVdnZ1hNYWxjNkcyVUZrbXlnbzFjc3FHN1hWdFFBMjdtaEdyRjNLZw?oc=5",
-      "detail": "트럼프 \"캐나다 산불로 대기오염, 관세 더 부과해야 할 듯\"",
-      "date": "2026-07-18",
+      "title": "끝없는 보복전…러, 키이우에 '최대 규모' 탄도미사일 공격(종합)",
+      "source": "연합뉴스",
+      "category": "World",
+      "url": "https://news.google.com/rss/articles/CBMiW0FVX3lxTE1fdi14R2Vwem9VVzk5X19abnEzcHZsRXFkMzVBdEZxSVJsWVliWUMwSGZ2NVE0VW1zTXdpeVRYOGtVaUw3b3hGUXZmUndKQ2w0czVsUE9qNWF1ZGfSAWBBVV95cUxOTXNzci0zSnkwaVYxWnY0d1dCLVBFSDdpQ1RlRDVSSC12cTN4dU00VW5faUx1WXF6c3lWSGgwbUZ4V3J6cVFIR0lCd2ZGR2pHVUNKNWg3V2hXamwta3dSV1A?oc=5",
+      "detail": "끝없는 보복전…러, 키이우에 '최대 규모' 탄도미사일 공격(종합)",
+      "date": "2026-07-19",
       "importance": 75
     }
   ],
-  "subject_of_day": "일반상식",
+  "subject_of_day": "국어 · 비문학",
   "generation": {
     "mode": "lesson",
-    "subject": "일반상식",
+    "subject": "국어 · 비문학",
     "factcheck": "verified",
     "fell_back_to_news": false,
     "model": "claude-opus-4-8",
     "tokens": {
-      "input": 4023,
-      "output": 1069,
-      "total": 5092
+      "input": 3938,
+      "output": 1241,
+      "total": 5179
     }
   }
 }
