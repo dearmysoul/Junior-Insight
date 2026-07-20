@@ -1,147 +1,147 @@
 {
-  "fetchedAt": "2026-07-19T22:38:48.525Z",
-  "date": "2026-07-20",
-  "weekday": "월",
+  "fetchedAt": "2026-07-20T22:44:08.414Z",
+  "date": "2026-07-21",
+  "weekday": "화",
   "weather": {
     "emoji": "🌧️",
-    "summary": "서울 비, 23°C"
+    "summary": "서울 비, 25°C"
   },
   "articles": [
     {
-      "id": "lesson-20260720-01",
+      "id": "lesson-20260721-01",
       "type": "lesson",
-      "subject": "국어 · 비문학",
-      "unit": "매체에 드러난 다양한 표현 방법과 의도를 평가하며 읽는다 [9국02-07]",
-      "title_kor": "9,900원? 어? 왜 10,000원이 아니지?",
-      "source": "교육과정 학습 · 국어 · 비문학",
+      "subject": "과학",
+      "unit": "지구와 우주의 변화, 기후 현상을 이해한다 [과학·지구]",
+      "title_kor": "어? 인공위성이 바다 온도를 어떻게 재?",
+      "source": "교육과정 학습 · 과학",
       "country": "KR",
-      "category": "Tech & Economy",
-      "summary_kor": "마트에 가면 가격표가 온통 990원, 4,900원, 19,900원이다. 100원, 100원, 100원만 깎였을 뿐인데 왜 딱 떨어지는 숫자를 안 쓸까? 이 '끝자리 9' 전략은 우연이 아니라 매체와 광고가 오래 써 온 계산된 표현 방법이다.\n\n사람의 뇌는 숫자를 왼쪽부터 읽는다. 9,900원을 보면 앞자리 '9'가 먼저 인식돼 '9천 원대'로 느낀다. 실제로는 만 원에 가깝지만 소비자는 훨씬 싸다고 착각한다. 광고 문구의 '단돈', '반값', '역대 최저가' 같은 표현도 같은 원리로, 의도적으로 감정을 자극해 구매를 유도한다.\n\n중요한 건 이 표현들이 거짓말은 아니라는 점이다. 9,900원은 진짜 9,900원이다. 그래서 더 교묘하다. 매체를 읽을 때는 '무엇을 말하는가'뿐 아니라 '왜 그렇게 표현했는가'를 따져야 한다. 표현의 의도를 평가하며 읽는 힘이 곧 현명한 소비의 시작이다.",
+      "category": "Society",
+      "summary_kor": "2016년, 태평양 한가운데 온도가 평소보다 몇 도씩 오르기 시작했다. 사람이 갈 수도 없는 넓은 바다에서 대체 누가 온도를 쟀을까? 답은 하늘 위에 있었다. 지구 관측 위성이 적외선 센서로 바다 표면의 열을 읽어낸 것이다.\n\n위성은 눈에 보이지 않는 적외선을 감지해 바다와 대기의 온도를 측정한다. 이 자료로 과학자들은 '엘니뇨'라는 현상을 잡아냈다. 적도 부근 태평양 바닷물이 비정상적으로 따뜻해지는 현상인데, 이게 나타나면 지구 곳곳의 기후가 흔들린다. 어떤 곳은 폭우, 어떤 곳은 가뭄이 온다.\n\n놀라운 건, 위성이 모은 방대한 자료를 슈퍼컴퓨터가 계산해 몇 달 뒤 날씨까지 예측한다는 점이다. 첨단 기술이 없던 시절엔 재해가 닥쳐야 알았지만, 이제는 미리 대비할 시간을 번다. 하늘의 눈이 지구의 기후를 감시하고 있는 셈이다.",
       "keywords": [
-        "끝자리 9 전략",
-        "가격 표시",
-        "광고 표현",
-        "소비 심리",
-        "매체 비판적 읽기"
+        "인공위성",
+        "엘니뇨",
+        "적외선",
+        "기후 예측",
+        "슈퍼컴퓨터"
       ],
       "hanja_terms": [
         {
-          "word": "의도",
-          "hanja": "意圖",
-          "gloss": "뜻 의 · 그림 도 → 무엇을 이루려고 마음속으로 세운 목적"
+          "word": "관측",
+          "hanja": "觀測",
+          "gloss": "볼 관·헤아릴 측 → 자연 현상을 살펴 헤아림"
         },
         {
-          "word": "유도",
-          "hanja": "誘導",
-          "gloss": "꾈 유 · 이끌 도 → 꾀어서 원하는 쪽으로 이끎"
+          "word": "감지",
+          "hanja": "感知",
+          "gloss": "느낄 감·알 지 → 느껴서 알아챔"
         },
         {
-          "word": "착각",
-          "hanja": "錯覺",
-          "gloss": "섞일 착 · 깨달을 각 → 사실과 다르게 잘못 느끼거나 앎"
+          "word": "재해",
+          "hanja": "災害",
+          "gloss": "재앙 재·해칠 해 → 자연이 일으키는 피해"
         },
         {
-          "word": "자극",
-          "hanja": "刺戟",
-          "gloss": "찌를 자 · 창 극 → 감정이나 반응을 불러일으킴"
+          "word": "예측",
+          "hanja": "豫測",
+          "gloss": "미리 예·헤아릴 측 → 미리 헤아려 짐작함"
         }
       ],
-      "check_question": "9,900원이 거짓말이 아닌데도 지문은 왜 '더 교묘하다'고 했을까? 지문에서 뇌가 숫자를 읽는 방식과 연결해 생각해 보자.",
+      "check_question": "사람이 직접 갈 수 없는 넓은 바다의 온도를, 위성은 무엇을 이용해 어떻게 알아냈을까? 지문에서 근거를 찾아보자.",
       "argument": {
-        "claim": "'끝자리 9' 같은 가격 표시 방법, 소비자를 속이는 걸까 아니면 정당한 판매 전략일까?",
+        "claim": "기후 재해를 줄이려면 '미리 예측하는 기술'과 '재해가 왔을 때 대응하는 힘' 중 무엇이 더 중요할까?",
         "options": [
-          "소비자의 착각을 노리므로 규제해야 한다",
-          "거짓이 아니니 정당한 전략이다",
-          "소비자가 비판적으로 읽으면 되는 문제다"
+          "예측 기술이 더 중요하다",
+          "대응하는 힘이 더 중요하다",
+          "둘 다 똑같이 중요하다"
         ]
       },
       "factcheck": {
         "status": "verified",
-        "anchor": "끝자리 9 가격 전략(9,900원 등)은 소비자가 숫자를 왼쪽부터 읽어 앞자리를 먼저 인식하기 때문에 실제보다 싸게 느끼게 하는 심리적 가격 책정 기법이다.",
+        "anchor": "엘니뇨는 적도 부근 태평양 바닷물이 비정상적으로 따뜻해지는 현상이며, 2015~2016년 강한 엘니뇨가 발생했다. 위성은 적외선 센서로 해수면 온도를 측정한다.",
         "hanja_checked": true
       },
       "difficulty": 3,
+      "date": "2026-07-21",
+      "importance": 100
+    },
+    {
+      "id": "https://news.google.com/rss/articles/CBMiXkFVX3lxTFBOUjFzX0FTX2JNakpNcHVBejRUbU9CMG5rSWE2RnhkaGZwWkw3MkZUQ2x5bUdZcEZILTNmS3kxU0wwZGtpWG93c1hDRUpuanViOU5vSG5NcTBFQVFwdXc?oc=5",
+      "type": "news",
+      "title": "MS, 엔비디아 견제 위해 클라우드 '애저'에 AMD AI 랙 도입...\"AMD 점유율 4.5% → 25%로 늘어날 수도\"",
+      "source": "YTN",
+      "category": "Tech & Economy",
+      "url": "https://news.google.com/rss/articles/CBMiXkFVX3lxTFBOUjFzX0FTX2JNakpNcHVBejRUbU9CMG5rSWE2RnhkaGZwWkw3MkZUQ2x5bUdZcEZILTNmS3kxU0wwZGtpWG93c1hDRUpuanViOU5vSG5NcTBFQVFwdXc?oc=5",
+      "detail": "MS, 엔비디아 견제 위해 클라우드 '애저'에 AMD AI 랙 도입...\"AMD 점유율 4.5% → 25%로 늘어날 수도\"",
       "date": "2026-07-20",
       "importance": 100
     },
     {
-      "id": "https://news.google.com/rss/articles/CBMidkFVX3lxTE5sVlB6TTZiQTZ0SXY4VWFLY3hRckJhcHc1QW1UT0lPVjVtSGw4cWpTeGNCYkhoY0p1Y3lQeV82TkhJV0Q4WTdVdTJnME1IT1QwbVZseTdrUXVFbmlKenhYT0hobTgxdVVmNFhpRFBSdUVNRVM4cXfSAWZBVV95cUxPSEsweXRubTc3cGpqaE5VMmVvaWJYNXo2bGJxUjlvMFBOckoxcWstalQ4c0YyYWswMTZSS3VwdVZ3VjNIRWFMN2Znb3hsWjJyM2xCRnkySTZoVEhja1dkdDFLZlpaS3c?oc=5",
+      "id": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE1VWURFcUpURTJWWDRNdTdGQmlUdVpKWFRuOGZ0OUV5MHg2VjJ5RnMtdmZxT3Q5NjRBRFpfSEY4RmZkSld2Zl9XblZUek4yRTFKZTRsVVFvSWROd9IBX0FVX3lxTE85LWlKd0VYTTZlOVg5azhBSWo2WmJEdGhLOFdkLWlVTDNaXzRkeDR1UWNZck5PR2lzTGcxaUNRSDdjdHZnQ2ZUZ3Zpa0JvQk5MX0FpVGFrS1NTWlk5RF9j?oc=5",
       "type": "news",
-      "title": "“한국, 반도체 의존하다 ‘네덜란드병’ 걸릴수도” 한은의 경고",
-      "source": "동아일보",
-      "category": "Tech & Economy",
-      "url": "https://news.google.com/rss/articles/CBMidkFVX3lxTE5sVlB6TTZiQTZ0SXY4VWFLY3hRckJhcHc1QW1UT0lPVjVtSGw4cWpTeGNCYkhoY0p1Y3lQeV82TkhJV0Q4WTdVdTJnME1IT1QwbVZseTdrUXVFbmlKenhYT0hobTgxdVVmNFhpRFBSdUVNRVM4cXfSAWZBVV95cUxPSEsweXRubTc3cGpqaE5VMmVvaWJYNXo2bGJxUjlvMFBOckoxcWstalQ4c0YyYWswMTZSS3VwdVZ3VjNIRWFMN2Znb3hsWjJyM2xCRnkySTZoVEhja1dkdDFLZlpaS3c?oc=5",
-      "detail": "“한국, 반도체 의존하다 ‘네덜란드병’ 걸릴수도” 한은의 경고",
-      "date": "2026-07-19",
-      "importance": 100
-    },
-    {
-      "id": "https://news.google.com/rss/articles/CBMidEFVX3lxTE5sRDlxWHhmWTFFUE00SVFJcGJaZXJkVmJfdkdiZGFpVGtsaFFnY0llWlI5MEtCd0wtYVBPSGZKSU85MXdzUmlDUnV6aTRXMFZqOVhYaUhlcG1vaWxJQjZaNzJqbjFjYW9HSWFObnZ3ekVWUE9J?oc=5",
-      "type": "news",
-      "title": "퇴행의 여당 전대 “제발 미래를 보라”…과열 경쟁 속 예비경선 시작",
-      "source": "한겨레",
+      "title": "다시 격화하는 두 개의 전쟁…‘생계형 연료’ 경유 가격 위험하다",
+      "source": "경향신문",
       "category": "World",
-      "url": "https://news.google.com/rss/articles/CBMidEFVX3lxTE5sRDlxWHhmWTFFUE00SVFJcGJaZXJkVmJfdkdiZGFpVGtsaFFnY0llWlI5MEtCd0wtYVBPSGZKSU85MXdzUmlDUnV6aTRXMFZqOVhYaUhlcG1vaWxJQjZaNzJqbjFjYW9HSWFObnZ3ekVWUE9J?oc=5",
-      "detail": "퇴행의 여당 전대 “제발 미래를 보라”…과열 경쟁 속 예비경선 시작",
-      "date": "2026-07-19",
+      "url": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE1VWURFcUpURTJWWDRNdTdGQmlUdVpKWFRuOGZ0OUV5MHg2VjJ5RnMtdmZxT3Q5NjRBRFpfSEY4RmZkSld2Zl9XblZUek4yRTFKZTRsVVFvSWROd9IBX0FVX3lxTE85LWlKd0VYTTZlOVg5azhBSWo2WmJEdGhLOFdkLWlVTDNaXzRkeDR1UWNZck5PR2lzTGcxaUNRSDdjdHZnQ2ZUZ3Zpa0JvQk5MX0FpVGFrS1NTWlk5RF9j?oc=5",
+      "detail": "다시 격화하는 두 개의 전쟁…‘생계형 연료’ 경유 가격 위험하다",
+      "date": "2026-07-20",
       "importance": 95
     },
     {
-      "id": "https://news.google.com/rss/articles/CBMidkFVX3lxTE9rTkNiMV9SXzh4ZEdmcXBMUzJUR0dORVlocmp2Y01uWm1oWVZnQUtrUWlyLWc2ZkpXYUplMTF5em1xeGZwYmFhUzhYY19EUnp6S3pEUUQzRFpDcW9DOWNzc1Q3U3NEQjhZUzF0cmlWVE13djdqNkHSAWZBVV95cUxPUVZBTWtpM1VucjEzSHBZVGJIVi1IUHFGVS1TbEFkSzhwOEEwSUpJN291ZGNxV1o4WU85c3lXUHZqSERTVmhYM1Nhd1ZvVE4yS3VZOFdwQWxlUDFvTEEtUHp6QTZYNGc?oc=5",
+      "id": "https://news.google.com/rss/articles/CBMiW0FVX3lxTE41RDRwLWpqWExxQXFkaWdVdVZ2NmoxWGhVN2FwOGwyWS0xMkFBd1pkb24tR0RvdEZIM1psSnZJTHFySnU2aE5SdXdtZG54UG14M2ZsYjlUdU83cHM?oc=5",
       "type": "news",
-      "title": "[속보]인천 쿠팡 물류센터 붕괴 위험…반경 116m 구민에 대피령",
-      "source": "동아일보",
+      "title": "[단독] “대통령실 연락 뒤 21그램 조사 번복”…‘관저 감사’ 유병호 구속",
+      "source": "KBS 뉴스",
       "category": "Society",
-      "url": "https://news.google.com/rss/articles/CBMidkFVX3lxTE9rTkNiMV9SXzh4ZEdmcXBMUzJUR0dORVlocmp2Y01uWm1oWVZnQUtrUWlyLWc2ZkpXYUplMTF5em1xeGZwYmFhUzhYY19EUnp6S3pEUUQzRFpDcW9DOWNzc1Q3U3NEQjhZUzF0cmlWVE13djdqNkHSAWZBVV95cUxPUVZBTWtpM1VucjEzSHBZVGJIVi1IUHFGVS1TbEFkSzhwOEEwSUpJN291ZGNxV1o4WU85c3lXUHZqSERTVmhYM1Nhd1ZvVE4yS3VZOFdwQWxlUDFvTEEtUHp6QTZYNGc?oc=5",
-      "detail": "[속보]인천 쿠팡 물류센터 붕괴 위험…반경 116m 구민에 대피령",
-      "date": "2026-07-19",
+      "url": "https://news.google.com/rss/articles/CBMiW0FVX3lxTE41RDRwLWpqWExxQXFkaWdVdVZ2NmoxWGhVN2FwOGwyWS0xMkFBd1pkb24tR0RvdEZIM1psSnZJTHFySnU2aE5SdXdtZG54UG14M2ZsYjlUdU83cHM?oc=5",
+      "detail": "[단독] “대통령실 연락 뒤 21그램 조사 번복”…‘관저 감사’ 유병호 구속",
+      "date": "2026-07-20",
       "importance": 90
     },
     {
-      "id": "https://news.google.com/rss/articles/CBMiXEFVX3lxTE5LbDJzNlhTSWZfYXJtckFadEZVV3lucTgwX3hqa25PcjVDa3psMFFIbkkweHl6TlFMY1BjWTJDUXJxc3R3NXIwQnBPU0tXaS1halN6a2lKR19xNmw1?oc=5",
+      "id": "https://news.google.com/rss/articles/CBMiZ0FVX3lxTE5OcklIN0lJVFFGWVozSkVDSDVjMFAyazJOUVVycEh1YXBmLXBxa2hnLUZmQUF3ZkRyUlhEWUxkUGNlRzQzWlhIaThIdzVxc2NueUZrc0RZX0diQWhqX1Utd3hlSmtob0E?oc=5",
       "type": "news",
-      "title": "한·미 관계 이상 기류 원인은 '대미 투자 지연'...'韓 친중 정부' 오해도 한 몫",
-      "source": "뉴스핌",
-      "category": "Economy",
-      "url": "https://news.google.com/rss/articles/CBMiXEFVX3lxTE5LbDJzNlhTSWZfYXJtckFadEZVV3lucTgwX3hqa25PcjVDa3psMFFIbkkweHl6TlFMY1BjWTJDUXJxc3R3NXIwQnBPU0tXaS1halN6a2lKR19xNmw1?oc=5",
-      "detail": "한·미 관계 이상 기류 원인은 '대미 투자 지연'...'韓 친중 정부' 오해도 한 몫",
-      "date": "2026-07-19",
+      "title": "선관위 ’특혜 채용’ 임용취소 연이어 제동… “일부 하자 있어도 취소는 위법“",
+      "source": "연합뉴스TV",
+      "category": "World",
+      "url": "https://news.google.com/rss/articles/CBMiZ0FVX3lxTE5OcklIN0lJVFFGWVozSkVDSDVjMFAyazJOUVVycEh1YXBmLXBxa2hnLUZmQUF3ZkRyUlhEWUxkUGNlRzQzWlhIaThIdzVxc2NueUZrc0RZX0diQWhqX1Utd3hlSmtob0E?oc=5",
+      "detail": "선관위 ’특혜 채용’ 임용취소 연이어 제동… “일부 하자 있어도 취소는 위법“",
+      "date": "2026-07-20",
       "importance": 85
     },
     {
-      "id": "https://news.google.com/rss/articles/CBMiWkFVX3lxTFBQbGhNay1kejR6ZnFZNkhjMWM5WG4yZjRkTFVZUzVmd2hJUEV5ZnlwTS0wU1JmSjJXelNPdTZIUzlTeTVQdWQzdzhnWWtfMnl4R1JOVTd2MjBNQdIBX0FVX3lxTE14angxMXVoS0x6azVGZFFMTlJUT19KNmt4ck5qZHlCYnlkU0w1bHRXSnI4b05KbUpsNVJpVnZGb3VJVkVoLTB2anNGaV9XSmZ4ZVkyV2I1RTNHX0NidUtF?oc=5",
+      "id": "https://news.google.com/rss/articles/CBMidEFVX3lxTE5fV0NUam5CX2xuS3hZS3hOUEt0TDZQQmRadEppUEItQWsyZkpGNTh5YmVyNkJYUHRJQVZJai1wRkNVY2hTcURDcEF3bUhWZjR0SDBoak9mOHFlQjJhSFQ4SDRUSkw4all2NUthcjJUdk02OU5m?oc=5",
       "type": "news",
-      "title": "“완전 패배수” “실패” 소리 나오는데···트럼프는 왜 중간선거 앞두고 전쟁을 재개했나",
-      "source": "경향신문",
+      "title": "김민석 “명·청대전 끝내야” 정청래 “당 떠난 적 없어” 송영길 “결과로 책임”",
+      "source": "한겨레",
       "category": "Society",
-      "url": "https://news.google.com/rss/articles/CBMiWkFVX3lxTFBQbGhNay1kejR6ZnFZNkhjMWM5WG4yZjRkTFVZUzVmd2hJUEV5ZnlwTS0wU1JmSjJXelNPdTZIUzlTeTVQdWQzdzhnWWtfMnl4R1JOVTd2MjBNQdIBX0FVX3lxTE14angxMXVoS0x6azVGZFFMTlJUT19KNmt4ck5qZHlCYnlkU0w1bHRXSnI4b05KbUpsNVJpVnZGb3VJVkVoLTB2anNGaV9XSmZ4ZVkyV2I1RTNHX0NidUtF?oc=5",
-      "detail": "“완전 패배수” “실패” 소리 나오는데···트럼프는 왜 중간선거 앞두고 전쟁을 재개했나",
-      "date": "2026-07-19",
+      "url": "https://news.google.com/rss/articles/CBMidEFVX3lxTE5fV0NUam5CX2xuS3hZS3hOUEt0TDZQQmRadEppUEItQWsyZkpGNTh5YmVyNkJYUHRJQVZJai1wRkNVY2hTcURDcEF3bUhWZjR0SDBoak9mOHFlQjJhSFQ4SDRUSkw4all2NUthcjJUdk02OU5m?oc=5",
+      "detail": "김민석 “명·청대전 끝내야” 정청래 “당 떠난 적 없어” 송영길 “결과로 책임”",
+      "date": "2026-07-20",
       "importance": 80
     },
     {
-      "id": "https://news.google.com/rss/articles/CBMiW0FVX3lxTE1fdi14R2Vwem9VVzk5X19abnEzcHZsRXFkMzVBdEZxSVJsWVliWUMwSGZ2NVE0VW1zTXdpeVRYOGtVaUw3b3hGUXZmUndKQ2w0czVsUE9qNWF1ZGfSAWBBVV95cUxOTXNzci0zSnkwaVYxWnY0d1dCLVBFSDdpQ1RlRDVSSC12cTN4dU00VW5faUx1WXF6c3lWSGgwbUZ4V3J6cVFIR0lCd2ZGR2pHVUNKNWg3V2hXamwta3dSV1A?oc=5",
+      "id": "https://news.google.com/rss/articles/CBMiZ0FVX3lxTE5ZUmZNSlhMNDhrNEp1WkhJc3JqaTFqZUVWb3ZrQXZ3V0pLWnRQLURFZ3J5RW5aUElNV290QkVrODA4M3FDR05iSlN0ZGN1elRMUUl0MVRsSjQ2ZUppd2x5cWszYjVzakU?oc=5",
       "type": "news",
-      "title": "끝없는 보복전…러, 키이우에 '최대 규모' 탄도미사일 공격(종합)",
-      "source": "연합뉴스",
-      "category": "World",
-      "url": "https://news.google.com/rss/articles/CBMiW0FVX3lxTE1fdi14R2Vwem9VVzk5X19abnEzcHZsRXFkMzVBdEZxSVJsWVliWUMwSGZ2NVE0VW1zTXdpeVRYOGtVaUw3b3hGUXZmUndKQ2w0czVsUE9qNWF1ZGfSAWBBVV95cUxOTXNzci0zSnkwaVYxWnY0d1dCLVBFSDdpQ1RlRDVSSC12cTN4dU00VW5faUx1WXF6c3lWSGgwbUZ4V3J6cVFIR0lCd2ZGR2pHVUNKNWg3V2hXamwta3dSV1A?oc=5",
-      "detail": "끝없는 보복전…러, 키이우에 '최대 규모' 탄도미사일 공격(종합)",
-      "date": "2026-07-19",
+      "title": "미·이란 충돌·유가 상승에 뉴욕증시 하락…다우 0.6%↓",
+      "source": "연합뉴스TV",
+      "category": "Economy",
+      "url": "https://news.google.com/rss/articles/CBMiZ0FVX3lxTE5ZUmZNSlhMNDhrNEp1WkhJc3JqaTFqZUVWb3ZrQXZ3V0pLWnRQLURFZ3J5RW5aUElNV290QkVrODA4M3FDR05iSlN0ZGN1elRMUUl0MVRsSjQ2ZUppd2x5cWszYjVzakU?oc=5",
+      "detail": "미·이란 충돌·유가 상승에 뉴욕증시 하락…다우 0.6%↓",
+      "date": "2026-07-20",
       "importance": 75
     }
   ],
-  "subject_of_day": "국어 · 비문학",
+  "subject_of_day": "과학",
   "generation": {
     "mode": "lesson",
-    "subject": "국어 · 비문학",
+    "subject": "과학",
     "factcheck": "verified",
     "fell_back_to_news": false,
     "model": "claude-opus-4-8",
     "tokens": {
-      "input": 3938,
-      "output": 1241,
-      "total": 5179
+      "input": 3885,
+      "output": 1070,
+      "total": 4955
     }
   }
 }
