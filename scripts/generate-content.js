@@ -115,15 +115,21 @@ export async function generateLesson(plan, today, metrics = {}) {
     if (!process.env.ANTHROPIC_API_KEY) { metrics.factcheck = 'no_key'; return null; }
     const client = new Anthropic();
 
-    // 1) 생성
-    const gen = await client.messages.create({
-        model: 'claude-opus-4-8',
-        max_tokens: 2048,
-        output_config: { format: { type: 'json_schema', schema: LESSON_SCHEMA } },
-        system: GEN_SYSTEM,
-        messages: [{
-            role: 'user',
-            content: `[교과] ${plan.subject}
+    // 팩트체크 1회 실패로 지문을 곧장 버리면 평일 교과가 자주 뉴스로 떨어진다.
+    // 일회성 한자·사실 오류는 재생성으로 대부분 사라지므로, 폴백 전 여러 번 재시도한다.
+    const MAX_ATTEMPTS = 3;   // 폴백 전 재생성 재시도 횟수
+    let lastFail = null;      // 마지막 실패 사유(모니터링용): { factcheck, issues }
+
+    for (let attempt = 1; attempt <= MAX_ATTEMPTS; attempt++) {
+        // 1) 생성
+        const gen = await client.messages.create({
+            model: 'claude-opus-4-8',
+            max_tokens: 2048,
+            output_config: { format: { type: 'json_schema', schema: LESSON_SCHEMA } },
+            system: GEN_SYSTEM,
+            messages: [{
+                role: 'user',
+                content: `[교과] ${plan.subject}
 [주제] ${plan.unit.code} · ${plan.unit.statement}
 [소재] ${plan.topic || '자유(아이 관심)'}
 ${plan.generalKnowledge
@@ -131,59 +137,72 @@ ${plan.generalKnowledge
     : plan.literaryOriginal
         ? '※ 문학: 실제 작품(시·소설) 인용 절대 금지. 저작권 문제 없는 AI 창작 짧은 지문(시 또는 이야기, 300~400자)을 직접 지어라. hanja_terms는 지문 속 한자어로.'
         : '위 성취기준에 맞는 지문 1편을 규칙대로 써라.'}`,
-        }],
-    });
-    addUsage(metrics, gen);
-    const d = parse(gen);
-    if (!d.title_kor || !d.summary_kor) { metrics.factcheck = 'gen_fail'; return null; }
+            }],
+        });
+        addUsage(metrics, gen);
+        const d = parse(gen);
+        if (!d.title_kor || !d.summary_kor) {
+            lastFail = { factcheck: 'gen_fail', issues: [] };
+            console.warn(`⚠️ 지문 생성 실패(시도 ${attempt}/${MAX_ATTEMPTS})`);
+            continue;
+        }
 
-    // 2) 팩트체크 (사실 + 한자)
-    const fc = await client.messages.create({
-        model: 'claude-opus-4-8',
-        max_tokens: 1024,
-        output_config: { format: { type: 'json_schema', schema: FACTCHECK_SCHEMA } },
-        system: FACT_SYSTEM,
-        messages: [{
-            role: 'user',
-            content: `[제목] ${d.title_kor}
+        // 2) 팩트체크 (사실 + 한자)
+        const fc = await client.messages.create({
+            model: 'claude-opus-4-8',
+            max_tokens: 1024,
+            output_config: { format: { type: 'json_schema', schema: FACTCHECK_SCHEMA } },
+            system: FACT_SYSTEM,
+            messages: [{
+                role: 'user',
+                content: `[제목] ${d.title_kor}
 [지문] ${d.summary_kor}
 [한자어] ${JSON.stringify(d.hanja_terms)}`,
-        }],
-    });
-    addUsage(metrics, fc);
-    const v = parse(fc);
-    // 문학(창작 지문)은 검증할 '사실'이 없으므로 한자만 검사, 그 외는 사실+한자 모두 검사.
-    const factFail = plan.literaryOriginal ? false : v.ok === false;
-    // 검증 실패 시 이 날은 뉴스로 폴백(오답 노출 방지)
-    if (factFail || v.hanja_ok === false) {
-        metrics.factcheck = factFail ? 'fact_fail' : 'hanja_fail';
-        metrics.issues = (v.issues || []).slice(0, 5);
-        console.warn('⚠️ 팩트체크 실패 → 뉴스 폴백:', (v.issues || []).join('; '));
-        return null;
-    }
-    metrics.factcheck = 'verified';
+            }],
+        });
+        addUsage(metrics, fc);
+        const v = parse(fc);
+        // 문학(창작 지문)은 검증할 '사실'이 없으므로 한자만 검사, 그 외는 사실+한자 모두 검사.
+        const factFail = plan.literaryOriginal ? false : v.ok === false;
+        // 검증 실패 시 재생성 재시도(오답 노출 방지). 마지막 시도까지 실패하면 뉴스 폴백.
+        if (factFail || v.hanja_ok === false) {
+            lastFail = { factcheck: factFail ? 'fact_fail' : 'hanja_fail', issues: (v.issues || []).slice(0, 5) };
+            console.warn(`⚠️ 팩트체크 실패(시도 ${attempt}/${MAX_ATTEMPTS}) → ${attempt < MAX_ATTEMPTS ? '재생성' : '뉴스 폴백'}:`, (v.issues || []).join('; '));
+            continue;
+        }
 
-    return {
-        id: `lesson-${today.replace(/-/g, '')}-01`,
-        type: 'lesson',
-        subject: plan.subject,
-        unit: `${plan.unit.statement} [${plan.unit.code}]`,
-        title_kor: d.title_kor,
-        source: `교육과정 학습 · ${plan.subject}`,
-        country: 'KR',
-        category: plan.topicCategory || 'Society',
-        summary_kor: d.summary_kor,
-        keywords: clampArr(d.keywords, 6),
-        hanja_terms: clampArr(d.hanja_terms, 5),
-        check_question: d.check_question || '',
-        argument: (d.argument && d.argument.claim && Array.isArray(d.argument.options))
-            ? { claim: d.argument.claim, options: clampArr(d.argument.options, 3) }
-            : null,
-        factcheck: { status: 'verified', anchor: v.anchor || '', hanja_checked: v.hanja_ok !== false },
-        difficulty: plan.difficulty || 3,
-        date: today,
-        importance: 100,
-    };
+        // 3) 통과 — 검증된 지문 반환
+        metrics.factcheck = 'verified';
+        metrics.attempts = attempt;
+        return {
+            id: `lesson-${today.replace(/-/g, '')}-01`,
+            type: 'lesson',
+            subject: plan.subject,
+            unit: `${plan.unit.statement} [${plan.unit.code}]`,
+            title_kor: d.title_kor,
+            source: `교육과정 학습 · ${plan.subject}`,
+            country: 'KR',
+            category: plan.topicCategory || 'Society',
+            summary_kor: d.summary_kor,
+            keywords: clampArr(d.keywords, 6),
+            hanja_terms: clampArr(d.hanja_terms, 5),
+            check_question: d.check_question || '',
+            argument: (d.argument && d.argument.claim && Array.isArray(d.argument.options))
+                ? { claim: d.argument.claim, options: clampArr(d.argument.options, 3) }
+                : null,
+            factcheck: { status: 'verified', anchor: v.anchor || '', hanja_checked: v.hanja_ok !== false },
+            difficulty: plan.difficulty || 3,
+            date: today,
+            importance: 100,
+        };
+    }
+
+    // 모든 시도 실패 → 뉴스 폴백(오답 노출 방지)
+    metrics.factcheck = (lastFail && lastFail.factcheck) || 'fact_fail';
+    if (lastFail && lastFail.issues && lastFail.issues.length) metrics.issues = lastFail.issues;
+    metrics.attempts = MAX_ATTEMPTS;
+    console.warn(`↩️ 지문 ${MAX_ATTEMPTS}회 시도 모두 실패 → 뉴스 폴백`);
+    return null;
 }
 
 async function main() {
@@ -235,6 +254,7 @@ async function main() {
         subject: plan.subject || null,
         factcheck: metrics.factcheck || (plan.mode === 'lesson' ? 'unknown' : 'news_only'),
         fell_back_to_news: plan.mode === 'lesson' && articles[0]?.type !== 'lesson',
+        ...(metrics.attempts ? { attempts: metrics.attempts } : {}),
         model: metrics.model || null,
         tokens: { input: metrics.tokensIn || 0, output: metrics.tokensOut || 0, total: tokensTotal },
         ...(metrics.issues && metrics.issues.length ? { factcheck_issues: metrics.issues } : {}),
