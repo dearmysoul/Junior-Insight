@@ -1,147 +1,93 @@
 {
-  "fetchedAt": "2026-07-20T22:44:08.414Z",
-  "date": "2026-07-21",
-  "weekday": "화",
+  "fetchedAt": "2026-07-21T22:42:57.006Z",
+  "date": "2026-07-22",
+  "weekday": "수",
   "weather": {
-    "emoji": "🌧️",
-    "summary": "서울 비, 25°C"
+    "emoji": "🌤️",
+    "summary": "서울 대체로 맑음, 23°C"
   },
   "articles": [
     {
-      "id": "lesson-20260721-01",
-      "type": "lesson",
-      "subject": "과학",
-      "unit": "지구와 우주의 변화, 기후 현상을 이해한다 [과학·지구]",
-      "title_kor": "어? 인공위성이 바다 온도를 어떻게 재?",
-      "source": "교육과정 학습 · 과학",
-      "country": "KR",
-      "category": "Society",
-      "summary_kor": "2016년, 태평양 한가운데 온도가 평소보다 몇 도씩 오르기 시작했다. 사람이 갈 수도 없는 넓은 바다에서 대체 누가 온도를 쟀을까? 답은 하늘 위에 있었다. 지구 관측 위성이 적외선 센서로 바다 표면의 열을 읽어낸 것이다.\n\n위성은 눈에 보이지 않는 적외선을 감지해 바다와 대기의 온도를 측정한다. 이 자료로 과학자들은 '엘니뇨'라는 현상을 잡아냈다. 적도 부근 태평양 바닷물이 비정상적으로 따뜻해지는 현상인데, 이게 나타나면 지구 곳곳의 기후가 흔들린다. 어떤 곳은 폭우, 어떤 곳은 가뭄이 온다.\n\n놀라운 건, 위성이 모은 방대한 자료를 슈퍼컴퓨터가 계산해 몇 달 뒤 날씨까지 예측한다는 점이다. 첨단 기술이 없던 시절엔 재해가 닥쳐야 알았지만, 이제는 미리 대비할 시간을 번다. 하늘의 눈이 지구의 기후를 감시하고 있는 셈이다.",
-      "keywords": [
-        "인공위성",
-        "엘니뇨",
-        "적외선",
-        "기후 예측",
-        "슈퍼컴퓨터"
-      ],
-      "hanja_terms": [
-        {
-          "word": "관측",
-          "hanja": "觀測",
-          "gloss": "볼 관·헤아릴 측 → 자연 현상을 살펴 헤아림"
-        },
-        {
-          "word": "감지",
-          "hanja": "感知",
-          "gloss": "느낄 감·알 지 → 느껴서 알아챔"
-        },
-        {
-          "word": "재해",
-          "hanja": "災害",
-          "gloss": "재앙 재·해칠 해 → 자연이 일으키는 피해"
-        },
-        {
-          "word": "예측",
-          "hanja": "豫測",
-          "gloss": "미리 예·헤아릴 측 → 미리 헤아려 짐작함"
-        }
-      ],
-      "check_question": "사람이 직접 갈 수 없는 넓은 바다의 온도를, 위성은 무엇을 이용해 어떻게 알아냈을까? 지문에서 근거를 찾아보자.",
-      "argument": {
-        "claim": "기후 재해를 줄이려면 '미리 예측하는 기술'과 '재해가 왔을 때 대응하는 힘' 중 무엇이 더 중요할까?",
-        "options": [
-          "예측 기술이 더 중요하다",
-          "대응하는 힘이 더 중요하다",
-          "둘 다 똑같이 중요하다"
-        ]
-      },
-      "factcheck": {
-        "status": "verified",
-        "anchor": "엘니뇨는 적도 부근 태평양 바닷물이 비정상적으로 따뜻해지는 현상이며, 2015~2016년 강한 엘니뇨가 발생했다. 위성은 적외선 센서로 해수면 온도를 측정한다.",
-        "hanja_checked": true
-      },
-      "difficulty": 3,
+      "id": "https://news.google.com/rss/articles/CBMidEFVX3lxTE9ZRWt4TGh5azJDX2g3YUh4aDluaW11eFJnMnNsOUZraktlZDVyQkl1bjhfUmRQei05Z3FQLWx3cVpaMWxDSUMtMzdaY19WODdrYnlUYTRKTGV5M3phWXhUWVdXZVFOUm53cGhpX0d1UUdrcXVa?oc=5",
+      "type": "news",
+      "title": "이 대통령, 삼전 노조에 “호남 반도체가 쟁의 대상 주장 지나쳐”",
+      "source": "한겨레",
+      "category": "Tech & Economy",
+      "url": "https://news.google.com/rss/articles/CBMidEFVX3lxTE9ZRWt4TGh5azJDX2g3YUh4aDluaW11eFJnMnNsOUZraktlZDVyQkl1bjhfUmRQei05Z3FQLWx3cVpaMWxDSUMtMzdaY19WODdrYnlUYTRKTGV5M3phWXhUWVdXZVFOUm53cGhpX0d1UUdrcXVa?oc=5",
+      "detail": "이 대통령, 삼전 노조에 “호남 반도체가 쟁의 대상 주장 지나쳐”",
       "date": "2026-07-21",
       "importance": 100
     },
     {
-      "id": "https://news.google.com/rss/articles/CBMiXkFVX3lxTFBOUjFzX0FTX2JNakpNcHVBejRUbU9CMG5rSWE2RnhkaGZwWkw3MkZUQ2x5bUdZcEZILTNmS3kxU0wwZGtpWG93c1hDRUpuanViOU5vSG5NcTBFQVFwdXc?oc=5",
+      "id": "https://news.google.com/rss/articles/CBMia0FVX3lxTE9RWGNyd19lTFJHQ2IxbG9CRVhVNjYxbHFXNkpoSnRGeDZ5cDVkSTk0c2h2em11b3dRZUF3ZVRpMUdqUjRmSXkwZFdPdzc0a0xZQ3BtQ3pseVBYbWpmSTliRkI1eUxRY05mZDdj0gFuQVVfeXFMT2dveHgwOWZ5OHAxNDBvY0YyM09xVkRxYzVwdFhrQ2U1YU80RnY0UFZCeXdJTzZjTHZZTFpzN0E0YkNQMXFXdURYZVBuWGx2QjdoT29YZjRhSjJXTjQxN0VCVldWMGxQT01SSm9GRmc?oc=5",
       "type": "news",
-      "title": "MS, 엔비디아 견제 위해 클라우드 '애저'에 AMD AI 랙 도입...\"AMD 점유율 4.5% → 25%로 늘어날 수도\"",
-      "source": "YTN",
-      "category": "Tech & Economy",
-      "url": "https://news.google.com/rss/articles/CBMiXkFVX3lxTFBOUjFzX0FTX2JNakpNcHVBejRUbU9CMG5rSWE2RnhkaGZwWkw3MkZUQ2x5bUdZcEZILTNmS3kxU0wwZGtpWG93c1hDRUpuanViOU5vSG5NcTBFQVFwdXc?oc=5",
-      "detail": "MS, 엔비디아 견제 위해 클라우드 '애저'에 AMD AI 랙 도입...\"AMD 점유율 4.5% → 25%로 늘어날 수도\"",
-      "date": "2026-07-20",
-      "importance": 100
-    },
-    {
-      "id": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE1VWURFcUpURTJWWDRNdTdGQmlUdVpKWFRuOGZ0OUV5MHg2VjJ5RnMtdmZxT3Q5NjRBRFpfSEY4RmZkSld2Zl9XblZUek4yRTFKZTRsVVFvSWROd9IBX0FVX3lxTE85LWlKd0VYTTZlOVg5azhBSWo2WmJEdGhLOFdkLWlVTDNaXzRkeDR1UWNZck5PR2lzTGcxaUNRSDdjdHZnQ2ZUZ3Zpa0JvQk5MX0FpVGFrS1NTWlk5RF9j?oc=5",
-      "type": "news",
-      "title": "다시 격화하는 두 개의 전쟁…‘생계형 연료’ 경유 가격 위험하다",
-      "source": "경향신문",
+      "title": "미국 ‘후티의 홍해 봉쇄 위협’ 규탄…“상선 보호 필요 조치 취할 것”",
+      "source": "VOA 한국어 홈페이지",
       "category": "World",
-      "url": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE1VWURFcUpURTJWWDRNdTdGQmlUdVpKWFRuOGZ0OUV5MHg2VjJ5RnMtdmZxT3Q5NjRBRFpfSEY4RmZkSld2Zl9XblZUek4yRTFKZTRsVVFvSWROd9IBX0FVX3lxTE85LWlKd0VYTTZlOVg5azhBSWo2WmJEdGhLOFdkLWlVTDNaXzRkeDR1UWNZck5PR2lzTGcxaUNRSDdjdHZnQ2ZUZ3Zpa0JvQk5MX0FpVGFrS1NTWlk5RF9j?oc=5",
-      "detail": "다시 격화하는 두 개의 전쟁…‘생계형 연료’ 경유 가격 위험하다",
-      "date": "2026-07-20",
+      "url": "https://news.google.com/rss/articles/CBMia0FVX3lxTE9RWGNyd19lTFJHQ2IxbG9CRVhVNjYxbHFXNkpoSnRGeDZ5cDVkSTk0c2h2em11b3dRZUF3ZVRpMUdqUjRmSXkwZFdPdzc0a0xZQ3BtQ3pseVBYbWpmSTliRkI1eUxRY05mZDdj0gFuQVVfeXFMT2dveHgwOWZ5OHAxNDBvY0YyM09xVkRxYzVwdFhrQ2U1YU80RnY0UFZCeXdJTzZjTHZZTFpzN0E0YkNQMXFXdURYZVBuWGx2QjdoT29YZjRhSjJXTjQxN0VCVldWMGxQT01SSm9GRmc?oc=5",
+      "detail": "미국 ‘후티의 홍해 봉쇄 위협’ 규탄…“상선 보호 필요 조치 취할 것”",
+      "date": "2026-07-21",
       "importance": 95
     },
     {
-      "id": "https://news.google.com/rss/articles/CBMiW0FVX3lxTE41RDRwLWpqWExxQXFkaWdVdVZ2NmoxWGhVN2FwOGwyWS0xMkFBd1pkb24tR0RvdEZIM1psSnZJTHFySnU2aE5SdXdtZG54UG14M2ZsYjlUdU83cHM?oc=5",
+      "id": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE5sc09Wc2ppdHVyVWlpWEE3UHVoMGY2YXMyZ0NoNm9zRm82OXN1Z042X3lDRGVGcmw4YUhHQk1ZcjI0dVlkbUw3R3FlT2JwbWVQaGs0WEIzeXotNlpMcHE0bg?oc=5",
       "type": "news",
-      "title": "[단독] “대통령실 연락 뒤 21그램 조사 번복”…‘관저 감사’ 유병호 구속",
-      "source": "KBS 뉴스",
+      "title": "‘장윤기 사건 지휘’ 형사과장 구속영장 기각",
+      "source": "한겨레",
       "category": "Society",
-      "url": "https://news.google.com/rss/articles/CBMiW0FVX3lxTE41RDRwLWpqWExxQXFkaWdVdVZ2NmoxWGhVN2FwOGwyWS0xMkFBd1pkb24tR0RvdEZIM1psSnZJTHFySnU2aE5SdXdtZG54UG14M2ZsYjlUdU83cHM?oc=5",
-      "detail": "[단독] “대통령실 연락 뒤 21그램 조사 번복”…‘관저 감사’ 유병호 구속",
-      "date": "2026-07-20",
+      "url": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE5sc09Wc2ppdHVyVWlpWEE3UHVoMGY2YXMyZ0NoNm9zRm82OXN1Z042X3lDRGVGcmw4YUhHQk1ZcjI0dVlkbUw3R3FlT2JwbWVQaGs0WEIzeXotNlpMcHE0bg?oc=5",
+      "detail": "‘장윤기 사건 지휘’ 형사과장 구속영장 기각",
+      "date": "2026-07-21",
       "importance": 90
     },
     {
-      "id": "https://news.google.com/rss/articles/CBMiZ0FVX3lxTE5OcklIN0lJVFFGWVozSkVDSDVjMFAyazJOUVVycEh1YXBmLXBxa2hnLUZmQUF3ZkRyUlhEWUxkUGNlRzQzWlhIaThIdzVxc2NueUZrc0RZX0diQWhqX1Utd3hlSmtob0E?oc=5",
+      "id": "https://news.google.com/rss/articles/CBMibEFVX3lxTE9sOXN1ZngyaXBab3hvVHlFYWx1Nzh1RzlkSzJOZm1Wek5EbDJpdFg4NlZ4QUJXdHZ2WWRqcXZVT2o4R0REMFJrNFQya09wT2xqUW0wOEQ2NmJYSWY0bE5pTTZXcW94ZzFta241Qg?oc=5",
       "type": "news",
-      "title": "선관위 ’특혜 채용’ 임용취소 연이어 제동… “일부 하자 있어도 취소는 위법“",
-      "source": "연합뉴스TV",
-      "category": "World",
-      "url": "https://news.google.com/rss/articles/CBMiZ0FVX3lxTE5OcklIN0lJVFFGWVozSkVDSDVjMFAyazJOUVVycEh1YXBmLXBxa2hnLUZmQUF3ZkRyUlhEWUxkUGNlRzQzWlhIaThIdzVxc2NueUZrc0RZX0diQWhqX1Utd3hlSmtob0E?oc=5",
-      "detail": "선관위 ’특혜 채용’ 임용취소 연이어 제동… “일부 하자 있어도 취소는 위법“",
-      "date": "2026-07-20",
+      "title": "이 대통령 \"부동산 조세 제도, 국민의 상식과 눈높이에 기초해 정비\"",
+      "source": "대한민국 정책브리핑",
+      "category": "Economy",
+      "url": "https://news.google.com/rss/articles/CBMibEFVX3lxTE9sOXN1ZngyaXBab3hvVHlFYWx1Nzh1RzlkSzJOZm1Wek5EbDJpdFg4NlZ4QUJXdHZ2WWRqcXZVT2o4R0REMFJrNFQya09wT2xqUW0wOEQ2NmJYSWY0bE5pTTZXcW94ZzFta241Qg?oc=5",
+      "detail": "이 대통령 \"부동산 조세 제도, 국민의 상식과 눈높이에 기초해 정비\"",
+      "date": "2026-07-21",
       "importance": 85
     },
     {
-      "id": "https://news.google.com/rss/articles/CBMidEFVX3lxTE5fV0NUam5CX2xuS3hZS3hOUEt0TDZQQmRadEppUEItQWsyZkpGNTh5YmVyNkJYUHRJQVZJai1wRkNVY2hTcURDcEF3bUhWZjR0SDBoak9mOHFlQjJhSFQ4SDRUSkw4all2NUthcjJUdk02OU5m?oc=5",
+      "id": "https://news.google.com/rss/articles/CBMid0FVX3lxTE5NN1A2eHRsV3pCYUx0WHZzT2ptZWQ2eldSLXR2QVFLZGVkeW5ldngtSFBSeEYwMVR5SjhLOW9mZVhVUDVhTTBWYWpRTWNHamIwMmRtRmd0UE16eDN0TjJscnhkVXhieURWWTB2NF9lRDU1UjhqVEQ00gF3QVVfeXFMTU5SUkNWeWxVQkRJSVhfb0MwNU1tUGtlckwxS0tvQ2J6OGZMYnMyUkZaQTNpNWY5VlJ5M3Y1dmphWlhwNlh3UDYxMzNSclZCXzFBNU1wWG9sa29jdXNBR0ZlS0hPeFJnNFR0ak4ySHJqb00tOTNkbnc?oc=5",
       "type": "news",
-      "title": "김민석 “명·청대전 끝내야” 정청래 “당 떠난 적 없어” 송영길 “결과로 책임”",
-      "source": "한겨레",
+      "title": "올림픽공원 체육단체 출입 막은 '성조기 여성' 구속영장 기각",
+      "source": "MBC 뉴스",
       "category": "Society",
-      "url": "https://news.google.com/rss/articles/CBMidEFVX3lxTE5fV0NUam5CX2xuS3hZS3hOUEt0TDZQQmRadEppUEItQWsyZkpGNTh5YmVyNkJYUHRJQVZJai1wRkNVY2hTcURDcEF3bUhWZjR0SDBoak9mOHFlQjJhSFQ4SDRUSkw4all2NUthcjJUdk02OU5m?oc=5",
-      "detail": "김민석 “명·청대전 끝내야” 정청래 “당 떠난 적 없어” 송영길 “결과로 책임”",
-      "date": "2026-07-20",
+      "url": "https://news.google.com/rss/articles/CBMid0FVX3lxTE5NN1A2eHRsV3pCYUx0WHZzT2ptZWQ2eldSLXR2QVFLZGVkeW5ldngtSFBSeEYwMVR5SjhLOW9mZVhVUDVhTTBWYWpRTWNHamIwMmRtRmd0UE16eDN0TjJscnhkVXhieURWWTB2NF9lRDU1UjhqVEQ00gF3QVVfeXFMTU5SUkNWeWxVQkRJSVhfb0MwNU1tUGtlckwxS0tvQ2J6OGZMYnMyUkZaQTNpNWY5VlJ5M3Y1dmphWlhwNlh3UDYxMzNSclZCXzFBNU1wWG9sa29jdXNBR0ZlS0hPeFJnNFR0ak4ySHJqb00tOTNkbnc?oc=5",
+      "detail": "올림픽공원 체육단체 출입 막은 '성조기 여성' 구속영장 기각",
+      "date": "2026-07-21",
       "importance": 80
     },
     {
-      "id": "https://news.google.com/rss/articles/CBMiZ0FVX3lxTE5ZUmZNSlhMNDhrNEp1WkhJc3JqaTFqZUVWb3ZrQXZ3V0pLWnRQLURFZ3J5RW5aUElNV290QkVrODA4M3FDR05iSlN0ZGN1elRMUUl0MVRsSjQ2ZUppd2x5cWszYjVzakU?oc=5",
+      "id": "https://news.google.com/rss/articles/CBMiUEFVX3lxTFBMM0tGTWxvOE5kaXI4YUtKQUpMM0lVZUNqaDc1ZHFEcGlySGZZOGRsVC1SUU1rRXB6Q0VZdWxmLV9Va1BJcS1kV3B4ekpQeGJv?oc=5",
       "type": "news",
-      "title": "미·이란 충돌·유가 상승에 뉴욕증시 하락…다우 0.6%↓",
-      "source": "연합뉴스TV",
-      "category": "Economy",
-      "url": "https://news.google.com/rss/articles/CBMiZ0FVX3lxTE5ZUmZNSlhMNDhrNEp1WkhJc3JqaTFqZUVWb3ZrQXZ3V0pLWnRQLURFZ3J5RW5aUElNV290QkVrODA4M3FDR05iSlN0ZGN1elRMUUl0MVRsSjQ2ZUppd2x5cWszYjVzakU?oc=5",
-      "detail": "미·이란 충돌·유가 상승에 뉴욕증시 하락…다우 0.6%↓",
-      "date": "2026-07-20",
+      "title": "[속보]‘친구가 한강에 빠졌어요’…20대 남성, 수색 끝 숨진 채 발견",
+      "source": "문화일보",
+      "category": "World",
+      "url": "https://news.google.com/rss/articles/CBMiUEFVX3lxTFBMM0tGTWxvOE5kaXI4YUtKQUpMM0lVZUNqaDc1ZHFEcGlySGZZOGRsVC1SUU1rRXB6Q0VZdWxmLV9Va1BJcS1kV3B4ekpQeGJv?oc=5",
+      "detail": "[속보]‘친구가 한강에 빠졌어요’…20대 남성, 수색 끝 숨진 채 발견",
+      "date": "2026-07-21",
       "importance": 75
     }
   ],
-  "subject_of_day": "과학",
   "generation": {
     "mode": "lesson",
-    "subject": "과학",
-    "factcheck": "verified",
-    "fell_back_to_news": false,
+    "subject": "역사",
+    "factcheck": "fact_fail",
+    "fell_back_to_news": true,
     "model": "claude-opus-4-8",
     "tokens": {
-      "input": 3885,
-      "output": 1070,
-      "total": 4955
-    }
+      "input": 3892,
+      "output": 1307,
+      "total": 5199
+    },
+    "factcheck_issues": [
+      "'기원전 사하라 사막 남쪽의 서아프리카에는 금이 넘쳐났다'는 시점 오류: 사하라 횡단 금-소금 교역이 활발해진 것은 낙타가 사하라 교역에 본격 도입된 기원후 약 4~8세기 이후이며, 가나 제국은 대략 기원후 6~13세기, 말리 제국은 13~16세기의 왕국이다. '기원전'과 '고대 왕국' 표현은 시대적으로 부정확하다.",
+      "'교역로 위에서 가나·말리 같은 고대 왕국이 성장'했다고 서술했으나 이들은 고대가 아닌 중세 시기의 국가에 가깝다."
+    ]
   }
 }
