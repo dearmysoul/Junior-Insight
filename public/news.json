@@ -1,93 +1,130 @@
 {
-  "fetchedAt": "2026-07-21T22:42:57.006Z",
+  "fetchedAt": "2026-07-22T07:16:32.856Z",
   "date": "2026-07-22",
   "weekday": "수",
   "weather": {
     "emoji": "🌤️",
-    "summary": "서울 대체로 맑음, 23°C"
+    "summary": "서울 대체로 맑음, 28°C"
   },
   "articles": [
     {
-      "id": "https://news.google.com/rss/articles/CBMidEFVX3lxTE9ZRWt4TGh5azJDX2g3YUh4aDluaW11eFJnMnNsOUZraktlZDVyQkl1bjhfUmRQei05Z3FQLWx3cVpaMWxDSUMtMzdaY19WODdrYnlUYTRKTGV5M3phWXhUWVdXZVFOUm53cGhpX0d1UUdrcXVa?oc=5",
+      "id": "lesson-20260722-01",
+      "type": "lesson",
+      "subject": "역사",
+      "unit": "문명의 형성과 고대 국가의 성립을 이해한다 [역사·고대]",
+      "title_kor": "소금이 왜 '하얀 금'이었을까?",
+      "source": "교육과정 학습 · 역사",
+      "country": "KR",
+      "category": "Society",
+      "summary_kor": "고대 사하라 사막 남쪽에는 황금이 넘쳐났지만, 정작 사람들이 목숨을 걸고 구한 건 금이 아니라 소금이었다. 뜨거운 사막에서 땀을 흘리는 사람에게 소금은 살기 위한 필수품이었고, 소금이 나는 곳은 정해져 있었다.\n\n서아프리카의 가나·말리 왕국은 이 점을 놓치지 않았다. 북쪽 사막에서 오는 소금과 남쪽에서 나는 황금을 서로 바꾸는 무역로의 길목을 장악하고, 오가는 상인에게 관세(關稅)를 매겼다. 낙타 대상(隊商)이 지날 때마다 왕국의 곳간은 불어났다. 어떤 기록에는 소금과 금을 같은 무게로 바꿨다는 이야기도 전한다.\n\n결국 고대 국가의 힘은 금광 그 자체가 아니라 '교환을 지배하는 위치'에서 나왔다. 무엇이 어디서 나고 어디로 흘러가는지를 통제한 세력이 부(富)를 쌓고 강한 나라로 성장했다. 소금 한 덩이가 왕국의 운명을 갈랐던 셈이다.",
+      "keywords": [
+        "소금 무역",
+        "가나 왕국",
+        "말리 왕국",
+        "관세",
+        "사하라 교역로"
+      ],
+      "hanja_terms": [
+        {
+          "word": "관세",
+          "hanja": "關稅",
+          "gloss": "빗장 관 · 세금 세 → 지나는 물건에 매기는 세금"
+        },
+        {
+          "word": "대상",
+          "hanja": "隊商",
+          "gloss": "무리 대 · 장사 상 → 무리 지어 다니는 상인 무리"
+        },
+        {
+          "word": "교역",
+          "hanja": "交易",
+          "gloss": "사귈 교 · 바꿀 역 → 물건을 서로 사고팖"
+        },
+        {
+          "word": "필수품",
+          "hanja": "必需品",
+          "gloss": "반드시 필 · 구할 수 · 물건 품 → 반드시 있어야 하는 물건"
+        }
+      ],
+      "check_question": "금이 넘쳐나던 지역에서 왜 사람들은 금보다 소금을 더 귀하게 여겼을까? 지문에서 그 이유를 찾아보자.",
+      "argument": {
+        "claim": "고대 왕국이 부강해진 진짜 힘은 어디서 나왔을까?",
+        "options": [
+          "금이나 소금 같은 자원을 직접 많이 가진 것",
+          "자원이 오가는 무역로의 길목을 장악한 것",
+          "둘 다 함께 갖춰야 강해진다"
+        ]
+      },
+      "factcheck": {
+        "status": "passed_minor",
+        "anchor": "서아프리카의 가나·말리 왕국은 사하라 횡단 무역로에서 소금과 금 교역을 통제하고 관세를 매겨 부를 축적했다.",
+        "hanja_checked": true
+      },
+      "difficulty": 3,
+      "date": "2026-07-22",
+      "importance": 100
+    },
+    {
+      "id": "https://news.google.com/rss/articles/CBMiUkFVX3lxTE9QNDg1ME9MbnA2c0ZCQ2hzRjhvWFZtVXNyWVY3SEFLUFp4Y2xRbFhwNXNmZGJFZW9DV1RxWlhPNWtrc3FyNUR4bkxZWmFHQ3dUZVE?oc=5",
       "type": "news",
-      "title": "이 대통령, 삼전 노조에 “호남 반도체가 쟁의 대상 주장 지나쳐”",
-      "source": "한겨레",
-      "category": "Tech & Economy",
-      "url": "https://news.google.com/rss/articles/CBMidEFVX3lxTE9ZRWt4TGh5azJDX2g3YUh4aDluaW11eFJnMnNsOUZraktlZDVyQkl1bjhfUmRQei05Z3FQLWx3cVpaMWxDSUMtMzdaY19WODdrYnlUYTRKTGV5M3phWXhUWVdXZVFOUm53cGhpX0d1UUdrcXVa?oc=5",
-      "detail": "이 대통령, 삼전 노조에 “호남 반도체가 쟁의 대상 주장 지나쳐”",
+      "title": "김민석은 왜 '신천지'를 언급할까…숨겨진 전략은",
+      "source": "노컷뉴스",
+      "category": "World",
+      "url": "https://news.google.com/rss/articles/CBMiUkFVX3lxTE9QNDg1ME9MbnA2c0ZCQ2hzRjhvWFZtVXNyWVY3SEFLUFp4Y2xRbFhwNXNmZGJFZW9DV1RxWlhPNWtrc3FyNUR4bkxZWmFHQ3dUZVE?oc=5",
+      "detail": "김민석은 왜 '신천지'를 언급할까…숨겨진 전략은",
       "date": "2026-07-21",
       "importance": 100
     },
     {
-      "id": "https://news.google.com/rss/articles/CBMia0FVX3lxTE9RWGNyd19lTFJHQ2IxbG9CRVhVNjYxbHFXNkpoSnRGeDZ5cDVkSTk0c2h2em11b3dRZUF3ZVRpMUdqUjRmSXkwZFdPdzc0a0xZQ3BtQ3pseVBYbWpmSTliRkI1eUxRY05mZDdj0gFuQVVfeXFMT2dveHgwOWZ5OHAxNDBvY0YyM09xVkRxYzVwdFhrQ2U1YU80RnY0UFZCeXdJTzZjTHZZTFpzN0E0YkNQMXFXdURYZVBuWGx2QjdoT29YZjRhSjJXTjQxN0VCVldWMGxQT01SSm9GRmc?oc=5",
+      "id": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE5pYjdJLTV5R2NVOEpFZHNvV19lS0EwM0h1SjU4S3hrZ1lPTHRJeFdmY0FXalMwZ3gwUURsOWg0bkg4b1FaUUJXTk5fV1JGR1lsR0FtRnVybVd2d9IBX0FVX3lxTE5JSHZVUWJCSEl5YlpkXzNvMlRkTXQyNjhYT0xSNWw2MGtuNmJ2MDV1dnM4bU1aVlFjRTcxTERkbldPQktiMDMwQmJFRkxNelJBaEJSRDRuR1hiN3MzUVQ0?oc=5",
       "type": "news",
-      "title": "미국 ‘후티의 홍해 봉쇄 위협’ 규탄…“상선 보호 필요 조치 취할 것”",
-      "source": "VOA 한국어 홈페이지",
-      "category": "World",
-      "url": "https://news.google.com/rss/articles/CBMia0FVX3lxTE9RWGNyd19lTFJHQ2IxbG9CRVhVNjYxbHFXNkpoSnRGeDZ5cDVkSTk0c2h2em11b3dRZUF3ZVRpMUdqUjRmSXkwZFdPdzc0a0xZQ3BtQ3pseVBYbWpmSTliRkI1eUxRY05mZDdj0gFuQVVfeXFMT2dveHgwOWZ5OHAxNDBvY0YyM09xVkRxYzVwdFhrQ2U1YU80RnY0UFZCeXdJTzZjTHZZTFpzN0E0YkNQMXFXdURYZVBuWGx2QjdoT29YZjRhSjJXTjQxN0VCVldWMGxQT01SSm9GRmc?oc=5",
-      "detail": "미국 ‘후티의 홍해 봉쇄 위협’ 규탄…“상선 보호 필요 조치 취할 것”",
-      "date": "2026-07-21",
+      "title": "[속보]법원 “오세훈, 벌금 1000만원” 선고…대법 확정시 시장직 상실",
+      "source": "경향신문",
+      "category": "Society",
+      "url": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE5pYjdJLTV5R2NVOEpFZHNvV19lS0EwM0h1SjU4S3hrZ1lPTHRJeFdmY0FXalMwZ3gwUURsOWg0bkg4b1FaUUJXTk5fV1JGR1lsR0FtRnVybVd2d9IBX0FVX3lxTE5JSHZVUWJCSEl5YlpkXzNvMlRkTXQyNjhYT0xSNWw2MGtuNmJ2MDV1dnM4bU1aVlFjRTcxTERkbldPQktiMDMwQmJFRkxNelJBaEJSRDRuR1hiN3MzUVQ0?oc=5",
+      "detail": "[속보]법원 “오세훈, 벌금 1000만원” 선고…대법 확정시 시장직 상실",
+      "date": "2026-07-22",
       "importance": 95
     },
     {
-      "id": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE5sc09Wc2ppdHVyVWlpWEE3UHVoMGY2YXMyZ0NoNm9zRm82OXN1Z042X3lDRGVGcmw4YUhHQk1ZcjI0dVlkbUw3R3FlT2JwbWVQaGs0WEIzeXotNlpMcHE0bg?oc=5",
+      "id": "https://news.google.com/rss/articles/CBMieEFVX3lxTE9vSHp2RTM4TlZNeGlyQnhqRWJWZ3pZQkkzWUgwYWFFNkw3MFBoVExKd3F5bGE0T2RMNWFiclRsUExXem1lSHdGRzY3aGZEdlNZV1pEa1ZyWW1Qc0RBdHR0S2J1bkJRR002eTBQaURZZmI4OUE5RE8xTdIBeEFVX3lxTE9SQTVTd2pxdFI2N0RTcm5LbGFac042Rk9sdmhzSVI5UlU5cWJCdUMyYVZLUHdNbXdYbDRTaW9zVno2eThqUkg2a2RzQnh6T3VDWXlXb1Bia2N4dmpERVdUMkpMMHhUdkVERGR4WDNxeXVQWHFsc3luNA?oc=5",
       "type": "news",
-      "title": "‘장윤기 사건 지휘’ 형사과장 구속영장 기각",
-      "source": "한겨레",
+      "title": "\"진중권 자리에 이제 유시민\"‥\"썩은 내\" 직격에 '손절'?",
+      "source": "MBC 뉴스",
       "category": "Society",
-      "url": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE5sc09Wc2ppdHVyVWlpWEE3UHVoMGY2YXMyZ0NoNm9zRm82OXN1Z042X3lDRGVGcmw4YUhHQk1ZcjI0dVlkbUw3R3FlT2JwbWVQaGs0WEIzeXotNlpMcHE0bg?oc=5",
-      "detail": "‘장윤기 사건 지휘’ 형사과장 구속영장 기각",
-      "date": "2026-07-21",
+      "url": "https://news.google.com/rss/articles/CBMieEFVX3lxTE9vSHp2RTM4TlZNeGlyQnhqRWJWZ3pZQkkzWUgwYWFFNkw3MFBoVExKd3F5bGE0T2RMNWFiclRsUExXem1lSHdGRzY3aGZEdlNZV1pEa1ZyWW1Qc0RBdHR0S2J1bkJRR002eTBQaURZZmI4OUE5RE8xTdIBeEFVX3lxTE9SQTVTd2pxdFI2N0RTcm5LbGFac042Rk9sdmhzSVI5UlU5cWJCdUMyYVZLUHdNbXdYbDRTaW9zVno2eThqUkg2a2RzQnh6T3VDWXlXb1Bia2N4dmpERVdUMkpMMHhUdkVERGR4WDNxeXVQWHFsc3luNA?oc=5",
+      "detail": "\"진중권 자리에 이제 유시민\"‥\"썩은 내\" 직격에 '손절'?",
+      "date": "2026-07-22",
       "importance": 90
     },
     {
-      "id": "https://news.google.com/rss/articles/CBMibEFVX3lxTE9sOXN1ZngyaXBab3hvVHlFYWx1Nzh1RzlkSzJOZm1Wek5EbDJpdFg4NlZ4QUJXdHZ2WWRqcXZVT2o4R0REMFJrNFQya09wT2xqUW0wOEQ2NmJYSWY0bE5pTTZXcW94ZzFta241Qg?oc=5",
+      "id": "https://news.google.com/rss/articles/CBMiW0FVX3lxTE1TZ3RlM3UyUzhLeGZWYS1iRzVxR2ROUVlqRFJLM1pad2VjcHRSM2dCNjQzcXVTbjE5ZWNXc2pwb0xxQWplS1hGdFd6T2cxdDZHakV6UndIUDlCVTTSAWBBVV95cUxNRGw0REp5RHktUndhNUZhNWRUa2RCN1hhWFJfeGpYS1pOUXVuSUx6UE1KU01PN3Uta2ZKa0VkMFFCSFRWb2RxMmxDY1dUb1BzZHhsdmtBSm9ucWhDeUxhNks?oc=5",
       "type": "news",
-      "title": "이 대통령 \"부동산 조세 제도, 국민의 상식과 눈높이에 기초해 정비\"",
-      "source": "대한민국 정책브리핑",
-      "category": "Economy",
-      "url": "https://news.google.com/rss/articles/CBMibEFVX3lxTE9sOXN1ZngyaXBab3hvVHlFYWx1Nzh1RzlkSzJOZm1Wek5EbDJpdFg4NlZ4QUJXdHZ2WWRqcXZVT2o4R0REMFJrNFQya09wT2xqUW0wOEQ2NmJYSWY0bE5pTTZXcW94ZzFta241Qg?oc=5",
-      "detail": "이 대통령 \"부동산 조세 제도, 국민의 상식과 눈높이에 기초해 정비\"",
-      "date": "2026-07-21",
-      "importance": 85
-    },
-    {
-      "id": "https://news.google.com/rss/articles/CBMid0FVX3lxTE5NN1A2eHRsV3pCYUx0WHZzT2ptZWQ2eldSLXR2QVFLZGVkeW5ldngtSFBSeEYwMVR5SjhLOW9mZVhVUDVhTTBWYWpRTWNHamIwMmRtRmd0UE16eDN0TjJscnhkVXhieURWWTB2NF9lRDU1UjhqVEQ00gF3QVVfeXFMTU5SUkNWeWxVQkRJSVhfb0MwNU1tUGtlckwxS0tvQ2J6OGZMYnMyUkZaQTNpNWY5VlJ5M3Y1dmphWlhwNlh3UDYxMzNSclZCXzFBNU1wWG9sa29jdXNBR0ZlS0hPeFJnNFR0ak4ySHJqb00tOTNkbnc?oc=5",
-      "type": "news",
-      "title": "올림픽공원 체육단체 출입 막은 '성조기 여성' 구속영장 기각",
-      "source": "MBC 뉴스",
-      "category": "Society",
-      "url": "https://news.google.com/rss/articles/CBMid0FVX3lxTE5NN1A2eHRsV3pCYUx0WHZzT2ptZWQ2eldSLXR2QVFLZGVkeW5ldngtSFBSeEYwMVR5SjhLOW9mZVhVUDVhTTBWYWpRTWNHamIwMmRtRmd0UE16eDN0TjJscnhkVXhieURWWTB2NF9lRDU1UjhqVEQ00gF3QVVfeXFMTU5SUkNWeWxVQkRJSVhfb0MwNU1tUGtlckwxS0tvQ2J6OGZMYnMyUkZaQTNpNWY5VlJ5M3Y1dmphWlhwNlh3UDYxMzNSclZCXzFBNU1wWG9sa29jdXNBR0ZlS0hPeFJnNFR0ak4ySHJqb00tOTNkbnc?oc=5",
-      "detail": "올림픽공원 체육단체 출입 막은 '성조기 여성' 구속영장 기각",
-      "date": "2026-07-21",
-      "importance": 80
-    },
-    {
-      "id": "https://news.google.com/rss/articles/CBMiUEFVX3lxTFBMM0tGTWxvOE5kaXI4YUtKQUpMM0lVZUNqaDc1ZHFEcGlySGZZOGRsVC1SUU1rRXB6Q0VZdWxmLV9Va1BJcS1kV3B4ekpQeGJv?oc=5",
-      "type": "news",
-      "title": "[속보]‘친구가 한강에 빠졌어요’…20대 남성, 수색 끝 숨진 채 발견",
-      "source": "문화일보",
+      "title": "민심 수습 나선 젤렌스키…총사령관 경질하고 40대 젊은피 발탁",
+      "source": "연합뉴스",
       "category": "World",
-      "url": "https://news.google.com/rss/articles/CBMiUEFVX3lxTFBMM0tGTWxvOE5kaXI4YUtKQUpMM0lVZUNqaDc1ZHFEcGlySGZZOGRsVC1SUU1rRXB6Q0VZdWxmLV9Va1BJcS1kV3B4ekpQeGJv?oc=5",
-      "detail": "[속보]‘친구가 한강에 빠졌어요’…20대 남성, 수색 끝 숨진 채 발견",
-      "date": "2026-07-21",
-      "importance": 75
+      "url": "https://news.google.com/rss/articles/CBMiW0FVX3lxTE1TZ3RlM3UyUzhLeGZWYS1iRzVxR2ROUVlqRFJLM1pad2VjcHRSM2dCNjQzcXVTbjE5ZWNXc2pwb0xxQWplS1hGdFd6T2cxdDZHakV6UndIUDlCVTTSAWBBVV95cUxNRGw0REp5RHktUndhNUZhNWRUa2RCN1hhWFJfeGpYS1pOUXVuSUx6UE1KU01PN3Uta2ZKa0VkMFFCSFRWb2RxMmxDY1dUb1BzZHhsdmtBSm9ucWhDeUxhNks?oc=5",
+      "detail": "민심 수습 나선 젤렌스키…총사령관 경질하고 40대 젊은피 발탁",
+      "date": "2026-07-22",
+      "importance": 85
     }
   ],
+  "subject_of_day": "역사",
   "generation": {
     "mode": "lesson",
     "subject": "역사",
-    "factcheck": "fact_fail",
-    "fell_back_to_news": true,
+    "factcheck": "passed_minor",
+    "fell_back_to_news": false,
     "model": "claude-opus-4-8",
     "tokens": {
-      "input": 3892,
-      "output": 1307,
-      "total": 5199
+      "input": 4536,
+      "output": 1272,
+      "total": 5808
     },
     "factcheck_issues": [
-      "'기원전 사하라 사막 남쪽의 서아프리카에는 금이 넘쳐났다'는 시점 오류: 사하라 횡단 금-소금 교역이 활발해진 것은 낙타가 사하라 교역에 본격 도입된 기원후 약 4~8세기 이후이며, 가나 제국은 대략 기원후 6~13세기, 말리 제국은 13~16세기의 왕국이다. '기원전'과 '고대 왕국' 표현은 시대적으로 부정확하다.",
-      "'교역로 위에서 가나·말리 같은 고대 왕국이 성장'했다고 서술했으나 이들은 고대가 아닌 중세 시기의 국가에 가깝다."
+      "가나·말리 왕국은 '고대'라기보다 중세(가나 대략 7~13세기, 말리 13~16세기)에 해당하므로 '고대 국가'라는 표현은 시대 구분상 다소 부정확하다(severe 아님).",
+      "'소금과 금을 같은 무게로 바꿨다'는 것은 과장된 전설적 표현이나 지문도 '어떤 기록에는 ~이야기도 전한다'로 완화해 서술함.",
+      "必需品의 需는 통상 '쓸 수/구할 수'로 읽으며 '구할 수'는 허용 범위이나 '쓰일 수'가 더 일반적이다."
     ]
   }
 }
