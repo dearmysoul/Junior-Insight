@@ -100,7 +100,10 @@ export default async function handler(req, res) {
     const title = String(b.articleTitle || '').slice(0, 300);
     const passage = String(b.summaryKor || b.detail || '').slice(0, 4000);
     const checkQ = String(b.checkQuestion || '').slice(0, 500);
+    const argClaim = String(b.argumentClaim || '').slice(0, 300).trim();  // 교과 '나의 주장' 질문
     const choice = Number.isInteger(b.choice) ? b.choice : null;
+    // 실제 선택지 라벨(교과는 커스텀 선택지). 없으면 기본 찬성/반대/기타로 폴백.
+    const stance = String(b.choiceLabel || '').slice(0, 60).trim() || (OPINIONS[choice] ?? '기타');
     if (!summary || choice === null || !reason || !word) {
         return res.status(400).json({ error: 'missing_fields' });
     }
@@ -115,9 +118,9 @@ export default async function handler(req, res) {
             messages: [{
                 role: 'user',
                 content: `[지문/기사] ${title}
-${passage ? `[본문] ${passage}\n` : ''}${checkQ ? `[되물음 시드] ${checkQ}\n` : ''}--- 아이가 쓴 것 ---
+${passage ? `[본문] ${passage}\n` : ''}${argClaim ? `[나의 주장 질문] ${argClaim}\n` : ''}${checkQ ? `[되물음 시드] ${checkQ}\n` : ''}--- 아이가 쓴 것 ---
 ① 한 문장 요약: ${summary}
-② 의견: ${OPINIONS[choice] ?? '기타'} / 이유: ${reason}
+② ${argClaim ? '나의 주장' : '의견'}: ${stance} / 이유: ${reason}
 ③ 핵심 단어: ${word}
 
 세 가지를 채점하고, 가장 약한 부분 하나만 골라 되물어라.`,

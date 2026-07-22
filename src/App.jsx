@@ -622,6 +622,8 @@ export default function App() {
                     summaryKor: selected.summary_kor,
                     detail: selected.detail,
                     checkQuestion: selected.checkQuestion,
+                    argumentClaim: selected.argument?.claim || null,   // 교과 '나의 주장' 질문
+                    choiceLabel: selected.opinionOptions?.[form.choice] ?? null, // 실제 선택지 라벨(교과 커스텀 선택지 오독 방지)
                     summary: form.summary, choice: form.choice,
                     reason: form.reason, word: form.word,
                 }),
