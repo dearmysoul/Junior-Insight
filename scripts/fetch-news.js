@@ -86,47 +86,39 @@ function detectCategory(title) {
 }
 
 // ── 하루치 기사 선정 ──────────────────────────────────────────
-// 규칙: 날씨 기사 최대 1개 / 아이 관심(Tech & Economy) 최소 1개 보장 /
-//       World 최소 1개 / 동일 카테고리 최대 2개 / 총 6개.
+// 시사(Society)·세계(World)·경제(Economy)만 노출. Tech·Environment는 제외.
+// (노출 카테고리/개수를 바꾸려면 ALLOWED_CATEGORIES / NEWS_TARGET 만 수정)
+// 규칙: 세계(World) 최소 1개 보장 / 동일 카테고리 최대 2개 / 총 NEWS_TARGET개.
+const ALLOWED_CATEGORIES = ['Society', 'World', 'Economy'];
+const NEWS_TARGET = 4;
+
 function selectDaily(pool) {
-    const TARGET = 6, MAX_WEATHER = 1, MAX_PER_CAT = 2;
+    const MAX_PER_CAT = 2;
+    // 허용 카테고리 + 날씨 제외 기사만 후보로.
+    const eligible = pool.filter(a => ALLOWED_CATEGORIES.includes(a.category) && !a.isWeather);
     const out = [];
     const catCount = {};
-    let weather = 0;
+    const take = (a) => { out.push(a); catCount[a.category] = (catCount[a.category] || 0) + 1; };
+    const canTake = (a) => !out.includes(a) && (catCount[a.category] || 0) < MAX_PER_CAT;
 
-    const take = (a) => {
-        out.push(a);
-        catCount[a.category] = (catCount[a.category] || 0) + 1;
-        if (a.isWeather) weather++;
-    };
-    const canTake = (a) => !out.includes(a)
-        && !(a.isWeather && weather >= MAX_WEATHER)
-        && (catCount[a.category] || 0) < MAX_PER_CAT;
-
-    // 1) 아이 관심 소재(Tech & Economy) 1개 우선 확보 — 날씨 도피로 대체
-    const interest = pool.find(a => a.category === 'Tech & Economy' && !a.isWeather);
-    if (interest) take(interest);
-
-    // 2) World 1개 확보
-    const world = pool.find(a => a.category === 'World' && canTake(a));
+    // 1) 세계(World) 1개 확보 — 시야를 국내로만 좁히지 않도록
+    const world = eligible.find(a => a.category === 'World');
     if (world) take(world);
 
-    // 3) 풀 순서(중요도)대로 캡을 지키며 채움
-    for (const a of pool) {
-        if (out.length >= TARGET) break;
+    // 2) 중요도(풀 순서)대로 카테고리 캡을 지키며 채움
+    for (const a of eligible) {
+        if (out.length >= NEWS_TARGET) break;
         if (canTake(a)) take(a);
     }
 
-    // 4) 그래도 부족하면(희귀) 카테고리 캡만 완화, 날씨 캡은 유지
-    if (out.length < TARGET) {
-        for (const a of pool) {
-            if (out.length >= TARGET) break;
-            if (out.includes(a)) continue;
-            if (a.isWeather && weather >= MAX_WEATHER) continue;
-            take(a);
+    // 3) 그래도 부족하면 카테고리 캡만 완화
+    if (out.length < NEWS_TARGET) {
+        for (const a of eligible) {
+            if (out.length >= NEWS_TARGET) break;
+            if (!out.includes(a)) take(a);
         }
     }
-    return out.slice(0, TARGET);
+    return out.slice(0, NEWS_TARGET);
 }
 
 // HTML 태그 제거 + 엔티티 디코딩.
