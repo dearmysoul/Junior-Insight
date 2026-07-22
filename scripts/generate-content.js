@@ -259,6 +259,64 @@ ${plan.generalKnowledge
     };
 }
 
+/* ── 뉴스 재해석 (교과 미통과 시에만) ─────────────────────────
+   뉴스는 교과 지문이 통과하지 못한 날에만 노출한다. 그 뉴스만 Haiku로
+   아이 눈높이 본문(summary_kor)+키워드를 붙인다(제목만 나오던 문제 해결).
+   교과 지문은 지금처럼 Opus. */
+const NEWS_MODEL = 'claude-haiku-4-5';
+const NEWS_SCHEMA = {
+    type: 'object', additionalProperties: false,
+    properties: {
+        items: {
+            type: 'array',
+            items: {
+                type: 'object', additionalProperties: false,
+                properties: {
+                    summary_kor: { type: 'string', description: '아이 눈높이 2~3문단, 쉬운 말. 한자어는 괄호로 뜻풀이' },
+                    keywords: { type: 'array', items: { type: 'string' } },
+                    difficulty: { type: 'integer', enum: [1, 2, 3] },
+                },
+                required: ['summary_kor', 'keywords', 'difficulty'],
+            },
+        },
+    },
+    required: ['items'],
+};
+const NEWS_SYSTEM = `너는 청소년(중학생) 눈높이 뉴스 해설가다. 각 뉴스 '제목'을 받아
+아이가 배경과 요지를 이해하도록 2~3문단으로 쉽게 풀어 쓴다.
+- 한 문장에 한 가지 정보. 짧고 쉬운 말.
+- 한자어는 괄호로 뜻을 덧붙인다. 예: 쟁의(다툼)
+- 제목이 말하는 범위 안에서만 설명하고, 확실하지 않은 세부 사실은 단정하지 않는다.
+- keywords: 핵심어 2~4개. difficulty: 1(쉬움)~3(어려움).`;
+
+/** 뉴스 기사들에 Haiku로 아이용 본문(summary_kor)+키워드를 붙인다. 키 없거나 실패하면 원본(제목만) 유지. */
+export async function summarizeNews(articles, metrics = {}) {
+    if (!process.env.ANTHROPIC_API_KEY || !articles.length) return articles;
+    try {
+        const client = new Anthropic();
+        const list = articles.map((a, i) => `[${i + 1}] (${a.category}) ${a.title}`).join('\n');
+        const res = await client.messages.create({
+            model: NEWS_MODEL,
+            max_tokens: 2048,
+            output_config: { format: { type: 'json_schema', schema: NEWS_SCHEMA } },
+            system: NEWS_SYSTEM,
+            messages: [{ role: 'user', content: `다음 뉴스 ${articles.length}개를 순서대로 해설하라. items 길이는 정확히 ${articles.length}개여야 한다.\n${list}` }],
+        });
+        metrics.newsModel = NEWS_MODEL;
+        addUsage(metrics, res);
+        const items = parse(res).items || [];
+        return articles.map((a, i) => {
+            const s = items[i] || {};
+            return s.summary_kor
+                ? { ...a, summary_kor: s.summary_kor, detail: s.summary_kor, keywords: clampArr(s.keywords, 4), difficulty: s.difficulty || 1, country: '대한민국' }
+                : a;   // 해당 항목 해설 실패 시 원본(제목) 유지
+        });
+    } catch (e) {
+        console.warn('⚠️ 뉴스 해설 실패(제목만 유지):', e && e.message);
+        return articles;
+    }
+}
+
 async function main() {
     const now = new Date();
     const today = kstDateStr(now);   // KST 기준 날짜(요일 편성과 동일 기준)
@@ -268,7 +326,6 @@ async function main() {
     if (forced) console.log(`🔧 FORCE_SUBJECT="${forced}" → ${plan.mode}${plan.subject ? ` · ${plan.subject}` : ''}`);
     console.log(`📅 ${today} (${plan.weekday}) → ${plan.mode}${plan.subject ? ` · ${plan.subject}` : ''}`);
 
-    // 날씨 배너는 항상 뉴스 파이프라인에서 추출
     let weather = null, articles = null, subjectOfDay = null;
     const metrics = {};   // 생성 모니터링(모델·토큰·팩트체크 결과)
 
@@ -276,25 +333,20 @@ async function main() {
         const lesson = await generateLesson(plan, today, metrics);
         if (lesson) {
             subjectOfDay = plan.subject;
-            // 지문 + 뉴스 두 트랙을 함께 제공(앱에서 토글). 뉴스 실패해도 지문은 유지.
-            let newsArticles = [];
-            try {
-                const nb = await buildNews();
-                weather = nb.weather;            // buildNews가 실제 서울 날씨(open-meteo) 조회
-                newsArticles = nb.articles;
-            } catch (e) {
-                console.warn('⚠️ 뉴스 트랙 수집 실패(지문만 제공):', e && e.message);
-                try { weather = await fetchWeather(); } catch { weather = null; }
-            }
-            articles = [lesson, ...newsArticles];   // 지문을 항상 첫 카드로
-            console.log(`📘 교과 생성 완료 — ${plan.subject} · ${plan.unit.code} (+뉴스 ${newsArticles.length})`);
+            // 교과가 통과하면 지문만 제공(뉴스는 붙이지 않는다). 날씨 배너만 별도 조회.
+            articles = [lesson];
+            try { weather = await fetchWeather(); } catch { weather = null; }
+            console.log(`📘 교과 생성 완료 — ${plan.subject} · ${plan.unit.code} (지문만, 뉴스 미부착)`);
         } else {
             console.log('↩️ 교과 생성 불가(키 미등록/검증 실패) → 뉴스 폴백');
         }
     }
 
     if (!articles) {
-        ({ weather, articles } = await buildNews());
+        // 교과 미통과 → 이때만 뉴스 노출. 선정된 뉴스에 Haiku로 아이용 본문을 붙인다.
+        const nb = await buildNews();
+        weather = nb.weather;
+        articles = await summarizeNews(nb.articles, metrics);
     }
 
     const payload = { fetchedAt: new Date().toISOString(), date: today, weekday: plan.weekday, weather, articles };
@@ -309,6 +361,7 @@ async function main() {
         factcheck: metrics.factcheck || (plan.mode === 'lesson' ? 'unknown' : 'news_only'),
         fell_back_to_news: plan.mode === 'lesson' && articles[0]?.type !== 'lesson',
         model: metrics.model || null,
+        ...(metrics.newsModel ? { news_model: metrics.newsModel } : {}),
         tokens: { input: metrics.tokensIn || 0, output: metrics.tokensOut || 0, total: tokensTotal },
         ...(metrics.issues && metrics.issues.length ? { factcheck_issues: metrics.issues } : {}),
     };
