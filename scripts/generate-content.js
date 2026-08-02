@@ -9,7 +9,7 @@
  *  GitHub Actions에서는 secrets.ANTHROPIC_API_KEY 로 주입.
  */
 
-import { writeFileSync, mkdirSync } from 'fs';
+import { writeFileSync, mkdirSync, readFileSync } from 'fs';
 import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
 import Anthropic from '@anthropic-ai/sdk';
@@ -171,10 +171,14 @@ ${(issues || []).map((s, i) => `${i + 1}. ${s}`).join('\n')}`,
  * @param {object} [metrics] 있으면 model·토큰·팩트체크 결과를 채워 넣는다(모니터링).
  * @returns {Promise<object|null>} lesson article
  */
-export async function generateLesson(plan, today, metrics = {}) {
+export async function generateLesson(plan, today, metrics = {}, pastForSubject = []) {
     metrics.model = 'claude-opus-4-8';
     if (!process.env.ANTHROPIC_API_KEY) { metrics.factcheck = 'no_key'; return null; }
     const client = new Anthropic();
+
+    // 과거에 다룬 이 과목 지문 목록(제목·소재) — 겹치면 안 됨
+    const avoid = (pastForSubject || []).slice(-80)
+        .map((e) => `- [${e.topic || '?'}] ${e.title}`).join('\n');
 
     // 1) 생성
     const gen = await client.messages.create({
@@ -187,7 +191,7 @@ export async function generateLesson(plan, today, metrics = {}) {
             content: `[교과] ${plan.subject}
 [주제] ${plan.unit.code} · ${plan.unit.statement}
 [소재] ${plan.topic || '자유(아이 관심)'}
-${plan.generalKnowledge
+${avoid ? `\n[이미 다룬 지문 — 소재·사건·인물·제목이 겹치면 절대 안 됨]\n${avoid}\n반드시 위 목록 어느 것과도 겹치지 않는 새로운 지문을 써라.\n` : ''}${plan.generalKnowledge
     ? '※ 일반상식: 학교 교과가 아니라 청소년이 알아두면 좋은 흥미로운 교양(예술·금융 등)이다. 반드시 실존하는 검증 가능한 사실(실제 명화·예술가·금융 개념·경제 상식 등)만 다뤄라. "어? 그렇구나!" 하게 3단락(배경→사실→의미)으로 쓰고, hanja_terms는 지문 속 한자어로 풀이하라.'
     : plan.literaryOriginal
         ? '※ 문학: 실제 작품(시·소설) 인용 절대 금지. 저작권 문제 없는 AI 창작 짧은 지문(시 또는 이야기, 300~400자)을 직접 지어라. hanja_terms는 지문 속 한자어로.'
@@ -317,6 +321,37 @@ export async function summarizeNews(articles, metrics = {}) {
     }
 }
 
+/* ── 과거 지문 중복 방지 원장 ────────────────────────────────
+   과거에 낸 교과 지문을 public/lesson-history.json에 누적 기록하고,
+   ① 소재는 '가장 덜 쓴 것'을 고르고 ② 과거 제목 목록을 생성 프롬프트에 넣어
+   겹치는 지문이 다시 나오지 않게 한다. 워크플로가 매일 이 파일도 커밋해 누적. */
+const LEDGER_PATH = join(__dirname, '..', 'public', 'lesson-history.json');
+
+function loadLedger() {
+    try {
+        const j = JSON.parse(readFileSync(LEDGER_PATH, 'utf-8'));
+        return Array.isArray(j.lessons) ? j.lessons : [];
+    } catch { return []; }   // 없으면 빈 원장
+}
+function saveLedger(lessons) {
+    // 무한 성장 방지: 최근 400개만 유지(주간 편성 기준 수년치)
+    const trimmed = lessons.slice(-400);
+    writeFileSync(LEDGER_PATH, JSON.stringify({ updated: new Date().toISOString(), lessons: trimmed }, null, 2), 'utf-8');
+}
+/** 이 과목에서 과거에 가장 덜(오래전에) 쓴 소재를 고른다. 미사용 소재 최우선. */
+export function pickFreshTopic(subject, topicPool, ledger, fallback) {
+    if (!Array.isArray(topicPool) || !topicPool.length) return fallback;
+    const used = ledger.filter((e) => e.subject === subject);
+    let best = fallback, bestRank = Infinity;
+    for (const t of topicPool) {
+        let lastIdx = -1;
+        for (let i = used.length - 1; i >= 0; i--) { if (used[i].topic === t) { lastIdx = i; break; } }
+        const rank = lastIdx === -1 ? -1 : lastIdx;   // 미사용(-1)이 가장 우선
+        if (rank < bestRank) { bestRank = rank; best = t; }
+    }
+    return best;
+}
+
 async function main() {
     const now = new Date();
     const today = kstDateStr(now);   // KST 기준 날짜(요일 편성과 동일 기준)
@@ -328,15 +363,22 @@ async function main() {
 
     let weather = null, articles = null, subjectOfDay = null;
     const metrics = {};   // 생성 모니터링(모델·토큰·팩트체크 결과)
+    const ledger = loadLedger();   // 과거 지문 원장(중복 방지)
 
     if (plan.mode === 'lesson') {
-        const lesson = await generateLesson(plan, today, metrics);
+        // 소재를 과거에 가장 덜 쓴 것으로 재선택(결정적 회전이 만드는 반복 차단)
+        if (plan.topicPool?.length) plan.topic = pickFreshTopic(plan.subject, plan.topicPool, ledger, plan.topic);
+        const pastForSubject = ledger.filter((e) => e.subject === plan.subject);
+        const lesson = await generateLesson(plan, today, metrics, pastForSubject);
         if (lesson) {
             subjectOfDay = plan.subject;
             // 교과가 통과하면 지문만 제공(뉴스는 붙이지 않는다). 날씨 배너만 별도 조회.
             articles = [lesson];
             try { weather = await fetchWeather(); } catch { weather = null; }
-            console.log(`📘 교과 생성 완료 — ${plan.subject} · ${plan.unit.code} (지문만, 뉴스 미부착)`);
+            // 중복 방지 원장에 기록(과거 지문 재출력 금지)
+            ledger.push({ date: today, subject: plan.subject, unit_code: plan.unit.code, topic: plan.topic, title: lesson.title_kor, anchor: (lesson.factcheck && lesson.factcheck.anchor) || '' });
+            saveLedger(ledger);
+            console.log(`📘 교과 생성 완료 — ${plan.subject} · ${plan.unit.code} · 소재:${plan.topic} (지문만) | 원장 ${ledger.length}건`);
         } else {
             console.log('↩️ 교과 생성 불가(키 미등록/검증 실패) → 뉴스 폴백');
         }

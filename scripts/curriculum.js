@@ -146,6 +146,7 @@ export function pickPlan(date) {
         literaryOriginal: cfg.literaryOriginal || false,
         generalKnowledge: cfg.generalKnowledge || false,
         topic,
+        topicPool: cfg.topicPool || null,   // 중복 방지: 생성기가 과거 기록 피해 소재 재선택
     };
 }
 
@@ -166,5 +167,6 @@ export function planForSubject(subject, date) {
         literaryOriginal: cfg.literaryOriginal || false,
         generalKnowledge: cfg.generalKnowledge || false,
         topic,
+        topicPool: cfg.topicPool || null,   // 중복 방지: 생성기가 과거 기록 피해 소재 재선택
     };
 }
