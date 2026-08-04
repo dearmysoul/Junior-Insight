@@ -52,6 +52,25 @@ const REACTION_SCHEMA = {
     required: ['reaction'],
 };
 
+// ── 가이드(예시 답안) — 두 번 시도해도 어려운 아이에게 "이렇게 쓰면 돼" ──
+const GUIDE_SCHEMA = {
+    type: 'object',
+    additionalProperties: false,
+    properties: {
+        summary: { type: 'string', description: '모범 한 문장 요약(지문 근거, 정확)' },
+        argument: { type: 'string', description: '모범 주장 + 이유 한 줄 (지문 근거)' },
+        word: { type: 'string', description: '적절한 핵심 단어 1개' },
+        how: { type: 'string', description: '반말 2~3문장. 왜 이렇게 쓰면 되는지 아이 눈높이 설명. 훈계 금지, 기 살리기.' },
+    },
+    required: ['summary', 'argument', 'word', 'how'],
+};
+const GUIDE_SYSTEM = `너는 한국 중학생의 논술 코치 "형"이다. 아이가 두 번 이상 시도했지만
+아직 잘 못 썼다. 이제는 되묻지 말고 "이렇게 쓰면 돼" 하고 모범 예시를 직접 보여준다.
+원칙:
+1. 반드시 지문 내용에 근거한 정확한 예시(사실 오류 금지).
+2. 아이가 베끼는 게 아니라 "아, 이렇게 쓰는 거구나" 이해하도록 짧고 쉽게.
+3. how는 반말 2~3문장으로 왜 그렇게 쓰는지 설명. 훈계 금지, 기 살리기.`;
+
 export default async function handler(req, res) {
     // 가드 ② origin — 헤더가 있을 때만 검사(없으면 서버-서버/개발 호출로 간주)
     const origin = req.headers.origin || '';
@@ -94,6 +113,44 @@ export default async function handler(req, res) {
             return res.status(200).json({ error: 'coach_failed' });
         }
     }
+    // ── guide 모드: 2번 이상 시도해도 어려운 아이에게 예시 답안(정답지) ──
+    if (b.mode === 'guide') {
+        const title = String(b.articleTitle || '').slice(0, 300);
+        const passage = String(b.summaryKor || b.detail || '').slice(0, 4000);
+        const argClaim = String(b.argumentClaim || '').slice(0, 300).trim();
+        const checkQ = String(b.checkQuestion || '').slice(0, 500);
+        const tried = String(b.summary || '').slice(0, 500).trim();
+        try {
+            const client = new Anthropic();
+            const msg = await client.messages.create({
+                model: 'claude-opus-4-8',
+                max_tokens: 700,
+                output_config: { format: { type: 'json_schema', schema: GUIDE_SCHEMA } },
+                system: GUIDE_SYSTEM,
+                messages: [{
+                    role: 'user',
+                    content: `[지문] ${title}
+${passage ? `[본문] ${passage}\n` : ''}${argClaim ? `[주장 질문] ${argClaim}\n` : ''}${checkQ ? `[되물음 시드] ${checkQ}\n` : ''}${tried ? `[아이가 쓴 것] ${tried}\n` : ''}
+아이가 두 번 시도했지만 아직 어려워한다. 위 지문에 맞는 모범 예시(요약·주장+이유·핵심단어)와 "이렇게 쓰면 돼" 설명을 줘.`,
+                }],
+            });
+            const text = (msg.content.find((c) => c.type === 'text') || {}).text || '{}';
+            let d;
+            try { d = JSON.parse(text); } catch { d = {}; }
+            return res.status(200).json({
+                guide: {
+                    summary: String(d.summary || '').slice(0, 300),
+                    argument: String(d.argument || '').slice(0, 400),
+                    word: String(d.word || '').slice(0, 60),
+                    how: String(d.how || '').slice(0, 400),
+                },
+            });
+        } catch (e) {
+            console.error('coach guide error:', e && e.message);
+            return res.status(200).json({ error: 'coach_failed' });
+        }
+    }
+
     const summary = String(b.summary || '').slice(0, 500).trim();
     const reason = String(b.reason || '').slice(0, 500).trim();
     const word = String(b.word || '').slice(0, 100).trim();

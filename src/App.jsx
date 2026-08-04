@@ -487,6 +487,8 @@ export default function App() {
     const [coaching, setCoaching] = useState(false);    // 코치 호출 중
     const [coachReaction, setCoachReaction] = useState(null);       // 코치 followup 답장 반응 (string)
     const [followupReacting, setFollowupReacting] = useState(false); // followup 답장 호출 중
+    const [guide, setGuide] = useState(null);       // 예시 답안(정답지) — 2회 이상 시도해도 어려울 때
+    const [guiding, setGuiding] = useState(false);  // 가이드 호출 중
     const [lastEntry, setLastEntry] = useState(null);   // 스파링 재반박 저장용 최근 entry
 
     /* ── Google News 실시간 fetch ── */
@@ -587,6 +589,7 @@ export default function App() {
     const startMission = useCallback((n) => {
         setSelected(n);
         setCoach(null);   // 새 미션 시작 시 이전 코치 피드백 초기화
+        setGuide(null);
         // 이미 완료한 기사면 기존 입력값 불러오기
         const existing = entries.find(e => e.newsId === n.id);
         if (existing) {
@@ -722,16 +725,54 @@ export default function App() {
     const redoMission = useCallback(() => {
         setCoach(null);
         setCoachReaction(null);
+        setGuide(null);
         window.scrollTo({ top: 0, behavior: 'smooth' });
     }, []);
     // 완료하고 뉴스 목록으로
     const finishMission = useCallback(() => {
         setCoach(null);
         setCoachReaction(null);
+        setGuide(null);
         setForm({ summary: '', choice: null, reason: '', word: '' });
         setTab('news');
         window.scrollTo({ top: 0, behavior: 'smooth' });
     }, []);
+
+    // 예시 답안(정답지) 요청 — 2회 이상 시도해도 어려워할 때
+    const onGuide = useCallback(async () => {
+        if (!selected || guiding) return;
+        setGuiding(true);
+        try {
+            const r = await fetch('/api/coach', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    mode: 'guide',
+                    articleTitle: selected.title,
+                    summaryKor: selected.summary_kor,
+                    detail: selected.detail,
+                    argumentClaim: selected.argument?.claim || null,
+                    checkQuestion: selected.checkQuestion,
+                    summary: form.summary,
+                }),
+            }).then((x) => (x.ok ? x.json() : null)).catch(() => null);
+            if (r && r.guide) {
+                setGuide(r.guide);
+                // 최신 버전에 가이드 저장(학습 기록 보존)
+                setLastEntry((prev) => {
+                    if (!prev) return prev;
+                    const updated = { ...prev, history: patchLatestVersion(prev.history, { guide: r.guide }) };
+                    saveEntry(updated);
+                    setEntries((p) => p.map((e) => (e.newsId === updated.newsId ? updated : e)));
+                    return updated;
+                });
+            } else {
+                flash('예시 답안을 불러오지 못했어. 잠시 후 다시 시도해줘.');
+            }
+        } finally {
+            setGuiding(false);
+        }
+    }, [selected, form, guiding, flash]);
 
     // 코치 followup 질문에 아이가 답할 때 — 짧은 반응 + 보너스 XP
     const onFollowupReply = useCallback(async (replyText, followupQ) => {
@@ -856,6 +897,10 @@ export default function App() {
                         coachReaction={coachReaction}
                         followupReacting={followupReacting}
                         onFollowupReply={onFollowupReply}
+                        guide={guide}
+                        guiding={guiding}
+                        onGuide={onGuide}
+                        attempts={entries.find(e => e.newsId === selected.id)?.history?.length ?? 0}
                         onRedo={redoMission}
                         onDone={finishMission}
                         onSparComplete={onSparComplete}
@@ -1094,7 +1139,7 @@ function SparPanel({ news, form, onComplete }) {
     );
 }
 
-function WriteView({ news, form, setForm, submit, coach, coaching, coachReaction, followupReacting, onFollowupReply, onRedo, onDone, onSparComplete, goBack, isDone }) {
+function WriteView({ news, form, setForm, submit, coach, coaching, coachReaction, followupReacting, onFollowupReply, guide, guiding, onGuide, attempts, onRedo, onDone, onSparComplete, goBack, isDone }) {
     const isLesson = news.type === 'lesson';
     const textNoun = isLesson ? '지문' : '기사';
     const claim = news.argument?.claim;
@@ -1318,6 +1363,34 @@ function WriteView({ news, form, setForm, submit, coach, coaching, coachReaction
                                     )}
                                 </div>
                             </div>
+                            {/* 두 번 이상 시도해도 어려우면 예시 답안(정답지) */}
+                            {(() => {
+                                const s = coach.scores;
+                                const weak = !s || (s.clarity + s.evidence + s.vocab) < 9;
+                                if (guide) {
+                                    return (
+                                        <div className="bg-secondary/10 border border-secondary/30 rounded-xl p-4 space-y-2 animate-slide-up">
+                                            <p className="text-[15px] font-bold text-foreground">🔑 이렇게 쓰면 돼</p>
+                                            <div className="space-y-1.5 text-[15px] text-foreground leading-relaxed">
+                                                <p><span className="font-semibold text-muted-foreground">요약 예시</span> · {guide.summary}</p>
+                                                <p><span className="font-semibold text-muted-foreground">주장 예시</span> · {guide.argument}</p>
+                                                <p><span className="font-semibold text-muted-foreground">핵심 단어</span> · {guide.word}</p>
+                                            </div>
+                                            {guide.how && <p className="text-[14px] text-primary leading-relaxed pt-1">💡 {guide.how}</p>}
+                                            <p className="text-[13px] text-muted-foreground pt-1">예시를 보고, 네 말로 다시 써보자.</p>
+                                        </div>
+                                    );
+                                }
+                                if (attempts >= 2 && weak) {
+                                    return (
+                                        <button type="button" onClick={onGuide} disabled={guiding}
+                                            className="w-full py-3 rounded-lg font-bold text-[15px] border-2 border-secondary/40 bg-secondary/10 text-foreground hover:bg-secondary/20 cursor-pointer press min-h-[48px] disabled:opacity-60">
+                                            {guiding ? '예시 답안 준비 중…' : '🔑 이렇게 쓰는 거야 (예시 답안 보기)'}
+                                        </button>
+                                    );
+                                }
+                                return null;
+                            })()}
                             {/* 스파링 — 의견 미션이 있는 기사에서 코치 확장 */}
                             <SparPanel news={news} form={form} onComplete={onSparComplete} />
                             <div className="flex gap-2">
