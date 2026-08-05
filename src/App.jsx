@@ -1433,6 +1433,97 @@ function WriteView({ news, form, setForm, submit, coach, coaching, coachReaction
 /* ============================================
    DASHBOARD
    ============================================ */
+/* 성장 추세 — 완료한 미션들의 코치 점수(명료성·근거·어휘)를 시간순으로 보여줌 */
+function GrowthTrend({ entries }) {
+    // 코치 점수 있는 항목만, 시간순(오래된→최근). entries는 최신순이라 뒤집는다.
+    const scored = useMemo(
+        () => entries.filter((e) => e.scoreClarity != null).slice().reverse(),
+        [entries],
+    );
+    // 어휘 누적 — 중복 제거한 수집 단어 수
+    const vocabCount = useMemo(() => {
+        const set = new Set();
+        entries.forEach((e) => { const w = (e.word || '').trim(); if (w) set.add(w); });
+        return set.size;
+    }, [entries]);
+
+    const SERIES = [
+        { key: 'scoreClarity', label: '명료성', color: 'var(--chart-1)' },
+        { key: 'scoreEvidence', label: '근거', color: 'var(--chart-2)' },
+        { key: 'scoreVocab', label: '어휘', color: 'var(--chart-3)' },
+    ];
+    const last = scored[scored.length - 1];
+
+    // 뷰박스 좌표
+    const W = 320, H = 148, padL = 20, padR = 42, padT = 10, padB = 18;
+    const plotW = W - padL - padR, plotH = H - padT - padB;
+    const n = scored.length;
+    const xAt = (i) => padL + (n <= 1 ? plotW / 2 : (i / (n - 1)) * plotW);
+    const yAt = (v) => padT + (1 - v / 5) * plotH;
+    const pathOf = (key) => scored.map((e, i) => `${i === 0 ? 'M' : 'L'}${xAt(i).toFixed(1)},${yAt(e[key]).toFixed(1)}`).join(' ');
+
+    return (
+        <div className="bg-card p-4 sm:p-5 rounded-lg border border-border">
+            <h3 className="font-bold text-[16px] tracking-tight mb-1 flex items-center gap-2 text-card-foreground">
+                <TrendingUp size={16} className="text-chart-1" aria-hidden="true" /> 성장 추세
+            </h3>
+            <p className="text-[13px] text-muted-foreground mb-3">완료한 미션의 코치 점수(0~5)가 어떻게 변해왔는지.</p>
+
+            {n < 2 ? (
+                <div className="text-center py-8 text-muted-foreground bg-background rounded-lg border border-dashed border-border">
+                    <p className="text-[14px] font-medium">미션을 2개 이상 완료하면</p>
+                    <p className="text-[13px] mt-0.5">여기에 성장 그래프가 그려져요 📈</p>
+                </div>
+            ) : (
+                <>
+                    <svg viewBox={`0 0 ${W} ${H}`} className="w-full h-auto" role="img"
+                        aria-label={`명료성·근거·어휘 점수 추세, 미션 ${n}개`}>
+                        {/* 가로 눈금 (0·2.5·5) — 은은하게 */}
+                        {[0, 2.5, 5].map((v) => (
+                            <g key={v}>
+                                <line x1={padL} y1={yAt(v)} x2={W - padR} y2={yAt(v)}
+                                    stroke="var(--border)" strokeWidth="1" strokeDasharray={v === 2.5 ? '3 3' : ''} />
+                                <text x={W - padR + 4} y={yAt(v) + 3} style={{ fontSize: 9, fill: 'var(--muted-foreground)' }}>{v}</text>
+                            </g>
+                        ))}
+                        {/* 계열 라인 + 마커 */}
+                        {SERIES.map((s) => (
+                            <g key={s.key}>
+                                <path d={pathOf(s.key)} fill="none" stroke={s.color} strokeWidth="2"
+                                    strokeLinejoin="round" strokeLinecap="round" />
+                                {scored.map((e, i) => (
+                                    <circle key={i} cx={xAt(i)} cy={yAt(e[s.key])} r="2.6"
+                                        fill="var(--card)" stroke={s.color} strokeWidth="1.5" />
+                                ))}
+                            </g>
+                        ))}
+                    </svg>
+
+                    {/* 범례 — 색이 아니라 라벨+최신값으로 식별 */}
+                    <div className="flex flex-wrap gap-x-4 gap-y-1 mt-2">
+                        {SERIES.map((s) => (
+                            <span key={s.key} className="inline-flex items-center gap-1.5 text-[13px]">
+                                <span className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: s.color }} aria-hidden="true" />
+                                <span className="text-muted-foreground">{s.label}</span>
+                                <span className="font-bold text-card-foreground tabular-nums">{last[s.key]}<span className="text-[11px] text-muted-foreground">/5</span></span>
+                            </span>
+                        ))}
+                        <span className="text-[12px] text-muted-foreground self-center">처음 → 최근 (미션 {n}개)</span>
+                    </div>
+                </>
+            )}
+
+            {/* 어휘 누적 */}
+            <div className="mt-4 flex items-center gap-2 bg-background border border-border rounded-lg px-3 py-2.5">
+                <span className="w-7 h-7 rounded-md bg-chart-4 flex items-center justify-center shrink-0">
+                    <BookMarked size={14} className="text-white" aria-hidden="true" />
+                </span>
+                <p className="text-[13px] text-muted-foreground">모은 핵심 어휘 <span className="text-[17px] font-extrabold text-card-foreground tabular-nums ml-1">{vocabCount}</span><span className="text-[12px] ml-0.5">개</span></p>
+            </div>
+        </div>
+    );
+}
+
 /* 성장 미러 — 초기 글 vs 최근 글을 비교해 AI가 성장을 짚어줌 */
 function GrowthMirror({ entries }) {
     const [state, setState] = useState('idle');   // idle | loading | done | unavailable
@@ -1840,6 +1931,9 @@ function Dashboard({ stats, entries, lvlTitle }) {
                 <SkillRow label="어휘 습득 (Vocabulary)" score={s3} xp={wordXpTotal} from="bg-chart-4" />
                 <p className="text-[13px] text-muted-foreground -mt-2 pl-0.5">단어를 <span className="font-semibold text-foreground">1개 이상</span> 수집하면 +5 XP</p>
             </div>
+
+            {/* 성장 추세 (코치 점수 시계열 + 어휘 누적) */}
+            <GrowthTrend entries={entries} />
 
             {/* 성장 미러 */}
             <GrowthMirror entries={entries} />
