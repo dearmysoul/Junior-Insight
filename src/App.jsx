@@ -8,7 +8,7 @@ import {
 import { loadEntries, loadStats, saveEntry, saveStats } from './supabase.js';
 import {
     ResponsiveContainer, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend,
-    RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Radar,
+    BarChart, Bar, Cell, LabelList,
 } from 'recharts';
 
 /* ──────────────────────────────────────────────
@@ -1500,24 +1500,31 @@ function GrowthTrend({ entries }) {
     );
 }
 
-/* 영역별 역량 레이더 (코치 점수 평균) */
-function GrowthRadar({ clarity, evidence, vocab }) {
+/* 영역별 역량 가로 막대 (코치 점수 평균, 0~5 공통 축) */
+function GrowthBars({ clarity, evidence, vocab }) {
     const data = [
-        { dim: '명료성', v: clarity },
-        { dim: '근거', v: evidence },
-        { dim: '어휘', v: vocab },
+        { dim: '명료성', v: clarity, color: 'var(--chart-1)' },
+        { dim: '근거', v: evidence, color: 'var(--chart-2)' },
+        { dim: '어휘', v: vocab, color: 'var(--chart-3)' },
     ];
     return (
-        <div className="w-full" style={{ height: 220 }}>
+        <div className="w-full" style={{ height: 150 }}>
             <ResponsiveContainer width="100%" height="100%">
-                <RadarChart data={data} outerRadius="72%">
-                    <PolarGrid stroke="var(--border)" />
-                    <PolarAngleAxis dataKey="dim" tick={{ fontSize: 12, fill: 'var(--muted-foreground)' }} />
-                    <PolarRadiusAxis domain={[0, 5]} tickCount={6} axisLine={false} tick={{ fontSize: 9, fill: 'var(--muted-foreground)' }} />
-                    <Radar dataKey="v" stroke="var(--chart-1)" fill="var(--chart-1)" fillOpacity={0.3} />
-                    <Tooltip contentStyle={{ background: 'var(--card)', border: '1px solid var(--border)', borderRadius: 8, fontSize: 12 }}
+                <BarChart data={data} layout="vertical" margin={{ top: 4, right: 30, bottom: 0, left: 6 }} barCategoryGap={16}>
+                    <CartesianGrid horizontal={false} stroke="var(--border)" strokeDasharray="3 3" />
+                    <XAxis type="number" domain={[0, 5]} ticks={[0, 1, 2, 3, 4, 5]} tickLine={false}
+                        axisLine={{ stroke: 'var(--border)' }} tick={{ fontSize: 10, fill: 'var(--muted-foreground)' }} />
+                    <YAxis type="category" dataKey="dim" width={54} tickLine={false} axisLine={false}
+                        tick={{ fontSize: 13, fill: 'var(--muted-foreground)' }} />
+                    <Tooltip cursor={{ fill: 'var(--accent)', fillOpacity: 0.3 }}
+                        contentStyle={{ background: 'var(--card)', border: '1px solid var(--border)', borderRadius: 8, fontSize: 12 }}
                         formatter={(val) => [`${Number(val).toFixed(1)} / 5`, '평균']} />
-                </RadarChart>
+                    <Bar dataKey="v" radius={[0, 6, 6, 0]}>
+                        {data.map((d, i) => <Cell key={i} fill={d.color} />)}
+                        <LabelList dataKey="v" position="right" formatter={(v) => Number(v).toFixed(1)}
+                            style={{ fill: 'var(--card-foreground)', fontSize: 12, fontWeight: 700 }} />
+                    </Bar>
+                </BarChart>
             </ResponsiveContainer>
         </div>
     );
@@ -1953,14 +1960,7 @@ function Dashboard({ stats, entries, lvlTitle }) {
                     {scoredEntries.length ? `코치가 매긴 점수의 평균 (완료 ${scoredEntries.length}개 기준)` : '미션을 완료하면 코치 점수가 쌓여요.'}
                 </p>
                 {scoredEntries.length ? (
-                    <>
-                        <GrowthRadar clarity={avgClarity} evidence={avgEvidence} vocab={avgVocab} />
-                        <div className="flex justify-center gap-4 text-[13px] mt-1">
-                            <span className="inline-flex items-center gap-1.5"><span className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: 'var(--chart-1)' }} /><span className="text-muted-foreground">명료성</span> <b className="text-card-foreground tabular-nums">{fmt(avgClarity)}</b></span>
-                            <span className="inline-flex items-center gap-1.5"><span className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: 'var(--chart-2)' }} /><span className="text-muted-foreground">근거</span> <b className="text-card-foreground tabular-nums">{fmt(avgEvidence)}</b></span>
-                            <span className="inline-flex items-center gap-1.5"><span className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: 'var(--chart-3)' }} /><span className="text-muted-foreground">어휘</span> <b className="text-card-foreground tabular-nums">{fmt(avgVocab)}</b></span>
-                        </div>
-                    </>
+                    <GrowthBars clarity={avgClarity} evidence={avgEvidence} vocab={avgVocab} />
                 ) : (
                     <div className="text-center py-6 text-muted-foreground text-[14px]">미션을 완료하면 역량 그래프가 그려져요 🎯</div>
                 )}
