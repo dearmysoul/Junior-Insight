@@ -11,6 +11,9 @@
 
 import Anthropic from '@anthropic-ai/sdk';
 
+// 서버가 무한정 매달리지 않도록 타임아웃·재시도 제한 (코치 무한로딩 방지)
+const mkClient = () => new Anthropic({ maxRetries: 1, timeout: 25000 });
+
 // 구조화 출력 스키마 — 채점을 JSON으로 강제 (파싱 안정성)
 const RUBRIC_SCHEMA = {
     type: 'object',
@@ -93,7 +96,7 @@ export default async function handler(req, res) {
         const followupQ = String(b.followup || '').slice(0, 400).trim();
         const articleTitle = String(b.articleTitle || '').slice(0, 300);
         try {
-            const client = new Anthropic();
+            const client = mkClient();
             const msg = await client.messages.create({
                 model: 'claude-haiku-4-5-20251001',
                 max_tokens: 200,
@@ -121,7 +124,7 @@ export default async function handler(req, res) {
         const checkQ = String(b.checkQuestion || '').slice(0, 500);
         const tried = String(b.summary || '').slice(0, 500).trim();
         try {
-            const client = new Anthropic();
+            const client = mkClient();
             const msg = await client.messages.create({
                 model: 'claude-opus-4-8',
                 max_tokens: 700,
@@ -166,7 +169,7 @@ ${passage ? `[본문] ${passage}\n` : ''}${argClaim ? `[주장 질문] ${argClai
     }
 
     try {
-        const client = new Anthropic(); // 키는 env에서 자동
+        const client = mkClient(); // 키는 env에서 자동
         const msg = await client.messages.create({
             model: 'claude-opus-4-8',
             max_tokens: 1024,

@@ -12,6 +12,25 @@ import {
     BarChart, Bar, Cell, LabelList,
 } from 'recharts';
 
+/** 코치 API 호출 — 타임아웃(기본 30초)으로 무한로딩 방지. 실패/시간초과 시 null 반환. */
+async function coachFetch(body, ms = 30000) {
+    const ctrl = new AbortController();
+    const timer = setTimeout(() => ctrl.abort(), ms);
+    try {
+        const x = await fetch('/api/coach', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(body),
+            signal: ctrl.signal,
+        });
+        return x.ok ? await x.json() : null;
+    } catch {
+        return null;   // 네트워크 오류·타임아웃(abort) 모두 graceful null
+    } finally {
+        clearTimeout(timer);
+    }
+}
+
 /* ──────────────────────────────────────────────
    앱 버전 — 코드 변경 시 이 숫자만 올리면
    브라우저 캐시가 자동으로 무효화됩니다
@@ -622,20 +641,16 @@ export default function App() {
         setCoaching(true);
         let coachResult = null;
         try {
-            const r = await fetch('/api/coach', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    articleTitle: selected.title,
-                    summaryKor: selected.summary_kor,
-                    detail: selected.detail,
-                    checkQuestion: selected.checkQuestion,
-                    argumentClaim: selected.argument?.claim || null,   // 교과 '나의 주장' 질문
-                    choiceLabel: selected.opinionOptions?.[form.choice] ?? null, // 실제 선택지 라벨(교과 커스텀 선택지 오독 방지)
-                    summary: form.summary, choice: form.choice,
-                    reason: form.reason, word: form.word,
-                }),
-            }).then(x => (x.ok ? x.json() : null)).catch(() => null);
+            const r = await coachFetch({
+                articleTitle: selected.title,
+                summaryKor: selected.summary_kor,
+                detail: selected.detail,
+                checkQuestion: selected.checkQuestion,
+                argumentClaim: selected.argument?.claim || null,   // 교과 '나의 주장' 질문
+                choiceLabel: selected.opinionOptions?.[form.choice] ?? null, // 실제 선택지 라벨(교과 커스텀 선택지 오독 방지)
+                summary: form.summary, choice: form.choice,
+                reason: form.reason, word: form.word,
+            });
             if (r && r.scores) coachResult = r;   // disabled/error/coach_failed는 무시
         } finally {
             setCoaching(false);
@@ -748,19 +763,15 @@ export default function App() {
         if (!selected || guiding) return;
         setGuiding(true);
         try {
-            const r = await fetch('/api/coach', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    mode: 'guide',
-                    articleTitle: selected.title,
-                    summaryKor: selected.summary_kor,
-                    detail: selected.detail,
-                    argumentClaim: selected.argument?.claim || null,
-                    checkQuestion: selected.checkQuestion,
-                    summary: form.summary,
-                }),
-            }).then((x) => (x.ok ? x.json() : null)).catch(() => null);
+            const r = await coachFetch({
+                mode: 'guide',
+                articleTitle: selected.title,
+                summaryKor: selected.summary_kor,
+                detail: selected.detail,
+                argumentClaim: selected.argument?.claim || null,
+                checkQuestion: selected.checkQuestion,
+                summary: form.summary,
+            });
             if (r && r.guide) {
                 setGuide(r.guide);
                 // 최신 버전에 가이드 저장(학습 기록 보존)
@@ -784,15 +795,11 @@ export default function App() {
         if (!replyText.trim() || !selected) return;
         setFollowupReacting(true);
         try {
-            const r = await fetch('/api/coach', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    followupReply: replyText,
-                    followup: followupQ,
-                    articleTitle: selected.title,
-                }),
-            }).then((x) => (x.ok ? x.json() : null)).catch(() => null);
+            const r = await coachFetch({
+                followupReply: replyText,
+                followup: followupQ,
+                articleTitle: selected.title,
+            });
             if (r && r.reaction) {
                 setCoachReaction(r.reaction);
                 // 최신 버전에 followup 답장·코치 반응 저장
