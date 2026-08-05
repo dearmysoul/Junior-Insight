@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback, useMemo } from 'react';
+import { createPortal } from 'react-dom';
 import {
     BookOpen, PenTool, BarChart2, TrendingUp, Award,
     CheckCircle, Brain, Save, ExternalLink, Highlighter,
@@ -1818,7 +1819,7 @@ function HanjaQuiz({ terms, onClose }) {
     };
     const restart = () => { setQi(0); setPicked(null); setScore(0); setDone(false); };
 
-    return (
+    return createPortal((
         <div className="fixed inset-0 z-50 bg-background/95 backdrop-blur-sm flex items-center justify-center p-4" role="dialog" aria-modal="true">
             <div className="w-full max-w-md bg-card border border-border rounded-2xl p-5 shadow-xl animate-scale-in">
                 <div className="flex items-center justify-between mb-4">
@@ -1872,13 +1873,13 @@ function HanjaQuiz({ terms, onClose }) {
                 ) : null}
             </div>
         </div>
-    );
+    ), document.body);
 }
 
 /** 한 학습을 인쇄 — 타이틀 + 지문·한자어 + 작성 글/코치/스파링 전체(그 항목만). */
 function EntryPortfolio({ entry, onClose }) {
     const e = entry;
-    return (
+    return createPortal((
         <div className="fixed inset-0 z-50 bg-background overflow-auto">
             {/* 상단 바 — 인쇄 시 숨김 */}
             <div className="no-print sticky top-0 z-10 bg-card/95 backdrop-blur border-b border-border px-4 py-3 flex items-center justify-between">
@@ -1919,7 +1920,7 @@ function EntryPortfolio({ entry, onClose }) {
                 </section>
             </div>
         </div>
-    );
+    ), document.body);
 }
 
 function Dashboard({ stats, entries, lvlTitle }) {
