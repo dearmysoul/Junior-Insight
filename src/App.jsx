@@ -395,13 +395,13 @@ function Stat({ icon: Icon, label, value, unit, color }) {
     );
 }
 
-function SkillRow({ label, score, xp, from }) {
+function SkillRow({ label, score, xp, from, note }) {
     return (
         <div className="mb-4 last:mb-0">
             <div className="flex justify-between text-[15px] mb-1.5">
                 <span className="text-muted-foreground font-medium tracking-tight">{label}</span>
                 <span className="font-bold text-card-foreground tabular-nums">
-                    {xp !== undefined ? `${xp} XP` : `${score}%`}
+                    {note !== undefined ? note : xp !== undefined ? `${xp} XP` : `${score}%`}
                 </span>
             </div>
             <div className="w-full h-2 bg-accent/40 rounded-full overflow-hidden">
@@ -1755,10 +1755,32 @@ function collectHanja(entries) {
     return [...map.values()];
 }
 
-/** 모은 한자어로 4지선다 퀴즈(한자→낱말). 전체화면 오버레이. */
+/* ── 어휘 복습(간격반복) — 취약·미학습 한자어 우선 재출제 (localStorage) ── */
+const REVIEW_KEY = 'ji_vocab_review_v1';
+function loadReview() { try { return JSON.parse(localStorage.getItem(REVIEW_KEY) || '{}') || {}; } catch { return {}; } }
+function saveReview(m) { try { localStorage.setItem(REVIEW_KEY, JSON.stringify(m)); } catch { /* 무시 */ } }
+/** 복습 대기(미학습 또는 마지막에 틀림) 한자어 수 */
+function dueCountOf(terms, review) {
+    return terms.filter((t) => { const r = review[t.word]; return !r || r.last === 'wrong'; }).length;
+}
+/** 복습 우선순위: 미학습 → 최근 오답 → 저숙련 → 오래된 것 */
+function byReviewPriority(review) {
+    const rank = (r) => (!r ? 0 : r.last === 'wrong' ? 1 : 2);        // 0=미학습 우선
+    const mastery = (r) => (r ? (r.correct || 0) - (r.wrong || 0) : 0);
+    return (a, b) => {
+        const ra = review[a.word], rb = review[b.word];
+        if (rank(ra) !== rank(rb)) return rank(ra) - rank(rb);
+        if (mastery(ra) !== mastery(rb)) return mastery(ra) - mastery(rb);  // 저숙련 우선
+        return (ra?.lastSeen || 0) - (rb?.lastSeen || 0);                    // 오래된 것 우선
+    };
+}
+
+/** 모은 한자어로 4지선다 퀴즈(한자→낱말). 취약·미학습 우선 출제. 전체화면 오버레이. */
 function HanjaQuiz({ terms, onClose }) {
     const questions = useMemo(() => {
-        const pool = shuffleArr(terms).slice(0, Math.min(terms.length, 10));
+        const review = loadReview();
+        // 복습 우선순위로 정렬 후 상위 10개 출제(취약한 것부터)
+        const pool = terms.slice().sort(byReviewPriority(review)).slice(0, Math.min(terms.length, 10));
         return pool.map((t) => ({
             term: t,
             options: shuffleArr([t, ...shuffleArr(terms.filter((x) => x.word !== t.word)).slice(0, 3)]),
@@ -1773,7 +1795,16 @@ function HanjaQuiz({ terms, onClose }) {
     const choose = (word) => {
         if (answered) return;
         setPicked(word);
-        if (word === q.term.word) setScore((s) => s + 1);
+        const correct = word === q.term.word;
+        if (correct) setScore((s) => s + 1);
+        // 복습 기록 갱신(간격반복용)
+        const review = loadReview();
+        const r = review[q.term.word] || { correct: 0, wrong: 0 };
+        if (correct) r.correct = (r.correct || 0) + 1; else r.wrong = (r.wrong || 0) + 1;
+        r.last = correct ? 'correct' : 'wrong';
+        r.lastSeen = Date.now();
+        review[q.term.word] = r;
+        saveReview(review);
     };
     const next = () => {
         if (qi + 1 >= questions.length) setDone(true);
@@ -1889,24 +1920,20 @@ function Dashboard({ stats, entries, lvlTitle }) {
     const [expandedId, setExpandedId] = useState(null);
     const [tool, setTool] = useState(null);          // 'quiz' | null
     const [printEntry, setPrintEntry] = useState(null);  // 인쇄할 학습 항목
+    const [reviewTick, setReviewTick] = useState(0);     // 복습 후 대기 수 갱신용
     const hanjaTerms = useMemo(() => collectHanja(entries), [entries]);
+    const dueCount = useMemo(() => dueCountOf(hanjaTerms, loadReview()), [hanjaTerms, reviewTick]);
 
-    // 영역별 XP 계산 — 실제 누적 XP 기반
-    const summaryXpTotal = entries.reduce((acc, e) => {
-        const len = (e.summary || '').trim().length;
-        return acc + (len >= 20 ? 5 : len > 0 ? 1 : 0);
-    }, 0);
-    const reasonXpTotal = entries.reduce((acc, e) => {
-        const len = (e.reason || '').trim().length;
-        return acc + (len >= 15 ? 5 : len > 0 ? 1 : 0);
-    }, 0);
-    const wordXpTotal = entries.reduce((acc, e) => {
-        return acc + ((e.word || '').trim().length > 0 ? 5 : 0);
-    }, 0);
-    const maxXpPerSkill = Math.max(entries.length * 5, 1);
-    const s1 = Math.min(Math.round(summaryXpTotal / maxXpPerSkill * 100), 100);
-    const s2 = Math.min(Math.round(reasonXpTotal  / maxXpPerSkill * 100), 100);
-    const s3 = Math.min(Math.round(wordXpTotal    / maxXpPerSkill * 100), 100);
+    // 영역별 점수 — 코치 점수(0~5) 평균 기반 (글자 수 아님, 성장 추세와 일관)
+    const scoredEntries = entries.filter((e) => e.scoreClarity != null);
+    const avgOf = (key) => (scoredEntries.length
+        ? scoredEntries.reduce((a, e) => a + (e[key] || 0), 0) / scoredEntries.length
+        : 0);
+    const avgClarity = avgOf('scoreClarity');
+    const avgEvidence = avgOf('scoreEvidence');
+    const avgVocab = avgOf('scoreVocab');
+    const pct = (v) => Math.round((v / 5) * 100);
+    const fmt = (v) => (Math.round(v * 10) / 10).toFixed(1);
 
     return (
         <div className="animate-scale-in space-y-5">
@@ -1923,13 +1950,12 @@ function Dashboard({ stats, entries, lvlTitle }) {
                 <h3 className="font-bold text-[16px] tracking-tight mb-1 flex items-center gap-2 text-card-foreground">
                     <Award size={16} className="text-grad-mid" aria-hidden="true" /> 영역별 활동 점수
                 </h3>
-                <p className="text-[13px] text-muted-foreground mb-4">미션을 완료할수록 XP가 누적됩니다.</p>
-                <SkillRow label="요약 능력 (Summary)" score={s1} xp={summaryXpTotal} from="bg-primary" />
-                <p className="text-[13px] text-muted-foreground -mt-2 mb-4 pl-0.5">입력 시 <span className="font-semibold text-foreground">+1 XP</span> · <span className="font-semibold text-foreground">20자 이상</span> 요약 시 +5 XP</p>
-                <SkillRow label="비판적 사고 (Reasoning)" score={s2} xp={reasonXpTotal} from="bg-secondary" />
-                <p className="text-[13px] text-muted-foreground -mt-2 mb-4 pl-0.5">입력 시 <span className="font-semibold text-foreground">+1 XP</span> · <span className="font-semibold text-foreground">15자 이상</span> 작성 시 +5 XP</p>
-                <SkillRow label="어휘 습득 (Vocabulary)" score={s3} xp={wordXpTotal} from="bg-chart-4" />
-                <p className="text-[13px] text-muted-foreground -mt-2 pl-0.5">단어를 <span className="font-semibold text-foreground">1개 이상</span> 수집하면 +5 XP</p>
+                <p className="text-[13px] text-muted-foreground mb-4">
+                    {scoredEntries.length ? `코치가 매긴 점수의 평균 (완료 ${scoredEntries.length}개 기준)` : '미션을 완료하면 코치 점수가 쌓여요.'}
+                </p>
+                <SkillRow label="요약 명료성" score={pct(avgClarity)} note={`${fmt(avgClarity)} / 5`} from="bg-chart-1" />
+                <SkillRow label="근거 구체성" score={pct(avgEvidence)} note={`${fmt(avgEvidence)} / 5`} from="bg-chart-2" />
+                <SkillRow label="어휘 정확성" score={pct(avgVocab)} note={`${fmt(avgVocab)} / 5`} from="bg-chart-3" />
             </div>
 
             {/* 성장 추세 (코치 점수 시계열 + 어휘 누적) */}
@@ -1944,14 +1970,21 @@ function Dashboard({ stats, entries, lvlTitle }) {
                 disabled={hanjaTerms.length < 4}
                 className="block w-full text-left bg-card p-4 rounded-lg border border-border hover:border-primary/40 transition-colors cursor-pointer press disabled:opacity-60 disabled:cursor-not-allowed"
             >
-                <p className="font-bold text-[15px] text-card-foreground flex items-center gap-2">🀄 한자 퀴즈</p>
+                <p className="font-bold text-[15px] text-card-foreground flex items-center gap-2">
+                    🀄 한자 퀴즈
+                    {hanjaTerms.length >= 4 && dueCount > 0 && (
+                        <span className="text-[11px] font-bold px-1.5 py-0.5 rounded-full bg-chart-2/15 text-chart-2">복습 {dueCount}</span>
+                    )}
+                </p>
                 <p className="text-[13px] text-muted-foreground mt-1">
-                    {hanjaTerms.length >= 4 ? `모은 한자어 ${hanjaTerms.length}개로 퀴즈 풀기` : `한자어 ${4 - hanjaTerms.length}개 더 모으면 시작`}
+                    {hanjaTerms.length >= 4
+                        ? (dueCount > 0 ? `복습할 한자어 ${dueCount}개 · 모은 ${hanjaTerms.length}개 (취약한 것부터 출제)` : `모은 한자어 ${hanjaTerms.length}개 · 복습 완료 👍`)
+                        : `한자어 ${4 - hanjaTerms.length}개 더 모으면 시작`}
                 </p>
             </button>
 
             {/* 오버레이 */}
-            {tool === 'quiz' && <HanjaQuiz terms={hanjaTerms} onClose={() => setTool(null)} />}
+            {tool === 'quiz' && <HanjaQuiz terms={hanjaTerms} onClose={() => { setTool(null); setReviewTick((t) => t + 1); }} />}
             {printEntry && <EntryPortfolio entry={printEntry} onClose={() => setPrintEntry(null)} />}
 
             {/* History */}
