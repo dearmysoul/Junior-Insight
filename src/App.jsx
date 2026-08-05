@@ -6,6 +6,10 @@ import {
     Zap, Target, Trophy, Clock, ChevronDown, ChevronUp,
 } from 'lucide-react';
 import { loadEntries, loadStats, saveEntry, saveStats } from './supabase.js';
+import {
+    ResponsiveContainer, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend,
+    RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Radar,
+} from 'recharts';
 
 /* ──────────────────────────────────────────────
    앱 버전 — 코드 변경 시 이 숫자만 올리면
@@ -1446,21 +1450,13 @@ function GrowthTrend({ entries }) {
         entries.forEach((e) => { const w = (e.word || '').trim(); if (w) set.add(w); });
         return set.size;
     }, [entries]);
-
-    const SERIES = [
-        { key: 'scoreClarity', label: '명료성', color: 'var(--chart-1)' },
-        { key: 'scoreEvidence', label: '근거', color: 'var(--chart-2)' },
-        { key: 'scoreVocab', label: '어휘', color: 'var(--chart-3)' },
-    ];
-    const last = scored[scored.length - 1];
-
-    // 뷰박스 좌표
-    const W = 320, H = 148, padL = 20, padR = 42, padT = 10, padB = 18;
-    const plotW = W - padL - padR, plotH = H - padT - padB;
+    // Recharts용 데이터 (미션 순번 + 3개 점수)
+    const data = useMemo(() => scored.map((e, i) => ({
+        idx: i + 1, 명료성: e.scoreClarity, 근거: e.scoreEvidence, 어휘: e.scoreVocab,
+    })), [scored]);
     const n = scored.length;
-    const xAt = (i) => padL + (n <= 1 ? plotW / 2 : (i / (n - 1)) * plotW);
-    const yAt = (v) => padT + (1 - v / 5) * plotH;
-    const pathOf = (key) => scored.map((e, i) => `${i === 0 ? 'M' : 'L'}${xAt(i).toFixed(1)},${yAt(e[key]).toFixed(1)}`).join(' ');
+
+    const tipStyle = { background: 'var(--card)', border: '1px solid var(--border)', borderRadius: 8, fontSize: 12 };
 
     return (
         <div className="bg-card p-4 sm:p-5 rounded-lg border border-border">
@@ -1475,42 +1471,22 @@ function GrowthTrend({ entries }) {
                     <p className="text-[13px] mt-0.5">여기에 성장 그래프가 그려져요 📈</p>
                 </div>
             ) : (
-                <>
-                    <svg viewBox={`0 0 ${W} ${H}`} className="w-full h-auto" role="img"
-                        aria-label={`명료성·근거·어휘 점수 추세, 미션 ${n}개`}>
-                        {/* 가로 눈금 (0·2.5·5) — 은은하게 */}
-                        {[0, 2.5, 5].map((v) => (
-                            <g key={v}>
-                                <line x1={padL} y1={yAt(v)} x2={W - padR} y2={yAt(v)}
-                                    stroke="var(--border)" strokeWidth="1" strokeDasharray={v === 2.5 ? '3 3' : ''} />
-                                <text x={W - padR + 4} y={yAt(v) + 3} style={{ fontSize: 9, fill: 'var(--muted-foreground)' }}>{v}</text>
-                            </g>
-                        ))}
-                        {/* 계열 라인 + 마커 */}
-                        {SERIES.map((s) => (
-                            <g key={s.key}>
-                                <path d={pathOf(s.key)} fill="none" stroke={s.color} strokeWidth="2"
-                                    strokeLinejoin="round" strokeLinecap="round" />
-                                {scored.map((e, i) => (
-                                    <circle key={i} cx={xAt(i)} cy={yAt(e[s.key])} r="2.6"
-                                        fill="var(--card)" stroke={s.color} strokeWidth="1.5" />
-                                ))}
-                            </g>
-                        ))}
-                    </svg>
-
-                    {/* 범례 — 색이 아니라 라벨+최신값으로 식별 */}
-                    <div className="flex flex-wrap gap-x-4 gap-y-1 mt-2">
-                        {SERIES.map((s) => (
-                            <span key={s.key} className="inline-flex items-center gap-1.5 text-[13px]">
-                                <span className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: s.color }} aria-hidden="true" />
-                                <span className="text-muted-foreground">{s.label}</span>
-                                <span className="font-bold text-card-foreground tabular-nums">{last[s.key]}<span className="text-[11px] text-muted-foreground">/5</span></span>
-                            </span>
-                        ))}
-                        <span className="text-[12px] text-muted-foreground self-center">처음 → 최근 (미션 {n}개)</span>
-                    </div>
-                </>
+                <div className="w-full" style={{ height: 220 }}>
+                    <ResponsiveContainer width="100%" height="100%">
+                        <LineChart data={data} margin={{ top: 8, right: 12, bottom: 0, left: -14 }}>
+                            <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" vertical={false} />
+                            <XAxis dataKey="idx" interval="preserveStartEnd" tickLine={false}
+                                axisLine={{ stroke: 'var(--border)' }} tick={{ fontSize: 10, fill: 'var(--muted-foreground)' }} />
+                            <YAxis domain={[0, 5]} ticks={[0, 1, 2, 3, 4, 5]} width={28} tickLine={false} axisLine={false}
+                                tick={{ fontSize: 10, fill: 'var(--muted-foreground)' }} />
+                            <Tooltip contentStyle={tipStyle} labelStyle={{ color: 'var(--muted-foreground)' }} labelFormatter={(v) => `미션 ${v}`} />
+                            <Legend wrapperStyle={{ fontSize: 12 }} />
+                            <Line type="monotone" dataKey="명료성" stroke="var(--chart-1)" strokeWidth={2} dot={{ r: 2 }} activeDot={{ r: 4 }} />
+                            <Line type="monotone" dataKey="근거" stroke="var(--chart-2)" strokeWidth={2} dot={{ r: 2 }} activeDot={{ r: 4 }} />
+                            <Line type="monotone" dataKey="어휘" stroke="var(--chart-3)" strokeWidth={2} dot={{ r: 2 }} activeDot={{ r: 4 }} />
+                        </LineChart>
+                    </ResponsiveContainer>
+                </div>
             )}
 
             {/* 어휘 누적 */}
@@ -1520,6 +1496,29 @@ function GrowthTrend({ entries }) {
                 </span>
                 <p className="text-[13px] text-muted-foreground">모은 핵심 어휘 <span className="text-[17px] font-extrabold text-card-foreground tabular-nums ml-1">{vocabCount}</span><span className="text-[12px] ml-0.5">개</span></p>
             </div>
+        </div>
+    );
+}
+
+/* 영역별 역량 레이더 (코치 점수 평균) */
+function GrowthRadar({ clarity, evidence, vocab }) {
+    const data = [
+        { dim: '명료성', v: clarity },
+        { dim: '근거', v: evidence },
+        { dim: '어휘', v: vocab },
+    ];
+    return (
+        <div className="w-full" style={{ height: 220 }}>
+            <ResponsiveContainer width="100%" height="100%">
+                <RadarChart data={data} outerRadius="72%">
+                    <PolarGrid stroke="var(--border)" />
+                    <PolarAngleAxis dataKey="dim" tick={{ fontSize: 12, fill: 'var(--muted-foreground)' }} />
+                    <PolarRadiusAxis domain={[0, 5]} tickCount={6} axisLine={false} tick={{ fontSize: 9, fill: 'var(--muted-foreground)' }} />
+                    <Radar dataKey="v" stroke="var(--chart-1)" fill="var(--chart-1)" fillOpacity={0.3} />
+                    <Tooltip contentStyle={{ background: 'var(--card)', border: '1px solid var(--border)', borderRadius: 8, fontSize: 12 }}
+                        formatter={(val) => [`${Number(val).toFixed(1)} / 5`, '평균']} />
+                </RadarChart>
+            </ResponsiveContainer>
         </div>
     );
 }
@@ -1945,17 +1944,26 @@ function Dashboard({ stats, entries, lvlTitle }) {
                 <Stat icon={Zap} label="Total XP" value={stats.xp} unit="XP" color="bg-secondary" />
             </div>
 
-            {/* Skills */}
+            {/* Skills — 영역별 역량 레이더 (코치 점수 평균) */}
             <div className="bg-card p-4 sm:p-5 rounded-lg border border-border">
                 <h3 className="font-bold text-[16px] tracking-tight mb-1 flex items-center gap-2 text-card-foreground">
-                    <Award size={16} className="text-grad-mid" aria-hidden="true" /> 영역별 활동 점수
+                    <Award size={16} className="text-grad-mid" aria-hidden="true" /> 영역별 역량
                 </h3>
-                <p className="text-[13px] text-muted-foreground mb-4">
+                <p className="text-[13px] text-muted-foreground mb-2">
                     {scoredEntries.length ? `코치가 매긴 점수의 평균 (완료 ${scoredEntries.length}개 기준)` : '미션을 완료하면 코치 점수가 쌓여요.'}
                 </p>
-                <SkillRow label="요약 명료성" score={pct(avgClarity)} note={`${fmt(avgClarity)} / 5`} from="bg-chart-1" />
-                <SkillRow label="근거 구체성" score={pct(avgEvidence)} note={`${fmt(avgEvidence)} / 5`} from="bg-chart-2" />
-                <SkillRow label="어휘 정확성" score={pct(avgVocab)} note={`${fmt(avgVocab)} / 5`} from="bg-chart-3" />
+                {scoredEntries.length ? (
+                    <>
+                        <GrowthRadar clarity={avgClarity} evidence={avgEvidence} vocab={avgVocab} />
+                        <div className="flex justify-center gap-4 text-[13px] mt-1">
+                            <span className="inline-flex items-center gap-1.5"><span className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: 'var(--chart-1)' }} /><span className="text-muted-foreground">명료성</span> <b className="text-card-foreground tabular-nums">{fmt(avgClarity)}</b></span>
+                            <span className="inline-flex items-center gap-1.5"><span className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: 'var(--chart-2)' }} /><span className="text-muted-foreground">근거</span> <b className="text-card-foreground tabular-nums">{fmt(avgEvidence)}</b></span>
+                            <span className="inline-flex items-center gap-1.5"><span className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: 'var(--chart-3)' }} /><span className="text-muted-foreground">어휘</span> <b className="text-card-foreground tabular-nums">{fmt(avgVocab)}</b></span>
+                        </div>
+                    </>
+                ) : (
+                    <div className="text-center py-6 text-muted-foreground text-[14px]">미션을 완료하면 역량 그래프가 그려져요 🎯</div>
+                )}
             </div>
 
             {/* 성장 추세 (코치 점수 시계열 + 어휘 누적) */}
