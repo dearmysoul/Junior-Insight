@@ -13,11 +13,11 @@ import {
 } from 'recharts';
 
 /** 코치 API 호출 — 타임아웃(기본 30초)으로 무한로딩 방지. 실패/시간초과 시 null 반환. */
-async function coachFetch(body, ms = 30000) {
+async function timedPost(url, body, ms = 30000) {
     const ctrl = new AbortController();
     const timer = setTimeout(() => ctrl.abort(), ms);
     try {
-        const x = await fetch('/api/coach', {
+        const x = await fetch(url, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(body),
@@ -30,6 +30,7 @@ async function coachFetch(body, ms = 30000) {
         clearTimeout(timer);
     }
 }
+const coachFetch = (body, ms) => timedPost('/api/coach', body, ms);
 
 /* ──────────────────────────────────────────────
    앱 버전 — 코드 변경 시 이 숫자만 올리면
@@ -149,9 +150,13 @@ function normalizeCategory(raw) {
     return 'World';
 }
 
-/** 의견 선택지: 모든 기사에 찬성/반대/기타 고정 */
+/** 의견 선택지: 뉴스 기본(찬성/반대/기타) */
 function makeOpinionOptions() {
     return ['찬성한다', '반대한다', '기타 의견이 있다'];
+}
+/** 교과 지문에 argument(쟁점)가 없을 때의 중립 선택지 — 찬반이 어색한 문학·설명문 대비 */
+function makeLessonOptions() {
+    return ['공감이 간다', '아쉽거나 반대다', '다르게 생각한다'];
 }
 
 /** RSS description에서 본문 텍스트 추출 (HTML 태그 제거) */
@@ -204,8 +209,10 @@ async function fetchNewsJson() {
                     url: a.url,
                     date: a.date || today,
                     importance: a.importance || Math.max(60, 100 - idx * 5),
-                    // 쟁점(argument)이 있으면 그 입장 선택지를, 없으면 기본 찬성/반대
-                    opinionOptions: (a.argument?.options?.length ? a.argument.options : makeOpinionOptions()),
+                    // 쟁점(argument)이 있으면 그 입장 선택지를, 없으면 교과=중립/뉴스=찬반
+                    opinionOptions: (a.argument?.options?.length
+                        ? a.argument.options
+                        : ((a.type || 'news') === 'lesson' ? makeLessonOptions() : makeOpinionOptions())),
                 }));
             // 상단 날씨 배너: 최상위 weather 필드 우선, 없으면 null
             const weather = data.weather && data.weather.summary ? data.weather : null;
@@ -1088,9 +1095,7 @@ function SparPanel({ news, form, onComplete }) {
     const [verdict, setVerdict] = useState(null);  // { won, reply }
     const [unavailable, setUnavailable] = useState(false);
 
-    const call = (body) => fetch('/api/spar', {
-        method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body),
-    }).then(x => (x.ok ? x.json() : null)).catch(() => null);
+    const call = (body) => timedPost('/api/spar', body);
 
     const startSpar = async () => {
         setLoading(true);
@@ -1282,7 +1287,7 @@ function WriteView({ news, form, setForm, submit, coach, coaching, coachReaction
                             <p className="font-bold text-[15px] text-card-foreground tracking-tight flex-1">미션 2 · {isLesson ? '나의 주장' : '나의 의견'}</p>
                             {form.choice !== null && form.reason.trim() && <CheckCircle size={16} className="text-primary shrink-0" />}
                         </div>
-                        <p className="text-[14px] font-semibold text-foreground mb-2">{claim || (isLesson ? '이 주제에 대한 너의 입장은?' : '이 기사에 대해 어떻게 생각하나요?')} <span className="text-destructive">*</span></p>
+                        <p className="text-[14px] font-semibold text-foreground mb-2">{claim || (isLesson ? '이 지문을 읽고, 네 생각에 가장 가까운 건?' : '이 기사에 대해 어떻게 생각하나요?')} <span className="text-destructive">*</span></p>
                         <div className="space-y-1.5 mb-3" role="radiogroup" aria-label="의견 선택">
                             {news.opinionOptions.map((opt, i) => {
                                 const on = form.choice === i;
@@ -1569,14 +1574,11 @@ function GrowthMirror({ entries }) {
 
     const seeGrowth = async () => {
         setState('loading');
-        const r = await fetch('/api/growth', {
-            method: 'POST', headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                early: earlyEntries.map((e) => e.summary),
-                recent: recentEntries.map((e) => e.summary),
-                earlyScore, recentScore,
-            }),
-        }).then((x) => (x.ok ? x.json() : null)).catch(() => null);
+        const r = await timedPost('/api/growth', {
+            early: earlyEntries.map((e) => e.summary),
+            recent: recentEntries.map((e) => e.summary),
+            earlyScore, recentScore,
+        });
         if (r && r.comment) { setResult(r); setState('done'); }
         else setState('unavailable');
     };

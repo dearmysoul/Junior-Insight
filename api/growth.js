@@ -6,6 +6,9 @@
 
 import Anthropic from '@anthropic-ai/sdk';
 
+// 무한로딩 방지: 타임아웃·재시도 제한
+const mkClient = () => new Anthropic({ maxRetries: 1, timeout: 25000 });
+
 const SCHEMA = {
     type: 'object', additionalProperties: false,
     properties: {
@@ -43,7 +46,7 @@ export default async function handler(req, res) {
     const recentScore = Number.isFinite(b.recentScore) ? b.recentScore : null;
 
     try {
-        const client = new Anthropic();
+        const client = mkClient();
         const msg = await client.messages.create({
             model: 'claude-opus-4-8', max_tokens: 700,
             output_config: { format: { type: 'json_schema', schema: SCHEMA } },
