@@ -20,6 +20,24 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      # 무료 Supabase는 7일 미사용 시 정지된다. 매일 가벼운 read 1회로 활성 유지.
+      # 실패해도(정지/네트워크) 콘텐츠 생성은 계속되도록 continue-on-error.
+      - name: Keep Supabase awake
+        continue-on-error: true
+        env:
+          SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
+          SUPABASE_ANON_KEY: ${{ secrets.VITE_SUPABASE_ANON_KEY }}
+        run: |
+          if [ -n "$SUPABASE_URL" ] && [ -n "$SUPABASE_ANON_KEY" ]; then
+            code=$(curl -s -o /dev/null -w "%{http_code}" --max-time 20 \
+              "$SUPABASE_URL/rest/v1/stats?select=user_id&limit=1" \
+              -H "apikey: $SUPABASE_ANON_KEY" \
+              -H "Authorization: Bearer $SUPABASE_ANON_KEY") || true
+            echo "Supabase keep-alive: HTTP $code"
+          else
+            echo "Supabase 시크릿 미설정 — keep-alive 건너뜀"
+          fi
+
       - uses: actions/setup-node@v4
         with:
           node-version: 20
