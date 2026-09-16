@@ -281,10 +281,40 @@ async function fetchGoogleNews() {
     return { articles, weather };
 }
 
-// 레벨 칭호 (SVG 기획 기반 5단계)
-// Lv.1 새싹: 가입즉시 | Lv.2 탐험가: XP 200+, 7일 연속 | Lv.3 기자: XP 1000+, 25일+
-// Lv.4 논설가: XP 2500+, 50일+ | Lv.5 편집장: XP 4000+, 85일+
+/* ── 레벨 체계 ────────────────────────────────────────────────
+   5개 티어(칭호) × 각 5레벨 = 25레벨. 25 초과는 '편집장 ★N'(명예의 전당, 끝없는 성장).
+   레벨 = 순수 누적 XP 파생 → 출석일 게이트 없음(노력하면 바로 오름), 과거 XP도 자동 반영.
+   곡선: 초반엔 1~2일에 한 번 레벨업, 점점 완만히 상승. */
 const LEVEL_TITLES = ['', '새싹', '탐험가', '기자', '논설가', '편집장'];
+const LEVELS_PER_TIER = 5;
+
+// 레벨 L에 도달하는 데 필요한 누적 XP (L1=0)
+function xpFloor(L) {
+    if (L <= 1) return 0;
+    return Math.round(8 * Math.pow(L - 1, 1.85));
+}
+// 누적 XP → 현재 레벨(1 이상, 상한 없음)
+function levelFromXp(xp) {
+    const x = Math.max(0, Number(xp) || 0);
+    let L = 1;
+    while (L < 300 && xpFloor(L + 1) <= x) L++;
+    return L;
+}
+// 레벨/진행 정보 — 칭호 + 다음 레벨 진행바용
+function levelInfo(xp) {
+    const x = Math.max(0, Number(xp) || 0);
+    const level = levelFromXp(x);
+    const curFloor = xpFloor(level);
+    const nextFloor = xpFloor(level + 1);
+    const into = Math.max(0, x - curFloor);
+    const need = Math.max(1, nextFloor - curFloor);
+    const pct = Math.min(100, Math.round((into / need) * 100));
+    const tierIdx = Math.min(5, Math.ceil(Math.min(level, 25) / LEVELS_PER_TIER));
+    const baseTitle = LEVEL_TITLES[tierIdx] || '편집장';
+    const stars = level > 25 ? level - 25 : 0;   // 편집장 이후 별(명예의 전당)
+    const title = stars > 0 ? `${baseTitle} ${stars <= 5 ? '★'.repeat(stars) : `★×${stars}`}` : baseTitle;
+    return { level, title, baseTitle, tierIdx, stars, curFloor, nextFloor, into, need, pct, toNext: Math.max(0, nextFloor - x) };
+}
 
 /* ──────────────────────────────────────────────
    HANJA TOOLTIP
@@ -587,7 +617,8 @@ export default function App() {
                 const twoDaysAgoKr = td.toLocaleDateString('ko-KR');
                 const last = s.lastDate || '';
                 const correctedStreak = (last === todayKr || last === yesterdayKr || last === twoDaysAgoKr) ? s.streak : 0;
-                setStats({ ...s, streak: correctedStreak });
+                // 레벨은 저장값 대신 누적 XP에서 파생 → 새 곡선이 과거 성과에 소급 적용
+                setStats({ ...s, level: levelFromXp(s.xp), streak: correctedStreak });
             }
             setDbLoading(false);
         });
@@ -704,10 +735,6 @@ export default function App() {
             ? coachResult.scores.clarity + coachResult.scores.evidence + coachResult.scores.vocab
             : (form.summary.trim().length >= 20 ? 5 : 1) + (form.reason.trim().length >= 15 ? 5 : 1) + 5;
 
-        // 유일 활동일 수 (오늘 포함) — 레벨 계산에 사용
-        const activeDates = new Set([...entries.map(e => e.date), todayStr]);
-        const uniqueDays = activeDates.size;
-
         setStats((p) => {
             const nx = p.xp + xp;
             const lastDate = p.lastDate || '';
@@ -722,18 +749,20 @@ export default function App() {
                 : lastDate === yesterdayStr          ? p.streak + 1
                 : lastDate === twoDaysAgoStr         ? p.streak + 1
                 : 1;
-            // SVG 기획 기반 레벨 계산 (XP + 출석일 조건)
-            let nl = 1;
-            if      (nx >= 4000 && uniqueDays >= 85) nl = 5; // 편집장
-            else if (nx >= 2500 && uniqueDays >= 50) nl = 4; // 논설가
-            else if (nx >= 1000 && uniqueDays >= 25) nl = 3; // 기자
-            else if (nx >= 200  && newStreak  >= 7 ) nl = 2; // 탐험가
-            const up = nl > p.level;
+            // 레벨 = 순수 누적 XP 파생 (출석일 게이트 없음)
+            const nl = levelFromXp(nx);
+            const prevInfo = levelInfo(p.xp);
+            const newInfo = levelInfo(nx);
+            const up = nl > prevInfo.level;
+            const tierUp = newInfo.baseTitle !== prevInfo.baseTitle;   // 칭호(티어) 승급
             const next = { ...p, total: p.total + 1, xp: nx, level: nl, streak: newStreak, lastDate: todayStr };
             // Supabase에 stats 저장
             saveStats(next);
-            const title = LEVEL_TITLES[nl] || '';
-            setTimeout(() => flash(up ? `레벨 업! LV.${nl} ${title} (+${xp} XP)` : `미션 완료! +${xp} XP`), 100);
+            setTimeout(() => flash(
+                tierUp ? `🎉 ${newInfo.title} 승급! LV.${nl} (+${xp} XP)`
+                    : up ? `레벨 업! LV.${nl} ${newInfo.baseTitle} (+${xp} XP)`
+                        : `미션 완료! +${xp} XP`
+            ), 100);
             return next;
         });
         if (coachResult) {
@@ -842,7 +871,7 @@ export default function App() {
         flash(won ? '🏆 스파링 승리! +5 XP' : '💪 스파링 완료! +5 XP');
     }, [flash]);
 
-    const lvlTitle = LEVEL_TITLES[Math.min(stats.level, LEVEL_TITLES.length - 1)] || '미디어 리더';
+    const lvlTitle = levelInfo(stats.xp).title;
 
     const navItems = [
         { id: 'news', Icon: BookOpen, label: '뉴스' },
@@ -1960,6 +1989,28 @@ function Dashboard({ stats, entries, lvlTitle }) {
                 <Stat icon={Star} label="레벨" value={`LV.${stats.level}`} unit={lvlTitle} color="bg-grad-mid" />
                 <Stat icon={Zap} label="Total XP" value={stats.xp} unit="XP" color="bg-secondary" />
             </div>
+
+            {/* 레벨 진행바 — 다음 레벨까지 (아이가 항상 가까운 목표를 보게) */}
+            {(() => {
+                const lv = levelInfo(stats.xp);
+                return (
+                    <div className="bg-card p-4 sm:p-5 rounded-lg border border-border">
+                        <div className="flex items-center justify-between mb-2">
+                            <span className="font-bold text-[15px] text-card-foreground flex items-center gap-2">
+                                <Star size={16} className="text-grad-mid" aria-hidden="true" />
+                                LV.{lv.level} · {lv.title}
+                            </span>
+                            <span className="text-[12px] text-muted-foreground tabular-nums">
+                                {lv.level >= 25 ? '명예의 전당' : `다음 레벨까지 ${lv.toNext} XP`}
+                            </span>
+                        </div>
+                        <div className="w-full h-3 rounded-full bg-accent/40 overflow-hidden">
+                            <div className="h-full rounded-full bg-grad-mid transition-[width] duration-500" style={{ width: `${lv.pct}%` }} />
+                        </div>
+                        <p className="text-[11px] text-muted-foreground mt-1.5 tabular-nums">{lv.into} / {lv.need} XP · {lv.pct}%</p>
+                    </div>
+                );
+            })()}
 
             {/* Skills — 영역별 역량 레이더 (코치 점수 평균) */}
             <div className="bg-card p-4 sm:p-5 rounded-lg border border-border">
