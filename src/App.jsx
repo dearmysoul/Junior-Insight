@@ -543,30 +543,41 @@ function buildSource(a) {
    ══════════════════════════════════════════════════════════════ */
 const STORY_IMG = (f) => `${import.meta.env.BASE_URL}${f}`;
 
-// 도착 화면 — 봉투 이미지 위 코럴 인장에 실제 버튼(키보드 접근 가능)
-function ArrivalGate({ onOpen, dateStr }) {
+// 책상 씬 — 전체 화면 이미지. 사이드바 대신 이미지 속 오브젝트로 이동.
+//  · 봉투(인장) → 오늘의 편지(뉴스)   · 책 더미 → 성장
+// 좌표는 이미지 %. object-cover라 화면비가 크게 다르면(모바일 세로) 가장자리가 잘릴 수 있어,
+// 각 오브젝트에 항상 보이는 라벨 칩을 달아 발견 가능하게 한다.
+function DeskScene({ dateStr, onOpen, onGrowth }) {
     return (
-        <div className="animate-fade-in max-w-3xl mx-auto">
-            <div className="relative w-full rounded-2xl overflow-hidden border border-border bg-accent/20 shadow-sm">
-                <img src={STORY_IMG('news_01.png')} alt="오늘의 편지가 도착했어요"
-                    className="w-full h-auto block select-none" draggable="false"
-                    onError={(e) => { e.currentTarget.style.visibility = 'hidden'; }} />
-                {/* 인장 버튼: 이미지 %좌표에 고정 → 폭이 변해도(모바일) 위치가 어긋나지 않음 */}
-                <button type="button" onClick={onOpen}
-                    aria-label="인장을 눌러 오늘의 편지 열기"
-                    className="absolute rounded-full cursor-pointer focus:outline-none focus-visible:ring-4 focus-visible:ring-primary/60 group"
-                    style={{ left: '50.5%', top: '68%', width: '8%', minWidth: '44px', minHeight: '44px', aspectRatio: '1 / 1', transform: 'translate(-50%,-50%)' }}>
-                    <span className="absolute inset-0 rounded-full ring-2 ring-white/70 animate-pulse" aria-hidden="true" />
-                    <span className="absolute inset-0 rounded-full group-hover:bg-white/15 group-active:bg-white/25 transition-colors" aria-hidden="true" />
-                </button>
+        <div className="fixed inset-0 bg-[#efe9dc] overflow-hidden select-none">
+            <img src={STORY_IMG('news_01.png')} alt=""
+                className="absolute inset-0 w-full h-full object-cover object-center" draggable="false"
+                onError={(e) => { e.currentTarget.style.display = 'none'; }} />
+
+            {/* 상단 인사 */}
+            <div className="absolute top-0 left-0 right-0 p-4 sm:p-6 bg-gradient-to-b from-black/20 to-transparent pointer-events-none">
+                <p className="text-white text-[14px] sm:text-[16px] font-bold tracking-tight drop-shadow">지율이의 책상</p>
+                <p className="text-white/85 text-[12px] sm:text-[13px] drop-shadow">{dateStr}</p>
             </div>
-            <p className="text-center text-[13px] text-muted-foreground mt-3">
-                인장을 눌러 <b className="text-foreground">오늘의 편지</b>를 열어보세요{dateStr ? ` · ${dateStr}` : ''}
-            </p>
-            <div className="text-center mt-2">
-                <button type="button" onClick={onOpen}
-                    className="text-[12px] text-primary underline underline-offset-2 cursor-pointer">바로 열기</button>
-            </div>
+
+            {/* ① 봉투 → 오늘의 편지(뉴스) */}
+            <button type="button" onClick={onOpen}
+                aria-label="봉투의 인장을 눌러 오늘의 편지 열기"
+                className="absolute group cursor-pointer focus:outline-none"
+                style={{ left: '50.5%', top: '68%', width: '20%', minWidth: '110px', height: '18%', minHeight: '84px', transform: 'translate(-50%,-50%)' }}>
+                <span className="absolute rounded-full ring-2 ring-white/80 animate-pulse group-hover:ring-primary group-focus-visible:ring-4 group-focus-visible:ring-primary"
+                    style={{ left: '50%', top: '46%', width: '42%', aspectRatio: '1 / 1', transform: 'translate(-50%,-50%)' }} aria-hidden="true" />
+                <span className="absolute left-1/2 -translate-x-1/2 bottom-0 whitespace-nowrap text-[12px] font-bold text-white bg-primary/90 group-hover:bg-primary px-3 py-1 rounded-full shadow">📮 오늘의 편지</span>
+            </button>
+
+            {/* ② 책 더미 → 성장 */}
+            <button type="button" onClick={onGrowth}
+                aria-label="책을 눌러 성장 화면으로 가기"
+                className="absolute group cursor-pointer focus:outline-none"
+                style={{ left: '13%', top: '60%', width: '17%', minWidth: '96px', height: '20%', minHeight: '92px', transform: 'translate(-50%,-50%)' }}>
+                <span className="absolute inset-1 rounded-xl ring-2 ring-white/0 group-hover:ring-white/80 group-focus-visible:ring-4 group-focus-visible:ring-secondary transition" aria-hidden="true" />
+                <span className="absolute left-1/2 -translate-x-1/2 bottom-0 whitespace-nowrap text-[12px] font-bold text-white bg-secondary/90 group-hover:bg-secondary px-3 py-1 rounded-full shadow">📈 성장</span>
+            </button>
         </div>
     );
 }
@@ -935,62 +946,27 @@ export default function App() {
     const lvlTitle = levelInfo(stats.xp).title;
     const todayLabel = new Date().toLocaleDateString('ko-KR', { month: 'long', day: 'numeric', weekday: 'short' });
 
-    const navItems = [
-        { id: 'news', Icon: BookOpen, label: '뉴스' },
-        { id: 'dashboard', Icon: BarChart2, label: '성장' },
-    ];
+    // 홈(책상 씬)으로 — 사이드바가 없으므로 각 화면에서 이걸로 복귀
+    const goHome = useCallback(() => {
+        setStoryStage('arrival');
+        setTab('news');
+        window.scrollTo({ top: 0 });
+    }, []);
 
     return (
         <div className="min-h-screen bg-background text-foreground">
             <Toast message={toast.msg} show={toast.show} />
 
-            <nav className="
-        fixed z-40
-        bottom-0 left-0 right-0 h-14
-        md:top-0 md:bottom-0 md:right-auto md:w-52 md:h-screen
-        bg-card/95 backdrop-blur-md
-        border-t border-border md:border-t-0 md:border-r
-        flex md:flex-col items-center justify-around md:justify-start md:pt-5 md:px-3 md:gap-1
-      " role="navigation" aria-label="메인 내비게이션">
-                {/* 데스크톱 브랜드 */}
-                <div className="hidden md:flex items-center gap-2.5 w-full px-1 mb-6">
-                    <span className="flex items-center justify-center w-8 h-8 rounded-lg bg-primary text-primary-foreground font-black text-[15px] shrink-0">J</span>
-                    <div className="min-w-0">
-                        <p className="text-[13px] font-extrabold text-card-foreground leading-none tracking-tight">Junior Insight</p>
-                        <p className="text-[11px] font-medium text-muted-foreground leading-none mt-0.5">문해력 성장소</p>
-                    </div>
-                </div>
-                {navItems.map(({ id, Icon, label }) => {
-                    const active = tab === id || (id === 'news' && tab === 'write');
-                    return (
-                        <button key={id} onClick={() => goTab(id)}
-                            className={`
-                flex flex-col md:flex-row items-center justify-center md:justify-start
-                gap-0.5 md:gap-3 rounded-lg cursor-pointer
-                w-14 h-11 md:w-full md:h-10 md:px-3
-                transition-colors duration-200
-                ${active ? 'bg-primary/12 text-primary' : 'text-muted-foreground hover:text-foreground hover:bg-accent/30'}
-              `}
-                            aria-label={label} aria-current={active ? 'page' : undefined}
-                        >
-                            <Icon size={20} strokeWidth={active ? 2.4 : 1.8} aria-hidden="true" />
-                            <span className="text-[11.5px] md:text-[14px] font-medium leading-none">{label}</span>
-                        </button>
-                    );
-                })}
-            </nav>
-
-            <main className="
-        pb-20 md:pb-8 md:ml-52
-        px-4 pt-4 sm:px-6 sm:pt-6 md:px-8 md:pt-8
-        transition-all duration-300
-      ">
-
-                {tab === 'news' && storyStage === 'arrival' && (
-                    <ArrivalGate onOpen={() => setStoryStage('open')} dateStr={todayLabel} />
-                )}
+            {tab === 'news' && storyStage === 'arrival' ? (
+                <DeskScene
+                    dateStr={todayLabel}
+                    onOpen={() => setStoryStage('open')}
+                    onGrowth={() => setTab('dashboard')}
+                />
+            ) : (
+                <main className="pb-16 px-4 pt-4 sm:px-6 sm:pt-6 md:px-8 md:pt-10 max-w-3xl mx-auto">
                 {tab === 'news' && storyStage === 'open' && (
-                    <LetterFrame dateStr={todayLabel} onClose={() => setStoryStage('arrival')}>
+                    <LetterFrame dateStr={todayLabel} onClose={goHome}>
                         <NewsFeed
                             news={news}
                             weather={weather}
@@ -1024,9 +1000,17 @@ export default function App() {
                     />
                 )}
                 {tab === 'dashboard' && (
-                    <Dashboard stats={stats} entries={entries} lvlTitle={lvlTitle} />
+                    <>
+                        <button type="button" onClick={goHome}
+                            className="flex items-center gap-1 text-[13px] font-medium text-muted-foreground hover:text-foreground h-10 mb-2 cursor-pointer"
+                            aria-label="홈(책상)으로 가기">
+                            <ArrowLeft size={15} aria-hidden="true" /> 홈으로
+                        </button>
+                        <Dashboard stats={stats} entries={entries} lvlTitle={lvlTitle} />
+                    </>
                 )}
-            </main>
+                </main>
+            )}
         </div>
     );
 }
