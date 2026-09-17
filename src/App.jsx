@@ -2107,7 +2107,62 @@ function EntryPortfolio({ entry, onClose }) {
     ), document.body);
 }
 
-function Dashboard({ stats, entries, lvlTitle }) {
+// 보관실 책등 색 — 과목/카테고리로 결정적 팔레트(장서 느낌)
+const SPINE_PALETTE = [
+    { bg: '#4e6d5e', band: '#e9dfc9', text: '#f7f3e8' }, // sage
+    { bg: '#c1674a', band: '#f0e3d2', text: '#fbf5ec' }, // terracotta
+    { bg: '#3f5a72', band: '#e6ded0', text: '#f4f1ea' }, // navy
+    { bg: '#a8823c', band: '#efe6d0', text: '#fbf7ee' }, // mustard
+    { bg: '#7a4a52', band: '#ecdfd8', text: '#f8f0ec' }, // burgundy
+    { bg: '#4d6a6a', band: '#e4e0d2', text: '#f3f2ec' }, // teal
+];
+function spineColor(key) {
+    const s = String(key || '');
+    let h = 0;
+    for (let i = 0; i < s.length; i++) h = (h * 31 + s.charCodeAt(i)) >>> 0;
+    return SPINE_PALETTE[h % SPINE_PALETTE.length];
+}
+// "2026. 9. 17." → "9/17"
+function shortDate(d) {
+    const m = String(d || '').match(/(\d+)\.\s*(\d+)\.\s*(\d+)/);
+    return m ? `${m[2]}/${m[3]}` : '';
+}
+
+// 개발 전용 시드 — 로컬 vite dev에서만(`import.meta.env.DEV`) `?seed=N`으로 0/소수/다수 화면 점검용.
+// 프로덕션 빌드에선 DEV=false라 호출되지 않으므로 실서비스엔 절대 노출되지 않는다.
+// 일부러 '점수 없는 과거 기록'을 섞어(임의 점수 미생성) XP/역량 집계에서 제외되는지 확인한다.
+function devSeedEntries(n) {
+    const subs = ['국어·문학', '세계', '경제', '역사', '과학', '사회'];
+    const titles = ['왜 민재는 빈 개집을 매일 청소할까?', '북극 해빙은 왜 빨라지나', '물가는 어떻게 정해질까', '삼국은 어떻게 세워졌을까', '별은 왜 반짝일까', '다수결은 늘 옳을까', '갯벌이 사라지면 무슨 일이', '돈은 왜 생겨났을까'];
+    const words = ['그리움', '해빙', '수요', '성립', '굴절', '합의', '생태', '교환'];
+    const out = [];
+    for (let i = 0; i < n; i++) {
+        const dt = new Date(2026, 8, 17 - i);                 // 9/17부터 하루씩 과거로
+        const scored = i % 4 !== 0;                            // 1/4은 '점수 없는 과거 기록'
+        out.push({
+            id: 90000 + i, date: dt.toLocaleDateString('ko-KR'),
+            newsId: `seed-${i}`, newsTitle: titles[i % titles.length],
+            newsCategory: subs[i % subs.length], source: { subject: subs[i % subs.length] },
+            summary: '이 기사에서 가장 중요한 한 가지는 …', choice: 0,
+            reason: '왜냐하면 …', word: words[i % words.length],
+            opinionOptions: ['찬성한다', '반대한다', '기타 의견이 있다'],
+            feedback: scored ? '핵심을 잘 짚었어. 근거를 한 줄 더 붙이면 완벽해.' : null,
+            scoreClarity: scored ? 3 + (i % 3) : null,
+            scoreEvidence: scored ? 3 + ((i + 1) % 3) : null,
+            scoreVocab: scored ? 3 + ((i + 2) % 3) : null,
+            history: null, rebuttal: null, source_present: true,
+        });
+    }
+    return out;   // 최신→과거 (loadEntries와 동일 정렬)
+}
+
+function Dashboard({ stats, entries }) {
+    // 개발 점검용(로컬 vite dev + ?seed=N)에서만 목데이터. 프로덕션(DEV=false)은 실기록만.
+    if (import.meta.env.DEV && !entries.length) {
+        const seedN = Number(new URLSearchParams(window.location.search).get('seed'));
+        if (seedN > 0) entries = devSeedEntries(seedN);
+    }
+
     const [expandedId, setExpandedId] = useState(null);
     const [tool, setTool] = useState(null);          // 'quiz' | null
     const [printEntry, setPrintEntry] = useState(null);  // 인쇄할 학습 항목
@@ -2115,7 +2170,7 @@ function Dashboard({ stats, entries, lvlTitle }) {
     const hanjaTerms = useMemo(() => collectHanja(entries), [entries]);
     const dueCount = useMemo(() => dueCountOf(hanjaTerms, loadReview()), [hanjaTerms, reviewTick]);
 
-    // 영역별 점수 — 코치 점수(0~5) 평균 기반 (글자 수 아님, 성장 추세와 일관)
+    // 역량 평균 — 코치 점수(0~5) 있는 기록만. 점수 없는 과거 기록은 제외(임의 점수 미생성).
     const scoredEntries = entries.filter((e) => e.scoreClarity != null);
     const avgOf = (key) => (scoredEntries.length
         ? scoredEntries.reduce((a, e) => a + (e[key] || 0), 0) / scoredEntries.length
@@ -2123,141 +2178,186 @@ function Dashboard({ stats, entries, lvlTitle }) {
     const avgClarity = avgOf('scoreClarity');
     const avgEvidence = avgOf('scoreEvidence');
     const avgVocab = avgOf('scoreVocab');
-    const pct = (v) => Math.round((v / 5) * 100);
-    const fmt = (v) => (Math.round(v * 10) / 10).toFixed(1);
+
+    const lv = levelInfo(stats.xp);
+    // 보관실 = 실제 완료 기록. 오래된→최신 순으로 번호(호수) 부여, 선반 칸으로 나눔.
+    const books = entries.slice().reverse();                // entries는 최신순 → 오래된 것이 제1호
+    const perShelf = 9;
+    const shelves = [];
+    for (let i = 0; i < books.length; i += perShelf) shelves.push(books.slice(i, i + perShelf));
+    const selected = entries.find((x) => x.id === expandedId) || null;
+    const selectedNo = selected ? books.findIndex((b) => b.id === selected.id) + 1 : 0;
+    const reportDate = new Date().toLocaleDateString('ko-KR', { year: 'numeric', month: 'long', day: 'numeric' });
 
     return (
         <div className="animate-scale-in space-y-5">
-            {/* Stats */}
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
-                <Stat icon={Flame} label="Streak" value={stats.streak} unit="일 연속" color="bg-destructive" />
-                <Stat icon={BookMarked} label="완료 기사" value={entries.length} unit="건" color="bg-primary" />
-                <Stat icon={Star} label="레벨" value={`LV.${stats.level}`} unit={lvlTitle} color="bg-grad-mid" />
-                <Stat icon={Zap} label="Total XP" value={stats.xp} unit="XP" color="bg-secondary" />
+            {/* ══ 보관실(중심) — news_05 방 장면을 배너로, 실제 서가는 아래 별도 레이어 ══ */}
+            <div className="relative rounded-2xl overflow-hidden border border-border">
+                <img src={STORY_IMG('news_05.jpg')} alt=""
+                    className="w-full h-36 sm:h-44 object-cover object-center" draggable="false"
+                    onError={(e) => { e.currentTarget.style.display = 'none'; }} />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/65 via-black/20 to-black/10" aria-hidden="true" />
+                <div className="absolute inset-x-0 bottom-0 p-4 sm:p-5">
+                    <p className="text-white/85 text-[12px] font-semibold drop-shadow mb-0.5">지율이의 보관실 · LV.{lv.level} {lv.title}</p>
+                    <p className="text-white text-[22px] sm:text-[27px] font-extrabold tracking-tight drop-shadow leading-none"
+                        style={{ fontFamily: 'Georgia, "Nanum Myeongjo", serif' }}>
+                        지금까지 {entries.length}권
+                    </p>
+                    <p className="text-white/85 text-[12.5px] font-medium drop-shadow mt-1.5">읽고 기록한 신문이 한 권씩 꽂혀요</p>
+                </div>
             </div>
 
-            {/* 레벨 진행바 — 다음 레벨까지 (아이가 항상 가까운 목표를 보게) */}
-            {(() => {
-                const lv = levelInfo(stats.xp);
-                return (
-                    <div className="bg-card p-4 sm:p-5 rounded-lg border border-border">
-                        <div className="flex items-center justify-between mb-2">
-                            <span className="font-bold text-[15px] text-card-foreground flex items-center gap-2">
-                                <Star size={16} className="text-grad-mid" aria-hidden="true" />
-                                LV.{lv.level} · {lv.title}
-                            </span>
-                            <span className="text-[12px] text-muted-foreground tabular-nums">
-                                {lv.level >= 25 ? '명예의 전당' : `다음 레벨까지 ${lv.toNext} XP`}
-                            </span>
+            {/* 서가 — 빈 책장 배경 위에 개별 책등을 얹어 기록이 늘수록 채워진다 */}
+            <div className="rounded-xl overflow-hidden border shadow-inner" style={{ borderColor: '#3f2c1c' }}>
+                <div className="p-3 sm:p-4 space-y-3" style={{ background: 'linear-gradient(180deg,#5a4230,#4a3626)' }}>
+                    {shelves.length === 0 ? (
+                        <div>
+                            <div className="flex items-center justify-center min-h-[120px] rounded-sm border border-dashed" style={{ borderColor: 'rgba(255,255,255,0.25)' }}>
+                                <p className="text-[13px] text-center px-4" style={{ color: '#e8dcc6' }}>첫 기사를 읽고 미션을 완료하면<br />여기 첫 권이 꽂혀요 📖</p>
+                            </div>
+                            <div className="h-2.5 rounded-sm mt-1" style={{ backgroundColor: '#7a5a3c', boxShadow: '0 6px 8px -5px rgba(0,0,0,0.7)' }} />
                         </div>
-                        <div className="w-full h-3 rounded-full bg-accent/40 overflow-hidden">
-                            <div className="h-full rounded-full bg-grad-mid transition-[width] duration-500" style={{ width: `${lv.pct}%` }} />
+                    ) : shelves.map((row, si) => (
+                        <div key={si}>
+                            <div className="flex items-end gap-1.5 min-h-[120px] overflow-x-auto pb-0.5">
+                                {row.map((b, bi) => {
+                                    const no = si * perShelf + bi + 1;
+                                    const open = expandedId === b.id;
+                                    const c = spineColor((b.source && b.source.subject) || b.newsCategory);
+                                    return (
+                                        <button key={b.id} type="button" title={b.newsTitle}
+                                            onClick={() => setExpandedId(open ? null : b.id)}
+                                            aria-expanded={open} aria-label={`제${no}호 · ${b.newsTitle}`}
+                                            className={`relative rounded-t-[3px] shrink-0 cursor-pointer transition-transform duration-200 hover:-translate-y-1 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/80 ${open ? '-translate-y-1.5 ring-2 ring-white/90' : ''}`}
+                                            style={{ width: 'clamp(28px, 5.5vw, 34px)', height: open ? '128px' : '114px', backgroundColor: c.bg, boxShadow: '1px 0 2px rgba(0,0,0,0.35)' }}>
+                                            <span className="absolute top-2 left-1 right-1 h-4 rounded-[2px] flex items-center justify-center text-[10px] font-black tabular-nums"
+                                                style={{ backgroundColor: c.band, color: c.bg }}>{no}</span>
+                                            <span className="absolute top-8 bottom-6 left-1/2 -translate-x-1/2 w-px" style={{ backgroundColor: c.text, opacity: 0.22 }} aria-hidden="true" />
+                                            <span className="absolute bottom-1 left-0 right-0 text-[7.5px] text-center tabular-nums" style={{ color: c.text, opacity: 0.85 }}>{shortDate(b.date)}</span>
+                                        </button>
+                                    );
+                                })}
+                            </div>
+                            <div className="h-2.5 rounded-sm" style={{ backgroundColor: '#7a5a3c', boxShadow: '0 6px 8px -5px rgba(0,0,0,0.7)' }} />
                         </div>
-                        <p className="text-[11px] text-muted-foreground mt-1.5 tabular-nums">{lv.into} / {lv.need} XP · {lv.pct}%</p>
+                    ))}
+                </div>
+            </div>
+
+            {/* 선택한 책(기록) 펼침 — 호수·제목·과목 + 작성 내용·코치 피드백(있으면) */}
+            {selected ? (
+                <div className="rounded-xl border border-border bg-card overflow-hidden animate-slide-up">
+                    <div className="flex items-start justify-between gap-2 px-4 sm:px-5 py-3.5 border-b border-border bg-accent/20">
+                        <div className="min-w-0">
+                            <div className="flex items-center gap-1.5 text-[12.5px] text-muted-foreground mb-0.5">
+                                <span className="font-bold text-primary">제{selectedNo}호</span>
+                                <span className="w-0.5 h-0.5 bg-border rounded-full" aria-hidden="true" />
+                                <time>{selected.date}</time>
+                                <span className="w-0.5 h-0.5 bg-border rounded-full" aria-hidden="true" />
+                                <span>{(selected.source && selected.source.subject) || selected.newsCategory}</span>
+                            </div>
+                            <p className="font-bold text-card-foreground text-[16px] tracking-tight leading-snug">{selected.newsTitle}</p>
+                        </div>
+                        <button type="button" onClick={() => setExpandedId(null)}
+                            className="shrink-0 text-[13px] text-muted-foreground hover:text-foreground cursor-pointer h-8 px-1.5" aria-label="닫기">✕</button>
                     </div>
-                );
-            })()}
+                    <div className="px-4 sm:px-5 pb-4 pt-3">
+                        <HistoryTimeline entry={selected} />
+                        <button type="button" onClick={() => setPrintEntry(selected)}
+                            className="mt-4 w-full py-2.5 rounded-lg font-bold text-[14px] border border-primary/40 text-primary bg-primary/5 hover:bg-primary/10 cursor-pointer press min-h-[44px] flex items-center justify-center gap-2">
+                            🖨️ 이 학습 인쇄 / PDF
+                        </button>
+                    </div>
+                </div>
+            ) : entries.length > 0 && (
+                <p className="text-center text-[12.5px] text-muted-foreground">책등을 누르면 그때 쓴 글과 코치 기록이 펼쳐져요.</p>
+            )}
 
-            {/* Skills — 영역별 역량 레이더 (코치 점수 평균) */}
-            <div className="bg-card p-4 sm:p-5 rounded-lg border border-border">
-                <h3 className="font-bold text-[16px] tracking-tight mb-1 flex items-center gap-2 text-card-foreground">
-                    <Award size={16} className="text-grad-mid" aria-hidden="true" /> 영역별 역량
-                </h3>
-                <p className="text-[13px] text-muted-foreground mb-2">
-                    {scoredEntries.length ? `코치가 매긴 점수의 평균 (완료 ${scoredEntries.length}개 기준)` : '미션을 완료하면 코치 점수가 쌓여요.'}
+            {/* ══ 성장 리포트 — 지표를 종이형으로 정리 ══ */}
+            <section className="rounded-xl border p-4 sm:p-6 space-y-4" style={{ backgroundColor: '#faf6ec', borderColor: '#e4dcc7' }}>
+                <header className="text-center border-b pb-3" style={{ borderColor: '#e0d6bd' }}>
+                    <p className="text-[11px] tracking-[0.3em] font-bold" style={{ color: '#8a6d4f' }}>성 장 리 포 트</p>
+                    <h2 className="text-[20px] sm:text-[22px] font-extrabold text-[#2b2b2b] mt-1" style={{ fontFamily: 'Georgia, "Nanum Myeongjo", serif' }}>지율이의 성장 리포트</h2>
+                    <p className="text-[12px] text-[#9a8a70] mt-0.5">{reportDate} 기준</p>
+                </header>
+
+                {/* 한눈 요약 — 완료 권수(entries)와 누적 XP(stats)는 서로 다른 지표 */}
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                    {[
+                        { label: '완료 기록', value: `${entries.length}`, unit: '권' },
+                        { label: '누적 XP', value: `${stats.xp}`, unit: 'XP' },
+                        { label: '레벨', value: `LV.${lv.level}`, unit: lv.title },
+                        { label: '연속', value: `${stats.streak}`, unit: '일' },
+                    ].map((s) => (
+                        <div key={s.label} className="rounded-lg bg-white border border-[#eadfc8] px-3 py-2.5 text-center">
+                            <p className="text-[11.5px] text-[#9a8a70] font-semibold">{s.label}</p>
+                            <p className="text-[19px] font-extrabold text-[#2b2b2b] tabular-nums leading-tight mt-0.5">{s.value}</p>
+                            <p className="text-[11px] text-[#9a8a70]">{s.unit}</p>
+                        </div>
+                    ))}
+                </div>
+                <p className="text-[11.5px] text-[#9a8a70] leading-relaxed">
+                    ‘완료 기록’은 기록한 기사 수, ‘XP’는 미션에서 쌓은 누적 점수예요. 점수 없이 저장된 과거 기록은 XP·역량 평균에 포함되지 않아요.
                 </p>
-                {scoredEntries.length ? (
-                    <GrowthBars clarity={avgClarity} evidence={avgEvidence} vocab={avgVocab} />
-                ) : (
-                    <div className="text-center py-6 text-muted-foreground text-[14px]">미션을 완료하면 역량 그래프가 그려져요 🎯</div>
-                )}
-            </div>
 
-            {/* 성장 추세 (코치 점수 시계열 + 어휘 누적) */}
-            <GrowthTrend entries={entries} />
+                {/* 레벨 진행 */}
+                <div className="rounded-lg bg-white border border-[#eadfc8] p-4">
+                    <div className="flex items-center justify-between mb-2">
+                        <span className="font-bold text-[15px] text-[#2b2b2b] flex items-center gap-2">
+                            <Star size={16} className="text-grad-mid" aria-hidden="true" /> LV.{lv.level} · {lv.title}
+                        </span>
+                        <span className="text-[12px] text-[#9a8a70] tabular-nums">
+                            {lv.level >= 25 ? '명예의 전당' : `다음 레벨까지 ${lv.toNext} XP`}
+                        </span>
+                    </div>
+                    <div className="w-full h-3 rounded-full bg-[#efe6d0] overflow-hidden">
+                        <div className="h-full rounded-full bg-grad-mid transition-[width] duration-500" style={{ width: `${lv.pct}%` }} />
+                    </div>
+                    <p className="text-[11px] text-[#9a8a70] mt-1.5 tabular-nums">{lv.into} / {lv.need} XP · {lv.pct}%</p>
+                </div>
 
-            {/* 성장 미러 */}
-            <GrowthMirror entries={entries} />
-
-            {/* 학습 도구 — 한자 퀴즈 (포트폴리오 인쇄는 아래 활동 기록에서 항목별로) */}
-            <button
-                onClick={() => hanjaTerms.length >= 4 && setTool('quiz')}
-                disabled={hanjaTerms.length < 4}
-                className="block w-full text-left bg-card p-4 rounded-lg border border-border hover:border-primary/40 transition-colors cursor-pointer press disabled:opacity-60 disabled:cursor-not-allowed"
-            >
-                <p className="font-bold text-[15px] text-card-foreground flex items-center gap-2">
-                    🀄 한자 퀴즈
-                    {hanjaTerms.length >= 4 && dueCount > 0 && (
-                        <span className="text-[11px] font-bold px-1.5 py-0.5 rounded-full bg-chart-2/15 text-chart-2">복습 {dueCount}</span>
+                {/* 영역별 역량 */}
+                <div className="rounded-lg bg-white border border-[#eadfc8] p-4">
+                    <h3 className="font-bold text-[15px] tracking-tight mb-1 flex items-center gap-2 text-[#2b2b2b]">
+                        <Award size={16} className="text-grad-mid" aria-hidden="true" /> 영역별 역량
+                    </h3>
+                    <p className="text-[12.5px] text-[#9a8a70] mb-2">
+                        {scoredEntries.length ? `코치가 채점한 ${scoredEntries.length}권 평균` : '미션을 완료하면 코치 점수가 쌓여요.'}
+                    </p>
+                    {scoredEntries.length ? (
+                        <GrowthBars clarity={avgClarity} evidence={avgEvidence} vocab={avgVocab} />
+                    ) : (
+                        <div className="text-center py-6 text-[#9a8a70] text-[14px]">미션을 완료하면 역량 그래프가 그려져요 🎯</div>
                     )}
-                </p>
-                <p className="text-[13px] text-muted-foreground mt-1">
-                    {hanjaTerms.length >= 4
-                        ? (dueCount > 0 ? `복습할 한자어 ${dueCount}개 · 모은 ${hanjaTerms.length}개 (취약한 것부터 출제)` : `모은 한자어 ${hanjaTerms.length}개 · 복습 완료 👍`)
-                        : `한자어 ${4 - hanjaTerms.length}개 더 모으면 시작`}
-                </p>
-            </button>
+                </div>
+
+                {/* 성장 추세 · 성장 미러 (각자 카드 유지) */}
+                <GrowthTrend entries={entries} />
+                <GrowthMirror entries={entries} />
+
+                {/* 한자 퀴즈 */}
+                <button
+                    onClick={() => hanjaTerms.length >= 4 && setTool('quiz')}
+                    disabled={hanjaTerms.length < 4}
+                    className="block w-full text-left bg-white p-4 rounded-lg border border-[#eadfc8] hover:border-primary/40 transition-colors cursor-pointer press disabled:opacity-60 disabled:cursor-not-allowed"
+                >
+                    <p className="font-bold text-[15px] text-[#2b2b2b] flex items-center gap-2">
+                        🀄 한자 퀴즈
+                        {hanjaTerms.length >= 4 && dueCount > 0 && (
+                            <span className="text-[11px] font-bold px-1.5 py-0.5 rounded-full bg-chart-2/15 text-chart-2">복습 {dueCount}</span>
+                        )}
+                    </p>
+                    <p className="text-[13px] text-[#9a8a70] mt-1">
+                        {hanjaTerms.length >= 4
+                            ? (dueCount > 0 ? `복습할 한자어 ${dueCount}개 · 모은 ${hanjaTerms.length}개 (취약한 것부터 출제)` : `모은 한자어 ${hanjaTerms.length}개 · 복습 완료 👍`)
+                            : `한자어 ${4 - hanjaTerms.length}개 더 모으면 시작`}
+                    </p>
+                </button>
+            </section>
 
             {/* 오버레이 */}
             {tool === 'quiz' && <HanjaQuiz terms={hanjaTerms} onClose={() => { setTool(null); setReviewTick((t) => t + 1); }} />}
             {printEntry && <EntryPortfolio entry={printEntry} onClose={() => setPrintEntry(null)} />}
-
-            {/* History */}
-            <section className="bg-card p-4 sm:p-5 rounded-lg border border-border">
-                <h3 className="font-bold text-[16px] tracking-tight mb-4 flex items-center gap-2 text-card-foreground">
-                    <Trophy size={16} className="text-chart-1" aria-hidden="true" /> 활동 기록
-                </h3>
-                {entries.length === 0 ? (
-                    <div className="text-center py-10 text-muted-foreground bg-background rounded-lg border border-dashed border-border">
-                        <BookOpen size={28} className="mx-auto mb-2 text-border" aria-hidden="true" />
-                        <p className="font-medium text-[15px]">아직 활동 기록이 없습니다</p>
-                        <p className="text-[14px] mt-0.5">뉴스를 읽고 미션을 완료해보세요</p>
-                    </div>
-                ) : entries.map((e) => {
-                    const isOpen = expandedId === e.id;
-                    return (
-                        <div key={e.id} className="mb-3 last:mb-0 rounded-lg border border-border overflow-hidden">
-                            {/* 헤더 — 클릭으로 펼치기 */}
-                            <button
-                                className="w-full flex items-center justify-between p-4 bg-background hover:bg-accent/10 transition-colors duration-200 cursor-pointer text-left"
-                                onClick={() => setExpandedId(isOpen ? null : e.id)}
-                                aria-expanded={isOpen}
-                            >
-                                <div className="flex-1 min-w-0 pr-3">
-                                    <div className="flex items-center gap-1.5 text-[13px] text-muted-foreground mb-0.5">
-                                        <time>{e.date}</time>
-                                        <span className="w-0.5 h-0.5 bg-border rounded-full" aria-hidden="true" />
-                                        <span>{e.newsCategory}</span>
-                                    </div>
-                                    <p className="font-bold text-card-foreground text-[15px] tracking-tight truncate">{e.newsTitle}</p>
-                                </div>
-                                <div className="flex items-center gap-2 shrink-0">
-                                    <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[13px] font-semibold bg-secondary/15 text-secondary border border-secondary/30">
-                                        <CheckCircle size={10} aria-hidden="true" /> 완료
-                                    </span>
-                                    {isOpen
-                                        ? <ChevronUp size={15} className="text-muted-foreground" />
-                                        : <ChevronDown size={15} className="text-muted-foreground" />}
-                                </div>
-                            </button>
-
-                            {/* 상세 내용 — 펼쳐질 때: 버전별 학습 기록 타임라인 + 개별 인쇄 */}
-                            {isOpen && (
-                                <div className="px-4 pb-4 pt-3 bg-background border-t border-border">
-                                    <HistoryTimeline entry={e} />
-                                    <button
-                                        type="button"
-                                        onClick={() => setPrintEntry(e)}
-                                        className="mt-4 w-full py-2.5 rounded-lg font-bold text-[14px] border border-primary/40 text-primary bg-primary/5 hover:bg-primary/10 cursor-pointer press min-h-[44px] flex items-center justify-center gap-2"
-                                    >
-                                        🖨️ 이 학습 인쇄 / PDF
-                                    </button>
-                                </div>
-                            )}
-                        </div>
-                    );
-                })}
-            </section>
         </div>
     );
 }
