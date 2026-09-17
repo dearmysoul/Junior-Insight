@@ -555,7 +555,7 @@ function ArrivalGate({ onOpen, dateStr }) {
                 <button type="button" onClick={onOpen}
                     aria-label="인장을 눌러 오늘의 편지 열기"
                     className="absolute rounded-full cursor-pointer focus:outline-none focus-visible:ring-4 focus-visible:ring-primary/60 group"
-                    style={{ left: '53%', top: '67%', width: '13%', aspectRatio: '1 / 1', transform: 'translate(-50%,-50%)' }}>
+                    style={{ left: '50.5%', top: '68%', width: '8%', minWidth: '44px', minHeight: '44px', aspectRatio: '1 / 1', transform: 'translate(-50%,-50%)' }}>
                     <span className="absolute inset-0 rounded-full ring-2 ring-white/70 animate-pulse" aria-hidden="true" />
                     <span className="absolute inset-0 rounded-full group-hover:bg-white/15 group-active:bg-white/25 transition-colors" aria-hidden="true" />
                 </button>
