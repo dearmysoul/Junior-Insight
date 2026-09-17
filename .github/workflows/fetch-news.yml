@@ -38,6 +38,33 @@ jobs:
             echo "Supabase 시크릿 미설정 — keep-alive 건너뜀"
           fi
 
+      # 아이 데이터(entries/stats) 암호화 백업 — 원본은 GET(읽기)만, 절대 수정 안 함.
+      # BACKUP_PASSPHRASE로 AES-256 암호화 후 '암호문만' 커밋(평문 커밋 금지). git 이력=영구 보존.
+      # 시크릿 미설정이면 건너뜀. 실패해도 콘텐츠 생성 계속(continue-on-error).
+      - name: Backup Supabase data (encrypted, read-only)
+        continue-on-error: true
+        env:
+          SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
+          SUPABASE_ANON_KEY: ${{ secrets.VITE_SUPABASE_ANON_KEY }}
+          BACKUP_PASSPHRASE: ${{ secrets.BACKUP_PASSPHRASE }}
+        run: |
+          if [ -z "$SUPABASE_URL" ] || [ -z "$SUPABASE_ANON_KEY" ] || [ -z "$BACKUP_PASSPHRASE" ]; then
+            echo "백업 시크릿(BACKUP_PASSPHRASE 등) 미설정 — 백업 건너뜀"; exit 0
+          fi
+          get() { curl -s --max-time 30 "$SUPABASE_URL/rest/v1/$1?select=*" \
+            -H "apikey: $SUPABASE_ANON_KEY" -H "Authorization: Bearer $SUPABASE_ANON_KEY"; }
+          entries=$(get entries); stats=$(get stats)
+          # 정상 JSON 배열([)일 때만 백업 — 에러 응답으로 덮어쓰기 방지
+          case "$entries" in "["*) ;; *) echo "entries 조회 실패 — 백업 건너뜀"; exit 0;; esac
+          case "$stats"   in "["*) ;; *) echo "stats 조회 실패 — 백업 건너뜀"; exit 0;; esac
+          mkdir -p backups
+          printf '{"exported_at":"%s","entries":%s,"stats":%s}' \
+            "$(date -u +%FT%TZ)" "$entries" "$stats" > backups/_plain.json
+          openssl enc -aes-256-cbc -pbkdf2 -salt \
+            -in backups/_plain.json -out backups/ji-backup.json.enc -pass env:BACKUP_PASSPHRASE
+          rm -f backups/_plain.json   # 평문은 절대 남기지 않음
+          echo "백업 완료(암호화): $(wc -c < backups/ji-backup.json.enc) bytes"
+
       - uses: actions/setup-node@v4
         with:
           node-version: 20
@@ -59,5 +86,6 @@ jobs:
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add public/news.json
           git add public/lesson-history.json 2>/dev/null || true   # 중복 방지 원장(없을 수 있음)
+          git add backups/ji-backup.json.enc 2>/dev/null || true   # 암호화 데이터 백업(없을 수 있음)
           git diff --cached --quiet || git commit -m "chore: 콘텐츠 자동 생성 $(date +'%Y-%m-%d')"
           git push

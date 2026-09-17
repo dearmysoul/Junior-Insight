@@ -3,3 +3,6 @@ dist
 .env
 .env.local
 .vercel
+
+# 데이터 백업: 평문 JSON은 절대 커밋 금지, 암호화(.enc)만 허용
+backups/*.json
