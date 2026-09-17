@@ -963,7 +963,7 @@ export default function App() {
                     onGrowth={() => setTab('dashboard')}
                 />
             ) : (
-                <main className="pb-16 px-4 pt-4 sm:px-6 sm:pt-6 md:px-8 md:pt-10 max-w-3xl mx-auto">
+                <main className={`pb-16 px-4 pt-4 sm:px-6 sm:pt-6 md:px-8 md:pt-10 mx-auto ${tab === 'write' ? 'max-w-5xl' : 'max-w-3xl'}`}>
                 {tab === 'news' && storyStage === 'open' && (
                     <LetterFrame dateStr={todayLabel} onClose={goHome}>
                         <NewsFeed
@@ -1242,8 +1242,12 @@ function WriteView({ news, form, setForm, submit, coach, coaching, coachReaction
     const clearForm = () => setForm({ summary: '', choice: null, reason: '', word: '' });
     const [followupText, setFollowupText] = useState('');
     useEffect(() => { if (!coach) setFollowupText(''); }, [coach]);
+    // 처음엔 지문/기사만 단일 열로 읽고, '내 생각 쓰기'를 눌러야 우측 입력이 펼쳐진다.
+    // (제출해 코치가 있으면 입력·피드백을 계속 보여준다.) 작성 중 값은 form(prop)이라 그대로 유지.
+    const [writing, setWriting] = useState(false);
+    const showInputs = writing || !!coach;
     return (
-        <div className="animate-slide-right pb-20 md:pb-0">
+        <div className={`animate-slide-right pb-20 md:pb-0 mx-auto transition-all duration-300 ${showInputs ? 'max-w-5xl' : 'max-w-2xl'}`}>
             {/* 뒤로가기 */}
             <button onClick={goBack}
                 className="flex items-center gap-1 text-[15px] font-medium text-muted-foreground hover:text-foreground transition-colors duration-200 mb-4 cursor-pointer h-11"
@@ -1254,8 +1258,8 @@ function WriteView({ news, form, setForm, submit, coach, coaching, coachReaction
             {/* ── 2분할 레이아웃: 모바일=세로, md 이상=좌우 ── */}
             <div className="flex flex-col md:flex-row gap-4 items-start">
 
-                {/* ══ 좌측: 기사 요약 영역 ══ */}
-                <div className="w-full md:w-[46%] md:sticky md:top-6 flex-shrink-0">
+                {/* ══ 좌측: 기사/지문 (읽기 모드=전체폭, 쓰기 모드=좌측 sticky) ══ */}
+                <div className={showInputs ? 'w-full md:w-[46%] md:sticky md:top-6 flex-shrink-0' : 'w-full'}>
                     <div className="bg-card border border-border rounded-xl p-5">
                         {/* 뱃지 + 국가 */}
                         <div className="flex flex-wrap items-center gap-2 mb-3">
@@ -1335,9 +1339,17 @@ function WriteView({ news, form, setForm, submit, coach, coaching, coachReaction
                             </a>
                         )}
                     </div>
+                    {/* 읽기 모드: 다 읽었으면 아래 버튼으로 우측 입력을 펼친다 */}
+                    {!showInputs && (
+                        <button type="button" onClick={() => setWriting(true)}
+                            className="w-full mt-4 py-4 rounded-xl font-bold text-[16px] bg-primary text-primary-foreground hover:opacity-90 cursor-pointer press min-h-[56px] flex items-center justify-center gap-2 shadow-sm">
+                            <PenTool size={17} aria-hidden="true" /> 내 생각 쓰기
+                        </button>
+                    )}
                 </div>
 
-                {/* ══ 우측: 미션 입력 영역 ══ */}
+                {/* ══ 우측: 미션 입력 영역 (‘내 생각 쓰기’ 시 펼침) ══ */}
+                {showInputs && (
                 <div className="w-full md:flex-1 space-y-3">
                     {/* 미션 1: 한 문장 요약 */}
                     <div className="bg-card border border-border rounded-lg p-4">
@@ -1520,6 +1532,7 @@ function WriteView({ news, form, setForm, submit, coach, coaching, coachReaction
                         </div>
                     )}
                 </div>
+                )}
 
             </div>
         </div>
