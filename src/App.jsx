@@ -560,23 +560,22 @@ function DeskScene({ dateStr, onOpen, onGrowth }) {
                 <p className="text-white/85 text-[12px] sm:text-[13px] drop-shadow">{dateStr}</p>
             </div>
 
-            {/* ① 봉투 → 오늘의 편지(뉴스) */}
+            {/* ① 봉투 → 오늘의 편지(뉴스). 흰 라인·아이콘 없음, 라벨 칩만. */}
             <button type="button" onClick={onOpen}
                 aria-label="봉투의 인장을 눌러 오늘의 편지 열기"
                 className="absolute group cursor-pointer focus:outline-none"
                 style={{ left: '50.5%', top: '68%', width: '20%', minWidth: '110px', height: '18%', minHeight: '84px', transform: 'translate(-50%,-50%)' }}>
-                <span className="absolute rounded-full ring-2 ring-white/80 animate-pulse group-hover:ring-primary group-focus-visible:ring-4 group-focus-visible:ring-primary"
-                    style={{ left: '50%', top: '46%', width: '42%', aspectRatio: '1 / 1', transform: 'translate(-50%,-50%)' }} aria-hidden="true" />
-                <span className="absolute left-1/2 -translate-x-1/2 bottom-0 whitespace-nowrap text-[12px] font-bold text-white bg-primary/90 group-hover:bg-primary px-3 py-1 rounded-full shadow">📮 오늘의 편지</span>
+                <span className="absolute left-1/2 -translate-x-1/2 bottom-0 whitespace-nowrap text-[13px] font-bold text-white px-3.5 py-1.5 rounded-full shadow-md transition-transform duration-200 group-hover:-translate-y-0.5 group-hover:scale-105 group-focus-visible:ring-2 group-focus-visible:ring-white/90"
+                    style={{ backgroundColor: '#c1674a' }}>오늘의 편지</span>
             </button>
 
-            {/* ② 책 더미 → 성장 */}
+            {/* ② 책 더미 → 성장. */}
             <button type="button" onClick={onGrowth}
                 aria-label="책을 눌러 성장 화면으로 가기"
                 className="absolute group cursor-pointer focus:outline-none"
-                style={{ left: '13%', top: '60%', width: '17%', minWidth: '96px', height: '20%', minHeight: '92px', transform: 'translate(-50%,-50%)' }}>
-                <span className="absolute inset-1 rounded-xl ring-2 ring-white/0 group-hover:ring-white/80 group-focus-visible:ring-4 group-focus-visible:ring-secondary transition" aria-hidden="true" />
-                <span className="absolute left-1/2 -translate-x-1/2 bottom-0 whitespace-nowrap text-[12px] font-bold text-white bg-secondary/90 group-hover:bg-secondary px-3 py-1 rounded-full shadow">📈 성장</span>
+                style={{ left: '13%', top: '42%', width: '17%', minWidth: '96px', height: '20%', minHeight: '92px', transform: 'translate(-50%,-50%)' }}>
+                <span className="absolute left-1/2 -translate-x-1/2 bottom-0 whitespace-nowrap text-[13px] font-bold text-white px-3.5 py-1.5 rounded-full shadow-md transition-transform duration-200 group-hover:-translate-y-0.5 group-hover:scale-105 group-focus-visible:ring-2 group-focus-visible:ring-white/90"
+                    style={{ backgroundColor: '#4e6d5e' }}>성장</span>
             </button>
         </div>
     );
