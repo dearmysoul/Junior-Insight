@@ -537,9 +537,70 @@ function buildSource(a) {
 /* ──────────────────────────────────────────────
    MAIN APP
    ────────────────────────────────────────────── */
+/* ══════════════════════════════════════════════════════════════
+   스토리 진입 — 도착(봉투) → 개봉(편지) [v1.0 애니메이션 버전]
+   에셋: public/news_01.png(도착 봉투), news_02.png(개봉 배경)
+   ══════════════════════════════════════════════════════════════ */
+const STORY_IMG = (f) => `${import.meta.env.BASE_URL}${f}`;
+
+// 도착 화면 — 봉투 이미지 위 코럴 인장에 실제 버튼(키보드 접근 가능)
+function ArrivalGate({ onOpen, dateStr }) {
+    return (
+        <div className="animate-fade-in max-w-3xl mx-auto">
+            <div className="relative w-full rounded-2xl overflow-hidden border border-border bg-accent/20 shadow-sm">
+                <img src={STORY_IMG('news_01.png')} alt="오늘의 편지가 도착했어요"
+                    className="w-full h-auto block select-none" draggable="false"
+                    onError={(e) => { e.currentTarget.style.visibility = 'hidden'; }} />
+                {/* 인장 버튼: 이미지 %좌표에 고정 → 폭이 변해도(모바일) 위치가 어긋나지 않음 */}
+                <button type="button" onClick={onOpen}
+                    aria-label="인장을 눌러 오늘의 편지 열기"
+                    className="absolute rounded-full cursor-pointer focus:outline-none focus-visible:ring-4 focus-visible:ring-primary/60 group"
+                    style={{ left: '53%', top: '67%', width: '13%', aspectRatio: '1 / 1', transform: 'translate(-50%,-50%)' }}>
+                    <span className="absolute inset-0 rounded-full ring-2 ring-white/70 animate-pulse" aria-hidden="true" />
+                    <span className="absolute inset-0 rounded-full group-hover:bg-white/15 group-active:bg-white/25 transition-colors" aria-hidden="true" />
+                </button>
+            </div>
+            <p className="text-center text-[13px] text-muted-foreground mt-3">
+                인장을 눌러 <b className="text-foreground">오늘의 편지</b>를 열어보세요{dateStr ? ` · ${dateStr}` : ''}
+            </p>
+            <div className="text-center mt-2">
+                <button type="button" onClick={onOpen}
+                    className="text-[12px] text-primary underline underline-offset-2 cursor-pointer">바로 열기</button>
+            </div>
+        </div>
+    );
+}
+
+// 개봉 화면 — 개봉 장면을 은은한 배경으로, 그 위에 크림 편지지 패널(HTML/CSS)
+function LetterFrame({ dateStr, onClose, children }) {
+    return (
+        <div className="animate-fade-in relative rounded-2xl overflow-hidden">
+            <div className="absolute inset-0 bg-cover bg-center opacity-10 pointer-events-none"
+                style={{ backgroundImage: `url(${STORY_IMG('news_02.png')})` }} aria-hidden="true" />
+            <div className="relative bg-[#faf6ec] dark:bg-card border border-border rounded-2xl p-4 sm:p-7 shadow-sm">
+                <div className="flex items-center justify-between mb-1">
+                    <button type="button" onClick={onClose}
+                        className="text-[13px] text-muted-foreground hover:text-foreground flex items-center gap-1 h-9 cursor-pointer"
+                        aria-label="봉투로 돌아가기">
+                        <ArrowLeft size={15} aria-hidden="true" /> 봉투로
+                    </button>
+                    <time className="text-[12px] text-muted-foreground tabular-nums">{dateStr}</time>
+                </div>
+                <h2 className="text-center text-2xl sm:text-3xl font-extrabold tracking-tight text-[#2b2b2b] dark:text-foreground"
+                    style={{ fontFamily: 'Georgia, "Nanum Myeongjo", serif' }}>오늘의 편지</h2>
+                <p className="text-center text-[12px] text-muted-foreground mt-1">세상을 읽는 하루</p>
+                <div className="h-px bg-border my-4" />
+                {children}
+            </div>
+        </div>
+    );
+}
+
 export default function App() {
     const [tab, setTab] = useState('news');
     const [selected, setSelected] = useState(null);
+    // 스토리 진입: 'arrival'(봉투 도착) → 'open'(편지 개봉). 뉴스 탭에서만 적용.
+    const [storyStage, setStoryStage] = useState('arrival');
     const [toast, setToast] = useState({ show: false, msg: '' });
     // 3가지 입력 모두 필수
     const [form, setForm] = useState({ summary: '', choice: null, reason: '', word: '' });
@@ -872,6 +933,7 @@ export default function App() {
     }, [flash]);
 
     const lvlTitle = levelInfo(stats.xp).title;
+    const todayLabel = new Date().toLocaleDateString('ko-KR', { month: 'long', day: 'numeric', weekday: 'short' });
 
     const navItems = [
         { id: 'news', Icon: BookOpen, label: '뉴스' },
@@ -924,15 +986,20 @@ export default function App() {
         transition-all duration-300
       ">
 
-                {tab === 'news' && (
-                    <NewsFeed
-                        news={news}
-                        weather={weather}
-                        loading={newsLoading}
-                        error={newsError}
-                        entries={entries}
-                        onMission={startMission}
-                    />
+                {tab === 'news' && storyStage === 'arrival' && (
+                    <ArrivalGate onOpen={() => setStoryStage('open')} dateStr={todayLabel} />
+                )}
+                {tab === 'news' && storyStage === 'open' && (
+                    <LetterFrame dateStr={todayLabel} onClose={() => setStoryStage('arrival')}>
+                        <NewsFeed
+                            news={news}
+                            weather={weather}
+                            loading={newsLoading}
+                            error={newsError}
+                            entries={entries}
+                            onMission={startMission}
+                        />
+                    </LetterFrame>
                 )}
                 {tab === 'write' && selected && (
                     <WriteView
