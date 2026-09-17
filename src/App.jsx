@@ -606,11 +606,86 @@ function LetterFrame({ dateStr, onClose, children }) {
     );
 }
 
+// 완료(기록) 씬 — 코치까지 끝낸 뒤 전체 화면. '오늘의 생각이 나의 신문에 실렸다'(news_05).
+//  · 아이가 쓴 한 문장을 신문 헤드라인처럼, 현재 칭호/레벨을 함께 보여주고 보관실/책상/편지로 분기.
+function RecordedScene({ entry, lvl, onGrowth, onHome, onMore }) {
+    const headline = entry?.summary?.trim() || '오늘의 생각을 기록했어요';
+    const source = entry?.newsTitle || '';
+    return (
+        <div className="fixed inset-0 bg-[#efe9dc] overflow-hidden select-none">
+            <img src={STORY_IMG('news_05.jpg')} alt=""
+                className="absolute inset-0 w-full h-full object-cover object-center" draggable="false"
+                onError={(e) => { e.currentTarget.style.display = 'none'; }} />
+            {/* 가독성용 은은한 스크림 */}
+            <div className="absolute inset-0 bg-gradient-to-b from-black/10 via-transparent to-black/25 pointer-events-none" aria-hidden="true" />
+
+            {/* 상단 발행 표시 — 밝은 배경에서도 읽히도록 칩 배경 */}
+            <div className="absolute top-0 left-0 right-0 p-4 sm:p-6 pointer-events-none">
+                <span className="inline-flex items-center gap-1.5 text-white text-[13px] sm:text-[14px] font-bold tracking-tight px-3 py-1.5 rounded-full bg-black/35 backdrop-blur-sm shadow">
+                    <Sparkles size={14} aria-hidden="true" /> 오늘 신문 발행 완료
+                </span>
+            </div>
+
+            {/* 중앙 신문 카드 — 신문 위에 오늘 글이 실린 느낌 */}
+            <div className="absolute inset-0 flex items-center justify-center px-4 pb-6 pt-16">
+                <div className="animate-slide-up w-full max-w-md bg-[#faf6ec] border border-[#e4dcc7] rounded-2xl shadow-xl p-6 sm:p-7">
+                    {/* 마스트헤드 */}
+                    <div className="text-center">
+                        <p className="text-[11px] tracking-[0.35em] text-[#8a6d4f] font-bold">지 율 일 보</p>
+                        <div className="h-px bg-[#d8cdb4] my-2.5" />
+                        <p className="text-[12px] text-[#9a8a70]">나의 신문에 오늘의 생각이 실렸어요</p>
+                    </div>
+
+                    {/* 헤드라인 = 아이가 쓴 한 문장 */}
+                    <blockquote className="mt-3 text-center text-[19px] sm:text-[21px] font-extrabold leading-snug text-[#2b2b2b]"
+                        style={{ fontFamily: 'Georgia, "Nanum Myeongjo", serif' }}>
+                        “{headline}”
+                    </blockquote>
+                    {source && (
+                        <p className="mt-2 text-center text-[12px] text-[#9a8a70]">— {source}</p>
+                    )}
+
+                    {/* 레벨/칭호 */}
+                    {lvl && (
+                        <div className="mt-4 flex flex-wrap items-center justify-center gap-2 text-[13px]">
+                            <span className="px-2.5 py-1 rounded-full font-bold text-white" style={{ backgroundColor: '#4e6d5e' }}>
+                                LV.{lvl.level} · {lvl.title}
+                            </span>
+                            <span className="text-[#9a8a70]">다음 등급까지 {lvl.pct}%</span>
+                        </div>
+                    )}
+
+                    {/* 버튼 */}
+                    <div className="mt-6 space-y-2">
+                        <button type="button" onClick={onGrowth}
+                            className="w-full py-3.5 rounded-xl font-bold text-[16px] text-white hover:opacity-90 cursor-pointer press min-h-[52px] flex items-center justify-center gap-2 shadow-sm"
+                            style={{ backgroundColor: '#c1674a' }}>
+                            <TrendingUp size={17} aria-hidden="true" /> 성장 보관실에서 보기
+                        </button>
+                        <div className="flex gap-2">
+                            <button type="button" onClick={onMore}
+                                className="flex-1 py-3 rounded-xl font-bold text-[14px] border border-[#dcd2ba] bg-white/70 text-[#5a4d38] hover:bg-white cursor-pointer press min-h-[46px]">
+                                편지 더 보기
+                            </button>
+                            <button type="button" onClick={onHome}
+                                className="flex-1 py-3 rounded-xl font-bold text-[14px] border border-[#dcd2ba] bg-white/70 text-[#5a4d38] hover:bg-white cursor-pointer press min-h-[46px]">
+                                책상으로
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    );
+}
+
 export default function App() {
     const [tab, setTab] = useState('news');
     const [selected, setSelected] = useState(null);
     // 스토리 진입: 'arrival'(봉투 도착) → 'open'(편지 개봉). 뉴스 탭에서만 적용.
     const [storyStage, setStoryStage] = useState('arrival');
+    // 완료(기록) 씬 — 코치까지 끝내면 전체 화면으로 표시(최우선). news_05 장면.
+    const [recorded, setRecorded] = useState(false);
     const [toast, setToast] = useState({ show: false, msg: '' });
     // 3가지 입력 모두 필수
     const [form, setForm] = useState({ summary: '', choice: null, reason: '', word: '' });
@@ -855,14 +930,14 @@ export default function App() {
         setGuide(null);
         window.scrollTo({ top: 0, behavior: 'smooth' });
     }, []);
-    // 완료하고 뉴스 목록으로
+    // 완료 → 기록(완료) 씬으로. 오늘 쓴 글이 '나의 신문'에 실린 장면을 보여준 뒤 분기.
     const finishMission = useCallback(() => {
         setCoach(null);
         setCoachReaction(null);
         setGuide(null);
         setForm({ summary: '', choice: null, reason: '', word: '' });
-        setTab('news');
-        window.scrollTo({ top: 0, behavior: 'smooth' });
+        setRecorded(true);
+        window.scrollTo({ top: 0 });
     }, []);
 
     // 예시 답안(정답지) 요청 — 2회 이상 시도해도 어려워할 때
@@ -956,7 +1031,15 @@ export default function App() {
         <div className="min-h-screen bg-background text-foreground">
             <Toast message={toast.msg} show={toast.show} />
 
-            {tab === 'news' && storyStage === 'arrival' ? (
+            {recorded ? (
+                <RecordedScene
+                    entry={lastEntry}
+                    lvl={levelInfo(stats.xp)}
+                    onGrowth={() => { setRecorded(false); setSelected(null); setTab('dashboard'); window.scrollTo({ top: 0 }); }}
+                    onHome={() => { setRecorded(false); setSelected(null); goHome(); }}
+                    onMore={() => { setRecorded(false); setSelected(null); setStoryStage('open'); setTab('news'); window.scrollTo({ top: 0 }); }}
+                />
+            ) : tab === 'news' && storyStage === 'arrival' ? (
                 <DeskScene
                     dateStr={todayLabel}
                     onOpen={() => setStoryStage('open')}
